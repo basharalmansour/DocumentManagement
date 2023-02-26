@@ -1,0 +1,6863 @@
+{
+  "x-generator": "NSwag v13.14.4.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Integration Project API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/Category/GetCategories": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "operationId": "Category_GetCategories",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetCategoryDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Common/Countries": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "operationId": "Common_GetCountries",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Common/Cities/{CountryId}": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "operationId": "Common_GetCities",
+        "parameters": [
+          {
+            "name": "CountryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Common/Districts/{CityId}": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "operationId": "Common_GetCities2",
+        "parameters": [
+          {
+            "name": "CityId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Common/PoiNationalities": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "operationId": "Common_GetPoiNationalities",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NationalityResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/CondoLife/UpdateUser": {
+      "post": {
+        "tags": [
+          "CondoLife"
+        ],
+        "operationId": "CondoLife_UpdateUser",
+        "requestBody": {
+          "x-name": "updateCondolifeUserCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCondolifeUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Customer/CheckUser": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "Customer_CheckUser",
+        "parameters": [
+          {
+            "name": "CardNo",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "MobileNo",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Integration",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIntegrationType"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckCustomerResultDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Customer/CreateIntegrationUser": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "Customer_CreateUser",
+        "requestBody": {
+          "x-name": "createCustomerCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCustomerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateIntegrationUserResulDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Customer/GetUserInfo": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "Customer_GetCustomerInfo",
+        "parameters": [
+          {
+            "name": "CustomerId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Integration",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIntegrationType"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIntegrationCustomerRegisterInfoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Customer/Rights": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "Customer_GetRights",
+        "parameters": [
+          {
+            "name": "CardNumber",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPoiUserRights"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Customer/GetQrPass": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "Customer_GetQrdata",
+        "parameters": [
+          {
+            "name": "UserId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QrCodeResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Customer/SendOtpMessage": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "Customer_SendOtp",
+        "requestBody": {
+          "x-name": "sendOtpToCustomerCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendOtpToCustomerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendOtpMessageResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Customer/ConfirmOtpMessage": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "Customer_ConfirmOtpMessage",
+        "requestBody": {
+          "x-name": "confirmOtpCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmOtpCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIntegrationCustomerRegisterInfoDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Customer/Advantages": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "Customer_GetCusomerAdvantages",
+        "parameters": [
+          {
+            "name": "IntegrationUserId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetCustomerAdvantagesDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Customer/CheckCustomerBy": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "Customer_CheckCustomerBy",
+        "parameters": [
+          {
+            "name": "MobileNo",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Email",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "IdentityNumber",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckCustomerByResultDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Hotel/GetArrivalAutoComplete": {
+      "post": {
+        "tags": [
+          "Hotel"
+        ],
+        "operationId": "Hotel_GetArrivalAutoComplete",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetArrivalAutoCompleteQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetArrivalAutoCompleteResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Hotel/PriceSearchLocation": {
+      "post": {
+        "tags": [
+          "Hotel"
+        ],
+        "operationId": "Hotel_PriceSearchLocation",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriceSearchLocationQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceSearchResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Hotel/PriceSearchHotel": {
+      "post": {
+        "tags": [
+          "Hotel"
+        ],
+        "operationId": "Hotel_PriceSearchHotel",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriceSearchHotelQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceSearchResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Hotel/GetProductInfo": {
+      "post": {
+        "tags": [
+          "Hotel"
+        ],
+        "operationId": "Hotel_GetProductInfo",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetProductInfoQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProductInfoResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Hotel/GetOffers": {
+      "post": {
+        "tags": [
+          "Hotel"
+        ],
+        "operationId": "Hotel_GetOffers",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOffersQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOffersResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Hotel/GetOfferDetails": {
+      "post": {
+        "tags": [
+          "Hotel"
+        ],
+        "operationId": "Hotel_GetOffers2",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfferDetailsQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfferDetailsResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/IntegrationParameters/LoadIntegrationCountries": {
+      "get": {
+        "tags": [
+          "IntegrationParameters"
+        ],
+        "operationId": "IntegrationParameters_LoadIntegrationCountries",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/IntegrationServices/TransferZones": {
+      "get": {
+        "tags": [
+          "IntegrationServices"
+        ],
+        "operationId": "IntegrationServices_GetTransferZones",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransferZoneDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/IntegrationServices/TransferStartPoints": {
+      "get": {
+        "tags": [
+          "IntegrationServices"
+        ],
+        "operationId": "IntegrationServices_GetTransferStartPoints",
+        "parameters": [
+          {
+            "name": "ZoneId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransferStartPointDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/IntegrationServices/TransferEndPoints": {
+      "get": {
+        "tags": [
+          "IntegrationServices"
+        ],
+        "operationId": "IntegrationServices_GetTransferEndPoints",
+        "parameters": [
+          {
+            "name": "StartPoint",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransferEndPointDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/IntegrationServices/SearchTransfer": {
+      "post": {
+        "tags": [
+          "IntegrationServices"
+        ],
+        "operationId": "IntegrationServices_SearchTransfer",
+        "requestBody": {
+          "x-name": "transferSearchRequestDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferSearchRequestDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferSearchResultDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/IntegrationServices/CreateReservation": {
+      "post": {
+        "tags": [
+          "IntegrationServices"
+        ],
+        "operationId": "IntegrationServices_CartTransfer",
+        "requestBody": {
+          "x-name": "preCheckoutTransferCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreCheckoutTransferCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartTransferResultDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/IntegrationServices/CreateOrder": {
+      "post": {
+        "tags": [
+          "IntegrationServices"
+        ],
+        "operationId": "IntegrationServices_CheckoutTransfer",
+        "requestBody": {
+          "x-name": "checkoutTransferCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckoutTransferCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTransferOrderResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/IntegrationServices/CancelTransfer": {
+      "post": {
+        "tags": [
+          "IntegrationServices"
+        ],
+        "operationId": "IntegrationServices_CancelTransfer",
+        "requestBody": {
+          "x-name": "transferCancelRequestDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferCancelRequestDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelTransferResultDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/IntegrationServices/UpdateTransfer": {
+      "post": {
+        "tags": [
+          "IntegrationServices"
+        ],
+        "operationId": "IntegrationServices_UpdateTransfer",
+        "requestBody": {
+          "x-name": "transferSaveRequestDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferSaveRequestDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTransferResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/IntegrationServices/Basket": {
+      "get": {
+        "tags": [
+          "IntegrationServices"
+        ],
+        "operationId": "IntegrationServices_GetBasket",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBasketDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/IntegrationServices/RemoveTransferFromBasket": {
+      "post": {
+        "tags": [
+          "IntegrationServices"
+        ],
+        "operationId": "IntegrationServices_DeleteTransferFromBasket",
+        "requestBody": {
+          "x-name": "removeBasketCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveBasketCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveTransferFromBasketResultDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/IntegrationServices/AddInvoiceAddress": {
+      "post": {
+        "tags": [
+          "IntegrationServices"
+        ],
+        "operationId": "IntegrationServices_addInvoice",
+        "requestBody": {
+          "x-name": "addInvoiceCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddInvoiceCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddInvoiceAddressResultDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Membership/GetPrice": {
+      "get": {
+        "tags": [
+          "Membership"
+        ],
+        "operationId": "Membership_GetPrice",
+        "parameters": [
+          {
+            "name": "membershipId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Order/PrepareCartOrder": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "operationId": "Order_Create",
+        "requestBody": {
+          "x-name": "createOrderCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCartOrderCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateCartOrderResultDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Order/SetOrderStatus": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "operationId": "Order_SetOrderStatus",
+        "requestBody": {
+          "x-name": "setOrderStatusDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetOrderStatusDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetOrderStatusResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Product/GetProducts": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "operationId": "Product_GetProducts",
+        "parameters": [
+          {
+            "name": "IntegrationType",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIntegrationType"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Report/TransferReport": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "operationId": "Report_GetTransferReport",
+        "parameters": [
+          {
+            "name": "StartDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "DateTime",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Report/RequestedServiceCategoriesReport": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "operationId": "Report_GetRequestedServiceCategoriesReport",
+        "parameters": [
+          {
+            "name": "StartDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "EndDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "IntegrationType",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RequestIntegrationType"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Transaction/Transactions": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "operationId": "Transaction_GetTransactions",
+        "parameters": [
+          {
+            "name": "Status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/TransactionStatus"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
+          },
+          {
+            "name": "StartDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "EndDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "x-position": 5
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetTransactionsDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Transaction/PassedTransactions": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "operationId": "Transaction_GetPassedTransactions",
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "UserId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetPassedTransactionDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Transaction/PassedTransactionsForCms": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "operationId": "Transaction_GetPassedTransactionsForCms",
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "UserId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetPassedTransactionDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Transaction/TransactionDetail": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "operationId": "Transaction_GetTransactionDetail",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTransactionDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Transaction/OrderPropertyDetailFilter": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "operationId": "Transaction_GetOrderPropertyDetails",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOrderPropertyDetailQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfOrderPropertyDetailsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Verisoft/UpdateCustomer": {
+      "post": {
+        "tags": [
+          "Verisoft"
+        ],
+        "operationId": "Verisoft_UpdateCustomer",
+        "requestBody": {
+          "x-name": "updateCustomerCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVerisoftCustomerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Verisoft/SendNotification": {
+      "post": {
+        "tags": [
+          "Verisoft"
+        ],
+        "operationId": "Verisoft_SendNotification",
+        "requestBody": {
+          "x-name": "sendNotificationCommand",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendNotificationCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GetCategoryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "hasProcuct": {
+            "type": "boolean"
+          }
+        }
+      },
+      "NationalityResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "country_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "country_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "country_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "country_name_tr": {
+            "type": "string",
+            "nullable": true
+          },
+          "country_name_en": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateCondolifeUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "integrationUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "surname": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "genderName": {
+            "type": "string",
+            "nullable": true
+          },
+          "citizenNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "maritialStatus": {
+            "type": "boolean"
+          },
+          "maritialDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "countryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "CheckCustomerResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "customer_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerStatus_ID": {
+            "$ref": "#/components/schemas/VerisoftTAVCustomerStatus"
+          }
+        }
+      },
+      "VerisoftTAVCustomerStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Active",
+          "Cancel",
+          "Refund",
+          "Passive"
+        ],
+        "enum": [
+          1,
+          3,
+          5,
+          7
+        ]
+      },
+      "ErrorResponseModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "RequestIntegrationType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "TAV"
+        ],
+        "enum": [
+          1
+        ]
+      },
+      "CreateIntegrationUserResulDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "membershipType": {
+            "$ref": "#/components/schemas/MembershipType"
+          }
+        }
+      },
+      "MembershipType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "CLASSIC",
+          "EDITION"
+        ],
+        "enum": [
+          1,
+          2
+        ]
+      },
+      "CreateCustomerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "customer": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CreateIntegrationCustomerDto"
+              }
+            ]
+          },
+          "integration": {
+            "$ref": "#/components/schemas/RequestIntegrationType"
+          }
+        }
+      },
+      "CreateIntegrationCustomerDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "surname": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "workAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "genderId": {
+            "$ref": "#/components/schemas/VerisoftGender"
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "kvkkPermissionAccept": {
+            "type": "boolean"
+          },
+          "postCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "districtId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "homePhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "faks": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfMarriage": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "maritialStatus": {
+            "$ref": "#/components/schemas/VerisoftMaritialStatus"
+          },
+          "agreementTextAccept": {
+            "type": "boolean"
+          },
+          "identityNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryPhoneCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "integrationUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tavPassportNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "electronicMessagePermission": {
+            "type": "boolean"
+          }
+        }
+      },
+      "VerisoftGender": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Female",
+          "Male"
+        ],
+        "enum": [
+          0,
+          1
+        ]
+      },
+      "VerisoftMaritialStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Single",
+          "Married"
+        ],
+        "enum": [
+          0,
+          1
+        ]
+      },
+      "GetIntegrationCustomerRegisterInfoDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "surname": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "cardNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "identityNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "gender": {
+            "$ref": "#/components/schemas/VerisoftGender"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetPoiUserRights": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "card_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "free_transfer": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "QrCodeResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "qrData": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SendOtpMessageResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "result": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SendOtpToCustomerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "integrationType": {
+            "$ref": "#/components/schemas/RequestIntegrationType"
+          }
+        }
+      },
+      "ConfirmOtpCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "integration": {
+            "$ref": "#/components/schemas/RequestIntegrationType"
+          }
+        }
+      },
+      "GetCustomerAdvantagesDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "advantageName": {
+            "type": "string",
+            "nullable": true
+          },
+          "count": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CheckCustomerByResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "found": {
+            "type": "boolean"
+          }
+        }
+      },
+      "GetArrivalAutoCompleteResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "header": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Header"
+              }
+            ]
+          },
+          "body": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Body"
+              }
+            ]
+          }
+        }
+      },
+      "Header": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "messages": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "messageType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Body": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Item"
+            }
+          }
+        }
+      },
+      "Item": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "geolocation": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Geolocation"
+              }
+            ]
+          },
+          "country": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Country"
+              }
+            ]
+          },
+          "state": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/State"
+              }
+            ]
+          },
+          "city": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/City"
+              }
+            ]
+          },
+          "giataInfo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GiataInfo"
+              }
+            ]
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Geolocation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "longitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Country": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "State": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "City": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GiataInfo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "hotelId": {
+            "type": "string",
+            "nullable": true
+          },
+          "destinationId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GetArrivalAutoCompleteQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "query": {
+            "type": "string",
+            "nullable": true
+          },
+          "culture": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PriceSearchResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "header": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Header2"
+              }
+            ]
+          },
+          "body": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Body2"
+              }
+            ]
+          }
+        }
+      },
+      "Header2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "messages": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Message2"
+            }
+          }
+        }
+      },
+      "Message2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "messageType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Body2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "searchId": {
+            "type": "string",
+            "nullable": true
+          },
+          "expiresOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "hotels": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Hotel"
+            }
+          },
+          "details": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Details"
+              }
+            ]
+          }
+        }
+      },
+      "Hotel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "geolocation": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Geolocation2"
+              }
+            ]
+          },
+          "stars": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "themes": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Theme"
+            }
+          },
+          "boards": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Board"
+            }
+          },
+          "country": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Country2"
+              }
+            ]
+          },
+          "city": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/City2"
+              }
+            ]
+          },
+          "giataInfo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GiataInfo2"
+              }
+            ]
+          },
+          "town": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Town"
+              }
+            ]
+          },
+          "village": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Village"
+              }
+            ]
+          },
+          "offers": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Offer"
+            }
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "thumbnail": {
+            "type": "string",
+            "nullable": true
+          },
+          "thumbnailFull": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Description"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Geolocation2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "longitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Theme": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Board": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Country2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "City2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GiataInfo2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "hotelId": {
+            "type": "string",
+            "nullable": true
+          },
+          "destinationId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Town": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Village": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Offer": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "night": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isAvailable": {
+            "type": "boolean"
+          },
+          "rooms": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Room"
+            }
+          },
+          "isRefundable": {
+            "type": "boolean"
+          },
+          "offerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "checkIn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "price": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Price"
+              }
+            ]
+          },
+          "ownOffer": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Room": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "roomId": {
+            "type": "string",
+            "nullable": true
+          },
+          "roomName": {
+            "type": "string",
+            "nullable": true
+          },
+          "roomGroups": {
+            "type": "array",
+            "nullable": true,
+            "items": {}
+          },
+          "accomId": {
+            "type": "string",
+            "nullable": true
+          },
+          "accomName": {
+            "type": "string",
+            "nullable": true
+          },
+          "boardId": {
+            "type": "string",
+            "nullable": true
+          },
+          "boardName": {
+            "type": "string",
+            "nullable": true
+          },
+          "boardGroups": {
+            "type": "array",
+            "nullable": true,
+            "items": {}
+          },
+          "allotment": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stopSaleGuaranteed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stopSaleStandart": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Price"
+              }
+            ]
+          },
+          "travellers": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Traveller"
+            }
+          }
+        }
+      },
+      "Price": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Traveller": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Description": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Details": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "enablePaging": {
+            "type": "boolean"
+          },
+          "getOnlyBestOffers": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PriceSearchLocationQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "checkAllotment": {
+            "type": "boolean"
+          },
+          "checkStopSale": {
+            "type": "boolean"
+          },
+          "getOnlyDiscountedPrice": {
+            "type": "boolean"
+          },
+          "getOnlyBestOffers": {
+            "type": "boolean"
+          },
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "arrivalLocations": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ArrivalLocation"
+            }
+          },
+          "roomCriteria": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/RoomCriteriaLocation"
+            }
+          },
+          "nationality": {
+            "type": "string",
+            "nullable": true
+          },
+          "checkIn": {
+            "type": "string",
+            "nullable": true
+          },
+          "night": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          },
+          "culture": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ArrivalLocation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "RoomCriteriaLocation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "adult": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "childAges": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "PriceSearchHotelQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "checkAllotment": {
+            "type": "boolean"
+          },
+          "checkStopSale": {
+            "type": "boolean"
+          },
+          "getOnlyDiscountedPrice": {
+            "type": "boolean"
+          },
+          "getOnlyBestOffers": {
+            "type": "boolean"
+          },
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "products": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "roomCriteria": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/RoomCriteriaHotel"
+            }
+          },
+          "nationality": {
+            "type": "string",
+            "nullable": true
+          },
+          "checkIn": {
+            "type": "string",
+            "nullable": true
+          },
+          "night": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          },
+          "culture": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "RoomCriteriaHotel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "adult": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "GetProductInfoResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "header": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Header3"
+              }
+            ]
+          },
+          "body": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Body3"
+              }
+            ]
+          }
+        }
+      },
+      "Header3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "messages": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Message3"
+            }
+          }
+        }
+      },
+      "Message3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "messageType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Body3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "hotel": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Hotel2"
+              }
+            ]
+          }
+        }
+      },
+      "Hotel2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "seasons": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Season"
+            }
+          },
+          "boards": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Board2"
+            }
+          },
+          "address": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ]
+          },
+          "faxNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "homePage": {
+            "type": "string",
+            "nullable": true
+          },
+          "geolocation": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Geolocation3"
+              }
+            ]
+          },
+          "stars": {
+            "type": "number",
+            "format": "double"
+          },
+          "country": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Country3"
+              }
+            ]
+          },
+          "city": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/City3"
+              }
+            ]
+          },
+          "giataInfo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GiataInfo3"
+              }
+            ]
+          },
+          "thumbnail": {
+            "type": "string",
+            "nullable": true
+          },
+          "thumbnailFull": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Season": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "beginDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "textCategories": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/TextCategory"
+            }
+          },
+          "facilityCategories": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/FacilityCategory"
+            }
+          },
+          "mediaFiles": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/MediaFile"
+            }
+          },
+          "themes": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Theme2"
+            }
+          }
+        }
+      },
+      "TextCategory": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "presentations": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Presentation"
+            }
+          }
+        }
+      },
+      "Presentation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "textType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "FacilityCategory": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "facilities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Facility"
+            }
+          }
+        }
+      },
+      "Facility": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "isPriced": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MediaFile": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fileType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "urlFull": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Theme2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Board2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "addressLines": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Geolocation3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "longitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Country3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "City3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GiataInfo3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "hotelId": {
+            "type": "string",
+            "nullable": true
+          },
+          "destinationId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GetProductInfoQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ownerProvider": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "product": {
+            "type": "string",
+            "nullable": true
+          },
+          "culture": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GetOffersResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "header": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Header4"
+              }
+            ]
+          },
+          "body": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Body4"
+              }
+            ]
+          }
+        }
+      },
+      "Header4": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "responseTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "messages": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Message4"
+            }
+          }
+        }
+      },
+      "Message4": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "messageType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Body4": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "offers": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Offer2"
+            }
+          },
+          "information": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Information"
+              }
+            ]
+          },
+          "productId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Offer2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "night": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isAvailable": {
+            "type": "boolean"
+          },
+          "availability": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rooms": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Room2"
+            }
+          },
+          "isRefundable": {
+            "type": "boolean"
+          },
+          "cancellationPolicies": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/CancellationPolicy"
+            }
+          },
+          "priceBreakdowns": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/PriceBreakdown"
+            }
+          },
+          "expiresOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "offerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "checkIn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "price": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Price2"
+              }
+            ]
+          },
+          "ownOffer": {
+            "type": "boolean"
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Room2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "roomId": {
+            "type": "string",
+            "nullable": true
+          },
+          "roomName": {
+            "type": "string",
+            "nullable": true
+          },
+          "boardId": {
+            "type": "string",
+            "nullable": true
+          },
+          "boardName": {
+            "type": "string",
+            "nullable": true
+          },
+          "boardGroups": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BoardGroup"
+            }
+          },
+          "stopSaleGuaranteed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stopSaleStandart": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "travellers": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Traveller2"
+            }
+          }
+        }
+      },
+      "BoardGroup": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Traveller2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nationality": {
+            "type": "string",
+            "nullable": true
+          },
+          "minAge": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxAge": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CancellationPolicy": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "dueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "price": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Price2"
+              }
+            ]
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Price2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PriceBreakdown": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "priceBreakdowns": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/PriceBreakdown"
+            }
+          },
+          "roomNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "price": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Price2"
+              }
+            ]
+          }
+        }
+      },
+      "Information": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "GetOffersQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "searchId": {
+            "type": "string",
+            "nullable": true
+          },
+          "offerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productId": {
+            "type": "string",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          },
+          "culture": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GetOfferDetailsResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "header": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Header5"
+              }
+            ]
+          },
+          "body": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Body5"
+              }
+            ]
+          }
+        }
+      },
+      "Header5": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "responseTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "messages": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Message5"
+            }
+          }
+        }
+      },
+      "Message5": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "messageType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Body5": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "offerDetails": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/OfferDetail"
+            }
+          }
+        }
+      },
+      "OfferDetail": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expiresOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "offerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "checkIn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "checkOut": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isSpecial": {
+            "type": "boolean"
+          },
+          "isAvailable": {
+            "type": "boolean"
+          },
+          "isRefundable": {
+            "type": "boolean"
+          },
+          "passengerAmountToPay": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PassengerAmountToPay"
+              }
+            ]
+          },
+          "agencyCommission": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AgencyCommission"
+              }
+            ]
+          },
+          "agencySupplementCommission": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AgencySupplementCommission"
+              }
+            ]
+          },
+          "hotels": {
+            "type": "array",
+            "nullable": true,
+            "items": {}
+          },
+          "extraServices": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ExtraService"
+            }
+          },
+          "cancellationPolicies": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/CancellationPolicy2"
+            }
+          },
+          "priceBreakdowns": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/PriceBreakDown"
+            }
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paymentDetail": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PaymentDetail"
+              }
+            ]
+          }
+        }
+      },
+      "PassengerAmountToPay": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AgencyCommission": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "percent": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AgencySupplementCommission": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "percent": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ExtraService": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "compulsory": {
+            "type": "boolean"
+          },
+          "free": {
+            "type": "boolean"
+          },
+          "offers": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Offer3"
+            }
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Offer3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "priceBreakDown": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PriceBreakDown"
+              }
+            ]
+          },
+          "willBePayAt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "checkIn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "price": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Price3"
+              }
+            ]
+          }
+        }
+      },
+      "PriceBreakDown": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Item2"
+            }
+          }
+        }
+      },
+      "Item2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Price3"
+              }
+            ]
+          }
+        }
+      },
+      "Price3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          },
+          "percent": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CancellationPolicy2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "roomNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "beginDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "price": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Price3"
+              }
+            ]
+          },
+          "provider": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PaymentDetail": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "paymentPlan": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/PaymentPlan"
+            }
+          },
+          "paymentInfo": {
+            "type": "array",
+            "nullable": true,
+            "items": {}
+          }
+        }
+      },
+      "PaymentPlan": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "paymentNo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "price": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Price3"
+              }
+            ]
+          },
+          "paymentStatus": {
+            "type": "boolean"
+          }
+        }
+      },
+      "GetOfferDetailsQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "offerIds": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TransferZoneDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "zone_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "country_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "img": {
+            "type": "string",
+            "nullable": true
+          },
+          "zone": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TransferStartPointDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fr": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TransferEndPointDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "to": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TransferSearchResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "suid": {
+            "type": "string",
+            "nullable": true
+          },
+          "info_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/InfoDto"
+              }
+            ]
+          },
+          "lvtd_": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/LvtdDto"
+            }
+          }
+        }
+      },
+      "InfoDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fr_point_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "frR": {
+            "type": "string",
+            "nullable": true
+          },
+          "frName": {
+            "type": "string",
+            "nullable": true
+          },
+          "toName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fr_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "to_point_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "toR": {
+            "type": "string",
+            "nullable": true
+          },
+          "to_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "distance": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "zone_id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "LvtdDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vehicle_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vehicle_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VehicleDto"
+              }
+            ]
+          },
+          "vehiclePC_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VehiclePCDto"
+              }
+            ]
+          },
+          "vehicleViewPC_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VehicleViewDto"
+              }
+            ]
+          },
+          "vehicleGain_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VehicleGainDto"
+              }
+            ]
+          },
+          "discount_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DiscountDto"
+              }
+            ]
+          },
+          "number_of_free_rights": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "extser_": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ExtraServiceDto"
+            }
+          }
+        }
+      },
+      "VehicleDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "carrier_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeR": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "maxpax": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "photo_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PhotoDto"
+              }
+            ]
+          },
+          "info_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VehicleInfoDto"
+              }
+            ]
+          },
+          "spec_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VehicleSpecDto"
+              }
+            ]
+          },
+          "hour_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VehicleHourDto"
+              }
+            ]
+          },
+          "img": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PhotoDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "big": {
+            "type": "string",
+            "nullable": true
+          },
+          "small": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "VehicleInfoDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "descr": {
+            "type": "string",
+            "nullable": true
+          },
+          "suitcase": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "VehicleSpecDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "aircon": {
+            "type": "string",
+            "nullable": true
+          },
+          "gpsflw": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "VehicleHourDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "freeCancel": {
+            "type": "string",
+            "nullable": true
+          },
+          "freeChange": {
+            "type": "string",
+            "nullable": true
+          },
+          "booking": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "VehiclePCDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prc": {
+            "type": "number",
+            "format": "double"
+          },
+          "cid": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "VehicleViewDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prc": {
+            "type": "number",
+            "format": "double"
+          },
+          "cid": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "VehicleGainDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "pr": {
+            "type": "number",
+            "format": "double"
+          },
+          "cr": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "DiscountDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prc_wod": {
+            "type": "number",
+            "format": "double"
+          },
+          "pct": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "real_pct": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ExtraServiceDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "info_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ExtraServiceInfoDto"
+              }
+            ]
+          },
+          "pc_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ExtraServicePCDto"
+              }
+            ]
+          },
+          "view_pc_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ExtraServiceViewPCDto"
+              }
+            ]
+          },
+          "uid": {
+            "type": "string",
+            "nullable": true
+          },
+          "gain_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ExtraServiceGainDto"
+              }
+            ]
+          },
+          "number_of_free_rights": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ExtraServiceInfoDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "hint": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ExtraServicePCDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prc": {
+            "type": "number",
+            "format": "double"
+          },
+          "cid": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ExtraServiceViewPCDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prc": {
+            "type": "number",
+            "format": "double"
+          },
+          "cid": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ExtraServiceGainDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "pr": {
+            "type": "number",
+            "format": "double"
+          },
+          "cr": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "TransferSearchRequestDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fr": {
+            "type": "string",
+            "nullable": true
+          },
+          "to": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CartTransferResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "payment_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PaymentDto"
+              }
+            ]
+          },
+          "urinv_": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/UrinvDto"
+            }
+          }
+        }
+      },
+      "PaymentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "item_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ItemDto"
+              }
+            ]
+          },
+          "coupon_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CouponDto"
+              }
+            ]
+          },
+          "ttlPC_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TtlPCDto"
+              }
+            ]
+          },
+          "method_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MethodDto"
+              }
+            ]
+          },
+          "mT_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MTDto"
+              }
+            ]
+          }
+        }
+      },
+      "ItemDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "vehiclePC_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ItemVehiclePCDto"
+              }
+            ]
+          },
+          "extser_": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ItemExtraServicePCDto"
+            }
+          }
+        }
+      },
+      "ItemVehiclePCDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prc": {
+            "type": "number",
+            "format": "double"
+          },
+          "cid": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ItemExtraServicePCDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "extser_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "prc": {
+            "type": "number",
+            "format": "double"
+          },
+          "cid": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CouponDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "discount": {
+            "type": "string",
+            "nullable": true
+          },
+          "pc_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PcDto"
+              }
+            ]
+          },
+          "coupon_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "coupon_pgl": {
+            "type": "string",
+            "nullable": true
+          },
+          "coupon_pc_": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CouponPCDto"
+              }
+            ]
+          }
+        }
+      },
+      "PcDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prc": {
+            "type": "number",
+            "format": "double"
+          },
+          "cid": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CouponPCDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prc": {
+            "type": "number",
+            "format": "double"
+          },
+          "cid": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "TtlPCDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prc": {
+            "type": "number",
+            "format": "double"
+          },
+          "cid": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "MethodDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cc": {
+            "type": "boolean"
+          },
+          "mt": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MTDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "bacc_": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaccDto"
+            }
+          }
+        }
+      },
+      "BaccDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "suko": {
+            "type": "string",
+            "nullable": true
+          },
+          "heno": {
+            "type": "string",
+            "nullable": true
+          },
+          "iban": {
+            "type": "string",
+            "nullable": true
+          },
+          "cuco": {
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UrinvDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urinv_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxid": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxof": {
+            "type": "string",
+            "nullable": true
+          },
+          "adr": {
+            "type": "string",
+            "nullable": true
+          },
+          "adra": {
+            "type": "string",
+            "nullable": true
+          },
+          "adrb": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeR": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PreCheckoutTransferCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "preCheckoutInfo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CartTransferRequestDtoUi"
+              }
+            ]
+          },
+          "sendNotificationToPax": {
+            "type": "boolean"
+          },
+          "fr_a": {
+            "type": "string",
+            "nullable": true
+          },
+          "fr_b": {
+            "type": "string",
+            "nullable": true
+          },
+          "to_a": {
+            "type": "string",
+            "nullable": true
+          },
+          "to_b": {
+            "type": "string",
+            "nullable": true
+          },
+          "pax_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "pax_email": {
+            "type": "string",
+            "nullable": true
+          },
+          "pax_phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "pax_idno": {
+            "type": "string",
+            "nullable": true
+          },
+          "pax_nationality": {
+            "type": "string",
+            "nullable": true
+          },
+          "pax_": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/PaxDto"
+            }
+          },
+          "pax_adult": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pax_child": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pax_baby": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "note_ur": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "CartTransferRequestDtoUi": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "suid": {
+            "type": "string",
+            "nullable": true
+          },
+          "lvtd_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "extsers": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ExtserDto"
+            }
+          },
+          "coupon": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ExtserDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaxDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "idno": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "nationality": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateTransferOrderResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trackingId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CheckoutTransferCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "basketId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CancelTransferResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "result": {
+            "type": "boolean"
+          }
+        }
+      },
+      "TransferCancelRequestDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trnsfr_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "extser": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateTransferResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "result": {
+            "type": "boolean"
+          }
+        }
+      },
+      "TransferSaveRequestDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trnsfr_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "cart_code_": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ExtserDto"
+            }
+          },
+          "fr_a": {
+            "type": "string",
+            "nullable": true
+          },
+          "fr_b": {
+            "type": "string",
+            "nullable": true
+          },
+          "to_a": {
+            "type": "string",
+            "nullable": true
+          },
+          "to_b": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "pax_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "pax_email": {
+            "type": "string",
+            "nullable": true
+          },
+          "pax_phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "pax_idno": {
+            "type": "string",
+            "nullable": true
+          },
+          "pax_nationality": {
+            "type": "string",
+            "nullable": true
+          },
+          "pax_": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/PaxDto"
+            }
+          },
+          "note_ur": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GetBasketDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "uniqueBasketId": {
+            "type": "string",
+            "nullable": true
+          },
+          "basketDetail": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BasketDetailDto"
+            }
+          }
+        }
+      },
+      "BasketDetailDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "startPoint": {
+            "type": "string",
+            "nullable": true
+          },
+          "endpoint": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "serviceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "discountPrice": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "RemoveTransferFromBasketResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "result": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RemoveBasketCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AddInvoiceAddressResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "result": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AddInvoiceCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxoffice": {
+            "type": "string",
+            "nullable": true
+          },
+          "province": {
+            "type": "string",
+            "nullable": true
+          },
+          "district": {
+            "type": "string",
+            "nullable": true
+          },
+          "invoiceAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressDetail": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateCartOrderResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trackingId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateCartOrderCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "buyCartDto": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BuyCartDto"
+              }
+            ]
+          },
+          "integration": {
+            "$ref": "#/components/schemas/RequestIntegrationType"
+          }
+        }
+      },
+      "BuyCartDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "nationalityId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "invoiceType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/InvoiceType"
+              }
+            ]
+          },
+          "companyAddress": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CompanyInvoiceAddressDto"
+              }
+            ]
+          },
+          "personalAddress": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PersonalInvoiceAddressDto"
+              }
+            ]
+          },
+          "address": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AddressDto"
+              }
+            ]
+          },
+          "homePhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "fax": {
+            "type": "string",
+            "nullable": true
+          },
+          "isMarried": {
+            "type": "boolean"
+          },
+          "marriedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isInvoiceAndDeliveryAddressSame": {
+            "type": "boolean"
+          },
+          "membershipId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "discountedPrice": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "electronicMessagePermission": {
+            "type": "boolean"
+          },
+          "agreementTextAccept": {
+            "type": "boolean"
+          }
+        }
+      },
+      "InvoiceType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Company",
+          "Personal"
+        ],
+        "enum": [
+          1,
+          2
+        ]
+      },
+      "CompanyInvoiceAddressDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AddressDto"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "companyName": {
+                "type": "string",
+                "nullable": true
+              },
+              "taxOffice": {
+                "type": "string",
+                "nullable": true
+              },
+              "taxNumber": {
+                "type": "string",
+                "nullable": true
+              },
+              "email": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "AddressDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "countryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "districtId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "postCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PersonalInvoiceAddressDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AddressDto"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "email": {
+                "type": "string",
+                "nullable": true
+              },
+              "identityNumber": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "SetOrderStatusResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "response": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SetOrderStatusDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trackingNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "posResponse": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/CondoOrderStatusEnum"
+          },
+          "orderNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CondoOrderStatusEnum": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Prepared",
+          "Completed",
+          "CommitFailed",
+          "Refunded",
+          "Void",
+          "RefundFailed",
+          "Unknown"
+        ],
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "ReportResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entries": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ReportEntry"
+            }
+          }
+        }
+      },
+      "ReportEntry": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "series": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ReportSerie"
+            }
+          }
+        }
+      },
+      "ReportSerie": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "GetTransactionsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "transactionDetail": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "userSurname": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TransactionStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Planned",
+          "Completed",
+          "Cancelled"
+        ],
+        "enum": [
+          1,
+          2,
+          3
+        ]
+      },
+      "GetPassedTransactionDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetTransactionDetailDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "transactionDetailNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "bookingNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "userNote": {
+            "type": "string",
+            "nullable": true
+          },
+          "vehicleTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "userPhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "userIdentityNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "userSurname": {
+            "type": "string",
+            "nullable": true
+          },
+          "startPoint": {
+            "type": "string",
+            "nullable": true
+          },
+          "spDetail": {
+            "type": "string",
+            "nullable": true
+          },
+          "spDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "endPoint": {
+            "type": "string",
+            "nullable": true
+          },
+          "epDetail": {
+            "type": "string",
+            "nullable": true
+          },
+          "epDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateR": {
+            "type": "string",
+            "nullable": true
+          },
+          "userEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "transactionName": {
+            "type": "string",
+            "nullable": true
+          },
+          "carImage": {
+            "type": "string",
+            "nullable": true
+          },
+          "carTypeR": {
+            "type": "string",
+            "nullable": true
+          },
+          "driverName": {
+            "type": "string",
+            "nullable": true
+          },
+          "carPlateNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "driverPhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "isCanCancel": {
+            "type": "boolean"
+          },
+          "isCanChange": {
+            "type": "boolean"
+          },
+          "passengers": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/PassengerDto"
+            }
+          },
+          "paymentDetail": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PaymentDetailDto"
+              }
+            ]
+          },
+          "extras": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ExtraDto"
+            }
+          }
+        }
+      },
+      "PassengerDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "identityNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaymentDetailDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "paymentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "userSurname": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "invoiceAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "invoiceUserName": {
+            "type": "string",
+            "nullable": true
+          },
+          "invoiceUserSurname": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "revervationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "invoicePhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "ExtraDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "float"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedListOfOrderPropertyDetailsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/OrderPropertyDetailsDto"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        }
+      },
+      "OrderPropertyDetailsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "transactionNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "transactionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "customerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerPhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "detail": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderDetailDto"
+              }
+            ]
+          }
+        }
+      },
+      "OrderDetailDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "reservationNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerPhoto": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerSegment": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "nationality": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "startPoint": {
+            "type": "string",
+            "nullable": true
+          },
+          "startPointDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "startPointDetail": {
+            "type": "string",
+            "nullable": true
+          },
+          "endPoint": {
+            "type": "string",
+            "nullable": true
+          },
+          "endPointDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "endPointDetail": {
+            "type": "string",
+            "nullable": true
+          },
+          "carDetail": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LvtdDto"
+              }
+            ]
+          },
+          "citizenNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "transferNote": {
+            "type": "string",
+            "nullable": true
+          },
+          "reservationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "extras": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ExtraDto"
+            }
+          }
+        }
+      },
+      "GetOrderPropertyDetailQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transactionNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateVerisoftCustomerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "customer_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "sex": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "nationality": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "identityNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "cardPropertyGroup_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerStatus_ID": {
+            "$ref": "#/components/schemas/VerisoftTAVCustomerStatus"
+          },
+          "customerPeriod_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nameOnCard": {
+            "type": "string",
+            "nullable": true
+          },
+          "infoMail": {
+            "type": "string",
+            "nullable": true
+          },
+          "maritialStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "maritialDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "contactInfo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactInfoDto"
+              }
+            ]
+          },
+          "businessInfo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BusinessInfoDto"
+              }
+            ]
+          },
+          "payments": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/PaymentsDto"
+            }
+          },
+          "card": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CardDto"
+              }
+            ]
+          }
+        }
+      },
+      "ContactInfoDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "country_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "city_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "county_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobile": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobile2": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone1": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone2": {
+            "type": "string",
+            "nullable": true
+          },
+          "email1": {
+            "type": "string",
+            "nullable": true
+          },
+          "email2": {
+            "type": "string",
+            "nullable": true
+          },
+          "fax": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactType_ID": {
+            "type": "string",
+            "nullable": true
+          },
+          "postCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryAddress": {
+            "$ref": "#/components/schemas/VerisfotDeliveryAddress"
+          },
+          "deliveryNote": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "VerisfotDeliveryAddress": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Contact_address",
+          "Billing_address"
+        ],
+        "enum": [
+          0,
+          1
+        ]
+      },
+      "BusinessInfoDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "invoiceType": {
+            "$ref": "#/components/schemas/VerisoftInvoiceType"
+          },
+          "company": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxOffice": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "country_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "city_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "county_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobile1": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobile2": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone1": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone2": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "fax": {
+            "type": "string",
+            "nullable": true
+          },
+          "web": {
+            "type": "string",
+            "nullable": true
+          },
+          "postCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "isContactAddress": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "VerisoftInvoiceType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Individual",
+          "Institutional"
+        ],
+        "enum": [
+          1,
+          2
+        ]
+      },
+      "PaymentsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "provisionNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cardPropertyGroupBank_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cardPropertyGroup_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paymentDetail": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PaymentDetailDto2"
+              }
+            ]
+          }
+        }
+      },
+      "PaymentDetailDto2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "campaignName": {
+            "type": "string",
+            "nullable": true
+          },
+          "promoCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "discountType": {
+            "$ref": "#/components/schemas/VerisoftDiscountType"
+          },
+          "discountRate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "discountAmount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "VerisoftDiscountType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Ratio",
+          "Fixed"
+        ],
+        "enum": [
+          1,
+          2
+        ]
+      },
+      "CardDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "card_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cardNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameOnCard": {
+            "type": "string",
+            "nullable": true
+          },
+          "expireDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "cardStatus": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SendNotificationCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "transactionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "responseCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "transactionDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "cardNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cardPropertyGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "cardTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "entryType": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameOnPOS": {
+            "type": "string",
+            "nullable": true
+          },
+          "propertyGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "redeemCredit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "escortCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerPeriod": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isQRTransaction": {
+            "type": "boolean"
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "isQuota": {
+            "type": "boolean"
+          },
+          "quotaRemains": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "JWT": {
+        "type": "apiKey",
+        "description": "Type into the textbox: Bearer {your JWT token}.",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "JWT": []
+    }
+  ]
+}

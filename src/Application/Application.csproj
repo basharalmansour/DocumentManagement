@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>CleanArchitecture.Application</RootNamespace>
+        <AssemblyName>CleanArchitecture.Application</AssemblyName>
+        <ImplicitUsings>enable</ImplicitUsings> 
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Cart\**" />
+      <Compile Remove="Order\**" />
+      <EmbeddedResource Remove="Cart\**" />
+      <EmbeddedResource Remove="Order\**" />
+      <None Remove="Cart\**" />
+      <None Remove="Order\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.4" />
+        <PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
+        <PackageReference Include="Hangfire.Core" Version="1.7.28" />
+        <PackageReference Include="Hangfire.SqlServer" Version="1.7.28" />
+        <PackageReference Include="LinqKit.Core" Version="1.2.2" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="QRCoder" Version="1.4.3" />
+        <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Basket\Queries\" />
+      <Folder Include="Common\Dtos\Sms\" />
+      <Folder Include="Products\Commands\" />
+      <Folder Include="Reports\Commands\" />
+    </ItemGroup>
+
+</Project>
