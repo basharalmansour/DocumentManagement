@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Documents;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
-public  class CategoryPersonnelDocument
+public  class CategoryPersonnelDocument : LightBaseEntity<int>, IEntity<int>
 {
-    [Key]
-    public int Id { get; set; }
-    [ForeignKey("Document")]
-    public int DocumentId { get; set; }
-    public DocumentTemplate Document { get; set; }
+    [ForeignKey("DocumentTemplate")]
+    public int DocumentTemplateId { get; set; }
+    public DocumentTemplate DocumentTemplate { get; set; }
 }

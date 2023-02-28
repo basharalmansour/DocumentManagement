@@ -5,16 +5,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.BaseEntities;
+using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
-public class VehicleCategory
+public class VehicleCategory : LightBaseEntity<int>, IEntity<int>
 {
-    [Key]
-    public int Id { get; set; }
     [ForeignKey("Vehicle")]
     public int VehicleId { get; set; }
     public Vehicle Vehicle { get; set; }
-    [ForeignKey("Category")]
-    public int CategoryId { get; set; }
-    public ServiceCategory Category  { get; set; } 
+
+    [ForeignKey("ServiceCategory")]
+    public int ServiceCategoryId { get; set; }
+    public ServiceCategory ServiceCategory { get; set; } 
 }

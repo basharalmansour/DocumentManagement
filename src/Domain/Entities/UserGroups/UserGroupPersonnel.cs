@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.UserGroups;
-public class UserGroupPersonnel
+public class UserGroupPersonnel : LightBaseEntity<int>, IEntity<int>
 {
-    [Key]
-    public int Id { get; set; }
-    [ForeignKey("Group")] 
+    [ForeignKey("UserGroup")] 
     public int UserGroupId { get; set; }  
-    public UserGroup Group { get; set; } 
+    public UserGroup UserGroup { get; set; } 
     public int PersonnelId { get; set; } 
 } 

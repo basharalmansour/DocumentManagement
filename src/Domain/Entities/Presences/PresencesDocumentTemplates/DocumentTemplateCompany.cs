@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
+using CleanArchitecture.Domain.Entities.Documents;
 
-namespace CleanArchitecture.Domain.Entities.Documents;
-public class DocumentTemplateFileType : LightBaseEntity<int>, IEntity<int>
+namespace CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
+public class DocumentTemplateCompany : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey("DocumentTemplate")]
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
+    public int CompanyId { get; set; }
 }

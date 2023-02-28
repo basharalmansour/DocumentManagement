@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
-namespace CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
-public class ServiceCategorySpace : LightBaseEntity<int>, IEntity<int>
+namespace CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
+public class PresenceGroupSpace : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("ServiceCategory")]
-    public int ServiceCategoryId { get; set; }
-    public ServiceCategory ServiceCategory { get; set; }
+    [ForeignKey("PresenceGroup")]
+    public int PresenceGroupId { get; set; }
+    public PresenceGroup PresenceGroup { get; set; }
     public int SpaceId { get; set; }
 }

@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.BaseEntities;
+using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories;
-public class CategorySpecialRules
+public class CategorySpecialRules : LightBaseEntity<int>, IEntity<int>
 {
-    [Key]
-    public int Id { get; set; }
-    [ForeignKey("Category")]
+    [ForeignKey("ServiceCategory")]
     public int ServiceCategoryId { get; set; }
-    public ServiceCategory Category { get; set; }
+    public ServiceCategory ServiceCategory { get; set; }
+
     [ForeignKey ("SpecialRule")]
     public int SpecialRuleId { get; set; }
     public SpecialRule SpecialRule { get; set; }
