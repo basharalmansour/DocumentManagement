@@ -1,11 +1,15 @@
-﻿using CleanArchitecture.Domain.Entities.Basket;
-using CleanArchitecture.Domain.Entities.Cities;
-using CleanArchitecture.Domain.Entities.Counties;
-using CleanArchitecture.Domain.Entities.Countries;
-using CleanArchitecture.Domain.Entities.Integrations;
-using CleanArchitecture.Domain.Entities.Orders;
-using CleanArchitecture.Domain.Entities.Products;
-using CleanArchitecture.Domain.Entities.Sms;
+﻿using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
+using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
+using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Domain.Entities.Forms;
+using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
+using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
+using CleanArchitecture.Domain.Entities.SeviceCategories;
+using CleanArchitecture.Domain.Entities.UserGroups;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -13,17 +17,50 @@ namespace CleanArchitecture.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    public DbSet<Integration> Integrations { get; set; }
-    public DbSet<SiteIntegration> SiteIntegrations { get; set; }
-    public DbSet<CleanArchitecture.Domain.Entities.Orders.Order> Orders { get; set; }
-    public DbSet<Product> Products { get; set; }
-    public DbSet<Country> Countries { get; set; }
-    public DbSet<City> Cities { get; set; }
-    public DbSet<County> Counties { get; set; }
-    public DbSet<Discount> Discounts { get; set; }
-    public DbSet<Sms> Sms { get; set; }
-    public DbSet<TransferBasket> TransferBaskets { get; set; }
-    public DbSet<IntegrationCountry> IntegrationCountries { get; set; }
+    public DbSet<SpecialRule> SpecialRules { get; set; }
+    public DbSet<Vehicle> Vehicles { get; set; }
+    public DbSet<DocumentTemplate> DocumentTemplates { get; set; }
+    public DbSet<DocumentTemplateFileType> DocumentTemplateFileTypes { get; set; }
+    public DbSet<DocumentTemplateType> DocumentTemplateTypes { get; set; }
+    public DbSet<Form> Forms { get; set; }
+    public DbSet<DateQuestionOptions> DateQuestionOptions { get; set; }
+    public DbSet<FileQuestionOptions> FileQuestionOptions { get; set; }
+    public DbSet<MultiChoicesQuestion> MultiChoicesQuestions { get; set; }
+    public DbSet<Question> Questions { get; set; }
+    public DbSet<PresenceGroup> PresenceGroups { get; set; }
+    public DbSet<PresenceGroupArea> PresenceGroupAreas { get; set; }
+    public DbSet<PresenceGroupBlock> PresenceGroupBlocks { get; set; }
+    public DbSet<PresenceGroupBrand> PresenceGroupBrands { get; set; }
+    public DbSet<PresenceGroupCompany> PresenceGroupCompanys { get; set; }
+    public DbSet<PresenceGroupSite> PresenceGroupSites { get; set; }
+    public DbSet<PresenceGroupUnit> PresenceGroupUnits { get; set; }
+    public DbSet<PresenceGroupZone> PresenceGroupZones { get; set; }
+    public DbSet<DocumentTemplateArea> DocumentTemplateAreas { get; set; }
+    public DbSet<DocumentTemplateBlock> DocumentTemplateBlocks { get; set; }
+    public DbSet<DocumentTemplateBrand> DocumentTemplateBrands { get; set; }
+    public DbSet<DocumentTemplateCompany> DocumentTemplateCompanies { get; set; }
+    public DbSet<DocumentTemplateSite> DocumentTemplateSites { get; set; }
+    public DbSet<DocumentTemplateUnit> DocumentTemplateUnits { get; set; }
+    public DbSet<DocumentTemplateZone> DocumentTemplateZones { get; set; }
+    public DbSet<ApproverDepartment> ApproverDepartments { get; set; }
+    public DbSet<ApproverPersonnel> ApproverPersonnels { get; set; }
+    public DbSet<ApproverUserGroup> ApproverUserGroups { get; set; }
+    public DbSet<ServiceCategoryApprovment> ServiceCategoryApprovments { get; set; }
+    public DbSet<CategoryDocument> CategoryDocuments { get; set; }
+    public DbSet<CategoryPersonnelDocument> CategoryPersonnelDocuments { get; set; }
+    public DbSet<ServiceCategoryArea> ServiceCategoryAreas { get; set; }
+    public DbSet<ServiceCategoryBlock> ServiceCategoryBlocks { get; set; }
+    public DbSet<ServiceCategoryBrand> ServiceCategoryBrands { get; set; }
+    public DbSet<ServiceCategoryCompany> ServiceCategoryCompanies { get; set; }
+    public DbSet<ServiceCategorySite> ServiceCategorySites { get; set; }
+    public DbSet<ServiceCategoryUnit> ServiceCategoryUnits { get; set; }
+    public DbSet<ServiceCategoryZone> ServiceCategoryZones { get; set; }
+    public DbSet<CategoryVehicleDocuments> CategoryVehicleDocuments { get; set; }
+    public DbSet<VehicleCategory> VehicleCategories { get; set; }
+    public DbSet<CategorySpecialRules> CategorySpecialRules { get; set; }
+    public DbSet<ServiceCategory> ServiceCategories { get; set; }
+    public DbSet<UserGroup> UserGroups { get; set; }
+    public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
     public DatabaseFacade Database { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     int SaveChanges();
