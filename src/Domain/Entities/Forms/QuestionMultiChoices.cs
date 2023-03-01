@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Domain.Entities.UserGroups;
-public class UserGroupPersonnel
+namespace CleanArchitecture.Domain.Entities.Forms;
+public class QuestionMultiChoices
 {
     [Key]
     public int Id { get; set; }
-    [ForeignKey("Group")] 
-    public int UserGroupId { get; set; }  
-    public UserGroup Group { get; set; } 
-    public int PersonnelId { get; set; } 
-} 
+    public string Choice { get; set; } 
+    [ForeignKey("Question")]
+    public int QuestionId { get; set; }
+    public Question Question { get; set; }
+}

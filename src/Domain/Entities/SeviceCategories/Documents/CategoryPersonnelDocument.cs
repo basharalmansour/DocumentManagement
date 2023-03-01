@@ -15,4 +15,7 @@ public  class CategoryPersonnelDocument
     [ForeignKey("Document")]
     public int DocumentId { get; set; }
     public DocumentTemplate Document { get; set; }
+    [ForeignKey("ServiceCategory")]
+    public int ServiceCategoryId { get; set; }
+    public ServiceCategory ServiceCategory { get; set; }
 }
