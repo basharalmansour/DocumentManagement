@@ -9,10 +9,10 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
-public class ServiceCategorySpace : LightBaseEntity<int>, IEntity<int>
+public class ServiceCategorySite : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey("ServiceCategory")]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; }
-    public int SpaceId { get; set; }
+    public int SiteId { get; set; }
 }

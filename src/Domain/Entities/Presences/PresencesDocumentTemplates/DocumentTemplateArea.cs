@@ -13,7 +13,7 @@ namespace CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates
 public class DocumentTemplateArea : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey("DocumentTemplate")]
-    public int DocumentId { get; set; }
+    public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
     public int AreaId { get; set; }
 }

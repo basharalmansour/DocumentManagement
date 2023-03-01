@@ -9,10 +9,10 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
-public class PresenceGroupProject : LightBaseEntity<int>, IEntity<int>
+public class PresenceGroupSite : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey("PresenceGroup")]
     public int PresenceGroupId { get; set; }
     public PresenceGroup PresenceGroup { get; set; }
-    public int ProjectId { get; set; }
+    public int SiteId { get; set; }
 }

@@ -10,10 +10,10 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
-public class DocumentTemplateProject : LightBaseEntity<int>, IEntity<int>
+public class DocumentTemplateSite : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey("DocumentTemplate")]
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
-    public int ProjectId { get; set; }
+    public int SiteId { get; set; }
 }
