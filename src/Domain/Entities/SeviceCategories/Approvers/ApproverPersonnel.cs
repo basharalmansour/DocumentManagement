@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
-public class ApproverPersonnel
+public class ApproverPersonnel : LightBaseEntity<int>, IEntity<int>
 {
-    [Key]
-    public int Id { get; set; }
-    [ForeignKey("Approver")]
-    public int ApproverId { get; set; }
-    public Approver Approver { get; set; }
+    [ForeignKey("ServiceCategoryApprovment")]
+    public int ServiceCategoryApprovmentId { get; set; }
+    public ServiceCategoryApprovment ServiceCategoryApprovment { get; set; }
     public int PersonnelId { get; set; }
 }

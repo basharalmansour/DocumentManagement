@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
-namespace CleanArchitecture.Domain.Entities.UserGroups;
-public class UserGroup : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
+namespace CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
+public class SpecialRule : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
     [StringLength(StringLengths.MediumString)]
     public string Name { get; set; }

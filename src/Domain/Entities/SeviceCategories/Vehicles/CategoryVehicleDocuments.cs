@@ -5,19 +5,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
-public class CategoryVehicleDocuments
+public class CategoryVehicleDocuments : LightBaseEntity<int>, IEntity<int>
 {
-    [Key ]
-    public int Id { get; set; }
-    [ForeignKey("Vehicle")]
-    public int VehicleId { get; set; }
-    public VehicleCategory Vehicle { get; set; }
-    [ForeignKey ("Document")]
-    public int DocumentId { get; set; }
-    public DocumentTemplate Document { get; set; }
+    [ForeignKey("VehicleCategory")]
+    public int VehicleCategoryId { get; set; }
+    public VehicleCategory VehicleCategory { get; set; }
+
+    [ForeignKey ("DocumentTemplate")]
+    public int DocumentTemplateId { get; set; }
+    public DocumentTemplate DocumentTemplate { get; set; }
     public VehicleDocumentType VehicleDocumentType { get; set; }
 } 

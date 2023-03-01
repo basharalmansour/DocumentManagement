@@ -9,13 +9,11 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Documents;
 
-namespace CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
-public  class CategoryPersonnelDocument : LightBaseEntity<int>, IEntity<int>
+namespace CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
+public class DocumentTemplateCompany : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("ServiceCategory")]
-    public int ServiceCategoryId { get; set; }
-    public ServiceCategory ServiceCategory { get; set; }
     [ForeignKey("DocumentTemplate")]
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
+    public int CompanyId { get; set; }
 }

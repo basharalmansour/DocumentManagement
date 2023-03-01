@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
-public class ServiceCategoryUnit
+public class ServiceCategoryUnit : LightBaseEntity<int>, IEntity<int>
 {
-    [Key]
-    public int Id { get; set; }
-    [ForeignKey("Presence")]
-    public int PresenceId { get; set; }
-    public Presence Presence { get; set; }
+    [ForeignKey("ServiceCategory")]
+    public int ServiceCategoryId { get; set; }
+    public ServiceCategory ServiceCategory { get; set; }
     public int UnitId { get; set; }
 }
