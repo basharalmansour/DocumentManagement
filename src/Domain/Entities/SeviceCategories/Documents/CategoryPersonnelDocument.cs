@@ -16,6 +16,6 @@ public  class CategoryPersonnelDocument : LightBaseEntity<int>, IEntity<int>
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; }
     [ForeignKey("DocumentTemplate")]
-    public int DocumentTemplateId { get; set; }
-    public DocumentTemplate DocumentTemplate { get; set; }
+    public int DocumentTemplateId { get; set; } 
+    public DocumentTemplate DocumentTemplate { get; set; } 
 }

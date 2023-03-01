@@ -14,5 +14,5 @@ public class ServiceCategoryBlock : LightBaseEntity<int>, IEntity<int>
     [ForeignKey("ServiceCategory")]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; }
-    public int BlockId { get; set; }
+    public Guid BlockId { get; set; }
 }

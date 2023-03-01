@@ -5,14 +5,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CleanArchitecture.Domain.Enums;
+using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.Forms;
-public class QuestionFileOptions
+public class DateQuestionOptions : LightBaseEntity<int>, IEntity<int>
 {
-    [Key]
-    public int Id { get; set; }
-    public DocumentFileType DocumentFileType { get; set; }
+    public bool IsMultiDate { get; set; }
     [ForeignKey("Question")]
     public int QuestionId { get; set; }
     public Question Question { get; set; }

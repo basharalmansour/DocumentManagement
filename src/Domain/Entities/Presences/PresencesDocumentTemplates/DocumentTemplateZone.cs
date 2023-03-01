@@ -15,5 +15,5 @@ public class DocumentTemplateZone : LightBaseEntity<int>, IEntity<int>
     [ForeignKey("DocumentTemplate")]
     public int DocumentId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
-    public int ZoneId { get; set; }
+    public Guid ZoneId { get; set; }
 }

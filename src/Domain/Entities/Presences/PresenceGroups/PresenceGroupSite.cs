@@ -14,5 +14,5 @@ public class PresenceGroupSite : LightBaseEntity<int>, IEntity<int>
     [ForeignKey("PresenceGroup")]
     public int PresenceGroupId { get; set; }
     public PresenceGroup PresenceGroup { get; set; }
-    public int SiteId { get; set; }
+    public Guid SiteId { get; set; }
 }

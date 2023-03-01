@@ -15,5 +15,5 @@ public class DocumentTemplateBlock : LightBaseEntity<int>, IEntity<int>
     [ForeignKey("DocumentTemplate")]
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
-    public int BlockId { get; set; }
+    public Guid BlockId { get; set; }
 }

@@ -14,5 +14,5 @@ public class PresenceGroupBlock : LightBaseEntity<int>, IEntity<int>
     [ForeignKey("PresenceGroup")]
     public int PresenceGroupId { get; set; }
     public PresenceGroup PresenceGroup { get; set; }
-    public int BlockId { get; set; }
+    public Guid BlockId { get; set; }
 }
