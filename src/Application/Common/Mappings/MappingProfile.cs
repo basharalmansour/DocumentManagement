@@ -5,6 +5,7 @@ using CleanArchitecture.Application.Common.Dtos.Category;
 using CleanArchitecture.Application.Common.Dtos.Common;
 using CleanArchitecture.Application.Common.Dtos.CondoLife;
 using CleanArchitecture.Application.Common.Dtos.Customer;
+using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Dtos.Hotel.Arrival.RequestDtos;
 using CleanArchitecture.Application.Common.Dtos.Hotel.Offer.RequestDtos;
 using CleanArchitecture.Application.Common.Dtos.Hotel.OfferDetail.RequestDtos;
@@ -23,10 +24,12 @@ using CleanArchitecture.Application.Common.Dtos.VeriSoft.Customer.ResponseDtos;
 using CleanArchitecture.Application.Common.Dtos.VeriSoft.Parameter.ResponseDtos;
 using CleanArchitecture.Application.Common.Dtos.VeriSoft.Transaction.ResponseDtos;
 using CleanArchitecture.Application.CondoLife.Commands;
+using CleanArchitecture.Application.DocumentsTemplate.Commands;
 using CleanArchitecture.Application.Hotel.Queries;
 using CleanArchitecture.Application.IntegrationServices.Commands;
 using CleanArchitecture.Application.Verisoft.Commands;
 using CleanArchitecture.Domain.Entities.Basket;
+using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Entities.Integrations;
 using CleanArchitecture.Domain.Entities.Orders;
 using CleanArchitecture.Domain.Entities.Products;
@@ -265,7 +268,20 @@ public class MappingProfile : Profile
 
         #endregion
 
+
+
+
+
+
+        CreateMap<DocumentTemplate, GetDocumentTemplateDto>();
+        CreateMap<AddDocumentTemplateRequest, DocumentTemplate>();
+        CreateMap<AddDocumentTemplateType, DocumentTemplateType>();
+        CreateMap<EditDocumentTemplate, DocumentTemplate>();
+
     }
+
+
+
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
     {
