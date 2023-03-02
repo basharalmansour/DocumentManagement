@@ -137,7 +137,6 @@ public class Startup
         });
 
         app.RegisterWithConsul(lifetime, Configuration);
-        RecurringJobs.RefreshVerisoftAdvantagesOperation();
         RecurringJobs.UpdateOrderDetailStatusesOperation();
     }
 }

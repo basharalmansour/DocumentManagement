@@ -1,11 +1,7 @@
 ﻿using System.Text;
-using CleanArchitecture.Application.Common.Dtos.CondoLife;
-using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Common;
-using CleanArchitecture.Infrastructure.Services;
 using Consul;
 using MassTransit;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 
