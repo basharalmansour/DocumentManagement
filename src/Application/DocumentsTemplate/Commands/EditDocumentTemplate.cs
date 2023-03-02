@@ -29,7 +29,6 @@ public class EditDocumentTemplateHandler : IRequestHandler<EditDocumentTemplate,
     public async Task<bool> Handle(EditDocumentTemplate request, CancellationToken cancellationToken)
     {
         var documentTemplate = _applicationDbContext.DocumentTemplates.FirstOrDefault(x => x.Id == request.DocumentTemplate.Id & x.IsDeleted == false);
-        documentTemplate.LastModifiedDate = DateTime.Now;
         _mapper.Map(request.DocumentTemplate, documentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

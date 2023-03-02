@@ -25,7 +25,6 @@ public class RemoveDocumentTemplateHandler : IRequestHandler<RemoveDocumentTempl
     {
         var deletedDocumentTemplate= _applicationDbContext.DocumentTemplates.FirstOrDefault(x => x.Id == request.Id);
         deletedDocumentTemplate.IsDeleted = true;
-        deletedDocumentTemplate.DeletedDate = DateTime.Now;
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
     }

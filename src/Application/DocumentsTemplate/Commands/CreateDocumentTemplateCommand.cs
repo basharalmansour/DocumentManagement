@@ -30,9 +30,8 @@ public class CreateDocumentTemplateCommandHandler :IRequestHandler<CreateDocumen
     public async Task<int> Handle(CreateDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
         var documentTemplate = _mapper.Map<DocumentTemplate>(request.DocumentTemplate);
-        documentTemplate.CreatedDate = DateTime.Now;
         _applicationDbContext.DocumentTemplates.Add(documentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        return documentTemplate.Id;
+        return documentTemplate.Id; 
     }
 }
