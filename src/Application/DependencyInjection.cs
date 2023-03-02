@@ -3,11 +3,7 @@ using CleanArchitecture.Application.Common.Behaviours;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http;
 using Microsoft.Extensions.Configuration;
-using System.Text;
-using MongoDB.Bson.Serialization;
-using CleanArchitecture.Application.Common.Dtos.VeriSoft.Customer.RequestDtos;
 using Hangfire;
 using Hangfire.SqlServer;
 

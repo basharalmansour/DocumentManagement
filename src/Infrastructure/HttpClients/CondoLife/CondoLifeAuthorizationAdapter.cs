@@ -14,12 +14,10 @@ public class CondoLifeAuthorizationAdapter
     private readonly CondoCredential _condoCredentials;
     private readonly string _loginUrl;
     private readonly IDatabase _redis;
-    private readonly string _tavSiteId;
     public CondoLifeAuthorizationAdapter(IHttpClientFactory httpClientFactory, IOptions<AppSettings> options, IConnectionMultiplexer redis)
     {
         _loginUrl = options.Value.ClientSettings.CondoLife.BaseUrl + options.Value.ClientSettings.CondoLife.Login;
         _condoCredentials = options.Value.ClientSettings.CondoLife.CredentialSettings;
-        _tavSiteId = options.Value.ClientSettings.CondoLife.TavSiteId;
         _httpClientFactory = httpClientFactory;
         _redis = redis.GetDatabase(RedisDatabaseKeys.IntegrationProjectRedis);
     }
@@ -50,9 +48,5 @@ public class CondoLifeAuthorizationAdapter
     public string GetSiteId()
     {
         return _condoCredentials.SiteId;
-    }
-    public string GetTavSiteId()
-    {
-        return _tavSiteId;
     }
 }

@@ -2,7 +2,7 @@
 
 public interface ICurrentUserService
 {
-    string? UserId { get; }
+    string UserId { get; }
     string JWT { get; }
     string SiteId { get; }
 }

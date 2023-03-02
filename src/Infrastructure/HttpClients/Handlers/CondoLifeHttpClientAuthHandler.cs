@@ -28,8 +28,8 @@ public class CondoLifeHttpClientAuthHandler : DelegatingHandler
         bool isAppRequest = false;
         var jwt = _currentUserService.JWT;
         var siteId = _currentUserService.SiteId;
-        if (siteId == null)
-            siteId = _condoLifeAuthorizationAdapter.GetTavSiteId();
+        //if (siteId == null)
+        //    siteId = _condoLifeAuthorizationAdapter.GetTavSiteId();
         if (jwt == null)
         {
             isAppRequest = true;

@@ -11,31 +11,30 @@ public class BaseClientSettings
 
 public class CondoLifeClientSettings : BaseClientSettings
 {
-    public string CreateUser { get; set; }
-    public string UpdateUser { get; set; }
-    public string CreateCondoUserMembership { get; set; }
-    public string FilterProgram { get; set; }
-    public string GetCities { get; set; }
-    public string GetCountries { get; set; }
-    public string GetDistricts { get; set; }
     public string SendOtpMessage { get; set; }
     public string GetUserInfo { get; set; }
-    public string UpsertIntegrationAdvantage { get; set; }
-    public string DeleteAdvantage { get; set; }
-    public string GetUserInfoByIntegrationUserId { get; set; }
-    public string OrderNotificationApiClientKey { get; set; }
-    public string FindMembership { get; set; }
-    public string MembershipsByIntegrationCode { get; set; }
-    public string GetIntegrationAdvantages { get; set; }
-    public string TavCode { get; set; }
-    public string ClientKey { get; set; }
-    public string GetIntegrationMembershipId { get; set; }
     public string Login { get; set; }
-    public string GetUserMembership { get; set; }
-    public string GetUserMembershipIdByUserId { get; set; }
+    public string ClientKey { get; set; }
     public string GetUserByPhoneNumberAndEmail { get; set; }
-    public string TavSiteId { get; set; }
     public string PublishMessage { get; set; }
+    public string GetSites { get; set; }
+    public string GetSiteDetails { get; set; }
+    public string GetZones { get; set; }
+    public string GetZoneDetails { get; set; }
+    public string GetBlocks { get; set; }
+    public string GetBlockDetails { get; set; }
+    public string GetUnits { get; set; }
+    public string GetUnitDetails { get; set; }
+    public string GetAreas { get; set; }
+    public string GetAreaDetails { get; set; }
+    public string GetCompanies { get; set; }
+    public string GetCompanyDetails { get; set; }
+    public string GetBrands { get; set; }
+    public string GetBrandDetails { get; set; }
+    public string GetDepartments { get; set; }
+    public string GetPersonnels { get; set; }
+    public string GetPersonnelDetails { get; set; }
+    
     public CondoCredential CredentialSettings { get; set; }
 }
 public class CondoCredential
