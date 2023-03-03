@@ -11,7 +11,7 @@ public class CondoAdvantageDto
 {
     public int? id { get; set; }
     public int status { get; set; }
-    public CondoAdvantageType sourceType { get; set; }
+    //public CondoAdvantageType sourceType { get; set; }
     public int memberShipId { get; set; }
     public bool hasQuota { get; set; }
     public int quota { get; set; }
