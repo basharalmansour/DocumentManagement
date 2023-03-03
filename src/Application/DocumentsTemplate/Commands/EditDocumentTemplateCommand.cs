@@ -22,7 +22,7 @@ public class EditDocumentTemplateCommand : IRequest<int>
     public string UniqueCode { get; set; }
 }
 
-public class EditDocumentTemplateCommandHandler : IRequestHandler<EditDocumentTemplateCommand, bool>
+public class EditDocumentTemplateCommandHandler : IRequestHandler<EditDocumentTemplateCommand, int>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
@@ -32,11 +32,12 @@ public class EditDocumentTemplateCommandHandler : IRequestHandler<EditDocumentTe
         _applicationDbContext = applicationDbContext;
     }
 
-    public async Task<bool> Handle(EditDocumentTemplateCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(EditDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
         var documentTemplate = _applicationDbContext.DocumentTemplates.FirstOrDefault(x => x.Id == request.Id & x.IsDeleted == false);
         _mapper.Map(request, documentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        return true;
+        return documentTemplate.Id;
+        
     }
 }
