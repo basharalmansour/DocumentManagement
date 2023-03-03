@@ -10,7 +10,7 @@ namespace CleanArchitecture.Application.Common.Dtos.CondoLife;
 public class CondoMembershipResponseDto
 {
     public int? id { get; set; }
-    public CondoRecordStatus Status { get; set; }
+    //public CondoRecordStatus Status { get; set; }
     public int ProgramId { get; set; }
     public int? parentId { get; set; }
     public List<CondoLocalizedStringDto> title { get; set; }
