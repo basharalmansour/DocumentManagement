@@ -1,33 +1,22 @@
 ﻿using System.Reflection;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
+using CleanArchitecture.Application.UsersGroup.Commands;
 using CleanArchitecture.Domain.Entities.UserGroups;
 
 namespace CleanArchitecture.Application.Common.Mappings;
-
 public class MappingProfile : Profile
 {
     public MappingProfile()
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
 
-        CreateMap<AddUserGroupRequest, UserGroup>();
+        CreateMap<CreateUserGroupCommand, UserGroup>();
         CreateMap<int, UserGroupPersonnel>()
             .ForMember(to => to.Id, opt => opt.MapFrom(from => from));
         CreateMap<UserGroup, GetUserGroupDto>();
+        CreateMap<EditUserGroupCommand, UserGroup>();
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
     {

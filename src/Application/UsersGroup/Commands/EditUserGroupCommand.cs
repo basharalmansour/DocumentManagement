@@ -10,12 +10,12 @@ using CleanArchitecture.Domain.Entities.UserGroups;
 using MediatR;
 
 namespace CleanArchitecture.Application.UsersGroup.Commands;
-public class EditUserGroupCommand
-{
-}
 public class EditUserGroupCommand : IRequest<bool>
 {
-    public EditUserGroupRequest UserGroup { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public List<int> PersonnelIds { get; set; }
+    public string UniqueCode { get; set; }
 }
 
 public class EditUserGroupCommandHandler : IRequestHandler<EditUserGroupCommand, bool>
@@ -29,8 +29,8 @@ public class EditUserGroupCommandHandler : IRequestHandler<EditUserGroupCommand,
     }
     public async Task<bool> Handle(EditUserGroupCommand request, CancellationToken cancellationToken)
     {
-        var userGroup = _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.UserGroup.Id);
-        _mapper.Map(userGroup , request.UserGroup);
+        var userGroup = _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.Id);
+        _mapper.Map(userGroup , request);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
     }

@@ -13,7 +13,9 @@ namespace CleanArchitecture.Application.UsersGroup.Commands;
 
 public class CreateUserGroupCommand : IRequest<int>
 {
-    public AddUserGroupRequest UserGroup { get; set; }
+    public string Name { get; set; }
+    public List<int> PersonnelIds { get; set; }
+    public string UniqueCode { get; set; }
 }
 
 public class CreateUserGroupCommandHandler : IRequestHandler<CreateUserGroupCommand, int>
