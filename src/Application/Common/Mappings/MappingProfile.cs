@@ -1,5 +1,8 @@
 ﻿using System.Reflection;
 using AutoMapper;
+using CleanArchitecture.Application.Common.Dtos.Forms;
+using CleanArchitecture.Application.Forms.Commands;
+using CleanArchitecture.Domain.Entities.Forms;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 
@@ -8,7 +11,10 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
-
+        CreateMap<CreateFormCommnad, Form>();
+        CreateMap<EditFormCommand, Form>();
+        CreateMap<Form, FormDto>();
+        CreateMap<Question, QuestionDto>();
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
