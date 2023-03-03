@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
+using CleanArchitecture.Application.DocumentsTemplate.Commands;
 using CleanArchitecture.Domain.Entities.Documents;
 
 namespace CleanArchitecture.Application.Common.Mappings;
@@ -11,7 +12,7 @@ public class MappingProfile : Profile
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         CreateMap<DocumentTemplate, GetDocumentTemplateDto>();
-        CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
+        //CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
         CreateMap<EditDocumentTemplateCommand, DocumentTemplate>();
 
 
