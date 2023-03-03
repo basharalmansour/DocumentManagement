@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using CleanArchitecture.Application.Common.Dtos.Customer;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.DocumentsTemplate.Commands;
-public class CreateDocumentTemplateCommand : IRequest<int>
+public class EditDocumentTemplateCommand : IRequest<int>
 {
+    public int Id { get; set; }
     public string Name { get; set; }
     public int DocumentTemplateTypeId { get; set; }
     public List<DocumentFileType> DocumentFileType { get; set; }
@@ -22,21 +22,21 @@ public class CreateDocumentTemplateCommand : IRequest<int>
     public string UniqueCode { get; set; }
 }
 
-public class CreateDocumentTemplateCommandHandler :IRequestHandler<CreateDocumentTemplateCommand, int>
+public class EditDocumentTemplateCommandHandler : IRequestHandler<EditDocumentTemplateCommand, bool>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
-    public CreateDocumentTemplateCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null)
+    public EditDocumentTemplateCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null)
     {
         _mapper = mapper;
         _applicationDbContext = applicationDbContext;
     }
 
-    public async Task<int> Handle(CreateDocumentTemplateCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(EditDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
-        var documentTemplate = _mapper.Map<DocumentTemplate>(request);
-        _applicationDbContext.DocumentTemplates.Add(documentTemplate);
+        var documentTemplate = _applicationDbContext.DocumentTemplates.FirstOrDefault(x => x.Id == request.Id & x.IsDeleted == false);
+        _mapper.Map(request, documentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        return documentTemplate.Id; 
+        return true;
     }
 }

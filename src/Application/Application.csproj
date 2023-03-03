@@ -34,14 +34,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Domain\Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Folder Include="Basket\Queries\" />
       <Folder Include="Common\Dtos\Sms\" />
       <Folder Include="Products\Commands\" />
       <Folder Include="Reports\Commands\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
 </Project>

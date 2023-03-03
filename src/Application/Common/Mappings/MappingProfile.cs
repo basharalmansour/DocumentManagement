@@ -274,9 +274,8 @@ public class MappingProfile : Profile
 
 
         CreateMap<DocumentTemplate, GetDocumentTemplateDto>();
-        CreateMap<AddDocumentTemplateRequest, DocumentTemplate>();
-        CreateMap<AddDocumentTemplateType, DocumentTemplateType>();
-        CreateMap<EditDocumentTemplate, DocumentTemplate>();
+        CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
+        CreateMap<EditDocumentTemplateCommand, DocumentTemplate>();
 
     }
 
