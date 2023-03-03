@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using AutoMapper;
+using CleanArchitecture.Application.Common.Dtos.UserGroup;
+using CleanArchitecture.Domain.Entities.UserGroups;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 
