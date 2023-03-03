@@ -18,6 +18,7 @@ using CleanArchitecture.Application.Common.Dtos.POI.Transfer.ResponseDtos;
 using CleanArchitecture.Application.Common.Dtos.Products;
 using CleanArchitecture.Application.Common.Dtos.Transactions;
 using CleanArchitecture.Application.Common.Dtos.Transfer;
+using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Common.Dtos.VeriSoft.Customer.RequestDtos;
 using CleanArchitecture.Application.Common.Dtos.VeriSoft.Customer.ResponseDtos;
 using CleanArchitecture.Application.Common.Dtos.VeriSoft.Parameter.ResponseDtos;
@@ -30,6 +31,7 @@ using CleanArchitecture.Domain.Entities.Basket;
 using CleanArchitecture.Domain.Entities.Integrations;
 using CleanArchitecture.Domain.Entities.Orders;
 using CleanArchitecture.Domain.Entities.Products;
+using CleanArchitecture.Domain.Entities.UserGroups;
 using CleanArchitecture.Domain.Enums.VeriSoftEnums;
 
 namespace CleanArchitecture.Application.Common.Mappings;
@@ -265,7 +267,30 @@ public class MappingProfile : Profile
 
         #endregion
 
+
+
+
+
+
+
+        CreateMap<AddUserGroupRequest, UserGroup>();
+        CreateMap<int , UserGroupPersonnel>()
+            .ForMember(to=>to.Id , opt=>opt.MapFrom(from=>from));
+        CreateMap<UserGroup, GetUserGroupDto>();
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
     {
