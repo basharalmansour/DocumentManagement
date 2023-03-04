@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using AutoMapper;
+using CleanArchitecture.Application.Common.Dtos.Vehicles;
+using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 
@@ -8,7 +10,7 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
-
+        CreateMap<Vehicle, VehicleDto>();
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
