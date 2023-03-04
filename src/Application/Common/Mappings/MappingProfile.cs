@@ -1,5 +1,8 @@
 ﻿using System.Reflection;
 using AutoMapper;
+using CleanArchitecture.Application.Common.Dtos.PresenceGroups;
+using CleanArchitecture.Application.PresenceGroups.Commands;
+using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 
@@ -8,7 +11,8 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
-
+        CreateMap<PresenceGroup, PresenceGroupDto>();
+        CreateMap<CreatePresenceGroupCommand, PresenceGroup>();
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
