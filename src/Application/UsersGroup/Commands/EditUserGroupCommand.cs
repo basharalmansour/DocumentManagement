@@ -10,12 +10,9 @@ using CleanArchitecture.Domain.Entities.UserGroups;
 using MediatR;
 
 namespace CleanArchitecture.Application.UsersGroup.Commands;
-public class EditUserGroupCommand : IRequest<bool>
+public class EditUserGroupCommand :CreateUserGroupCommand , IRequest<bool>
 {
     public int Id { get; set; }
-    public string Name { get; set; }
-    public List<int> PersonnelIds { get; set; }
-    public string UniqueCode { get; set; }
 }
 
 public class EditUserGroupCommandHandler : IRequestHandler<EditUserGroupCommand, bool>

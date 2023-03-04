@@ -15,7 +15,6 @@ public class CreateUserGroupCommand : IRequest<int>
 {
     public string Name { get; set; }
     public List<int> PersonnelIds { get; set; }
-    public string UniqueCode { get; set; }
 }
 
 public class CreateUserGroupCommandHandler : IRequestHandler<CreateUserGroupCommand, int>
@@ -29,7 +28,7 @@ public class CreateUserGroupCommandHandler : IRequestHandler<CreateUserGroupComm
     }
     public async Task<int> Handle(CreateUserGroupCommand request, CancellationToken cancellationToken)
     {
-        var userGroup = _mapper.Map<UserGroup>(request.UserGroup);
+        var userGroup = _mapper.Map<UserGroup>(request);
         _applicationDbContext.UserGroups.Add(userGroup);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return userGroup.Id;
