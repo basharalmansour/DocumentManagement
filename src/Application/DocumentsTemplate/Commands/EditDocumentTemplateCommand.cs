@@ -10,16 +10,12 @@ using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver.Core.Authentication;
 
 namespace CleanArchitecture.Application.DocumentsTemplate.Commands;
-public class EditDocumentTemplateCommand : IRequest<int>
+public class EditDocumentTemplateCommand :CreateDocumentTemplateCommand, IRequest<int>
 {
     public int Id { get; set; }
-    public string Name { get; set; }
-    public int DocumentTemplateTypeId { get; set; }
-    public List<DocumentFileType> DocumentFileType { get; set; }
-    public bool HasValidationDate { get; set; }
-    public string UniqueCode { get; set; }
 }
 
 public class EditDocumentTemplateCommandHandler : IRequestHandler<EditDocumentTemplateCommand, int>
