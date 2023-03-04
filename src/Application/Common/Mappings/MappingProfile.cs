@@ -12,6 +12,7 @@ public class MappingProfile : Profile
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         CreateMap<CreateFormCommnad, Form>();
+        CreateMap<AddQuestionRequest, Question>();
         CreateMap<EditFormCommand, Form>();
         CreateMap<Form, FormDto>();
         CreateMap<Question, QuestionDto>();

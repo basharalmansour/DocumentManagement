@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.Customer;
+using CleanArchitecture.Application.Common.Dtos.Forms;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Customer.Commands;
 using CleanArchitecture.Domain.Common;
@@ -16,8 +17,7 @@ namespace CleanArchitecture.Application.Forms.Commands;
 public class CreateFormCommnad : IRequest<int>
 {
     public string Name { get; set; }
-    public string UniqueCode { get; set; }
-    public Question Question { get; set; }
+    public List<AddQuestionRequest> Questions { get; set; }
 }
 public class CreateFormCommnadHandler : IRequestHandler<CreateFormCommnad, int>
 {

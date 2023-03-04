@@ -10,12 +10,9 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Forms.Commands;
 
-public class EditFormCommand : IRequest<bool>
+public class EditFormCommand :CreateFormCommnad, IRequest<bool>
 {
     public int Id { get; set; }
-    public string Name { get; set; }
-    public string UniqueCode { get; set; }
-    public Question Question { get; set; }
 }
 public class EditFormCommandHandler : IRequestHandler<EditFormCommand, bool>
 {
