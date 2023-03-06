@@ -29,4 +29,3 @@ public class RemovePresenceGroupCommandHandler : IRequestHandler<RemovePresenceG
         return true;
     }
 }
-

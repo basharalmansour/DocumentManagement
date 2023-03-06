@@ -13,6 +13,13 @@ public class MappingProfile : Profile
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         CreateMap<PresenceGroup, PresenceGroupDto>();
         CreateMap<CreatePresenceGroupCommand, PresenceGroup>();
+        CreateMap<PresenceGroupAreaDto, PresenceGroupArea>();
+        CreateMap<PresenceGroupBlockDto, PresenceGroupBlock>();
+        CreateMap<PresenceGroupBrandDto, PresenceGroupBrand>();
+        CreateMap<PresenceGroupCompanyDto, PresenceGroupCompany>();
+        CreateMap<PresenceGroupSiteDto, PresenceGroupSite>();
+        CreateMap<PresenceGroupUnitDto, PresenceGroupUnit>();
+        CreateMap<PresenceGroupZoneDto, PresenceGroupZone>(); 
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
