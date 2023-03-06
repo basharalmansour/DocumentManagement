@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.Vehicles;
+using CleanArchitecture.Application.Vehicles.Commands;
 using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
 
 namespace CleanArchitecture.Application.Common.Mappings;
@@ -11,6 +12,9 @@ public class MappingProfile : Profile
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         CreateMap<Vehicle, VehicleDto>();
+        CreateMap<CreateVehicleCommand, Vehicle>();
+        CreateMap<EditVehicleCommand, Vehicle>();
+
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)

@@ -13,7 +13,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace CleanArchitecture.Application.Common.Vehicles.Queries;
+namespace CleanArchitecture.Application.Vehicles.Queries;
 public class GetVehicleQuery : IRequest<List<VehicleDto>>
 {
 
@@ -31,7 +31,7 @@ public class GetVehicleQueryHandler : IRequestHandler<GetVehicleQuery, List<Vehi
 
     public async Task<List<VehicleDto>> Handle(GetVehicleQuery request, CancellationToken cancellationToken)
     {
-        var vehicles=await _applicationDbContext.Vehicles.Where(x => x.IsDeleted == true).ToListAsync();
+        var vehicles = await _applicationDbContext.Vehicles.Where(x => x.IsDeleted == true).ToListAsync();
         var vehiclesDto = _mapper.Map<List<VehicleDto>>(vehicles);
         return vehiclesDto;
     }
