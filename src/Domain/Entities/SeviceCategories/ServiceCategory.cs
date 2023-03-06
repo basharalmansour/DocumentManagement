@@ -20,6 +20,7 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     public int MaxServiceDuration { get; set; }
     public TimeUnit ServiceDurationUnit { get; set; }
     public int MaxPersonnelCount { get; set; } 
+    public List<CategorySpecialRules> SpecialRules { get; set; }
 
     [ForeignKey("ParentServiceCategory") ] 
     public int ParentServiceCategoryId { get; set; } 
