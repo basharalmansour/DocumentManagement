@@ -8,7 +8,11 @@ using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Application.Common.Dtos.Forms;
-public class QuestionDto : AddQuestionRequest
+public class QuestionDto 
 {
+    public string Name { get; set; }
+    public QuestionType QuestionType { get; set; }
+    public short AnswersCount { get; set; }
+    public int FormId { get; set; }
     public int Id { get; set; }
 }
