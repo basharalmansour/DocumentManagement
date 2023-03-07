@@ -18,5 +18,4 @@ public class DocumentTemplate : BaseEntity<int>, ISoftDeletable, IAuditable, IEn
     [ForeignKey("DocumentTemplateType")]
     public int DocumentTemplateTypeId { get; set; }
     public DocumentTemplateType DocumentTemplateType { get; set; }
-    public List<DocumentTemplateFileType> DocumentTemplateFileTypes { get; set; }
 }
