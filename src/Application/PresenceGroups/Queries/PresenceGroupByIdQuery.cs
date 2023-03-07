@@ -25,7 +25,15 @@ public class PresenceGroupByIdQueryHandler : IRequestHandler<PresenceGroupByIdQu
     }
     public async Task<PresenceGroupDto> Handle(PresenceGroupByIdQuery request, CancellationToken cancellationToken)
     {
-        var presenceGroup = await _applicationDbContext.PresenceGroups.FirstOrDefaultAsync(x=>x.Id==request.Id);
+        var presenceGroup = await _applicationDbContext.PresenceGroups
+            .Include(x => x.PresenceGroupAreas)
+            .Include(x => x.PresenceGroupBlocks)
+            .Include(x => x.PresenceGroupBrands)
+            .Include(x => x.PresenceGroupCompanies)
+            .Include(x => x.PresenceGroupSites)
+            .Include(x => x.PresenceGroupUnits)
+            .Include(x => x.PresenceGroupZones)
+            .FirstOrDefaultAsync(x=>x.Id==request.Id);
         var presenceGroupDto = _mapper.Map<PresenceGroupDto>(presenceGroup);
         return presenceGroupDto;
     }

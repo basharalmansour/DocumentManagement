@@ -16,12 +16,13 @@ namespace CleanArchitecture.Application.PresenceGroups.Commands;
 public class CreatePresenceGroupCommand : IRequest<int>
 {
     public string Name { get; set; }
-    public List<PresenceGroupAreaDto> PresenceGroupAreas { get; set; }
-    public List<PresenceGroupBlockDto> PresenceGroupBlocks { get; set; }
-    public List<PresenceGroupBrandDto> PresenceGroupBrands { get; set; }
-    public List<PresenceGroupSiteDto> PresenceGroupSites { get; set; }
-    public List<PresenceGroupUnitDto> PresenceGroupUnits { get; set; } 
-    public List<PresenceGroupZoneDto> PresenceGroupZones { get; set; } 
+    public List<int> PresenceGroupAreas { get; set; }
+    public List<Guid> PresenceGroupBlocks { get; set; }
+    public List<int> presenceGroupCompanies { get; set; }
+    public List<int> PresenceGroupBrands { get; set; }
+    public List<Guid> PresenceGroupSites { get; set; }
+    public List<int> PresenceGroupUnits { get; set; } 
+    public List<Guid> PresenceGroupZones { get; set; } 
 }
 public class CreatePresenceGroupCommandHandler : IRequestHandler<CreatePresenceGroupCommand, int>
 {
@@ -40,4 +41,3 @@ public class CreatePresenceGroupCommandHandler : IRequestHandler<CreatePresenceG
         return presenceGroup.Id;
     }
 }
-

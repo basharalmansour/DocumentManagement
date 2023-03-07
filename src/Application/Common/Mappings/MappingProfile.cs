@@ -12,14 +12,23 @@ public class MappingProfile : Profile
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         CreateMap<PresenceGroup, PresenceGroupDto>();
-        CreateMap<CreatePresenceGroupCommand, PresenceGroup>();
-        CreateMap<PresenceGroupAreaDto, PresenceGroupArea>();
-        CreateMap<PresenceGroupBlockDto, PresenceGroupBlock>();
-        CreateMap<PresenceGroupBrandDto, PresenceGroupBrand>();
-        CreateMap<PresenceGroupCompanyDto, PresenceGroupCompany>();
-        CreateMap<PresenceGroupSiteDto, PresenceGroupSite>();
-        CreateMap<PresenceGroupUnitDto, PresenceGroupUnit>();
-        CreateMap<PresenceGroupZoneDto, PresenceGroupZone>(); 
+
+        CreateMap<CreatePresenceGroupCommand, PresenceGroup>()
+            .ForMember(des=>des.PresenceGroupAreas , opt=>opt.MapFrom(src=>src.PresenceGroupAreas.Select(x=>new PresenceGroupArea { AreaId=x}).ToList() ))
+            .ForMember(des => des.PresenceGroupBlocks, opt => opt.MapFrom(src => src.PresenceGroupBlocks.Select(x => new PresenceGroupBlock { BlockId = x }).ToList()))
+            .ForMember(des => des.PresenceGroupBrands, opt => opt.MapFrom(src => src.PresenceGroupBrands.Select(x => new PresenceGroupBrand { BrandId = x }).ToList()))
+            .ForMember(des => des.PresenceGroupCompanies, opt => opt.MapFrom(src => src.presenceGroupCompanies.Select(x => new PresenceGroupCompany { CompanyId = x }).ToList()))
+            .ForMember(des => des.PresenceGroupSites, opt => opt.MapFrom(src => src.PresenceGroupSites.Select(x => new PresenceGroupSite { SiteId = x }).ToList()))
+            .ForMember(des => des.PresenceGroupUnits, opt => opt.MapFrom(src => src.PresenceGroupUnits.Select(x => new PresenceGroupUnit { UnitId = x }).ToList()))
+            .ForMember(des => des.PresenceGroupZones, opt => opt.MapFrom(src => src.PresenceGroupZones.Select(x => new PresenceGroupZone { ZoneId = x }).ToList()));
+
+        CreateMap<PresenceGroupArea, PresenceGroupAreaDto>();
+        CreateMap<PresenceGroupBlock, PresenceGroupBlockDto>();
+        CreateMap<PresenceGroupBrand, PresenceGroupBrandDto>();
+        CreateMap<PresenceGroupCompany, PresenceGroupCompanyDto>();
+        CreateMap<PresenceGroupSite, PresenceGroupSiteDto>();
+        CreateMap<PresenceGroupUnit, PresenceGroupUnitDto>();
+        CreateMap<PresenceGroupZone, PresenceGroupZoneDto>();
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)

@@ -14,8 +14,9 @@ public class PresenceGroup : BaseEntity<int>, ISoftDeletable, IAuditable, IEntit
     public string Name { get; set; }
     public List<PresenceGroupArea> PresenceGroupAreas { get; set; }
     public List<PresenceGroupBlock> PresenceGroupBlocks { get; set; }
+    public List<PresenceGroupCompany> PresenceGroupCompanies { get; set; }
     public List<PresenceGroupBrand> PresenceGroupBrands { get; set; }
-    public List<PresenceGroupSite > PresenceGroupSites { get; set; }
-    public List<PresenceGroupUnit > PresenceGroupUnits { get; set; }
-    public List<PresenceGroupZone > PresenceGroupZones { get; set; }
+    public List<PresenceGroupSite> PresenceGroupSites { get; set; }
+    public List<PresenceGroupUnit> PresenceGroupUnits { get; set; }
+    public List<PresenceGroupZone> PresenceGroupZones { get; set; }
 }

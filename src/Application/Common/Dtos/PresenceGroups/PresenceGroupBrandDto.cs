@@ -8,6 +8,5 @@ using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 namespace CleanArchitecture.Application.Common.Dtos.PresenceGroups;
 public  class PresenceGroupBrandDto
 {
-    public int PresenceGroupId { get; set; }
     public int BrandId { get; set; }
 }

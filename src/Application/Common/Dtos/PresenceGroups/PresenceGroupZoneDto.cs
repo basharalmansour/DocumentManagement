@@ -8,6 +8,5 @@ using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 namespace CleanArchitecture.Application.Common.Dtos.PresenceGroups;
 public class PresenceGroupZoneDto
 {
-    public int PresenceGroupId { get; set; }
     public Guid ZoneId { get; set; }
 }
