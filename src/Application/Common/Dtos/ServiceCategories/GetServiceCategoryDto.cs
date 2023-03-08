@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
 using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Enums;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
+using CleanArchitecture.Application.Common.Dtos.ServiceCategories.PresenceCategoryDtos;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 
 namespace CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 public class GetServiceCategoryDto
@@ -20,6 +24,17 @@ public class GetServiceCategoryDto
     public int MaxPersonnelCount { get; set; }
     public int ParentServiceCategoryId { get; set; }
     public int ServiceCategoryApprovmentId { get; set; }
+    public List<CategorySpecialRulesDto> SpecialRules { get; set; } 
     public List<GetServiceCategoryDto> SubServiceCategories { get; set; }
+    public List<VehicleCategoryDto> Vehicles { get; set; }
+    public List<CategoryDocumentDto> Documents { get; set; }
+
+    public List<ServiceCategoryAreaDto> ServiceCategoryAreas { get; set; }
+    public List<ServiceCategoryBlockDto> ServiceCategoryBlocks { get; set; }
+    public List<ServiceCategoryBrandDto> ServiceCategoryBrands { get; set; }
+    public List<ServiceCategoryCompanyDto> ServiceCategoryCompanies { get; set; }
+    public List<ServiceCategorySiteDto> ServiceCategorySites { get; set; }
+    public List<ServiceCategoryUnitDto> ServiceCategoryUnits { get; set; }
+    public List<ServiceCategoryZoneDto> ServiceCategoryZones { get; set; }
 }
 

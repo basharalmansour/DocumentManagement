@@ -11,6 +11,7 @@ using CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
 using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 
 namespace CleanArchitecture.Application.ServiceCategories.Commands;
 
@@ -23,8 +24,17 @@ public class CreateServiceCategoryCommand : IRequest<int>
     public int MaxPersonnelCount { get; set; }
     public int ParentServiceCategoryId { get; set; } 
     public int ServiceCategoryApprovmentId { get; set; }
-    public List<int> SpecialRuleIds { get; set; }
-    public List<DocumentCategoryDto> DocumentCategories { get; set; }
+    public List<CategorySpecialRulesDto> SpecialRules { get; set; }
+    public List<DocumentCategoryDto> Documents { get; set; }
+    public List<VehicleCategoryDto> Vehicles { get; set; }
+
+    public List<int> ServiceCategoryAreas { get; set; }
+    public List<Guid> ServiceCategoryBlocks { get; set; }
+    public List<int> ServiceCategoryBrands { get; set; }
+    public List<int> ServiceCategoryCompanies { get; set; }
+    public List<Guid> ServiceCategorySites { get; set; }
+    public List<int> ServiceCategoryUnits { get; set; }
+    public List<Guid> ServiceCategoryZones { get; set; }
 }
 public class CreateServiceCategoryCommandHandler : IRequestHandler<CreateServiceCategoryCommand, int>
 {
