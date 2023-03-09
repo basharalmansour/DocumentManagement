@@ -3,7 +3,7 @@ using CleanArchitecture.Application.UsersGroup.Queries;
 using CleanArchitecture.WebUI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CleanArchitecture.WebUI.UserGroups;
+namespace CleanArchitecture.WebUI.Controllers.UserGroups;
 
 public class UserGroupController : ApiControllerBase
 {
