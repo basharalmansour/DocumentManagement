@@ -25,8 +25,17 @@ public class ServiceCategoryByIdQueryHandler : IRequestHandler<ServiceCategoryBy
     }
     public async Task<GetServiceCategoryDto> Handle(ServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {
+
         var category = await _applicationDbContext.ServiceCategories.Include(x => x.SubServiceCategories).FirstOrDefaultAsync(x=>x.Id==request.Id);
+        var specialRuleIds = _applicationDbContext.CategorySpecialRules.Where(x => x.ServiceCategoryId == category.Id).Select(x=>x.Id).ToList();
         var categoryDto = _mapper.Map<GetServiceCategoryDto>(category);
-        return categoryDto;
+
+        categoryDto.IsParallel = _applicationDbContext.ServiceCategoryApprovments.FirstOrDefault(x => x.Id == category.ServiceCategoryApprovmentId).IsParallel;
+        categoryDto.PersonnelApproversIds = _applicationDbContext.ApproverPersonnels.Where(x => x.ServiceCategoryApprovmentId == category.ServiceCategoryApprovmentId).Select(x=>x.PersonnelId).ToList();
+        categoryDto.DepartmentApproversIds = _applicationDbContext.ApproverDepartments.Where(x => x.ServiceCategoryApprovmentId == category.ServiceCategoryApprovmentId).Select(x => x.DepartmentId).ToList();
+        categoryDto.UserGroupApproversIds = _applicationDbContext.ApproverUserGroups.Where(x => x.ServiceCategoryApprovmentId == category.ServiceCategoryApprovmentId).Select(x => x.UserGroupId).ToList();
+        foreach (var id in specialRuleIds)
+            categoryDto.SpecialRuleNames.Add(_applicationDbContext.SpecialRules.FirstOrDefault(x => x.Id == id).Name); 
+        return categoryDto; 
     }
 }

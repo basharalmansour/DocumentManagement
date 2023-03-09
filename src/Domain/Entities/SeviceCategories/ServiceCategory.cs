@@ -37,10 +37,12 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
 
     [ForeignKey("ParentServiceCategory") ] 
     public int ParentServiceCategoryId { get; set; } 
-    public ServiceCategory ParentServiceCategory { get; set; } 
+    public ServiceCategory ParentServiceCategory { get; set; }
+    public List<ServiceCategory> SubServiceCategories { get; set; }
 
     [ForeignKey("ServiceCategoryApprovment") ] 
     public int ServiceCategoryApprovmentId { get; set; } 
     public ServiceCategoryApprovment ServiceCategoryApprovment { get; set; } 
-    public List<ServiceCategory> SubServiceCategories { get; set; }
+
+
 }

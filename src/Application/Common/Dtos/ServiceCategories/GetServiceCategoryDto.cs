@@ -26,6 +26,11 @@ public class GetServiceCategoryDto
     public int ServiceCategoryApprovmentId { get; set; }
     public List<CategorySpecialRulesDto> SpecialRules { get; set; } 
     public List<GetServiceCategoryDto> SubServiceCategories { get; set; }
+    public List<string> SpecialRuleNames { get; set; }
+    public bool IsParallel { get; set; }
+    public List<int> PersonnelApproversIds { get; set; }
+    public List<int> DepartmentApproversIds { get; set; }
+    public List<int> UserGroupApproversIds { get; set; }
     public List<VehicleCategoryDto> Vehicles { get; set; }
     public List<CategoryDocumentDto> Documents { get; set; }
 
