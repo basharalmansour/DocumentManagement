@@ -11,4 +11,5 @@ namespace CleanArchitecture.Domain.Entities.Forms;
 public class Form : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
     public string Name { get; set; }
+    public List<Question> Questions { get;set }
 }
