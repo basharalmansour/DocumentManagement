@@ -1,0 +1,40 @@
+﻿using CleanArchitecture.Application.UsersGroup.Commands;
+using CleanArchitecture.Application.UsersGroup.Queries;
+using CleanArchitecture.WebUI.Controllers;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CleanArchitecture.WebUI.UserGroups;
+
+public class UserGroupController : ApiControllerBase
+{
+    [HttpPost("AddUserGroup")]
+    public async Task<IActionResult> CreateUserGroup([FromBody] CreateUserGroupCommand request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
+    [HttpGet("ViewUserGroups")]
+    public async Task<IActionResult> GetUserGroups([FromBody] GetUserGroupQuery request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
+    [HttpGet("ViewUserGroupById")]
+    public async Task<IActionResult> GetUserGroupById([FromBody] UserGroupByIdQuery request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
+    [HttpPost("EditUserGroup")]
+    public async Task<IActionResult> EditUserGroup([FromBody] EditUserGroupCommand request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
+    [HttpDelete("DeleteUserGroup")]
+    public async Task<IActionResult> DeleteUserGroup([FromBody] RemoveUserGroupCommand request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
+}
