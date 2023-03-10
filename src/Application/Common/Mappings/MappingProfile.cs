@@ -12,7 +12,8 @@ public class MappingProfile : Profile
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         CreateMap<DocumentTemplate, GetDocumentTemplateDto>();
-        //CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
+        CreateMap<DocumentTemplateFileType, DocumentTemplateFileTypeDto>();
+        CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
         CreateMap<EditDocumentTemplateCommand, DocumentTemplate>();
 
 

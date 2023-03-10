@@ -9,6 +9,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver.Core.Authentication;
 
@@ -31,6 +32,7 @@ public class EditDocumentTemplateCommandHandler : IRequestHandler<EditDocumentTe
     public async Task<int> Handle(EditDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
         var documentTemplate = _applicationDbContext.DocumentTemplates.FirstOrDefault(x => x.Id == request.Id & x.IsDeleted == false);
+        documentTemplate.DocumentTemplateFileTypes.Clear();
         _mapper.Map(request, documentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return documentTemplate.Id;
