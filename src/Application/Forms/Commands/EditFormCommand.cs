@@ -26,6 +26,7 @@ public class EditFormCommandHandler : IRequestHandler<EditFormCommand, bool>
     public async Task<bool> Handle(EditFormCommand request, CancellationToken cancellationToken)
     {
         var form = _applicationDbContext.Forms.FirstOrDefault(x => x.Id == request.Id);
+        form.Questions.Clear();
         _mapper.Map(request, form);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
