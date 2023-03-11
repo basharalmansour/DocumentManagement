@@ -25,6 +25,14 @@ public class EditPresenceGroupCommandHandler : IRequestHandler<EditPresenceGroup
     public async Task<bool> Handle(EditPresenceGroupCommand request, CancellationToken cancellationToken)
     {
         var editedPrecenceGroup = _applicationDbContext.PresenceGroups.FirstOrDefault(x => x.Id == request.Id);
+        editedPrecenceGroup.PresenceGroupAreas.Clear();
+        editedPrecenceGroup.PresenceGroupBlocks.Clear();
+        editedPrecenceGroup.PresenceGroupBrands.Clear();
+        editedPrecenceGroup.PresenceGroupCompanies.Clear();
+        editedPrecenceGroup.PresenceGroupSites.Clear();
+        editedPrecenceGroup.PresenceGroupSites.Clear();
+        editedPrecenceGroup.PresenceGroupUnits.Clear();
+        editedPrecenceGroup.PresenceGroupZones.Clear();
         _mapper.Map(request, editedPrecenceGroup);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
