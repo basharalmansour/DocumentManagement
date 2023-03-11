@@ -26,7 +26,7 @@ public class ServiceCategoryByIdQueryHandler : IRequestHandler<ServiceCategoryBy
     public async Task<GetServiceCategoryDto> Handle(ServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {
 
-        var category = await _applicationDbContext.ServiceCategories.Include(x => x.SubServiceCategories).FirstOrDefaultAsync(x=>x.Id==request.Id);
+        var category = await _applicationDbContext.ServiceCategories.Include(x => x.SubServiceCategories.Where(x => x.IsDeleted == false)).FirstOrDefaultAsync(x=>x.Id==request.Id);
         var specialRuleIds = _applicationDbContext.CategorySpecialRules.Where(x => x.ServiceCategoryId == category.Id).Select(x=>x.Id).ToList();
         var categoryDto = _mapper.Map<GetServiceCategoryDto>(category);
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
 
@@ -26,6 +27,14 @@ public class EditServiceCategoryCommandHandler : IRequestHandler<EditServiceCate
     public async Task<bool> Handle(EditServiceCategoryCommand request, CancellationToken cancellationToken)
     {
         var editedCategory = _applicationDbContext.ServiceCategories.FirstOrDefault(x => x.Id == request.Id);
+        editedCategory.ServiceCategoryAreas.Clear();
+        editedCategory.ServiceCategoryBlocks.Clear();
+        editedCategory.ServiceCategoryBrands.Clear();
+        editedCategory.ServiceCategoryCompanies.Clear();
+        editedCategory.ServiceCategorySites.Clear();
+        editedCategory.ServiceCategoryUnits.Clear();
+        editedCategory.ServiceCategoryZones.Clear();
+        editedCategory.SpecialRules.Clear();
         _mapper.Map(request, editedCategory);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

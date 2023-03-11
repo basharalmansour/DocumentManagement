@@ -25,7 +25,7 @@ public class GetServiceCategoryHandler : IRequestHandler<GetServiceCategoryQuery
     }
     public async Task<List<GetServiceCategoryDto>> Handle(GetServiceCategoryQuery request, CancellationToken cancellationToken)
     {
-        var categories =await _applicationDbContext.ServiceCategories.Where(x => x.IsDeleted == false).Include(x => x.SubServiceCategories).ToListAsync();
+        var categories =await _applicationDbContext.ServiceCategories.Where(x => x.IsDeleted == false).Include(x => x.SubServiceCategories.Where(x=>x.IsDeleted==false)).ToListAsync();
         var categoriesDto = _mapper.Map<List<GetServiceCategoryDto>>(categories);
         return categoriesDto;
     }
