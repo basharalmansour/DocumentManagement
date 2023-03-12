@@ -39,7 +39,6 @@ public class CondoUserInfoDto
     public bool isActive { get; set; }
     public string tavPassportNo { get; set; }
     public string integrationUserId { get; set; }
-    public List<MemberShipTitleDto> memberShipTitle { get; set; }
     public DateTime memberShipEndDate { get; set; }
     public string citizenNumber { get; set; }
     public bool maritialStatus { get; set; }
