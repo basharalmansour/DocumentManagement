@@ -61,7 +61,7 @@ public class Program
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
                     await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
-                    await ApplicationDbContextSeed.(context);
+                    await ApplicationDbContextSeed.SeedDocumentTypeDataAsync(context);
 
                     await host.RunAsync();
                 
