@@ -64,9 +64,10 @@ public class Program
                     await ApplicationDbContextSeed.SeedDocumentTypeDataAsync(context);
 
                     await host.RunAsync();
-                
-            }
 
+                }
+
+            }
         }
         catch (Exception e)
         {

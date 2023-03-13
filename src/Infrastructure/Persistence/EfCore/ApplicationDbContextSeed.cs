@@ -52,22 +52,18 @@ public static class ApplicationDbContextSeed
         {
             context.DocumentTemplateTypes.Add(new DocumentTemplateType
             {
-                Id = 1,
                 Name = "General"
             });
             context.DocumentTemplateTypes.Add(new DocumentTemplateType
             {
-                Id = 2,
                 Name = "Personnel"
             });
             context.DocumentTemplateTypes.Add(new DocumentTemplateType
             {
-                Id = 3,
                 Name = "Vehicle"
             });
             context.DocumentTemplateTypes.Add(new DocumentTemplateType
             {
-                Id = 4,
                 Name = "Special Process"
             });
             await context.SaveChangesAsync();
