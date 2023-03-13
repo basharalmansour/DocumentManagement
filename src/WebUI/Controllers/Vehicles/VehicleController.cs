@@ -15,7 +15,7 @@ public class VehicleController : ApiControllerBase
         return Ok(result);
     }
     [HttpGet("ViewVehicles")]
-    public async Task<IActionResult> GetVehicles([FromBody] GetVehicleQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetVehicles([FromQuery] GetVehicleQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
