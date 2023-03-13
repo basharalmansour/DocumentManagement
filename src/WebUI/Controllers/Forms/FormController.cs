@@ -13,13 +13,13 @@ public class FormController : ApiControllerBase
         return Ok(result);
     }
     [HttpGet("ViewForms")]
-    public async Task<IActionResult> GetForms([FromBody] GetFormsQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetForms([FromQuery] GetFormsQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
     [HttpGet("ViewFormById")]
-    public async Task<IActionResult> GetFormById([FromBody] GetFormByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetFormById([FromQuery] GetFormByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);

@@ -47,6 +47,171 @@
           }
         }
       }
+    },
+    "/api/Form/AddForm": {
+      "post": {
+        "tags": [
+          "Form"
+        ],
+        "operationId": "Form_CreateForm",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFormCommnad"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Form/ViewForms": {
+      "get": {
+        "tags": [
+          "Form"
+        ],
+        "operationId": "Form_GetForms",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetFormsQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Form/ViewFormById": {
+      "get": {
+        "tags": [
+          "Form"
+        ],
+        "operationId": "Form_GetFormById",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetFormByIdQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Form/EditForm": {
+      "post": {
+        "tags": [
+          "Form"
+        ],
+        "operationId": "Form_EditForm",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditFormCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Form/DeleteForm": {
+      "delete": {
+        "tags": [
+          "Form"
+        ],
+        "operationId": "Form_DeleteForm",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveFormCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -85,6 +250,177 @@
           "phoneNumber": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "CreateFormCommnad": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "questions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/AddQuestionRequest"
+            }
+          }
+        }
+      },
+      "AddQuestionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "questionType": {
+            "$ref": "#/components/schemas/QuestionType"
+          },
+          "answersCount": {
+            "type": "integer"
+          },
+          "formId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dateQuestionOptions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/DateQuestionOptionsDto"
+            }
+          },
+          "fileQuestionOptions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/FileQuestionOptionsDto"
+            }
+          },
+          "multiChoicesQuestions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/MultiChoicesQuestionDto"
+            }
+          }
+        }
+      },
+      "QuestionType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "MultiAnswer",
+          "OneOfMany",
+          "DateAnswer",
+          "FileAnswer",
+          "TextAnswer"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "DateQuestionOptionsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isMultiDate": {
+            "type": "boolean"
+          },
+          "questionId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "FileQuestionOptionsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "documentFileType": {
+            "$ref": "#/components/schemas/DocumentFileType"
+          },
+          "questionId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "DocumentFileType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "PDF",
+          "Word",
+          "TxtFile"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "MultiChoicesQuestionDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "choice": {
+            "type": "string",
+            "nullable": true
+          },
+          "questionId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "GetFormsQuery": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "GetFormByIdQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "EditFormCommand": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateFormCommnad"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "RemoveFormCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       }
