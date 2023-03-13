@@ -14,13 +14,13 @@ public class UserGroupController : ApiControllerBase
         return Ok(result);
     }
     [HttpGet("ViewUserGroups")]
-    public async Task<IActionResult> GetUserGroups([FromBody] GetUserGroupQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetUserGroups([FromQuery] GetUserGroupQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
     [HttpGet("ViewUserGroupById")]
-    public async Task<IActionResult> GetUserGroupById([FromBody] UserGroupByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetUserGroupById([FromQuery] UserGroupByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);

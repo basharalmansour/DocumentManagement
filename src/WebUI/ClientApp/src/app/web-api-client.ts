@@ -93,8 +93,8 @@ export class CustomerClient implements ICustomerClient {
 
 export interface IUserGroupClient {
     createUserGroup(request: CreateUserGroupCommand): Observable<FileResponse>;
-    getUserGroups(request: GetUserGroupQuery): Observable<FileResponse>;
-    getUserGroupById(request: UserGroupByIdQuery): Observable<FileResponse>;
+    getUserGroups(request: GetUserGroupQuery | null | undefined): Observable<FileResponse>;
+    getUserGroupById(id: number | undefined): Observable<FileResponse>;
     editUserGroup(request: EditUserGroupCommand): Observable<FileResponse>;
     deleteUserGroup(request: RemoveUserGroupCommand): Observable<FileResponse>;
 }
@@ -162,18 +162,16 @@ export class UserGroupClient implements IUserGroupClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
-    getUserGroups(request: GetUserGroupQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/UserGroup/ViewUserGroups";
+    getUserGroups(request: GetUserGroupQuery | null | undefined) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/UserGroup/ViewUserGroups?";
+        if (request !== undefined && request !== null)
+            url_ += "request=" + encodeURIComponent("" + request) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(request);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             })
         };
@@ -212,18 +210,18 @@ export class UserGroupClient implements IUserGroupClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
-    getUserGroupById(request: UserGroupByIdQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/UserGroup/ViewUserGroupById";
+    getUserGroupById(id: number | undefined) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/UserGroup/ViewUserGroupById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(request);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             })
         };
@@ -555,42 +553,6 @@ export class GetUserGroupQuery implements IGetUserGroupQuery {
 }
 
 export interface IGetUserGroupQuery {
-}
-
-export class UserGroupByIdQuery implements IUserGroupByIdQuery {
-    id?: number;
-
-    constructor(data?: IUserGroupByIdQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): UserGroupByIdQuery {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserGroupByIdQuery();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface IUserGroupByIdQuery {
-    id?: number;
 }
 
 export class EditUserGroupCommand extends CreateUserGroupCommand implements IEditUserGroupCommand {
