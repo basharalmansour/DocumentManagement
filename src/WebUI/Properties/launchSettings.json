@@ -24,17 +24,17 @@
       },
       "applicationUrl": "http://localhost:80/"
     },
-    "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
-      "environmentVariables": {
-        "ASPNETCORE_URLS": "http://+:5000",
-        "UseInMemoryDatabase": "true"
-      },
-      "httpPort": 5000,
-      "useSSL": false
-    },
+    //"Docker": {
+    //  "commandName": "Docker",
+    //  "launchBrowser": true,
+    //  "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+    //  "environmentVariables": {
+    //    "ASPNETCORE_URLS": "http://+:5000",
+    //    "UseInMemoryDatabase": "true"
+    //  },
+    //  "httpPort": 5000,
+    //  "useSSL": false
+    //},
     "CleanArchitecture.WebUI_TEST": {
       "commandName": "Project",
       "launchBrowser": true,

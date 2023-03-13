@@ -19,14 +19,15 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     public string Description { get; set; }
     public int MaxServiceDuration { get; set; }
     public TimeUnit ServiceDurationUnit { get; set; }
-    public int MaxPersonnelCount { get; set; } 
+    public int MaxPersonnelCount { get; set; }
 
-    [ForeignKey("ParentServiceCategory") ] 
-    public int ParentServiceCategoryId { get; set; } 
-    public ServiceCategory ParentServiceCategory { get; set; } 
+    [ForeignKey("ParentServiceCategory")]
+    public int? ParentServiceCategoryId { get; set; }
+    public ServiceCategory ParentServiceCategory { get; set; }
+    public List<ServiceCategory> SubServiceCategories { get; set; }
 
     [ForeignKey("ServiceCategoryApprovment") ] 
     public int ServiceCategoryApprovmentId { get; set; } 
     public ServiceCategoryApprovment ServiceCategoryApprovment { get; set; } 
-    public List<ServiceCategory> SubServiceCategories { get; set; }
+
 }

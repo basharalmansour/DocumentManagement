@@ -1,5 +1,8 @@
 using System.Reflection;
 using AutoMapper;
+using CleanArchitecture.Application.Common.Dtos.Vehicles;
+using CleanArchitecture.Application.Vehicles.Commands;
+using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.UsersGroup.Commands;
 using CleanArchitecture.Domain.Entities.UserGroups;
@@ -16,6 +19,9 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
+        CreateMap<Vehicle, VehicleDto>();
+        CreateMap<CreateVehicleCommand, Vehicle>();
+        CreateMap<EditVehicleCommand, Vehicle>();
 
 
         CreateMap<CreateUserGroupCommand, UserGroup>();

@@ -80,7 +80,7 @@ public class Startup
         services.ConfigureMassTransit(Configuration);
         services.AddScoped<IMessageBrokerService, MessageBrokerService>();
         services.ConfigureConsul(Configuration);
-        services.ConfigureRedis(Configuration);
+        //services.ConfigureRedis(Configuration);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,8 +12,7 @@ public static class RecurringJobs
     
     public static void UpdateOrderDetailStatusesOperation()
     {
-        RecurringJob.AddOrUpdate<OrderDetailStatusesJobManager>(nameof(OrderDetailStatusesJobManager),
-            job => job.Process(new CancellationToken()), Cron.Daily, TimeZoneInfo.Local);
+        //RecurringJob.AddOrUpdate<OrderDetailStatusesJobManager>(nameof(OrderDetailStatusesJobManager),job => job.Process(new CancellationToken()), Cron.Daily, TimeZoneInfo.Local);
     }
 
 }
