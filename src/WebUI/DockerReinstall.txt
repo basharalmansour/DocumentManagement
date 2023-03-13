@@ -1,0 +1,2 @@
+﻿- we commented docker code in launchSettings.json
+- we removed the package microsoft.visualstudio.azure.containers.tools.targets\1.11.1\ from WebUI

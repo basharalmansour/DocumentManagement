@@ -12,4 +12,5 @@ public class UserGroup : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<in
 {
     [StringLength(StringLengths.MediumString)]
     public string Name { get; set; }
+    public List<UserGroupPersonnel> Personnels { get; set; } 
 }
