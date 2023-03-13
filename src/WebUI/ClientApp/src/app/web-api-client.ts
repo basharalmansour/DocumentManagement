@@ -91,6 +91,276 @@ export class CustomerClient implements ICustomerClient {
     }
 }
 
+export interface IPresenceGroupClient {
+    createPresenceGroup(request: CreatePresenceGroupCommand): Observable<FileResponse>;
+    getPresenceGroups(searchText: string | null | undefined): Observable<FileResponse>;
+    getPresenceGroupById(id: number | undefined): Observable<FileResponse>;
+    editPresenceGroup(request: EditPresenceGroupCommand): Observable<FileResponse>;
+    deletePresenceGroup(request: RemovePresenceGroupCommand): Observable<FileResponse>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class PresenceGroupClient implements IPresenceGroupClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    createPresenceGroup(request: CreatePresenceGroupCommand) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/AddPresenceGroup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreatePresenceGroup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreatePresenceGroup(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreatePresenceGroup(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    getPresenceGroups(searchText: string | null | undefined) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/ViewPresenceGroups?";
+        if (searchText !== undefined && searchText !== null)
+            url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPresenceGroups(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPresenceGroups(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPresenceGroups(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    getPresenceGroupById(id: number | undefined) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/ViewPresenceGroupById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPresenceGroupById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPresenceGroupById(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPresenceGroupById(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    editPresenceGroup(request: EditPresenceGroupCommand) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/EditPresenceGroup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditPresenceGroup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditPresenceGroup(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEditPresenceGroup(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    deletePresenceGroup(request: RemovePresenceGroupCommand) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/DeletePresenceGroup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeletePresenceGroup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeletePresenceGroup(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeletePresenceGroup(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+}
+
 export class SendOtpMessageResult implements ISendOtpMessageResult {
     result?: boolean;
 
@@ -205,6 +475,202 @@ export interface ISendOtpToCustomerCommand {
     token?: string | undefined;
     customerId?: number;
     phoneNumber?: string | undefined;
+}
+
+export class CreatePresenceGroupCommand implements ICreatePresenceGroupCommand {
+    name?: string | undefined;
+    presenceGroupAreas?: number[] | undefined;
+    presenceGroupBlocks?: string[] | undefined;
+    presenceGroupCompanies?: number[] | undefined;
+    presenceGroupBrands?: number[] | undefined;
+    presenceGroupSites?: string[] | undefined;
+    presenceGroupUnits?: number[] | undefined;
+    presenceGroupZones?: string[] | undefined;
+
+    constructor(data?: ICreatePresenceGroupCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            if (Array.isArray(_data["presenceGroupAreas"])) {
+                this.presenceGroupAreas = [] as any;
+                for (let item of _data["presenceGroupAreas"])
+                    this.presenceGroupAreas!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupBlocks"])) {
+                this.presenceGroupBlocks = [] as any;
+                for (let item of _data["presenceGroupBlocks"])
+                    this.presenceGroupBlocks!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupCompanies"])) {
+                this.presenceGroupCompanies = [] as any;
+                for (let item of _data["presenceGroupCompanies"])
+                    this.presenceGroupCompanies!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupBrands"])) {
+                this.presenceGroupBrands = [] as any;
+                for (let item of _data["presenceGroupBrands"])
+                    this.presenceGroupBrands!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupSites"])) {
+                this.presenceGroupSites = [] as any;
+                for (let item of _data["presenceGroupSites"])
+                    this.presenceGroupSites!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupUnits"])) {
+                this.presenceGroupUnits = [] as any;
+                for (let item of _data["presenceGroupUnits"])
+                    this.presenceGroupUnits!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupZones"])) {
+                this.presenceGroupZones = [] as any;
+                for (let item of _data["presenceGroupZones"])
+                    this.presenceGroupZones!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): CreatePresenceGroupCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreatePresenceGroupCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        if (Array.isArray(this.presenceGroupAreas)) {
+            data["presenceGroupAreas"] = [];
+            for (let item of this.presenceGroupAreas)
+                data["presenceGroupAreas"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupBlocks)) {
+            data["presenceGroupBlocks"] = [];
+            for (let item of this.presenceGroupBlocks)
+                data["presenceGroupBlocks"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupCompanies)) {
+            data["presenceGroupCompanies"] = [];
+            for (let item of this.presenceGroupCompanies)
+                data["presenceGroupCompanies"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupBrands)) {
+            data["presenceGroupBrands"] = [];
+            for (let item of this.presenceGroupBrands)
+                data["presenceGroupBrands"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupSites)) {
+            data["presenceGroupSites"] = [];
+            for (let item of this.presenceGroupSites)
+                data["presenceGroupSites"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupUnits)) {
+            data["presenceGroupUnits"] = [];
+            for (let item of this.presenceGroupUnits)
+                data["presenceGroupUnits"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupZones)) {
+            data["presenceGroupZones"] = [];
+            for (let item of this.presenceGroupZones)
+                data["presenceGroupZones"].push(item);
+        }
+        return data; 
+    }
+}
+
+export interface ICreatePresenceGroupCommand {
+    name?: string | undefined;
+    presenceGroupAreas?: number[] | undefined;
+    presenceGroupBlocks?: string[] | undefined;
+    presenceGroupCompanies?: number[] | undefined;
+    presenceGroupBrands?: number[] | undefined;
+    presenceGroupSites?: string[] | undefined;
+    presenceGroupUnits?: number[] | undefined;
+    presenceGroupZones?: string[] | undefined;
+}
+
+export class EditPresenceGroupCommand extends CreatePresenceGroupCommand implements IEditPresenceGroupCommand {
+    id?: number;
+
+    constructor(data?: IEditPresenceGroupCommand) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): EditPresenceGroupCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditPresenceGroupCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IEditPresenceGroupCommand extends ICreatePresenceGroupCommand {
+    id?: number;
+}
+
+export class RemovePresenceGroupCommand implements IRemovePresenceGroupCommand {
+    id?: number;
+
+    constructor(data?: IRemovePresenceGroupCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): RemovePresenceGroupCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemovePresenceGroupCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IRemovePresenceGroupCommand {
+    id?: number;
+}
+
+export interface FileResponse {
+    data: Blob;
+    status: number;
+    fileName?: string;
+    headers?: { [name: string]: any };
 }
 
 export class SwaggerException extends Error {

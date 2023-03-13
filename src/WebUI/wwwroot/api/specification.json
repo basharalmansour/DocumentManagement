@@ -47,6 +47,169 @@
           }
         }
       }
+    },
+    "/api/PresenceGroup/AddPresenceGroup": {
+      "post": {
+        "tags": [
+          "PresenceGroup"
+        ],
+        "operationId": "PresenceGroup_CreatePresenceGroup",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePresenceGroupCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PresenceGroup/ViewPresenceGroups": {
+      "get": {
+        "tags": [
+          "PresenceGroup"
+        ],
+        "operationId": "PresenceGroup_GetPresenceGroups",
+        "parameters": [
+          {
+            "name": "SearchText",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PresenceGroup/ViewPresenceGroupById": {
+      "get": {
+        "tags": [
+          "PresenceGroup"
+        ],
+        "operationId": "PresenceGroup_GetPresenceGroupById",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PresenceGroup/EditPresenceGroup": {
+      "post": {
+        "tags": [
+          "PresenceGroup"
+        ],
+        "operationId": "PresenceGroup_EditPresenceGroup",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditPresenceGroupCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PresenceGroup/DeletePresenceGroup": {
+      "delete": {
+        "tags": [
+          "PresenceGroup"
+        ],
+        "operationId": "PresenceGroup_DeletePresenceGroup",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemovePresenceGroupCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -85,6 +248,99 @@
           "phoneNumber": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "CreatePresenceGroupCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "presenceGroupAreas": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "presenceGroupBlocks": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string",
+              "format": "guid"
+            }
+          },
+          "presenceGroupCompanies": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "presenceGroupBrands": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "presenceGroupSites": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string",
+              "format": "guid"
+            }
+          },
+          "presenceGroupUnits": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "presenceGroupZones": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string",
+              "format": "guid"
+            }
+          }
+        }
+      },
+      "EditPresenceGroupCommand": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreatePresenceGroupCommand"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "RemovePresenceGroupCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       }

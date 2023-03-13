@@ -13,13 +13,13 @@ public class PresenceGroupController : ApiControllerBase
         return Ok(result);
     }
     [HttpGet("ViewPresenceGroups")]
-    public async Task<IActionResult> GetPresenceGroups([FromBody] PresencesGroupQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetPresenceGroups([FromQuery] PresencesGroupQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
     [HttpGet("ViewPresenceGroupById")]
-    public async Task<IActionResult> GetPresenceGroupById([FromBody] PresenceGroupByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetPresenceGroupById([FromQuery] PresenceGroupByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
