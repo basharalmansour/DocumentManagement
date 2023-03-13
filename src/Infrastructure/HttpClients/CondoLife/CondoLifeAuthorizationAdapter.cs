@@ -14,12 +14,12 @@ public class CondoLifeAuthorizationAdapter
     private readonly CondoCredential _condoCredentials;
     private readonly string _loginUrl;
     private readonly IDatabase _redis;
-    public CondoLifeAuthorizationAdapter(IHttpClientFactory httpClientFactory, IOptions<AppSettings> options, IConnectionMultiplexer redis)
+    public CondoLifeAuthorizationAdapter(IHttpClientFactory httpClientFactory, IOptions<AppSettings> options/*, IConnectionMultiplexer redis*/)
     {
         _loginUrl = options.Value.ClientSettings.CondoLife.BaseUrl + options.Value.ClientSettings.CondoLife.Login;
         _condoCredentials = options.Value.ClientSettings.CondoLife.CredentialSettings;
         _httpClientFactory = httpClientFactory;
-        _redis = redis.GetDatabase(RedisDatabaseKeys.IntegrationProjectRedis);
+        //_redis = redis.GetDatabase(RedisDatabaseKeys.IntegrationProjectRedis);
     }
 
     public async Task<string> GetAccessToken(bool withoutCache = false)
