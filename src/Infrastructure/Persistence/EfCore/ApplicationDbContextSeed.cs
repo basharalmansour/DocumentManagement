@@ -1,6 +1,7 @@
-﻿ 
+﻿using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Polly;
 
 namespace CleanArchitecture.Infrastructure.Persistence;
 
@@ -24,7 +25,7 @@ public static class ApplicationDbContextSeed
         }
     }
 
-    public static async Task SeedSampleDataAsync(ApplicationDbContext context)
+    public static async Task SeedDocumentTypeDataAsync(ApplicationDbContext context)
     {
         //// Seed, if necessary
         //if (!context.TodoLists.Any())
@@ -46,7 +47,30 @@ public static class ApplicationDbContextSeed
         //            }
         //    });
 
-        //    await context.SaveChangesAsync();
-        //}
+        //await context.SaveChangesAsync();
+        if (!context.DocumentTemplateTypes.Any())
+        {
+            context.DocumentTemplateTypes.Add(new DocumentTemplateType
+            {
+                Id = 1,
+                Name = "General"
+            });
+            context.DocumentTemplateTypes.Add(new DocumentTemplateType
+            {
+                Id = 2,
+                Name = "Personnel"
+            });
+            context.DocumentTemplateTypes.Add(new DocumentTemplateType
+            {
+                Id = 3,
+                Name = "Vehicle"
+            });
+            context.DocumentTemplateTypes.Add(new DocumentTemplateType
+            {
+                Id = 4,
+                Name = "Special Process"
+            });
+            await context.SaveChangesAsync();
+        }
     }
 }

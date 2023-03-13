@@ -49,21 +49,21 @@ public class Program
                .WriteTo.Console(Serilog.Events.LogEventLevel.Information)
                .CreateLogger();
 
-                //{
-                //    var context = services.GetRequiredService<ApplicationDbContext>();
+                {
+                    var context = services.GetRequiredService<ApplicationDbContext>();
 
-                //    if (context.Database.IsSqlServer())
-                //    {
-                //        context.Database.Migrate();
-                //    }
+                    if (context.Database.IsSqlServer())
+                    {
+                        context.Database.Migrate();
+                    }
 
-                //    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                //    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-                //await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
-                //await ApplicationDbContextSeed.SeedSampleDataAsync(context);
-    
-                await host.RunAsync();
+                    await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
+                    await ApplicationDbContextSeed.(context);
+
+                    await host.RunAsync();
                 
             }
 
