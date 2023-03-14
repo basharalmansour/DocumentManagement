@@ -12,24 +12,28 @@ public class DocumentTemplateController : ApiControllerBase
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpGet("ViewDocumentTemplates")]
+
+    [HttpGet("GetDocumentTemplates")]
     public async Task<IActionResult> GetDocumentTemplates([FromQuery] GetDocumentTemplatesQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpGet("ViewDocumentTemplateById")]
+
+    [HttpGet("GetDocumentTemplateById")]
     public async Task<IActionResult> GetDocumentTemplateById([FromBody] GetDocumentTemplateByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
+
     [HttpPost("EditDocumentTemplate")]
     public async Task<IActionResult> EditDocumentTemplate([FromBody] EditDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
+
     [HttpDelete("DeleteDocumentTemplate")]
     public async Task<IActionResult> DeleteDocumentTemplate([FromBody] RemoveDocumentTemplateCommand request, CancellationToken cancellationToken)
     {

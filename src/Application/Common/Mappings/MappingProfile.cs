@@ -23,6 +23,7 @@ using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.DocumentsTemplate.Commands;
 using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -130,9 +131,22 @@ public class MappingProfile : Profile
     }
     private void ApplyMappingsOfDocumentTemplate()
     {
-        CreateMap<DocumentTemplate, GetDocumentTemplateDto>();
+        CreateMap<DocumentTemplate, GetDocumentTemplateDto>()
+            .ForMember(dest=>dest.DocumentTemplateFileTypes, opt=>opt.MapFrom(src=>src.DocumentTemplateFileTypes.Select(x=>x.FileType).ToList()));
         CreateMap<DocumentTemplateFileType, DocumentTemplateFileTypeDto>();
         CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
         CreateMap<EditDocumentTemplateCommand, DocumentTemplate>();
+        CreateMap<DocumentFileType, DocumentTemplateFileType>()
+            .ForMember(dest =>dest.FileType,opt=>opt.MapFrom(src=>src));
+
     }
 }
+
+
+//public class CustomResolver : IValueResolver<DocumentFileType, DocumentTemplateFileType, DocumentFileType>
+//{
+//    public DocumentFileType Resolve(DocumentFileType source, DocumentTemplateFileType destination, DocumentFileType destMember, ResolutionContext context)
+//    {
+//        return destination.FileType;
+//    }
+//}

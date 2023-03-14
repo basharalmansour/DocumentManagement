@@ -13,13 +13,13 @@ namespace CleanArchitecture.Application.Common.Helpers;
 /// </summary>
 public class ListComparer
 {
-    public static void Test<RequestListObject, DatabaseListObject>(
+    public static void UpdateListByList<RequestListObject, DatabaseListObject>(
         IList<DatabaseListObject> databaseList,
         IList<RequestListObject> requestList,
         string databaseNameOfForeignKey,
         string requestNameOfForeignKey,
         IMapper mapper)
-        where RequestListObject : IEntity<int>
+        where RequestListObject : IEntity<int>, IConvertible
         where DatabaseListObject : class, IEntity<int>
     {
         //to edit
@@ -66,5 +66,38 @@ public class ListComparer
         //{
         //    editedCategory.Documents.Remove(document);
         //}
+    }
+
+    public static void UpdateListByEnum<RequestListObject, DatabaseListObject>(
+        IList<DatabaseListObject> databaseList,
+        IList<RequestListObject> requestList,
+        string databaseNameOfForeignKey,
+        IMapper mapper)
+        where RequestListObject : Enum
+        where DatabaseListObject : class, IEntity<int>
+    {
+        //to edit
+        var recordsToEdit = requestList.Where(x => databaseList.Select(j => j.GetType().GetProperty(databaseNameOfForeignKey).GetValue(j, null)).Contains(x)).ToList();
+        foreach (var record in recordsToEdit)
+        {
+            var recordToEdit = databaseList.FirstOrDefault(x => EqualityComparer<RequestListObject>.Default.Equals((RequestListObject)(x.GetType().GetProperty(databaseNameOfForeignKey).GetValue(x, null)), record));
+            recordToEdit = mapper.Map<DatabaseListObject>(record);
+        }
+        //to add
+        var recordsToAdd = requestList.Where(x => !databaseList.Select(j => j.GetType().GetProperty(databaseNameOfForeignKey).GetValue(j, null)).Contains(x)).ToList();
+        foreach (var record in recordsToAdd)
+        {
+            databaseList.Add(mapper.Map<DatabaseListObject>(record));
+        }
+        //to delete
+        var recordsToDelete = databaseList.Where(x => !requestList.Contains((RequestListObject)x.GetType().GetProperty(databaseNameOfForeignKey).GetValue(x, null))).ToList();
+        foreach (var record in recordsToDelete)
+        {
+            if (record.GetType().GetProperty("IsDeleted") == null)
+                databaseList.Remove(record);
+            else
+                record.GetType().GetProperty("IsDeleted").SetValue(record, true);
+        }
+
     }
 }
