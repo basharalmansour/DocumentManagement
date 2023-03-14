@@ -12,8 +12,8 @@ public class DocumentTemplateController : ApiControllerBase
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpGet("ViewCreateDocumentTemplates")]
-    public async Task<IActionResult> GetDocumentTemplates([FromBody] GetDocumentTemplatesQuery request, CancellationToken cancellationToken)
+    [HttpGet("ViewDocumentTemplates")]
+    public async Task<IActionResult> GetDocumentTemplates([FromQuery] GetDocumentTemplatesQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
