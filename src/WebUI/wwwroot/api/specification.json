@@ -48,18 +48,22 @@
         }
       }
     },
-    "/api/Vehicle/AddVehicle": {
+
+    "/api/DocumentTemplate/AddDocumentTemplate": {
       "post": {
         "tags": [
-          "Vehicle"
+          "DocumentTemplate"
         ],
-        "operationId": "Vehicle_CreateVehicle",
+        "operationId": "DocumentTemplate_CreateDocumentTemplate",
+
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateVehicleCommand"
+
+                "$ref": "#/components/schemas/CreateDocumentTemplateCommand"
+
               }
             }
           },
@@ -81,18 +85,54 @@
         }
       }
     },
-    "/api/Vehicle/ViewVehicles": {
+
+    "/api/DocumentTemplate/ViewDocumentTemplates": {
       "get": {
         "tags": [
-          "Vehicle"
+          "DocumentTemplate"
         ],
-        "operationId": "Vehicle_GetVehicles",
+        "operationId": "DocumentTemplate_GetDocumentTemplates",
+        "parameters": [
+          {
+            "name": "SearchText",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DocumentTemplate/ViewDocumentTemplateById": {
+      "get": {
+        "tags": [
+          "DocumentTemplate"
+        ],
+        "operationId": "DocumentTemplate_GetDocumentTemplateById",
+
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetVehicleQuery"
+
+                "$ref": "#/components/schemas/GetDocumentTemplateByIdQuery"
+
               }
             }
           },
@@ -114,18 +154,20 @@
         }
       }
     },
-    "/api/Vehicle/EditVehicle": {
+
+    "/api/DocumentTemplate/EditDocumentTemplate": {
       "post": {
         "tags": [
-          "Vehicle"
+          "DocumentTemplate"
         ],
-        "operationId": "Vehicle_EditVehicle",
+        "operationId": "DocumentTemplate_EditDocumentTemplate",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EditVehicleCommand"
+
+                "$ref": "#/components/schemas/EditDocumentTemplateCommand"
               }
             }
           },
@@ -147,18 +189,20 @@
         }
       }
     },
-    "/api/Vehicle/DeleteVehicle": {
+
+    "/api/DocumentTemplate/DeleteDocumentTemplate": {
       "delete": {
         "tags": [
-          "Vehicle"
+          "DocumentTemplate"
         ],
-        "operationId": "Vehicle_DeleteVehicle",
+        "operationId": "DocumentTemplate_DeleteDocumentTemplate",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemoveVehicleCommand"
+
+                "$ref": "#/components/schemas/RemoveDocumentTemplateCommand"
               }
             }
           },
@@ -220,24 +264,60 @@
           }
         }
       },
-      "CreateVehicleCommand": {
+
+      "CreateDocumentTemplateCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "name": {
             "type": "string",
             "nullable": true
+
+          },
+          "documentTemplateTypeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "documentFileType": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/DocumentFileType"
+            }
+          },
+          "hasValidationDate": {
+            "type": "boolean"
           }
         }
       },
-      "GetVehicleQuery": {
-        "type": "object",
-        "additionalProperties": false
+      "DocumentFileType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "PDF",
+          "Word",
+          "TxtFile"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
       },
-      "EditVehicleCommand": {
+      "GetDocumentTemplateByIdQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "EditDocumentTemplateCommand": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CreateVehicleCommand"
+            "$ref": "#/components/schemas/CreateDocumentTemplateCommand"
           },
           {
             "type": "object",
@@ -251,7 +331,8 @@
           }
         ]
       },
-      "RemoveVehicleCommand": {
+
+      "RemoveDocumentTemplateCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

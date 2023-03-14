@@ -91,17 +91,21 @@ export class CustomerClient implements ICustomerClient {
     }
 }
 
-export interface IVehicleClient {
-    createVehicle(request: CreateVehicleCommand): Observable<FileResponse>;
-    getVehicles(request: GetVehicleQuery): Observable<FileResponse>;
-    editVehicle(request: EditVehicleCommand): Observable<FileResponse>;
-    deleteVehicle(request: RemoveVehicleCommand): Observable<FileResponse>;
+
+export interface IDocumentTemplateClient {
+    createDocumentTemplate(request: CreateDocumentTemplateCommand): Observable<FileResponse>;
+    getDocumentTemplates(searchText: string | null | undefined): Observable<FileResponse>;
+    getDocumentTemplateById(request: GetDocumentTemplateByIdQuery): Observable<FileResponse>;
+    editDocumentTemplate(request: EditDocumentTemplateCommand): Observable<FileResponse>;
+    deleteDocumentTemplate(request: RemoveDocumentTemplateCommand): Observable<FileResponse>;
 }
 
 @Injectable({
     providedIn: 'root'
 })
-export class VehicleClient implements IVehicleClient {
+
+export class DocumentTemplateClient implements IDocumentTemplateClient {
+
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -111,8 +115,10 @@ export class VehicleClient implements IVehicleClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createVehicle(request: CreateVehicleCommand) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Vehicle/AddVehicle";
+
+    createDocumentTemplate(request: CreateDocumentTemplateCommand) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/DocumentTemplate/AddDocumentTemplate";
+
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -128,11 +134,13 @@ export class VehicleClient implements IVehicleClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateVehicle(response_);
+
+            return this.processCreateDocumentTemplate(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateVehicle(<any>response_);
+                    return this.processCreateDocumentTemplate(<any>response_);
+
                 } catch (e) {
                     return <Observable<FileResponse>><any>_observableThrow(e);
                 }
@@ -141,7 +149,9 @@ export class VehicleClient implements IVehicleClient {
         }));
     }
 
-    protected processCreateVehicle(response: HttpResponseBase): Observable<FileResponse> {
+
+    protected processCreateDocumentTemplate(response: HttpResponseBase): Observable<FileResponse> {
+
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -161,8 +171,58 @@ export class VehicleClient implements IVehicleClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
-    getVehicles(request: GetVehicleQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Vehicle/ViewVehicles";
+
+    getDocumentTemplates(searchText: string | null | undefined) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/DocumentTemplate/ViewDocumentTemplates?";
+        if (searchText !== undefined && searchText !== null)
+            url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDocumentTemplates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDocumentTemplates(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDocumentTemplates(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    getDocumentTemplateById(request: GetDocumentTemplateByIdQuery) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/DocumentTemplate/ViewDocumentTemplateById";
+
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -178,11 +238,13 @@ export class VehicleClient implements IVehicleClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetVehicles(response_);
+
+            return this.processGetDocumentTemplateById(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetVehicles(<any>response_);
+                    return this.processGetDocumentTemplateById(<any>response_);
+
                 } catch (e) {
                     return <Observable<FileResponse>><any>_observableThrow(e);
                 }
@@ -191,7 +253,9 @@ export class VehicleClient implements IVehicleClient {
         }));
     }
 
-    protected processGetVehicles(response: HttpResponseBase): Observable<FileResponse> {
+
+    protected processGetDocumentTemplateById(response: HttpResponseBase): Observable<FileResponse> {
+
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -211,8 +275,10 @@ export class VehicleClient implements IVehicleClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
-    editVehicle(request: EditVehicleCommand) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Vehicle/EditVehicle";
+
+    editDocumentTemplate(request: EditDocumentTemplateCommand) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/DocumentTemplate/EditDocumentTemplate";
+
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -228,11 +294,13 @@ export class VehicleClient implements IVehicleClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processEditVehicle(response_);
+
+            return this.processEditDocumentTemplate(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processEditVehicle(<any>response_);
+                    return this.processEditDocumentTemplate(<any>response_);
+
                 } catch (e) {
                     return <Observable<FileResponse>><any>_observableThrow(e);
                 }
@@ -241,7 +309,9 @@ export class VehicleClient implements IVehicleClient {
         }));
     }
 
-    protected processEditVehicle(response: HttpResponseBase): Observable<FileResponse> {
+
+    protected processEditDocumentTemplate(response: HttpResponseBase): Observable<FileResponse> {
+
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -261,8 +331,10 @@ export class VehicleClient implements IVehicleClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
-    deleteVehicle(request: RemoveVehicleCommand) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Vehicle/DeleteVehicle";
+
+    deleteDocumentTemplate(request: RemoveDocumentTemplateCommand) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/DocumentTemplate/DeleteDocumentTemplate";
+
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -278,11 +350,13 @@ export class VehicleClient implements IVehicleClient {
         };
 
         return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeleteVehicle(response_);
+
+            return this.processDeleteDocumentTemplate(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDeleteVehicle(<any>response_);
+                    return this.processDeleteDocumentTemplate(<any>response_);
+
                 } catch (e) {
                     return <Observable<FileResponse>><any>_observableThrow(e);
                 }
@@ -291,7 +365,9 @@ export class VehicleClient implements IVehicleClient {
         }));
     }
 
-    protected processDeleteVehicle(response: HttpResponseBase): Observable<FileResponse> {
+
+    protected processDeleteDocumentTemplate(response: HttpResponseBase): Observable<FileResponse> {
+
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -428,10 +504,15 @@ export interface ISendOtpToCustomerCommand {
     phoneNumber?: string | undefined;
 }
 
-export class CreateVehicleCommand implements ICreateVehicleCommand {
-    name?: string | undefined;
 
-    constructor(data?: ICreateVehicleCommand) {
+export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCommand {
+    name?: string | undefined;
+    documentTemplateTypeId?: number;
+    documentFileType?: DocumentFileType[] | undefined;
+    hasValidationDate?: boolean;
+
+    constructor(data?: ICreateDocumentTemplateCommand) {
+
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -443,12 +524,21 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
     init(_data?: any) {
         if (_data) {
             this.name = _data["name"];
+
+            this.documentTemplateTypeId = _data["documentTemplateTypeId"];
+            if (Array.isArray(_data["documentFileType"])) {
+                this.documentFileType = [] as any;
+                for (let item of _data["documentFileType"])
+                    this.documentFileType!.push(item);
+            }
+            this.hasValidationDate = _data["hasValidationDate"];
         }
     }
 
-    static fromJS(data: any): CreateVehicleCommand {
+    static fromJS(data: any): CreateDocumentTemplateCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateVehicleCommand();
+        let result = new CreateDocumentTemplateCommand();
+
         result.init(data);
         return result;
     }
@@ -456,17 +546,38 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+
+        data["documentTemplateTypeId"] = this.documentTemplateTypeId;
+        if (Array.isArray(this.documentFileType)) {
+            data["documentFileType"] = [];
+            for (let item of this.documentFileType)
+                data["documentFileType"].push(item);
+        }
+        data["hasValidationDate"] = this.hasValidationDate;
+
         return data; 
     }
 }
 
-export interface ICreateVehicleCommand {
+
+export interface ICreateDocumentTemplateCommand {
     name?: string | undefined;
+    documentTemplateTypeId?: number;
+    documentFileType?: DocumentFileType[] | undefined;
+    hasValidationDate?: boolean;
 }
 
-export class GetVehicleQuery implements IGetVehicleQuery {
+export enum DocumentFileType {
+    PDF = 0,
+    Word = 1,
+    TxtFile = 2,
+}
 
-    constructor(data?: IGetVehicleQuery) {
+export class GetDocumentTemplateByIdQuery implements IGetDocumentTemplateByIdQuery {
+    id?: number;
+
+    constructor(data?: IGetDocumentTemplateByIdQuery) {
+
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -476,28 +587,39 @@ export class GetVehicleQuery implements IGetVehicleQuery {
     }
 
     init(_data?: any) {
+
+        if (_data) {
+            this.id = _data["id"];
+        }
     }
 
-    static fromJS(data: any): GetVehicleQuery {
+    static fromJS(data: any): GetDocumentTemplateByIdQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new GetVehicleQuery();
+        let result = new GetDocumentTemplateByIdQuery();
+
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+
+        data["id"] = this.id;
+
         return data; 
     }
 }
 
-export interface IGetVehicleQuery {
+
+export interface IGetDocumentTemplateByIdQuery {
+    id?: number;
 }
 
-export class EditVehicleCommand extends CreateVehicleCommand implements IEditVehicleCommand {
+export class EditDocumentTemplateCommand extends CreateDocumentTemplateCommand implements IEditDocumentTemplateCommand {
     id?: number;
 
-    constructor(data?: IEditVehicleCommand) {
+    constructor(data?: IEditDocumentTemplateCommand) {
+
         super(data);
     }
 
@@ -508,9 +630,11 @@ export class EditVehicleCommand extends CreateVehicleCommand implements IEditVeh
         }
     }
 
-    static fromJS(data: any): EditVehicleCommand {
+
+    static fromJS(data: any): EditDocumentTemplateCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new EditVehicleCommand();
+        let result = new EditDocumentTemplateCommand();
+
         result.init(data);
         return result;
     }
@@ -523,14 +647,16 @@ export class EditVehicleCommand extends CreateVehicleCommand implements IEditVeh
     }
 }
 
-export interface IEditVehicleCommand extends ICreateVehicleCommand {
+
+export interface IEditDocumentTemplateCommand extends ICreateDocumentTemplateCommand {
     id?: number;
 }
 
-export class RemoveVehicleCommand implements IRemoveVehicleCommand {
+export class RemoveDocumentTemplateCommand implements IRemoveDocumentTemplateCommand {
     id?: number;
 
-    constructor(data?: IRemoveVehicleCommand) {
+    constructor(data?: IRemoveDocumentTemplateCommand) {
+
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -545,9 +671,11 @@ export class RemoveVehicleCommand implements IRemoveVehicleCommand {
         }
     }
 
-    static fromJS(data: any): RemoveVehicleCommand {
+
+    static fromJS(data: any): RemoveDocumentTemplateCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RemoveVehicleCommand();
+        let result = new RemoveDocumentTemplateCommand();
+
         result.init(data);
         return result;
     }
@@ -559,7 +687,9 @@ export class RemoveVehicleCommand implements IRemoveVehicleCommand {
     }
 }
 
-export interface IRemoveVehicleCommand {
+
+export interface IRemoveDocumentTemplateCommand {
+
     id?: number;
 }
 

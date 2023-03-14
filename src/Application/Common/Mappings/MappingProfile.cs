@@ -35,7 +35,8 @@ public class MappingProfile : Profile
         CreateMap<Form, FormDto>();
         CreateMap<Question, QuestionDto>();
         CreateMap<DocumentTemplate, GetDocumentTemplateDto>();
-        //CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
+        CreateMap<DocumentTemplateFileType, DocumentTemplateFileTypeDto>();
+        CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
         CreateMap<EditDocumentTemplateCommand, DocumentTemplate>();
 
     }
