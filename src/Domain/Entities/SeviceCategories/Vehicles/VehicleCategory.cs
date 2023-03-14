@@ -19,4 +19,5 @@ public class VehicleCategory : LightBaseEntity<int>, IEntity<int>
     [ForeignKey("ServiceCategory")]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; } 
+    public List<CategoryVehicleDocuments> VehicleDocuments { get; set; }
 }

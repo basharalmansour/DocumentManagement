@@ -1,6 +1,7 @@
-﻿ 
+﻿using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Polly;
 
 namespace CleanArchitecture.Infrastructure.Persistence;
 
@@ -24,29 +25,27 @@ public static class ApplicationDbContextSeed
         }
     }
 
-    public static async Task SeedSampleDataAsync(ApplicationDbContext context)
+    public static async Task SeedDocumentTypeDataAsync(ApplicationDbContext context)
     {
-        //// Seed, if necessary
-        //if (!context.TodoLists.Any())
-        //{
-        //    context.TodoLists.Add(new TodoList
-        //    {
-        //        Title = "Shopping",
-        //        Colour = Colour.Blue,
-        //        Items =
-        //            {
-        //                new TodoItem { Title = "Apples", Done = true },
-        //                new TodoItem { Title = "Milk", Done = true },
-        //                new TodoItem { Title = "Bread", Done = true },
-        //                new TodoItem { Title = "Toilet paper" },
-        //                new TodoItem { Title = "Pasta" },
-        //                new TodoItem { Title = "Tissues" },
-        //                new TodoItem { Title = "Tuna" },
-        //                new TodoItem { Title = "Water" }
-        //            }
-        //    });
-
-        //    await context.SaveChangesAsync();
-        //}
+        if (!context.DocumentTemplateTypes.Any())
+        {
+            context.DocumentTemplateTypes.Add(new DocumentTemplateType
+            {
+                Name = "General"
+            });
+            context.DocumentTemplateTypes.Add(new DocumentTemplateType
+            {
+                Name = "Personnel"
+            });
+            context.DocumentTemplateTypes.Add(new DocumentTemplateType
+            {
+                Name = "Vehicle"
+            });
+            context.DocumentTemplateTypes.Add(new DocumentTemplateType
+            {
+                Name = "Special Process"
+            });
+            await context.SaveChangesAsync();
+        }
     }
 }
