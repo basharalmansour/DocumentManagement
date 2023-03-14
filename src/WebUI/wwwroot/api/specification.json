@@ -87,18 +87,53 @@
           "Vehicle"
         ],
         "operationId": "Vehicle_GetVehicles",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetVehicleQuery"
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/GetVehicleQuery"
+                }
+              ]
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
               }
             }
-          },
-          "required": true,
-          "x-position": 1
-        },
+          }
+        }
+      }
+    },
+    "/api/Vehicle/GetVehicle": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "operationId": "Vehicle_GetVehicleById",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",

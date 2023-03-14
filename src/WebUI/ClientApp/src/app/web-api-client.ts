@@ -93,7 +93,8 @@ export class CustomerClient implements ICustomerClient {
 
 export interface IVehicleClient {
     createVehicle(request: CreateVehicleCommand): Observable<FileResponse>;
-    getVehicles(request: GetVehicleQuery): Observable<FileResponse>;
+    getVehicles(request: GetVehicleQuery | null | undefined): Observable<FileResponse>;
+    getVehicleById(id: number | undefined): Observable<FileResponse>;
     editVehicle(request: EditVehicleCommand): Observable<FileResponse>;
     deleteVehicle(request: RemoveVehicleCommand): Observable<FileResponse>;
 }
@@ -161,18 +162,16 @@ export class VehicleClient implements IVehicleClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
-    getVehicles(request: GetVehicleQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Vehicle/ViewVehicles";
+    getVehicles(request: GetVehicleQuery | null | undefined) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Vehicle/ViewVehicles?";
+        if (request !== undefined && request !== null)
+            url_ += "request=" + encodeURIComponent("" + request) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(request);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             })
         };
@@ -192,6 +191,56 @@ export class VehicleClient implements IVehicleClient {
     }
 
     protected processGetVehicles(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    getVehicleById(id: number | undefined) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Vehicle/GetVehicle?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetVehicleById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetVehicleById(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetVehicleById(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :

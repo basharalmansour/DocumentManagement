@@ -31,7 +31,7 @@ public class GetVehicleQueryHandler : IRequestHandler<GetVehicleQuery, List<Vehi
 
     public async Task<List<VehicleDto>> Handle(GetVehicleQuery request, CancellationToken cancellationToken)
     {
-        var vehicles = await _applicationDbContext.Vehicles.Where(x => x.IsDeleted == true).ToListAsync();
+        var vehicles = await _applicationDbContext.Vehicles.Where(x => x.IsDeleted == false).ToListAsync();
         var vehiclesDto = _mapper.Map<List<VehicleDto>>(vehicles);
         return vehiclesDto;
     }
