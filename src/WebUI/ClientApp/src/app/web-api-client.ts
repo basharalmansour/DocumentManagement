@@ -91,6 +91,7 @@ export class CustomerClient implements ICustomerClient {
     }
 }
 
+
 export interface IDocumentTemplateClient {
     createDocumentTemplate(request: CreateDocumentTemplateCommand): Observable<FileResponse>;
     getDocumentTemplates(searchText: string | null | undefined): Observable<FileResponse>;
@@ -102,7 +103,9 @@ export interface IDocumentTemplateClient {
 @Injectable({
     providedIn: 'root'
 })
+
 export class DocumentTemplateClient implements IDocumentTemplateClient {
+
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -112,8 +115,10 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
+
     createDocumentTemplate(request: CreateDocumentTemplateCommand) : Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/AddDocumentTemplate";
+
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -129,11 +134,13 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+
             return this.processCreateDocumentTemplate(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processCreateDocumentTemplate(<any>response_);
+
                 } catch (e) {
                     return <Observable<FileResponse>><any>_observableThrow(e);
                 }
@@ -142,7 +149,9 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         }));
     }
 
+
     protected processCreateDocumentTemplate(response: HttpResponseBase): Observable<FileResponse> {
+
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -161,6 +170,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         }
         return _observableOf<FileResponse>(<any>null);
     }
+
 
     getDocumentTemplates(searchText: string | null | undefined) : Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/ViewDocumentTemplates?";
@@ -212,6 +222,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
 
     getDocumentTemplateById(request: GetDocumentTemplateByIdQuery) : Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/ViewDocumentTemplateById";
+
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -227,11 +238,13 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+
             return this.processGetDocumentTemplateById(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processGetDocumentTemplateById(<any>response_);
+
                 } catch (e) {
                     return <Observable<FileResponse>><any>_observableThrow(e);
                 }
@@ -240,7 +253,9 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         }));
     }
 
+
     protected processGetDocumentTemplateById(response: HttpResponseBase): Observable<FileResponse> {
+
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -260,8 +275,10 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
+
     editDocumentTemplate(request: EditDocumentTemplateCommand) : Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/EditDocumentTemplate";
+
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -277,11 +294,13 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+
             return this.processEditDocumentTemplate(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processEditDocumentTemplate(<any>response_);
+
                 } catch (e) {
                     return <Observable<FileResponse>><any>_observableThrow(e);
                 }
@@ -290,7 +309,9 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         }));
     }
 
+
     protected processEditDocumentTemplate(response: HttpResponseBase): Observable<FileResponse> {
+
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -310,8 +331,10 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
+
     deleteDocumentTemplate(request: RemoveDocumentTemplateCommand) : Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/DeleteDocumentTemplate";
+
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -327,11 +350,13 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         };
 
         return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+
             return this.processDeleteDocumentTemplate(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processDeleteDocumentTemplate(<any>response_);
+
                 } catch (e) {
                     return <Observable<FileResponse>><any>_observableThrow(e);
                 }
@@ -340,7 +365,9 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         }));
     }
 
+
     protected processDeleteDocumentTemplate(response: HttpResponseBase): Observable<FileResponse> {
+
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -477,6 +504,7 @@ export interface ISendOtpToCustomerCommand {
     phoneNumber?: string | undefined;
 }
 
+
 export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCommand {
     name?: string | undefined;
     documentTemplateTypeId?: number;
@@ -484,6 +512,7 @@ export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCom
     hasValidationDate?: boolean;
 
     constructor(data?: ICreateDocumentTemplateCommand) {
+
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -495,6 +524,7 @@ export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCom
     init(_data?: any) {
         if (_data) {
             this.name = _data["name"];
+
             this.documentTemplateTypeId = _data["documentTemplateTypeId"];
             if (Array.isArray(_data["documentFileType"])) {
                 this.documentFileType = [] as any;
@@ -508,6 +538,7 @@ export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCom
     static fromJS(data: any): CreateDocumentTemplateCommand {
         data = typeof data === 'object' ? data : {};
         let result = new CreateDocumentTemplateCommand();
+
         result.init(data);
         return result;
     }
@@ -515,6 +546,7 @@ export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCom
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+
         data["documentTemplateTypeId"] = this.documentTemplateTypeId;
         if (Array.isArray(this.documentFileType)) {
             data["documentFileType"] = [];
@@ -522,9 +554,11 @@ export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCom
                 data["documentFileType"].push(item);
         }
         data["hasValidationDate"] = this.hasValidationDate;
+
         return data; 
     }
 }
+
 
 export interface ICreateDocumentTemplateCommand {
     name?: string | undefined;
@@ -543,6 +577,7 @@ export class GetDocumentTemplateByIdQuery implements IGetDocumentTemplateByIdQue
     id?: number;
 
     constructor(data?: IGetDocumentTemplateByIdQuery) {
+
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -552,6 +587,7 @@ export class GetDocumentTemplateByIdQuery implements IGetDocumentTemplateByIdQue
     }
 
     init(_data?: any) {
+
         if (_data) {
             this.id = _data["id"];
         }
@@ -560,16 +596,20 @@ export class GetDocumentTemplateByIdQuery implements IGetDocumentTemplateByIdQue
     static fromJS(data: any): GetDocumentTemplateByIdQuery {
         data = typeof data === 'object' ? data : {};
         let result = new GetDocumentTemplateByIdQuery();
+
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+
         data["id"] = this.id;
+
         return data; 
     }
 }
+
 
 export interface IGetDocumentTemplateByIdQuery {
     id?: number;
@@ -579,6 +619,7 @@ export class EditDocumentTemplateCommand extends CreateDocumentTemplateCommand i
     id?: number;
 
     constructor(data?: IEditDocumentTemplateCommand) {
+
         super(data);
     }
 
@@ -589,9 +630,11 @@ export class EditDocumentTemplateCommand extends CreateDocumentTemplateCommand i
         }
     }
 
+
     static fromJS(data: any): EditDocumentTemplateCommand {
         data = typeof data === 'object' ? data : {};
         let result = new EditDocumentTemplateCommand();
+
         result.init(data);
         return result;
     }
@@ -604,6 +647,7 @@ export class EditDocumentTemplateCommand extends CreateDocumentTemplateCommand i
     }
 }
 
+
 export interface IEditDocumentTemplateCommand extends ICreateDocumentTemplateCommand {
     id?: number;
 }
@@ -612,6 +656,7 @@ export class RemoveDocumentTemplateCommand implements IRemoveDocumentTemplateCom
     id?: number;
 
     constructor(data?: IRemoveDocumentTemplateCommand) {
+
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -626,9 +671,11 @@ export class RemoveDocumentTemplateCommand implements IRemoveDocumentTemplateCom
         }
     }
 
+
     static fromJS(data: any): RemoveDocumentTemplateCommand {
         data = typeof data === 'object' ? data : {};
         let result = new RemoveDocumentTemplateCommand();
+
         result.init(data);
         return result;
     }
@@ -640,7 +687,9 @@ export class RemoveDocumentTemplateCommand implements IRemoveDocumentTemplateCom
     }
 }
 
+
 export interface IRemoveDocumentTemplateCommand {
+
     id?: number;
 }
 

@@ -48,18 +48,22 @@
         }
       }
     },
+
     "/api/DocumentTemplate/AddDocumentTemplate": {
       "post": {
         "tags": [
           "DocumentTemplate"
         ],
         "operationId": "DocumentTemplate_CreateDocumentTemplate",
+
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
+
                 "$ref": "#/components/schemas/CreateDocumentTemplateCommand"
+
               }
             }
           },
@@ -81,6 +85,7 @@
         }
       }
     },
+
     "/api/DocumentTemplate/ViewDocumentTemplates": {
       "get": {
         "tags": [
@@ -119,12 +124,15 @@
           "DocumentTemplate"
         ],
         "operationId": "DocumentTemplate_GetDocumentTemplateById",
+
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
+
                 "$ref": "#/components/schemas/GetDocumentTemplateByIdQuery"
+
               }
             }
           },
@@ -146,6 +154,7 @@
         }
       }
     },
+
     "/api/DocumentTemplate/EditDocumentTemplate": {
       "post": {
         "tags": [
@@ -157,6 +166,7 @@
           "content": {
             "application/json": {
               "schema": {
+
                 "$ref": "#/components/schemas/EditDocumentTemplateCommand"
               }
             }
@@ -179,6 +189,7 @@
         }
       }
     },
+
     "/api/DocumentTemplate/DeleteDocumentTemplate": {
       "delete": {
         "tags": [
@@ -190,6 +201,7 @@
           "content": {
             "application/json": {
               "schema": {
+
                 "$ref": "#/components/schemas/RemoveDocumentTemplateCommand"
               }
             }
@@ -252,6 +264,7 @@
           }
         }
       },
+
       "CreateDocumentTemplateCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -259,6 +272,7 @@
           "name": {
             "type": "string",
             "nullable": true
+
           },
           "documentTemplateTypeId": {
             "type": "integer",
@@ -317,6 +331,7 @@
           }
         ]
       },
+
       "RemoveDocumentTemplateCommand": {
         "type": "object",
         "additionalProperties": false,
