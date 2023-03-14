@@ -104,11 +104,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
         var DateTimeNow = DateTime.Now;
         foreach (var entry in ChangeTracker.Entries<ISoftDeletable>())
         {
-            switch (entry.State)
+            switch (entry.Entity.IsDeleted)
             {
-                case EntityState.Deleted:
+                case true:
                     entry.Entity.DeletedDate = DateTimeNow;
-                    entry.Entity.IsDeleted = true;
                     entry.State = EntityState.Modified;
                     entry.Entity.DeletedBy = _currentUserService.UserId ?? throw new ArgumentNullException(nameof(_currentUserService.UserId));
                     break;
