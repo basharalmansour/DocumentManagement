@@ -10,18 +10,18 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.DocumentsTemplate.Commands;
-public class RemoveDocumentTemplate : IRequest<bool>
+public class RemoveDocumentTemplateCommand : IRequest<bool>
 {
     public int Id { get; set; }
 }
-public class RemoveDocumentTemplateHandler : IRequestHandler<RemoveDocumentTemplate,bool>
+public class RemoveDocumentTemplateHandler : IRequestHandler<RemoveDocumentTemplateCommand,bool>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     public RemoveDocumentTemplateHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
     {
         _applicationDbContext = applicationDbContext;
     }
-    public async Task<bool> Handle(RemoveDocumentTemplate request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(RemoveDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
         var deletedDocumentTemplate= _applicationDbContext.DocumentTemplates.FirstOrDefault(x => x.Id == request.Id);
         deletedDocumentTemplate.IsDeleted = true;

@@ -14,6 +14,7 @@ public class DocumentTemplate : BaseEntity<int>, ISoftDeletable, IAuditable, IEn
     [StringLength(StringLengths.MediumString)]
     public string Name { get; set; }
     public bool HasValidationDate { get; set; }
+    public List<DocumentTemplateFileType> DocumentTemplateFileTypes { get; set; }
 
     [ForeignKey("DocumentTemplateType")]
     public int DocumentTemplateTypeId { get; set; }
