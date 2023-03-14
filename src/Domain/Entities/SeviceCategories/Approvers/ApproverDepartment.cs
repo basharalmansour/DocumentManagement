@@ -14,5 +14,5 @@ public class ApproverDepartment : LightBaseEntity<int>, IEntity<int>
     [ForeignKey("ServiceCategoryApprovment")]
     public int ServiceCategoryApprovmentId { get; set; }
     public ServiceCategoryApprovment ServiceCategoryApprovment { get; set; }
-    public int DepartmentId { get; set; }
+    public int DepartmentId { get; set; } 
 }

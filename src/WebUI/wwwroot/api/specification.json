@@ -48,18 +48,22 @@
         }
       }
     },
-    "/api/UserGroup/AddUserGroup": {
+
+    "/api/DocumentTemplate/AddDocumentTemplate": {
       "post": {
         "tags": [
-          "UserGroup"
+          "DocumentTemplate"
         ],
-        "operationId": "UserGroup_CreateUserGroup",
+        "operationId": "DocumentTemplate_CreateDocumentTemplate",
+
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserGroupCommand"
+
+                "$ref": "#/components/schemas/CreateDocumentTemplateCommand"
+
               }
             }
           },
@@ -81,23 +85,20 @@
         }
       }
     },
-    "/api/UserGroup/ViewUserGroups": {
+
+    "/api/DocumentTemplate/ViewDocumentTemplates": {
       "get": {
         "tags": [
-          "UserGroup"
+          "DocumentTemplate"
         ],
-        "operationId": "UserGroup_GetUserGroups",
+        "operationId": "DocumentTemplate_GetDocumentTemplates",
         "parameters": [
           {
-            "name": "request",
+            "name": "SearchText",
             "in": "query",
             "schema": {
-              "nullable": true,
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/GetUserGroupQuery"
-                }
-              ]
+              "type": "string",
+              "nullable": true
             },
             "x-position": 1
           }
@@ -117,50 +118,21 @@
         }
       }
     },
-    "/api/UserGroup/ViewUserGroupById": {
+    "/api/DocumentTemplate/ViewDocumentTemplateById": {
       "get": {
         "tags": [
-          "UserGroup"
+          "DocumentTemplate"
         ],
-        "operationId": "UserGroup_GetUserGroupById",
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/UserGroup/EditUserGroup": {
-      "post": {
-        "tags": [
-          "UserGroup"
-        ],
-        "operationId": "UserGroup_EditUserGroup",
+        "operationId": "DocumentTemplate_GetDocumentTemplateById",
+
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EditUserGroupCommand"
+
+                "$ref": "#/components/schemas/GetDocumentTemplateByIdQuery"
+
               }
             }
           },
@@ -182,18 +154,55 @@
         }
       }
     },
-    "/api/UserGroup/DeleteUserGroup": {
+
+    "/api/DocumentTemplate/EditDocumentTemplate": {
+      "post": {
+        "tags": [
+          "DocumentTemplate"
+        ],
+        "operationId": "DocumentTemplate_EditDocumentTemplate",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+
+                "$ref": "#/components/schemas/EditDocumentTemplateCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/DocumentTemplate/DeleteDocumentTemplate": {
       "delete": {
         "tags": [
-          "UserGroup"
+          "DocumentTemplate"
         ],
-        "operationId": "UserGroup_DeleteUserGroup",
+        "operationId": "DocumentTemplate_DeleteDocumentTemplate",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemoveUserGroupCommand"
+
+                "$ref": "#/components/schemas/RemoveDocumentTemplateCommand"
               }
             }
           },
@@ -255,32 +264,60 @@
           }
         }
       },
-      "CreateUserGroupCommand": {
+
+      "CreateDocumentTemplateCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "name": {
             "type": "string",
             "nullable": true
+
           },
-          "personnelIds": {
+          "documentTemplateTypeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "documentFileType": {
             "type": "array",
             "nullable": true,
             "items": {
-              "type": "integer",
-              "format": "int32"
+              "$ref": "#/components/schemas/DocumentFileType"
             }
+          },
+          "hasValidationDate": {
+            "type": "boolean"
           }
         }
       },
-      "GetUserGroupQuery": {
-        "type": "object",
-        "additionalProperties": false
+      "DocumentFileType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "PDF",
+          "Word",
+          "TxtFile"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
       },
-      "EditUserGroupCommand": {
+      "GetDocumentTemplateByIdQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "EditDocumentTemplateCommand": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CreateUserGroupCommand"
+            "$ref": "#/components/schemas/CreateDocumentTemplateCommand"
           },
           {
             "type": "object",
@@ -294,7 +331,8 @@
           }
         ]
       },
-      "RemoveUserGroupCommand": {
+
+      "RemoveDocumentTemplateCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

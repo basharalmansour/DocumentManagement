@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +27,7 @@ public class GetDocumentTemplateByIdHandler : IRequestHandler<GetDocumentTemplat
     }
     public async Task<GetDocumentTemplateDto> Handle(GetDocumentTemplateByIdQuery request, CancellationToken cancellationToken)
     {
-        var document = await _applicationDbContext.DocumentTemplates.FirstOrDefaultAsync(x=>x.Id==request.Id);
+        var document = await _applicationDbContext.DocumentTemplates.Include(x=>x.DocumentTemplateFileTypes).FirstOrDefaultAsync(x=>x.Id==request.Id);
         var documentDto = _mapper.Map<GetDocumentTemplateDto>(document);
         return documentDto;
     }
