@@ -12,5 +12,5 @@ public class CategorySpecialRules : LightBaseEntity<int>, IEntity<int>
 
     [ForeignKey ("SpecialRule")]
     public int SpecialRuleId { get; set; }
-    public SpecialRule SpecialRule { get; set; }
+    public SpecialRule SpecialRule { get; set; } 
 }

@@ -1,5 +1,13 @@
 using System.Reflection;
 using AutoMapper;
+using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
+using CleanArchitecture.Application.Common.Dtos.ServiceCategories.PresenceCategoryDtos;
+using CleanArchitecture.Application.ServiceCategories.Commands;
+using CleanArchitecture.Domain.Entities.SeviceCategories;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 using CleanArchitecture.Application.Common.Dtos.PresenceGroups;
 using CleanArchitecture.Application.PresenceGroups.Commands;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
@@ -22,10 +30,40 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
+        CreateMap<ServiceCategory, GetServiceCategoryDto>();
+        CreateMap<CategorySpecialRules, CategorySpecialRulesDto>();
+
+        CreateMap<ServiceCategoryArea , ServiceCategoryAreaDto>();
+        CreateMap<ServiceCategoryBlock, ServiceCategoryBlockDto>();
+        CreateMap<ServiceCategoryBrand, ServiceCategoryBrandDto>();
+        CreateMap<ServiceCategoryCompany, ServiceCategoryCompanyDto>();
+        CreateMap<ServiceCategorySite , ServiceCategorySiteDto>();
+        CreateMap<ServiceCategoryUnit, ServiceCategoryUnitDto>();
+        CreateMap<ServiceCategoryZone, ServiceCategoryZoneDto>();
+
+        CreateMap<CreateServiceCategoryCommand, ServiceCategory>()
+            .ForMember(des => des.ServiceCategoryAreas, opt => opt.MapFrom(src=>src.ServiceCategoryAreas.Select(x => new ServiceCategoryArea { AreaId = x })))
+            .ForMember(des => des.ServiceCategoryBlocks, opt => opt.MapFrom(src => src.ServiceCategoryBlocks.Select(x => new ServiceCategoryBlock { BlockId = x })))
+            .ForMember(des => des.ServiceCategoryBrands, opt => opt.MapFrom(src => src.ServiceCategoryBrands.Select(x => new ServiceCategoryBrand { BrandId = x })))
+            .ForMember(des => des.ServiceCategoryCompanies, opt => opt.MapFrom(src => src.ServiceCategoryCompanies.Select(x => new ServiceCategoryCompany { CompanyId = x })))
+            .ForMember(des => des.ServiceCategorySites, opt => opt.MapFrom(src => src.ServiceCategorySites.Select(x => new ServiceCategorySite { SiteId = x })))
+            .ForMember(des => des.ServiceCategoryUnits , opt => opt.MapFrom(src => src.ServiceCategoryUnits.Select(x => new ServiceCategoryUnit { UnitId = x })))
+            .ForMember(des => des.ServiceCategoryZones, opt => opt.MapFrom(src => src.ServiceCategoryZones.Select(x => new ServiceCategoryZone { ZoneId = x })));
         CreateMap<PresenceGroup, PresenceGroupDto>();
 
+        CreateMap<VehicleCategory, VehicleCategoryDto>();
+        CreateMap<CategoryVehicleDocuments, CategoryVehicleDocumentsDto>();
+        CreateMap<CategoryDocument, CategoryDocumentDto>();
+
+        CreateMap<VehicleCategoryDto,VehicleCategory >();
+        CreateMap<CategoryVehicleDocumentsDto,CategoryVehicleDocuments >();
+        CreateMap<CategoryDocumentDto,CategoryDocument >();
+
+        CreateMap<CategorySpecialRulesDto,CategorySpecialRules >();
+
+        CreateMap<DocumentCategoryDto, CategoryDocument>();
         CreateMap<CreatePresenceGroupCommand, PresenceGroup>()
-            .ForMember(des=>des.PresenceGroupAreas , opt=>opt.MapFrom(src=>src.PresenceGroupAreas.Select(x=>new PresenceGroupArea { AreaId=x}).ToList() ))
+            .ForMember(des => des.PresenceGroupAreas, opt => opt.MapFrom(src => src.PresenceGroupAreas.Select(x => new PresenceGroupArea { AreaId = x }).ToList()))
             .ForMember(des => des.PresenceGroupBlocks, opt => opt.MapFrom(src => src.PresenceGroupBlocks.Select(x => new PresenceGroupBlock { BlockId = x }).ToList()))
             .ForMember(des => des.PresenceGroupBrands, opt => opt.MapFrom(src => src.PresenceGroupBrands.Select(x => new PresenceGroupBrand { BrandId = x }).ToList()))
             .ForMember(des => des.PresenceGroupCompanies, opt => opt.MapFrom(src => src.presenceGroupCompanies.Select(x => new PresenceGroupCompany { CompanyId = x }).ToList()))
@@ -35,8 +73,6 @@ public class MappingProfile : Profile
         CreateMap<Vehicle, VehicleDto>();
         CreateMap<CreateVehicleCommand, Vehicle>();
         CreateMap<EditVehicleCommand, Vehicle>();
-
-
         CreateMap<CreateUserGroupCommand, UserGroup>();
         CreateMap<int, UserGroupPersonnel>()
             .ForMember(to => to.Id, opt => opt.MapFrom(from => from));
@@ -51,7 +87,6 @@ public class MappingProfile : Profile
         CreateMap<DocumentTemplateFileType, DocumentTemplateFileTypeDto>();
         CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
         CreateMap<EditDocumentTemplateCommand, DocumentTemplate>();
-
         CreateMap<PresenceGroupArea, PresenceGroupAreaDto>();
         CreateMap<PresenceGroupBlock, PresenceGroupBlockDto>();
         CreateMap<PresenceGroupBrand, PresenceGroupBrandDto>();
