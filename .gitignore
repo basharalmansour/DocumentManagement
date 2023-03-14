@@ -238,3 +238,4 @@ _Pvt_Extensions
 src/WebUI/ClientApp/package-lock.json
 /src/WebUI/Logs
 /src/Infrastructure/Migrations
+/src/WebUI/ClientApp/src/app/web-api-client.ts

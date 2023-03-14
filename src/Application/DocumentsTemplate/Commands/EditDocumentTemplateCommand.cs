@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
@@ -31,11 +32,9 @@ public class EditDocumentTemplateCommandHandler : IRequestHandler<EditDocumentTe
 
     public async Task<int> Handle(EditDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
-        var documentTemplate = _applicationDbContext.DocumentTemplates.FirstOrDefault(x => x.Id == request.Id & x.IsDeleted == false);
-        documentTemplate.DocumentTemplateFileTypes.Clear();
+        var documentTemplate = _applicationDbContext.DocumentTemplates.Include(x=>x.DocumentTemplateFileTypes).FirstOrDefault(x => x.Id == request.Id & x.IsDeleted == false);
         _mapper.Map(request, documentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return documentTemplate.Id;
-        
     }
 }
