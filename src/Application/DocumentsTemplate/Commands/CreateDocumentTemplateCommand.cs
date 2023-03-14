@@ -17,7 +17,7 @@ public class CreateDocumentTemplateCommand : IRequest<int>
 {
     public string Name { get; set; }
     public int DocumentTemplateTypeId { get; set; }
-    public List<DocumentFileType> DocumentFileType { get; set; }
+    public List<DocumentFileType> DocumentTemplateFileTypes { get; set; }
     public bool HasValidationDate { get; set; }
 }
 
