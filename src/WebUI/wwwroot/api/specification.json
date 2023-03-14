@@ -48,18 +48,22 @@
         }
       }
     },
-    "/api/Form/AddForm": {
+
+    "/api/DocumentTemplate/AddDocumentTemplate": {
       "post": {
         "tags": [
-          "Form"
+          "DocumentTemplate"
         ],
-        "operationId": "Form_CreateForm",
+        "operationId": "DocumentTemplate_CreateDocumentTemplate",
+
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateFormCommnad"
+
+                "$ref": "#/components/schemas/CreateDocumentTemplateCommand"
+
               }
             }
           },
@@ -81,24 +85,24 @@
         }
       }
     },
-    "/api/Form/ViewForms": {
+
+    "/api/DocumentTemplate/ViewDocumentTemplates": {
       "get": {
         "tags": [
-          "Form"
+          "DocumentTemplate"
         ],
-        "operationId": "Form_GetForms",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetFormsQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
+        "operationId": "DocumentTemplate_GetDocumentTemplates",
+        "parameters": [
+          {
+            "name": "SearchText",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -114,18 +118,21 @@
         }
       }
     },
-    "/api/Form/ViewFormById": {
+    "/api/DocumentTemplate/ViewDocumentTemplateById": {
       "get": {
         "tags": [
-          "Form"
+          "DocumentTemplate"
         ],
-        "operationId": "Form_GetFormById",
+        "operationId": "DocumentTemplate_GetDocumentTemplateById",
+
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetFormByIdQuery"
+
+                "$ref": "#/components/schemas/GetDocumentTemplateByIdQuery"
+
               }
             }
           },
@@ -147,18 +154,20 @@
         }
       }
     },
-    "/api/Form/EditForm": {
+
+    "/api/DocumentTemplate/EditDocumentTemplate": {
       "post": {
         "tags": [
-          "Form"
+          "DocumentTemplate"
         ],
-        "operationId": "Form_EditForm",
+        "operationId": "DocumentTemplate_EditDocumentTemplate",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EditFormCommand"
+
+                "$ref": "#/components/schemas/EditDocumentTemplateCommand"
               }
             }
           },
@@ -180,18 +189,20 @@
         }
       }
     },
-    "/api/Form/DeleteForm": {
+
+    "/api/DocumentTemplate/DeleteDocumentTemplate": {
       "delete": {
         "tags": [
-          "Form"
+          "DocumentTemplate"
         ],
-        "operationId": "Form_DeleteForm",
+        "operationId": "DocumentTemplate_DeleteDocumentTemplate",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemoveFormCommand"
+
+                "$ref": "#/components/schemas/RemoveDocumentTemplateCommand"
               }
             }
           },
@@ -253,105 +264,29 @@
           }
         }
       },
-      "CreateFormCommnad": {
+
+      "CreateDocumentTemplateCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "name": {
             "type": "string",
             "nullable": true
+
           },
-          "questions": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/AddQuestionRequest"
-            }
-          }
-        }
-      },
-      "AddQuestionRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "questionType": {
-            "$ref": "#/components/schemas/QuestionType"
-          },
-          "answersCount": {
-            "type": "integer"
-          },
-          "formId": {
+          "documentTemplateTypeId": {
             "type": "integer",
             "format": "int32"
           },
-          "dateQuestionOptions": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/DateQuestionOptionsDto"
-            }
-          },
-          "fileQuestionOptions": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/FileQuestionOptionsDto"
-            }
-          },
-          "multiChoicesQuestions": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/MultiChoicesQuestionDto"
-            }
-          }
-        }
-      },
-      "QuestionType": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "MultiAnswer",
-          "OneOfMany",
-          "DateAnswer",
-          "FileAnswer",
-          "TextAnswer"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ]
-      },
-      "DateQuestionOptionsDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "isMultiDate": {
-            "type": "boolean"
-          },
-          "questionId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "FileQuestionOptionsDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
           "documentFileType": {
-            "$ref": "#/components/schemas/DocumentFileType"
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/DocumentFileType"
+            }
           },
-          "questionId": {
-            "type": "integer",
-            "format": "int32"
+          "hasValidationDate": {
+            "type": "boolean"
           }
         }
       },
@@ -369,25 +304,7 @@
           2
         ]
       },
-      "MultiChoicesQuestionDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "choice": {
-            "type": "string",
-            "nullable": true
-          },
-          "questionId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "GetFormsQuery": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "GetFormByIdQuery": {
+      "GetDocumentTemplateByIdQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -397,10 +314,10 @@
           }
         }
       },
-      "EditFormCommand": {
+      "EditDocumentTemplateCommand": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CreateFormCommnad"
+            "$ref": "#/components/schemas/CreateDocumentTemplateCommand"
           },
           {
             "type": "object",
@@ -414,7 +331,8 @@
           }
         ]
       },
-      "RemoveFormCommand": {
+
+      "RemoveDocumentTemplateCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

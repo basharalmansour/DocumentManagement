@@ -8,6 +8,7 @@ using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities.UserGroups;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.UsersGroup.Commands;
 public class EditUserGroupCommand :CreateUserGroupCommand , IRequest<bool>
@@ -27,6 +28,15 @@ public class EditUserGroupCommandHandler : IRequestHandler<EditUserGroupCommand,
     public async Task<bool> Handle(EditUserGroupCommand request, CancellationToken cancellationToken)
     {
         var userGroup = _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.Id);
+
+        var newPresonnels = request.PersonnelIds.ToList();
+
+        foreach (var id in userGroup.Personnels.Select(x => x.PersonnelId))
+            if (newPresonnels.Any(x => x == id) == false)
+            {
+                var deletedPersonnelUserGroup = _applicationDbContext.UserGroupPersonnels.FirstOrDefault(x => x.PersonnelId == id);
+                _applicationDbContext.UserGroupPersonnels.Remove(deletedPersonnelUserGroup);
+            }
         _mapper.Map(userGroup , request);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

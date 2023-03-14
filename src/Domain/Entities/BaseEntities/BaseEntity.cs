@@ -20,5 +20,5 @@ public class BaseEntity<T> : LightBaseEntity<T> where T : IEquatable<T>
     public DateTime? LastModifiedDate { get; set; }
 
     [StringLength(StringLengths.ShortString)]
-    public string UniqueCode { get; set; }
+    public string UniqueCode { get; set; } 
 }
