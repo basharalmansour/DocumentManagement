@@ -136,7 +136,7 @@ public class Startup
             endpoints.MapRazorPages();
         });
 
-        //app.RegisterWithConsul(lifetime, Configuration);
+        app.RegisterWithConsul(lifetime, Configuration);
         RecurringJobs.UpdateOrderDetailStatusesOperation();
     }
 }
