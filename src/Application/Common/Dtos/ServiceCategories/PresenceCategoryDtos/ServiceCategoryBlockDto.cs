@@ -2,6 +2,6 @@
 
 public class ServiceCategoryBlockDto
 {
-    public int BlockId { get; set; }
+    public Guid BlockId { get; set; }
     public string Name { get; set; }
 }

@@ -12,6 +12,9 @@ using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
+using static StackExchange.Redis.Role;
+using CleanArchitecture.Domain.Entities.Documents;
 
 namespace CleanArchitecture.Application.ServiceCategories.Commands;
 
@@ -22,11 +25,12 @@ public class CreateServiceCategoryCommand : IRequest<int>
     public int MaxServiceDuration { get; set; }
     public TimeUnit ServiceDurationUnit { get; set; }
     public int MaxPersonnelCount { get; set; }
-    public int ParentServiceCategoryId { get; set; } 
-    public int ServiceCategoryApprovmentId { get; set; }
-    public List<CategorySpecialRulesDto> SpecialRules { get; set; }
-    public List<DocumentCategoryDto> Documents { get; set; }
-    public List<VehicleCategoryDto> Vehicles { get; set; }
+    public List<int> PersonnelDocuments { get; set; }
+    public int? ParentServiceCategoryId { get; set; } 
+    public CreateApprovementDto ServiceCategoryApprovement { get; set; }
+    public List<int> SpecialRules { get; set; }
+    public List<int> Documents { get; set; }
+    public List<CreateVehicleCategoryDto> Vehicles { get; set; }
 
     public List<int> ServiceCategoryAreas { get; set; }
     public List<Guid> ServiceCategoryBlocks { get; set; }
@@ -57,6 +61,7 @@ public class CreateServiceCategoryCommandHandler : IRequestHandler<CreateService
             request.MaxServiceDuration *= 8760;
         var serviceCategory = _mapper.Map<ServiceCategory>(request);
         _applicationDbContext.ServiceCategories.Add(serviceCategory);
+        
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return serviceCategory.Id;
     } 

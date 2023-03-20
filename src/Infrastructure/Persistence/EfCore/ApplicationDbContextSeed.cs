@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Domain.Entities.Documents;
+﻿using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
+using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Polly;
@@ -44,6 +45,21 @@ public static class ApplicationDbContextSeed
             context.DocumentTemplateTypes.Add(new DocumentTemplateType
             {
                 Name = "Special Process"
+            });
+            await context.SaveChangesAsync();
+        }
+    }
+    public static async Task SeedSpecialRulsDataAsync(ApplicationDbContext context)
+    {
+        if (!context.SpecialRules.Any())
+        {
+            context.SpecialRules.Add(new SpecialRule
+            {
+                Name = "FireWorks"
+            });
+            context.SpecialRules.Add(new SpecialRule
+            {
+                Name = "SoundWorks"
             });
             await context.SaveChangesAsync();
         }
