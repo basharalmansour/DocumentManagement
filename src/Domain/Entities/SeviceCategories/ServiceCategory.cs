@@ -34,6 +34,7 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     public List<CategorySpecialRules> SpecialRules { get; set; }
     public List<VehicleCategory> Vehicles { get; set; }
     public List<CategoryDocument> Documents { get; set; }
+    public List<CategoryPersonnelDocument> PersonnelDocuments { get; set; }
 
     [ForeignKey("ParentServiceCategory") ] 
     public int? ParentServiceCategoryId { get; set; } 
@@ -42,7 +43,7 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
 
     [ForeignKey("ServiceCategoryApprovment") ] 
     public int ServiceCategoryApprovmentId { get; set; } 
-    public ServiceCategoryApprovment ServiceCategoryApprovment { get; set; } 
+    public ServiceCategoryApprovment ServiceCategoryApprovement { get; set; } 
 
 
 }
