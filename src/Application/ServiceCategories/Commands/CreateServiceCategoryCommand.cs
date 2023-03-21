@@ -51,18 +51,24 @@ public class CreateServiceCategoryCommandHandler : IRequestHandler<CreateService
     }
     public async Task<int> Handle(CreateServiceCategoryCommand request, CancellationToken cancellationToken)
     {
-        if (request.ServiceDurationUnit == TimeUnit.Days)
-            request.MaxServiceDuration *= 24;
-        else if (request.ServiceDurationUnit == TimeUnit.Weeks)
-            request.MaxServiceDuration *= 168;
-        else if (request.ServiceDurationUnit == TimeUnit.Months)
-            request.MaxServiceDuration *= 720;
-        else if (request.ServiceDurationUnit == TimeUnit.Years)
-            request.MaxServiceDuration *= 8760;
+        request.MaxServiceDuration= FindDuration(request.MaxServiceDuration, request.ServiceDurationUnit);
         var serviceCategory = _mapper.Map<ServiceCategory>(request);
         _applicationDbContext.ServiceCategories.Add(serviceCategory);
         
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return serviceCategory.Id;
-    } 
+    }
+
+    private int FindDuration(int maxServiceDuration, TimeUnit serviceDurationUnit)
+    {
+        if (serviceDurationUnit == TimeUnit.Days)
+            maxServiceDuration *= 24;
+        else if (serviceDurationUnit == TimeUnit.Weeks)
+            maxServiceDuration *= 168;
+        else if (serviceDurationUnit == TimeUnit.Months)
+            maxServiceDuration *= 720;
+        else if (serviceDurationUnit == TimeUnit.Years)
+            maxServiceDuration *= 8760;
+        return maxServiceDuration;
+    }
 }
