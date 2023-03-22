@@ -11,6 +11,7 @@ using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.PresenceCategoryDtos;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
+using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
 
 namespace CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 public class GetServiceCategoryDto
@@ -24,16 +25,12 @@ public class GetServiceCategoryDto
     public int MaxPersonnelCount { get; set; }
     public int ParentServiceCategoryId { get; set; }
     public int ServiceCategoryApprovmentId { get; set; }
-    public List<CategorySpecialRulesDto> SpecialRules { get; set; } 
+    public List<CategorySpecialRulesDto> SpecialRules { get; set; }
     public List<GetServiceCategoryDto> SubServiceCategories { get; set; }
-    public List<string> SpecialRuleNames { get; set; }
-    public bool IsParallel { get; set; }
-    public List<int> PersonnelApproversIds { get; set; }
-    public List<int> DepartmentApproversIds { get; set; }
-    public List<int> UserGroupApproversIds { get; set; }
     public List<VehicleCategoryDto> Vehicles { get; set; }
     public List<CategoryDocumentDto> Documents { get; set; }
-
+    public List<CategoryPersonnelDocumentDto > PersonnelDocuments { get; set; }
+    public ServiceCategoryApprovmentDto ServiceCategoryApprovment { get; set; }
     public List<ServiceCategoryAreaDto> ServiceCategoryAreas { get; set; }
     public List<ServiceCategoryBlockDto> ServiceCategoryBlocks { get; set; }
     public List<ServiceCategoryBrandDto> ServiceCategoryBrands { get; set; }
