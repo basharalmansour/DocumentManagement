@@ -9,4 +9,5 @@ public class GetUserGroupDto
 {
     public string Name { get; set; }
     public List<int> Personnels { get; set; }
+    public string UniqueCode { get; set; }
 } 

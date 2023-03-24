@@ -7,7 +7,7 @@ namespace CleanArchitecture.WebUI.Controllers.Forms;
 public class FormController : ApiControllerBase
 {
     [HttpPost("AddForm")]
-    public async Task<IActionResult> CreateForm([FromBody] CreateFormCommnad request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateForm([FromBody] CreateFormCommand request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);

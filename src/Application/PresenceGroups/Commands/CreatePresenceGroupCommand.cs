@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using CleanArchitecture.Application.Common;
 using CleanArchitecture.Application.Common.Dtos.PresenceGroups;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.PresenceGroups.Queries;
@@ -35,7 +36,9 @@ public class CreatePresenceGroupCommandHandler : IRequestHandler<CreatePresenceG
     }
     public async Task<int> Handle(CreatePresenceGroupCommand request, CancellationToken cancellationToken)
     {
+        UniqueCode code = new UniqueCode(8, false);
         var presenceGroup=_mapper.Map<PresenceGroup>(request);
+        presenceGroup.UniqueCode= "P"+ code.CreateUniqueCode(8, false);
         _applicationDbContext.PresenceGroups.Add(presenceGroup);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return presenceGroup.Id;

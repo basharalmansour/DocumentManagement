@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using CleanArchitecture.Application.Common;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities.UserGroups;
@@ -28,7 +29,9 @@ public class CreateUserGroupCommandHandler : IRequestHandler<CreateUserGroupComm
     }
     public async Task<int> Handle(CreateUserGroupCommand request, CancellationToken cancellationToken)
     {
+        UniqueCode code = new UniqueCode(8, false) ;
         var userGroup = _mapper.Map<UserGroup>(request);
+        userGroup.UniqueCode ="U" + code.CreateUniqueCode(8, false);
         _applicationDbContext.UserGroups.Add(userGroup);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return userGroup.Id;

@@ -145,7 +145,7 @@ public class MappingProfile : Profile
     {
         CreateMap<Form, FormDto>();
         CreateMap<Question, QuestionDto>();
-        CreateMap<CreateFormCommnad, Form>();
+        CreateMap<CreateFormCommand, Form>();
         CreateMap<AddQuestionRequest, Question>();
         CreateMap<EditFormCommand, Form>();
     }
