@@ -14,12 +14,12 @@ using MediatR;
 using Microsoft.Extensions.Options;
 
 namespace CleanArchitecture.Application.Forms.Commands;
-public class CreateFormCommnad : IRequest<int>
+public class CreateFormCommand : IRequest<int>
 {
     public string Name { get; set; }
     public List<AddQuestionRequest> Questions { get; set; }
 }
-public class CreateFormCommnadHandler : IRequestHandler<CreateFormCommnad, int>
+public class CreateFormCommnadHandler : IRequestHandler<CreateFormCommand, int>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ public class CreateFormCommnadHandler : IRequestHandler<CreateFormCommnad, int>
         _applicationDbContext = applicationDbContext;
         _mapper = mapper;
     }
-    public async Task<int> Handle(CreateFormCommnad request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateFormCommand request, CancellationToken cancellationToken)
     {
         var form = _mapper.Map<Form>(request);
         _applicationDbContext.Forms.Add(form);
