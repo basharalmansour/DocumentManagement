@@ -21,13 +21,13 @@ public class DocumentTemplateController : ApiControllerBase
     }
 
     [HttpGet("GetDocumentTemplateById")]
-    public async Task<IActionResult> GetDocumentTemplateById([FromBody] GetDocumentTemplateByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetDocumentTemplateById([FromQuery] GetDocumentTemplateByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
 
-    [HttpPost("EditDocumentTemplate")]
+    [HttpPost("EditDocumentTemplate")] 
     public async Task<IActionResult> EditDocumentTemplate([FromBody] EditDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
