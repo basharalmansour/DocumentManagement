@@ -37,4 +37,10 @@ public class UserGroupController : ApiControllerBase
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
+    [HttpGet("GetUserGroupApprovers")]
+    public async Task<IActionResult> GetUserGroupApprovers([FromQuery] UserGroupApproversQuery request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
 }
