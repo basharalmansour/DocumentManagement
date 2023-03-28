@@ -27,14 +27,5 @@ public class PresenceCategoriesQueryHandler : IRequestHandler<PresenceCategories
     }
     public async Task<List<GetServiceCategoryDto>> Handle(PresenceCategoriesQuery request, CancellationToken cancellationToken)
     {
-        List<ServiceCategory> result = new List<ServiceCategory>();
-        var categoryIds = _applicationDbContext..Where(x => x.PresenceGroupId == request.Id).Select(x => x.DocumentTemplateId).ToList();
-        foreach (int id in documentsIds)
-        {
-            var document = _applicationDbContext.DocumentTemplates.FirstOrDefault(x => x.Id == id);
-            result.Add(document);
-        }
-        var resultDto = _mapper.Map<List<GetDocumentTemplateDto>>(result);
-        return resultDto;
     }
 }
