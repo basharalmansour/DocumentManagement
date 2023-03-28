@@ -14,6 +14,5 @@ public class AddUserGroupCommandValidator : AbstractValidator<CreateUserGroupCom
     {
         RuleFor(x => x.Name).MaximumLength(64).WithMessage("Name must be between 1 and 64 character");
         RuleFor(x => x.PersonnelIds.Count).GreaterThan(1).WithMessage("User group must contain more than one personnel");
-        RuleFor(x => x.PersonnelIds).NotEmpty().WithMessage("User group must contain more than one personnel");
     }
 }

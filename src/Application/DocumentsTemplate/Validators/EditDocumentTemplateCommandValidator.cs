@@ -12,7 +12,6 @@ public class EditDocumentTemplateCommandValidator : AbstractValidator<EditDocume
     public EditDocumentTemplateCommandValidator()
     {
         RuleFor(x => x.Name).MaximumLength(64).WithMessage("Name Must be between 1 and 64 character");
-        RuleFor(x => x.DocumentTemplateTypeId).NotNull().NotEmpty();
-        RuleFor(x => x.DocumentTemplateFileTypes.Count).GreaterThan(1);
+        RuleFor(x => x.DocumentTemplateFileTypes.Count).GreaterThan(0);
     }
 }
