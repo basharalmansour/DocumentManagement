@@ -137,8 +137,10 @@ public class MappingProfile : Profile
     {
         CreateMap<CreateUserGroupCommand, UserGroup>();
         CreateMap<int, UserGroupPersonnel>()
-            .ForMember(to => to.Id, opt => opt.MapFrom(from => from));
+        .ForMember(to => to.Id, opt => opt.MapFrom(from => from));
+
         CreateMap<UserGroup, GetUserGroupDto>();
+        CreateMap<UserGroupPersonnel, UserGroupPersonnelDto>();
         CreateMap<EditUserGroupCommand, UserGroup>();
     }
     private void ApplyMappingsOfForm()
