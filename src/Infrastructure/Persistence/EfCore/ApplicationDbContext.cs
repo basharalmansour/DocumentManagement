@@ -61,6 +61,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<DocumentTemplateSite> DocumentTemplateSites { get; set; }
     public DbSet<DocumentTemplateUnit> DocumentTemplateUnits { get; set; }
     public DbSet<DocumentTemplateZone> DocumentTemplateZones { get; set; }
+    public DbSet<DocumentTemplatePresenceGroup> DocumentTemplatePresenceGroups { get; set; }
     public DbSet<ApproverDepartment> ApproverDepartments { get; set; }
     public DbSet<ApproverPersonnel> ApproverPersonnels { get; set; }
     public DbSet<ApproverUserGroup> ApproverUserGroups { get; set; }
