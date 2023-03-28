@@ -154,6 +154,7 @@ public class MappingProfile : Profile
         CreateMap<DocumentTemplate, GetDocumentTemplateDto>()
             .ForMember(dest => dest.DocumentTemplateFileTypes, opt => opt.MapFrom(src => src.DocumentTemplateFileTypes.Select(x => x.FileType).ToList()));
         CreateMap<DocumentTemplateFileType, DocumentTemplateFileTypeDto>();
+        CreateMap<DocumentTemplate, BasicDocumentTemplateDto>();
         CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
         CreateMap<EditDocumentTemplateCommand, DocumentTemplate>();
         CreateMap<DocumentFileType, DocumentTemplateFileType>()
