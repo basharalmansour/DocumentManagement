@@ -42,6 +42,7 @@ public interface IApplicationDbContext
     public DbSet<DocumentTemplateSite> DocumentTemplateSites { get; set; }
     public DbSet<DocumentTemplateUnit> DocumentTemplateUnits { get; set; }
     public DbSet<DocumentTemplateZone> DocumentTemplateZones { get; set; }
+    public DbSet<DocumentTemplatePresenceGroup> DocumentTemplatePresenceGroups { get; set; }
     public DbSet<ApproverDepartment> ApproverDepartments { get; set; }
     public DbSet<ApproverPersonnel> ApproverPersonnels { get; set; }
     public DbSet<ApproverUserGroup> ApproverUserGroups { get; set; }
@@ -61,6 +62,7 @@ public interface IApplicationDbContext
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
+    public DbSet<DocumentTemplatePresenceGroup> DocumentTemplatePresenceGroups { get; set; }
     public DatabaseFacade Database { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     int SaveChanges();

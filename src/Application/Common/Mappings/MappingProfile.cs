@@ -137,8 +137,10 @@ public class MappingProfile : Profile
     {
         CreateMap<CreateUserGroupCommand, UserGroup>();
         CreateMap<int, UserGroupPersonnel>()
-            .ForMember(to => to.Id, opt => opt.MapFrom(from => from));
+        .ForMember(to => to.Id, opt => opt.MapFrom(from => from));
+
         CreateMap<UserGroup, GetUserGroupDto>();
+        CreateMap<UserGroupPersonnel, UserGroupPersonnelDto>();
         CreateMap<EditUserGroupCommand, UserGroup>();
     }
     private void ApplyMappingsOfForm()
@@ -154,6 +156,7 @@ public class MappingProfile : Profile
         CreateMap<DocumentTemplate, GetDocumentTemplateDto>()
             .ForMember(dest => dest.DocumentTemplateFileTypes, opt => opt.MapFrom(src => src.DocumentTemplateFileTypes.Select(x => x.FileType).ToList()));
         CreateMap<DocumentTemplateFileType, DocumentTemplateFileTypeDto>();
+        CreateMap<DocumentTemplate, BasicDocumentTemplateDto>();
         CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
         CreateMap<EditDocumentTemplateCommand, DocumentTemplate>();
         CreateMap<DocumentFileType, DocumentTemplateFileType>()
