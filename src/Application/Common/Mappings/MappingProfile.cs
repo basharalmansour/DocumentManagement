@@ -24,6 +24,7 @@ using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.DocumentsTemplate.Commands;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
+using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -60,7 +61,6 @@ public class MappingProfile : Profile
     private void ApplyMappingsOfServiceCategory()
     {
         CreateMap<ServiceCategory, GetServiceCategoryDto>();
-        CreateMap<CategorySpecialRules, CategorySpecialRulesDto>();
         CreateMap<ServiceCategoryArea, ServiceCategoryAreaDto>();
         CreateMap<ServiceCategoryBlock, ServiceCategoryBlockDto>();
         CreateMap<ServiceCategoryBrand, ServiceCategoryBrandDto>();
@@ -75,17 +75,37 @@ public class MappingProfile : Profile
             .ForMember(des => des.ServiceCategoryCompanies, opt => opt.MapFrom(src => src.ServiceCategoryCompanies.Select(x => new ServiceCategoryCompany { CompanyId = x })))
             .ForMember(des => des.ServiceCategorySites, opt => opt.MapFrom(src => src.ServiceCategorySites.Select(x => new ServiceCategorySite { SiteId = x })))
             .ForMember(des => des.ServiceCategoryUnits, opt => opt.MapFrom(src => src.ServiceCategoryUnits.Select(x => new ServiceCategoryUnit { UnitId = x })))
-            .ForMember(des => des.ServiceCategoryZones, opt => opt.MapFrom(src => src.ServiceCategoryZones.Select(x => new ServiceCategoryZone { ZoneId = x })));
+            .ForMember(des => des.ServiceCategoryZones, opt => opt.MapFrom(src => src.ServiceCategoryZones.Select(x => new ServiceCategoryZone { ZoneId = x })))
+            .ForMember(des => des.PersonnelDocuments, opt => opt.MapFrom(src => src.PersonnelDocuments.Select(x => new CategoryPersonnelDocument { DocumentTemplateId = x })))
+            .ForMember(des => des.SpecialRules, opt => opt.MapFrom(src => src.SpecialRules.Select(x => new CategorySpecialRules { SpecialRuleId = x })))
+            .ForMember(des => des.Documents, opt => opt.MapFrom(src => src.Documents.Select(x => new CategoryDocument { DocumentTemplateId = x })));
+
+        CreateMap<CreateApprovementDto, ServiceCategoryApprovment>()
+            .ForMember(des => des.ApproverDepartments, opt => opt.MapFrom(src => src.ApproverDepartments.Select(x => new ApproverDepartment { DepartmentId = x })))
+            .ForMember(des => des.ApproverPersonnels, opt => opt.MapFrom(src => src.ApproverPersonnels.Select(x => new ApproverPersonnel { PersonnelId = x })))
+            .ForMember(des => des.ApproverUserGroups, opt => opt.MapFrom(src => src.ApproverUserGroups.Select(x => new ApproverUserGroup { UserGroupId = x })));
         CreateMap<VehicleCategory, VehicleCategoryDto>();
         CreateMap<CategoryVehicleDocuments, CategoryVehicleDocumentsDto>();
         CreateMap<CategoryDocument, CategoryDocumentDto>();
-
-        CreateMap<VehicleCategoryDto, VehicleCategory>();
-        CreateMap<CategoryVehicleDocumentsDto, CategoryVehicleDocuments>();
+        CreateMap<CreateVehicleCategoryDto, VehicleCategory>();
+        CreateMap<CreateCategoryVehicleDocuments, CategoryVehicleDocuments>();
+        CreateMap<CategoryVehicleDocuments, CategoryVehicleDocumentsDto>();
         CreateMap<CategoryDocumentDto, CategoryDocument>();
+        CreateMap<CategoryPersonnelDocument, CategoryPersonnelDocumentDto>();
         CreateMap<CategorySpecialRulesDto, CategorySpecialRules>();
-
+        CreateMap<ServiceCategoryApprovment, ServiceCategoryApprovmentDto>();
+        CreateMap<ApproverDepartment, ApproverDepartmentDto>();
+        CreateMap<ApproverPersonnel, ApproverPersonnelDto>();
+        CreateMap<ApproverUserGroup, ApproverUserGroupDto>();
         CreateMap<DocumentCategoryDto, CategoryDocument>();
+        CreateMap<CategorySpecialRules,CategorySpecialRulesDto>();
+        CreateMap<ServiceCategoryArea, ServiceCategoryAreaDto>();
+        CreateMap<ServiceCategoryBlock, ServiceCategoryBlockDto>();
+        CreateMap<ServiceCategoryBrand , ServiceCategoryBrandDto>();
+        CreateMap<ServiceCategoryCompany , ServiceCategoryCompanyDto>();
+        CreateMap<ServiceCategorySite, ServiceCategorySiteDto>();
+        CreateMap<ServiceCategoryUnit , ServiceCategoryUnitDto>();
+        CreateMap<ServiceCategoryZone, ServiceCategoryZoneDto>();
     }
     private void ApplyMappingsOfVehicle()
     {
@@ -117,27 +137,30 @@ public class MappingProfile : Profile
     {
         CreateMap<CreateUserGroupCommand, UserGroup>();
         CreateMap<int, UserGroupPersonnel>()
-            .ForMember(to => to.Id, opt => opt.MapFrom(from => from));
+        .ForMember(to => to.Id, opt => opt.MapFrom(from => from));
+
         CreateMap<UserGroup, GetUserGroupDto>();
+        CreateMap<UserGroupPersonnel, UserGroupPersonnelDto>();
         CreateMap<EditUserGroupCommand, UserGroup>();
     }
     private void ApplyMappingsOfForm()
     {
         CreateMap<Form, FormDto>();
         CreateMap<Question, QuestionDto>();
-        CreateMap<CreateFormCommnad, Form>();
+        CreateMap<CreateFormCommand, Form>();
         CreateMap<AddQuestionRequest, Question>();
         CreateMap<EditFormCommand, Form>();
     }
     private void ApplyMappingsOfDocumentTemplate()
     {
         CreateMap<DocumentTemplate, GetDocumentTemplateDto>()
-            .ForMember(dest=>dest.DocumentTemplateFileTypes, opt=>opt.MapFrom(src=>src.DocumentTemplateFileTypes.Select(x=>x.FileType).ToList()));
+            .ForMember(dest => dest.DocumentTemplateFileTypes, opt => opt.MapFrom(src => src.DocumentTemplateFileTypes.Select(x => x.FileType).ToList()));
         CreateMap<DocumentTemplateFileType, DocumentTemplateFileTypeDto>();
+        CreateMap<DocumentTemplate, BasicDocumentTemplateDto>();
         CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
         CreateMap<EditDocumentTemplateCommand, DocumentTemplate>();
         CreateMap<DocumentFileType, DocumentTemplateFileType>()
-            .ForMember(dest =>dest.FileType,opt=>opt.MapFrom(src=>src));
+            .ForMember(dest => dest.FileType, opt => opt.MapFrom(src => src));
 
     }
 }

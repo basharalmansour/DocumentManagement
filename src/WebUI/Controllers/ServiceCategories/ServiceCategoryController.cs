@@ -13,13 +13,13 @@ public class ServiceCategoryController : ApiControllerBase
         return Ok(result);
     }
     [HttpGet("ViewServiceCategories")]
-    public async Task<IActionResult> GetServiceCategories([FromBody] GetServiceCategoryQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetServiceCategories([FromQuery] GetServiceCategoryQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
     [HttpGet("ViewServiceCategoryById")]
-    public async Task<IActionResult> GetServiceCategoryById([FromBody] ServiceCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetServiceCategoryById([FromQuery] ServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);

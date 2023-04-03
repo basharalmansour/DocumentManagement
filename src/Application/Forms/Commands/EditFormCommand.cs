@@ -10,7 +10,7 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Forms.Commands;
 
-public class EditFormCommand :CreateFormCommnad, IRequest<bool>
+public class EditFormCommand :CreateFormCommand, IRequest<bool>
 {
     public int Id { get; set; }
 }

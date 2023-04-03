@@ -20,7 +20,7 @@ public class UserGroupController : ApiControllerBase
         return Ok(result);
     }
     [HttpGet("ViewUserGroupById")]
-    public async Task<IActionResult> GetUserGroupById([FromQuery] UserGroupByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetUserGroupById([FromBody] UserGroupByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
@@ -33,6 +33,12 @@ public class UserGroupController : ApiControllerBase
     }
     [HttpDelete("DeleteUserGroup")]
     public async Task<IActionResult> DeleteUserGroup([FromBody] RemoveUserGroupCommand request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
+    [HttpGet("GetUserGroupApprovers")]
+    public async Task<IActionResult> GetUserGroupApprovers([FromQuery] UserGroupApproversQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);

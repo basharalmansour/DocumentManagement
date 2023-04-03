@@ -36,4 +36,10 @@ public class PresenceGroupController : ApiControllerBase
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
+    public async Task<IActionResult> DeletePresenceGroup([FromQuery] PresenceDocumentsQuery request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
+
 }

@@ -12,6 +12,9 @@ using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
+using static StackExchange.Redis.Role;
+using CleanArchitecture.Domain.Entities.Documents;
 
 namespace CleanArchitecture.Application.ServiceCategories.Commands;
 
@@ -22,11 +25,12 @@ public class CreateServiceCategoryCommand : IRequest<int>
     public int MaxServiceDuration { get; set; }
     public TimeUnit ServiceDurationUnit { get; set; }
     public int MaxPersonnelCount { get; set; }
-    public int ParentServiceCategoryId { get; set; } 
-    public int ServiceCategoryApprovmentId { get; set; }
-    public List<CategorySpecialRulesDto> SpecialRules { get; set; }
-    public List<DocumentCategoryDto> Documents { get; set; }
-    public List<VehicleCategoryDto> Vehicles { get; set; }
+    public List<int> PersonnelDocuments { get; set; }
+    public int? ParentServiceCategoryId { get; set; } 
+    public CreateApprovementDto ServiceCategoryApprovement { get; set; }
+    public List<int> SpecialRules { get; set; }
+    public List<int> Documents { get; set; }
+    public List<CreateVehicleCategoryDto> Vehicles { get; set; }
 
     public List<int> ServiceCategoryAreas { get; set; }
     public List<Guid> ServiceCategoryBlocks { get; set; }
@@ -47,17 +51,24 @@ public class CreateServiceCategoryCommandHandler : IRequestHandler<CreateService
     }
     public async Task<int> Handle(CreateServiceCategoryCommand request, CancellationToken cancellationToken)
     {
-        if (request.ServiceDurationUnit == TimeUnit.Days)
-            request.MaxServiceDuration *= 24;
-        else if (request.ServiceDurationUnit == TimeUnit.Weeks)
-            request.MaxServiceDuration *= 168;
-        else if (request.ServiceDurationUnit == TimeUnit.Months)
-            request.MaxServiceDuration *= 720;
-        else if (request.ServiceDurationUnit == TimeUnit.Years)
-            request.MaxServiceDuration *= 8760;
+        request.MaxServiceDuration= FindDuration(request.MaxServiceDuration, request.ServiceDurationUnit);
         var serviceCategory = _mapper.Map<ServiceCategory>(request);
         _applicationDbContext.ServiceCategories.Add(serviceCategory);
+        
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return serviceCategory.Id;
-    } 
+    }
+
+    private int FindDuration(int maxServiceDuration, TimeUnit serviceDurationUnit)
+    {
+        if (serviceDurationUnit == TimeUnit.Days)
+            maxServiceDuration *= 24;
+        else if (serviceDurationUnit == TimeUnit.Weeks)
+            maxServiceDuration *= 168;
+        else if (serviceDurationUnit == TimeUnit.Months)
+            maxServiceDuration *= 720;
+        else if (serviceDurationUnit == TimeUnit.Years)
+            maxServiceDuration *= 8760;
+        return maxServiceDuration;
+    }
 }

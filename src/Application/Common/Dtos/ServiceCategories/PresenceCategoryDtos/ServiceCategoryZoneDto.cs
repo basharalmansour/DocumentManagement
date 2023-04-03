@@ -2,6 +2,6 @@
 
 public class ServiceCategoryZoneDto
 {
-    public int ZoneId { get; set; }
+    public Guid ZoneId { get; set; }
     public string Name { get; set; }
 }
