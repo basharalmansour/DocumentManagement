@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
+using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories;
@@ -21,13 +23,27 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     public TimeUnit ServiceDurationUnit { get; set; }
     public int MaxPersonnelCount { get; set; }
 
-    [ForeignKey("ParentServiceCategory")]
-    public int? ParentServiceCategoryId { get; set; }
+    public List<ServiceCategoryArea> ServiceCategoryAreas { get; set; }
+    public List<ServiceCategoryBlock> ServiceCategoryBlocks { get; set; }
+    public List<ServiceCategoryBrand> ServiceCategoryBrands { get; set; }
+    public List<ServiceCategoryCompany> ServiceCategoryCompanies { get; set; }
+    public List<ServiceCategorySite> ServiceCategorySites { get; set; }
+    public List<ServiceCategoryUnit> ServiceCategoryUnits { get; set; }
+    public List<ServiceCategoryZone> ServiceCategoryZones { get; set; }
+
+    public List<CategorySpecialRules> SpecialRules { get; set; }
+    public List<VehicleCategory> Vehicles { get; set; }
+    public List<CategoryDocument> Documents { get; set; }
+    public List<CategoryPersonnelDocument> PersonnelDocuments { get; set; }
+
+    [ForeignKey("ParentServiceCategory") ] 
+    public int? ParentServiceCategoryId { get; set; } 
     public ServiceCategory ParentServiceCategory { get; set; }
     public List<ServiceCategory> SubServiceCategories { get; set; }
 
     [ForeignKey("ServiceCategoryApprovment") ] 
     public int ServiceCategoryApprovmentId { get; set; } 
-    public ServiceCategoryApprovment ServiceCategoryApprovment { get; set; } 
+    public ServiceCategoryApprovment ServiceCategoryApprovement { get; set; } 
+
 
 }

@@ -14,5 +14,5 @@ public  class GetDocumentTemplateDto
     public string Name { get; set; }
     public bool HasValidationDate { get; set; }
     public int DocumentTemplateTypeId { get; set; }
-    public List<DocumentFileType> DocumentFileTypes { get; set; }
+    public List<DocumentFileType> DocumentTemplateFileTypes { get; set; }
 }

@@ -10,7 +10,7 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Forms.Commands;
 
-public class EditFormCommand :CreateFormCommnad, IRequest<bool>
+public class EditFormCommand :CreateFormCommand, IRequest<bool>
 {
     public int Id { get; set; }
 }
@@ -26,6 +26,7 @@ public class EditFormCommandHandler : IRequestHandler<EditFormCommand, bool>
     public async Task<bool> Handle(EditFormCommand request, CancellationToken cancellationToken)
     {
         var form = _applicationDbContext.Forms.FirstOrDefault(x => x.Id == request.Id);
+        form.Questions.Clear();
         _mapper.Map(request, form);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
