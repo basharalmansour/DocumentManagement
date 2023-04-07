@@ -110,6 +110,8 @@ public class MappingProfile : Profile
     private void ApplyMappingsOfVehicle()
     {
         CreateMap<Vehicle, VehicleDto>();
+        CreateMap<VehicleDriverDocuments, VehicleDriverDocumentsDto>();
+        CreateMap<VehiclesDocument, VehiclesDocumentDto>();
         CreateMap<CreateVehicleCommand, Vehicle>()
             .ForMember(des => des.VehicleDocuments, opt => opt.MapFrom(src => src.VehicleDocuments.Select(x => new VehiclesDocument { DocumentTemplateId = x })))
             .ForMember(des => des.DriverDocuments, opt => opt.MapFrom(src => src.DriverDocuments.Select(x => new VehicleDriverDocuments { DocumentTemplateId = x })));
