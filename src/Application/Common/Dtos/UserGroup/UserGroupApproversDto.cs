@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Common.Dtos.UserGroup;
-public class UserGroupApproversDto
+public class UserGroupApproversDto 
 {
     public int PersonnelId { get; set; }
     public string PersonnelName { get; set; }
-    public int CategoryId { get; set; }
-    public string CategoryName { get; set; }
+    public List<int> CategoryIds { get; set; }
+    public List<string> CategoryNames { get; set; }
 }

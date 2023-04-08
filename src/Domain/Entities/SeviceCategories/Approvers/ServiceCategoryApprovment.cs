@@ -13,4 +13,5 @@ public class ServiceCategoryApprovment : LightBaseEntity<int>, IEntity<int>
     public List<ApproverDepartment> ApproverDepartments { get; set; }
     public List<ApproverPersonnel > ApproverPersonnels { get; set; }
     public List<ApproverUserGroup > ApproverUserGroups { get; set; }
+    public ServiceCategory ServiceCategory { get; set; }
 }

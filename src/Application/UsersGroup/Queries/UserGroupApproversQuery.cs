@@ -29,20 +29,18 @@ public class UserGroupApproversQueryHandler : IRequestHandler<UserGroupApprovers
     {
         List<UserGroupApproversDto> result = new List<UserGroupApproversDto>();
         var personnelsIds = _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.Id).Personnels.Select(x=>x.PersonnelId).ToList();
-        var approvers =await _applicationDbContext.ApproverPersonnels.ToArrayAsync();
-        int categoryId;
-        string categoryName;
+        var approvers =await _applicationDbContext.ApproverPersonnels.ToListAsync();
+        var approversPersonnel = approvers.Select(x => x.PersonnelId);
+
         foreach (int id in personnelsIds)
         {
-            if (approvers.Select(x => x.PersonnelId).Contains(id))
+            if(approversPersonnel.Contains(id))
             {
-                categoryId = approvers.FirstOrDefault(x => x.PersonnelId == id).ServiceCategoryApprovmentId;
-                categoryName = _applicationDbContext.ServiceCategories.FirstOrDefault(x => x.Id == categoryId).Name;
                 result.Add(new UserGroupApproversDto
                 {
-                    CategoryId = categoryId,
-                    CategoryName = categoryName,
-                    PersonnelId = id,
+                    CategoryIds = approvers.Where(x => x.PersonnelId == id).Select(x => x.ServiceCategoryApprovment.ServiceCategory.Id).ToList(),
+                    CategoryNames = approvers.Where(x => x.PersonnelId == id).Select(x => x.ServiceCategoryApprovment.ServiceCategory.Name).ToList(),
+                    PersonnelId = id
                 });
             }
         }

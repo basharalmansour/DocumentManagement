@@ -19,8 +19,8 @@ public class UserGroupController : ApiControllerBase
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpGet("ViewUserGroupById")]
-    public async Task<IActionResult> GetUserGroupById([FromBody] UserGroupByIdQuery request, CancellationToken cancellationToken)
+    [HttpGet("GetUserGroupById")]
+    public async Task<IActionResult> GetUserGroupById([FromQuery] UserGroupByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);

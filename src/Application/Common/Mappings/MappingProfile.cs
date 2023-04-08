@@ -135,9 +135,8 @@ public class MappingProfile : Profile
     }
     private void ApplyMappingsOfUserGroup()
     {
-        CreateMap<CreateUserGroupCommand, UserGroup>();
-        CreateMap<int, UserGroupPersonnel>()
-        .ForMember(to => to.Id, opt => opt.MapFrom(from => from));
+        CreateMap<CreateUserGroupCommand, UserGroup>()
+        .ForMember(des => des.Personnels, opt => opt.MapFrom(src => src.PersonnelIds.Select(x => new UserGroupPersonnel { PersonnelId = x }).ToList()));
 
         CreateMap<UserGroup, GetUserGroupDto>();
         CreateMap<UserGroupPersonnel, UserGroupPersonnelDto>();

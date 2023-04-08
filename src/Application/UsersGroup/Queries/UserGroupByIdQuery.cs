@@ -27,7 +27,7 @@ public class UserGroupByIdQueryHandler : IRequestHandler<UserGroupByIdQuery, Get
 
     public async Task<GetUserGroupDto> Handle(UserGroupByIdQuery request, CancellationToken cancellationToken)
     {
-        var userGroup =await _applicationDbContext.UserGroups.FirstOrDefaultAsync (x => x.Id == request.Id);
+        var userGroup =await _applicationDbContext.UserGroups.Include(x=>x.Personnels).FirstOrDefaultAsync (x => x.Id == request.Id);
         var userGroupDto = _mapper.Map<GetUserGroupDto>(userGroup);
         return userGroupDto;
     }
