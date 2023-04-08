@@ -1,4 +1,6 @@
 ﻿using CleanArchitecture.Application.DocumentsTemplate.Queries;
+using CleanArchitecture.Application.Rules.Commands;
+using CleanArchitecture.Application.Rules.Queries;
 using CleanArchitecture.Application.ServiceCategories.Commands;
 using CleanArchitecture.Application.ServiceCategories.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +41,18 @@ public class ServiceCategoryController : ApiControllerBase
     }
     [HttpGet("GetPersonnelCategories")]
     public async Task<IActionResult> GetPersonnelCategories([FromQuery] PersonnelCategoriesQuery request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
+    [HttpPost("AddRules")]
+    public async Task<IActionResult> AddRules([FromBody] CreatePersonnelRule request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
+    [HttpGet("GetPersonnelRules")]
+    public async Task<IActionResult> GetPersonnelRules([FromQuery] GetPersonnelRuleQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
