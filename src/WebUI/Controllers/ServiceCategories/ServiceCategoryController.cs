@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Application.ServiceCategories.Commands;
+﻿using CleanArchitecture.Application.DocumentsTemplate.Queries;
+using CleanArchitecture.Application.ServiceCategories.Commands;
 using CleanArchitecture.Application.ServiceCategories.Queries;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,6 +33,12 @@ public class ServiceCategoryController : ApiControllerBase
     }
     [HttpDelete("DeleteServiceCategory")]
     public async Task<IActionResult> DeleteServiceCategory([FromBody] RemoveServiceCategoryCommand request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
+    [HttpGet("GetPersonnelCategories")]
+    public async Task<IActionResult> GetPersonnelCategories([FromQuery] PersonnelCategoriesQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);

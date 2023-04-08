@@ -25,6 +25,8 @@ using CleanArchitecture.Application.DocumentsTemplate.Commands;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
+using CleanArchitecture.Application.Rules.Commands;
+using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -38,6 +40,7 @@ public class MappingProfile : Profile
         ApplyMappingsOfUserGroup();
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
+        CreateMap<CreatePersonnelRule, PersonnelRules>();
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
