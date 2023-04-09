@@ -8,5 +8,6 @@ namespace CleanArchitecture.Domain.Enums;
 public enum Rule
 {
     Approver ,
-    Viewer 
-}
+    Observer ,
+    Reporter
+} 

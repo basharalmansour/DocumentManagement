@@ -87,6 +87,8 @@ public class MappingProfile : Profile
             .ForMember(des => des.ApproverDepartments, opt => opt.MapFrom(src => src.ApproverDepartments.Select(x => new ApproverDepartment { DepartmentId = x })))
             .ForMember(des => des.ApproverPersonnels, opt => opt.MapFrom(src => src.ApproverPersonnels.Select(x => new ApproverPersonnel { PersonnelId = x })))
             .ForMember(des => des.ApproverUserGroups, opt => opt.MapFrom(src => src.ApproverUserGroups.Select(x => new ApproverUserGroup { UserGroupId = x })));
+        CreateMap<CreateCategoryPersonnelRules, CategoryPersonnelRules>();
+        CreateMap<CategoryPersonnelRules, CategoryPersonnelRulesDto>();
         CreateMap<VehicleCategory, VehicleCategoryDto>();
         CreateMap<CategoryVehicleDocuments, CategoryVehicleDocumentsDto>();
         CreateMap<CategoryDocument, CategoryDocumentDto>();

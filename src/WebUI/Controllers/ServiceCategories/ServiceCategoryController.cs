@@ -57,4 +57,10 @@ public class ServiceCategoryController : ApiControllerBase
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
+    [HttpGet("GetAllApprovers")]
+    public async Task<IActionResult> GetAllApprovers([FromQuery] GetAllApproversQuery request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
 }

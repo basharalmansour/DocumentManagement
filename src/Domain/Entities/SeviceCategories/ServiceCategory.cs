@@ -45,5 +45,7 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     public int ServiceCategoryApprovmentId { get; set; } 
     public ServiceCategoryApprovment ServiceCategoryApprovement { get; set; } 
 
+    public CategoryPersonnelRules PersonnelRules { get; set; }
+
 
 }
