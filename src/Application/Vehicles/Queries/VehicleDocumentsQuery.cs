@@ -12,12 +12,12 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Vehicles.Queries;
-public  class VehicleDocumentsQuery : IRequest<List<GetDocumentTemplateDto>>
+public  class VehicleDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public int VehicleId { get; set; }
 }
 
-public class VehicleDocumentsQueryHandler : IRequestHandler<VehicleDocumentsQuery, List<GetDocumentTemplateDto>>
+public class VehicleDocumentsQueryHandler : IRequestHandler<VehicleDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
@@ -26,10 +26,10 @@ public class VehicleDocumentsQueryHandler : IRequestHandler<VehicleDocumentsQuer
         _applicationDbContext = applicationDbContext;
         _mapper = mapper;
     }
-    public async Task<List<GetDocumentTemplateDto>> Handle(VehicleDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<List<BasicDocumentTemplateDto>> Handle(VehicleDocumentsQuery request, CancellationToken cancellationToken)
     {
         var documents=await _applicationDbContext.VehiclesDocuments.Where(x => x.VehicleId == request.VehicleId).Select(x => x.DocumentTemplate).ToListAsync();
-        var result = _mapper.Map<List<GetDocumentTemplateDto>>(documents);
+        var result = _mapper.Map<List<BasicDocumentTemplateDto>>(documents);
         return result;
     }
 }
