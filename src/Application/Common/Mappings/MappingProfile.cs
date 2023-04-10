@@ -63,7 +63,8 @@ public class MappingProfile : Profile
     }
     private void ApplyMappingsOfServiceCategory()
     {
-        CreateMap<ServiceCategory, GetServiceCategoryDto>();
+        CreateMap<ServiceCategory, ServiceCategoryDetailsDto>();
+        CreateMap<ServiceCategory, LightServiceCategoryDto>();
         CreateMap<ServiceCategoryArea, ServiceCategoryAreaDto>();
         CreateMap<ServiceCategoryBlock, ServiceCategoryBlockDto>();
         CreateMap<ServiceCategoryBrand, ServiceCategoryBrandDto>();

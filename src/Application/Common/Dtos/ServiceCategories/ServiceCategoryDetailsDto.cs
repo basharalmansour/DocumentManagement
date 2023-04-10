@@ -14,7 +14,7 @@ using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
 
 namespace CleanArchitecture.Application.Common.Dtos.ServiceCategories;
-public class GetServiceCategoryDto
+public class ServiceCategoryDetailsDto
 {
     public int Id { get; set; }
     public string UniqueCode { get; set; }
@@ -26,7 +26,7 @@ public class GetServiceCategoryDto
     public int ParentServiceCategoryId { get; set; }
     public int ServiceCategoryApprovmentId { get; set; }
     public List<CategorySpecialRulesDto> SpecialRules { get; set; }
-    public List<GetServiceCategoryDto> SubServiceCategories { get; set; }
+    public List<ServiceCategoryDetailsDto> SubServiceCategories { get; set; }
     public List<VehicleCategoryDto> Vehicles { get; set; }
     public List<CategoryDocumentDto> Documents { get; set; }
     public List<CategoryPersonnelDocumentDto > PersonnelDocuments { get; set; }

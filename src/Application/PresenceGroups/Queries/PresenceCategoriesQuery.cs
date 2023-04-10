@@ -12,11 +12,11 @@
 //using MediatR;
 
 //namespace CleanArchitecture.Application.PresenceGroups.Queries;
-//public class PresenceCategoriesQuery : IRequest<List<GetServiceCategoryDto>>
+//public class PresenceCategoriesQuery : IRequest<List<ServiceCategoryDetailsDto>>
 //{
 //    public int Id { get; set; }
 //}
-//public class PresenceCategoriesQueryHandler : IRequestHandler<PresenceCategoriesQuery, List<GetServiceCategoryDto>>
+//public class PresenceCategoriesQueryHandler : IRequestHandler<PresenceCategoriesQuery, List<ServiceCategoryDetailsDto>>
 //{
 //    private readonly IApplicationDbContext _applicationDbContext;
 //    private readonly IMapper _mapper;
@@ -25,7 +25,7 @@
 //        _applicationDbContext = applicationDbContext;
 //        _mapper = mapper;
 //    }
-//    public async Task<List<GetServiceCategoryDto>> Handle(PresenceCategoriesQuery request, CancellationToken cancellationToken)
+//    public async Task<List<ServiceCategoryDetailsDto>> Handle(PresenceCategoriesQuery request, CancellationToken cancellationToken)
 //    {
 //        List<ServiceCategory> result = new List<ServiceCategory>();
 //        var categoryIds = _applicationDbContext..Where(x => x.PresenceGroupId == request.Id).Select(x => x.DocumentTemplateId).ToList();
