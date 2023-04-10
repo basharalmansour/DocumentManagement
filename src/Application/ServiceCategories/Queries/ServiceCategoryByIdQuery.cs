@@ -10,11 +10,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.ServiceCategories.Queries;
-public class ServiceCategoryByIdQuery : IRequest<GetServiceCategoryDto>
+public class ServiceCategoryByIdQuery : IRequest<ServiceCategoryDetailsDto>
 {
     public int Id { get; set; }
 }
-public class ServiceCategoryByIdQueryHandler : IRequestHandler<ServiceCategoryByIdQuery, GetServiceCategoryDto>
+public class ServiceCategoryByIdQueryHandler : IRequestHandler<ServiceCategoryByIdQuery, ServiceCategoryDetailsDto>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ public class ServiceCategoryByIdQueryHandler : IRequestHandler<ServiceCategoryBy
         _applicationDbContext = applicationDbContext;
         _mapper = mapper;
     }
-    public async Task<GetServiceCategoryDto> Handle(ServiceCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ServiceCategoryDetailsDto> Handle(ServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {
 
         var category = await _applicationDbContext.ServiceCategories
@@ -41,7 +41,7 @@ public class ServiceCategoryByIdQueryHandler : IRequestHandler<ServiceCategoryBy
             .FirstOrDefaultAsync(x=>x.Id==request.Id);
         var specialRuleIds = _applicationDbContext.CategorySpecialRules.Where(x => x.ServiceCategoryId == category.Id).Select(x=>x.Id).ToList();
 
-        var categoryDto = _mapper.Map<GetServiceCategoryDto>(category);
+        var categoryDto = _mapper.Map<ServiceCategoryDetailsDto>(category);
         return categoryDto; 
     }
 }

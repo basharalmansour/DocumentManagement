@@ -10,11 +10,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.ServiceCategories.Queries;
-public class GetServiceCategoryQuery : IRequest<List<GetServiceCategoryDto>>
+public class GetServiceCategoryQuery : IRequest<List<LightServiceCategoryDto>>
 {
     public string SearchText { get; set; }
 }
-public class GetServiceCategoryHandler : IRequestHandler<GetServiceCategoryQuery, List<GetServiceCategoryDto>>
+public class GetServiceCategoryHandler : IRequestHandler<GetServiceCategoryQuery, List<LightServiceCategoryDto>>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
@@ -23,24 +23,13 @@ public class GetServiceCategoryHandler : IRequestHandler<GetServiceCategoryQuery
         _applicationDbContext = applicationDbContext;
         _mapper = mapper;
     }
-    public async Task<List<GetServiceCategoryDto>> Handle(GetServiceCategoryQuery request, CancellationToken cancellationToken)
+    public async Task<List<LightServiceCategoryDto>> Handle(GetServiceCategoryQuery request, CancellationToken cancellationToken)
     {
         var categories =await _applicationDbContext.ServiceCategories
             .Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText))
-            .Include(x => x.SubServiceCategories.Where(x=>x.IsDeleted==false))
-            .Include(x=>x.SpecialRules)
-            .Include(x=>x.Vehicles).ThenInclude(x=>x.VehicleDocuments)
-            .Include(x=>x.Documents)
-            .Include(x=>x.PersonnelDocuments)
-            .Include(x=>x.ServiceCategoryAreas)
-            .Include(x => x.ServiceCategoryBlocks)
-            .Include(x => x.ServiceCategoryBrands )
-            .Include(x => x.ServiceCategoryCompanies)
-            .Include(x => x.ServiceCategorySites)
-            .Include(x => x.ServiceCategoryUnits)
-            .Include(x => x.ServiceCategoryZones) 
+            .Include(x=>x.SubServiceCategories.Where(x => x.IsDeleted == false))
             .ToListAsync();
-        var categoriesDto = _mapper.Map<List<GetServiceCategoryDto>>(categories);
+        var categoriesDto = _mapper.Map<List<LightServiceCategoryDto>>(categories);
         return categoriesDto;
     }
 }
