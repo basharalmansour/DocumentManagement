@@ -12,4 +12,7 @@ public class Vehicle : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
     [StringLength(StringLengths.MediumString)]
     public string Name { get; set; }
+    public bool IsNeedDriver { get; set; }
+    public List<VehiclesDocument> VehicleDocuments { get; set; }
+    public List<VehicleDriverDocuments> DriverDocuments { get; set; }
 }
