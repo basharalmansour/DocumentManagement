@@ -14,6 +14,9 @@ namespace CleanArchitecture.Application.Vehicles.Commands;
 public class CreateVehicleCommand : IRequest<int>
 {
     public string Name { get; set; }
+    public bool IsNeedDriver { get; set; }
+    public List<int> VehicleDocuments { get; set; }
+    public List<int> DriverDocuments { get; set; }
 }
 
 public class CreateVehicleCommandHandler : IRequestHandler<CreateVehicleCommand, int>
@@ -28,6 +31,8 @@ public class CreateVehicleCommandHandler : IRequestHandler<CreateVehicleCommand,
 
     public async Task<int> Handle(CreateVehicleCommand request, CancellationToken cancellationToken)
     {
+        if (!request.IsNeedDriver)
+            request.DriverDocuments = null;
         var vehicle = _mapper.Map<Vehicle>(request);
         _applicationDbContext.Vehicles.Add(vehicle);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);

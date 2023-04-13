@@ -20,6 +20,12 @@ public class VehicleController : ApiControllerBase
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
+    [HttpGet("GetVehicle")]
+    public async Task<IActionResult> GetVehicleById([FromQuery] GetVehicleByIdQuery request, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
     [HttpPost("EditVehicle")]
     public async Task<IActionResult> EditVehicle([FromBody] EditVehicleCommand request, CancellationToken cancellationToken)
     {
