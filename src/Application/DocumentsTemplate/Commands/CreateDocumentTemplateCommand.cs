@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using CleanArchitecture.Application.Common;
 using CleanArchitecture.Application.Common.Dtos.Customer;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Interfaces;
@@ -33,7 +34,9 @@ public class CreateDocumentTemplateCommandHandler :IRequestHandler<CreateDocumen
 
     public async Task<int> Handle(CreateDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
+        UniqueCode code = new UniqueCode(8, false);
         var documentTemplate = _mapper.Map<DocumentTemplate>(request);
+        documentTemplate.UniqueCode= "D"+ code.CreateUniqueCode(8, false);
         _applicationDbContext.DocumentTemplates.Add(documentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return documentTemplate.Id; 

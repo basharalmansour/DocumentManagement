@@ -15,6 +15,7 @@ using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 using static StackExchange.Redis.Role;
 using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Application.Common;
 
 namespace CleanArchitecture.Application.ServiceCategories.Commands;
 
@@ -53,7 +54,9 @@ public class CreateServiceCategoryCommandHandler : IRequestHandler<CreateService
     public async Task<int> Handle(CreateServiceCategoryCommand request, CancellationToken cancellationToken)
     {
         request.MaxServiceDuration= FindDuration(request.MaxServiceDuration, request.ServiceDurationUnit);
+        UniqueCode code = new UniqueCode(8, false);
         var serviceCategory = _mapper.Map<ServiceCategory>(request);
+        serviceCategory.UniqueCode="S" + code.CreateUniqueCode(8, false);
         _applicationDbContext.ServiceCategories.Add(serviceCategory);
         
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
