@@ -11,11 +11,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.DocumentsTemplate.Queries;
-public class GetDocumentTemplatesQuery : IRequest<List<GetDocumentTemplateDto>>
+public class GetDocumentTemplatesQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public string SearchText { get; set; }
 }
-public class GetDocumentsTemplateHandler : IRequestHandler<GetDocumentTemplatesQuery, List<GetDocumentTemplateDto>>
+public class GetDocumentsTemplateHandler : IRequestHandler<GetDocumentTemplatesQuery, List<BasicDocumentTemplateDto>>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
@@ -24,10 +24,10 @@ public class GetDocumentsTemplateHandler : IRequestHandler<GetDocumentTemplatesQ
         _applicationDbContext = applicationDbContext;
         _mapper = mapper;
     }
-    public async Task<List<GetDocumentTemplateDto>> Handle(GetDocumentTemplatesQuery request, CancellationToken cancellationToken)
+    public async Task<List<BasicDocumentTemplateDto>> Handle(GetDocumentTemplatesQuery request, CancellationToken cancellationToken)
     {
         var documents =await  _applicationDbContext.DocumentTemplates.Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText)).ToListAsync();
-        var documentsDto = _mapper.Map< List<GetDocumentTemplateDto>>(documents);
+        var documentsDto = _mapper.Map< List<BasicDocumentTemplateDto>>(documents);
         return documentsDto ;
     }
 }
