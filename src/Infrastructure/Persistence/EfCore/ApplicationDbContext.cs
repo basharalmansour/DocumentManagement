@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
 using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
 using CleanArchitecture.Domain.Entities.Documents;
@@ -83,6 +84,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
     public DbSet<VehiclesDocument> VehiclesDocuments { get; set; }
     public DbSet<VehicleDriverDocuments> VehicleDriverDocuments { set; get; }
+    public DbSet<PersonnelRules> PersonnelRules { get; set; }
     private void ConfigureAuditableStates()
     {
         var DateTimeNow = DateTime.Now;

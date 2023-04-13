@@ -28,6 +28,7 @@ public class CreateServiceCategoryCommand : IRequest<int>
     public List<int> PersonnelDocuments { get; set; }
     public int? ParentServiceCategoryId { get; set; } 
     public CreateApprovementDto ServiceCategoryApprovement { get; set; }
+    public CreateCategoryPersonnelRules PersonnelRules { get; set; }
     public List<int> SpecialRules { get; set; }
     public List<int> Documents { get; set; }
     public List<CreateVehicleCategoryDto> Vehicles { get; set; }

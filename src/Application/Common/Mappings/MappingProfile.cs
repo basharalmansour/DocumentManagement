@@ -25,6 +25,8 @@ using CleanArchitecture.Application.DocumentsTemplate.Commands;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
+using CleanArchitecture.Application.Rules.Commands;
+using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -38,6 +40,7 @@ public class MappingProfile : Profile
         ApplyMappingsOfUserGroup();
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
+        CreateMap<CreatePersonnelRule, PersonnelRules>();
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
@@ -85,6 +88,8 @@ public class MappingProfile : Profile
             .ForMember(des => des.ApproverDepartments, opt => opt.MapFrom(src => src.ApproverDepartments.Select(x => new ApproverDepartment { DepartmentId = x })))
             .ForMember(des => des.ApproverPersonnels, opt => opt.MapFrom(src => src.ApproverPersonnels.Select(x => new ApproverPersonnel { PersonnelId = x })))
             .ForMember(des => des.ApproverUserGroups, opt => opt.MapFrom(src => src.ApproverUserGroups.Select(x => new ApproverUserGroup { UserGroupId = x })));
+        CreateMap<CreateCategoryPersonnelRules, CategoryPersonnelRules>();
+        CreateMap<CategoryPersonnelRules, CategoryPersonnelRulesDto>();
         CreateMap<VehicleCategory, VehicleCategoryDto>();
         CreateMap<CategoryVehicleDocuments, CategoryVehicleDocumentsDto>();
         CreateMap<CategoryDocument, CategoryDocumentDto>();
@@ -140,9 +145,8 @@ public class MappingProfile : Profile
     }
     private void ApplyMappingsOfUserGroup()
     {
-        CreateMap<CreateUserGroupCommand, UserGroup>();
-        CreateMap<int, UserGroupPersonnel>()
-        .ForMember(to => to.Id, opt => opt.MapFrom(from => from));
+        CreateMap<CreateUserGroupCommand, UserGroup>()
+        .ForMember(des => des.Personnels, opt => opt.MapFrom(src => src.PersonnelIds.Select(x => new UserGroupPersonnel { PersonnelId = x }).ToList()));
 
         CreateMap<UserGroup, GetUserGroupDto>();
         CreateMap<UserGroupPersonnel, UserGroupPersonnelDto>();
