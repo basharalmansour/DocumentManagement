@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.PresenceGroups.Commands;
-using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Entities.Definitions;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
 

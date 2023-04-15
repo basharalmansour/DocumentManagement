@@ -4,10 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Documents;
 
 namespace CleanArchitecture.Domain.Entities.Definitions.Vehicles;
-public class VehicleDriverDocuments
+public class VehicleDriverDocuments : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey("DocumentTemplate")]
     public int DocumentTemplateId { get; set; }
