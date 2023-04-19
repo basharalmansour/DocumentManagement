@@ -13,6 +13,7 @@ using CleanArchitecture.Domain.Entities.UserGroups;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Entities.Definitions;
 
 namespace CleanArchitecture.Application.Common.Interfaces;
 
@@ -47,7 +48,7 @@ public interface IApplicationDbContext
     public DbSet<ApproverDepartment> ApproverDepartments { get; set; }
     public DbSet<ApproverPersonnel> ApproverPersonnels { get; set; }
     public DbSet<ApproverUserGroup> ApproverUserGroups { get; set; }
-    public DbSet<ServiceCategoryApprovment> ServiceCategoryApprovments { get; set; }
+    public DbSet<ServiceCategoryRoles> ServiceCategoryApprovments { get; set; }
     public DbSet<CategoryDocument> CategoryDocuments { get; set; }
     public DbSet<CategoryPersonnelDocument> CategoryPersonnelDocuments { get; set; }
     public DbSet<ServiceCategoryArea> ServiceCategoryAreas { get; set; }
@@ -59,13 +60,14 @@ public interface IApplicationDbContext
     public DbSet<ServiceCategoryZone> ServiceCategoryZones { get; set; }
     public DbSet<CategoryVehicleDocuments> CategoryVehicleDocuments { get; set; }
     public DbSet<VehicleCategory> VehicleCategories { get; set; }
-    public DbSet<CategorySpecialRules> CategorySpecialRules { get; set; }
+    public DbSet<CategorySpecialRules> CategorySpecialRoles { get; set; }
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
-    public DbSet<PersonnelRules> PersonnelRules { get; set; }
+    public DbSet<PersonnelRoles> PersonnelRoles { get; set; }
     public DbSet<VehiclesDocument> VehiclesDocuments { get; set; }
     public DbSet<VehicleDriverDocuments> VehicleDriverDocuments { set; get; }
+    public DbSet<RolePersonnel> RolePersonnels { get; set; }
     public DatabaseFacade Database { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     int SaveChanges();

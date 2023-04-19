@@ -2,6 +2,7 @@
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Entities.Definitions;
 using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
 using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
 using CleanArchitecture.Domain.Entities.Documents;
@@ -66,7 +67,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<ApproverDepartment> ApproverDepartments { get; set; }
     public DbSet<ApproverPersonnel> ApproverPersonnels { get; set; }
     public DbSet<ApproverUserGroup> ApproverUserGroups { get; set; }
-    public DbSet<ServiceCategoryApprovment> ServiceCategoryApprovments { get; set; }
+    public DbSet<ServiceCategoryRoles> ServiceCategoryApprovments { get; set; }
     public DbSet<CategoryDocument> CategoryDocuments { get; set; }
     public DbSet<CategoryPersonnelDocument> CategoryPersonnelDocuments { get; set; }
     public DbSet<ServiceCategoryArea> ServiceCategoryAreas { get; set; }
@@ -78,13 +79,14 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<ServiceCategoryZone> ServiceCategoryZones { get; set; }
     public DbSet<CategoryVehicleDocuments> CategoryVehicleDocuments { get; set; }
     public DbSet<VehicleCategory> VehicleCategories { get; set; }
-    public DbSet<CategorySpecialRules> CategorySpecialRules { get; set; }
+    public DbSet<CategorySpecialRules> CategorySpecialRoles { get; set; }
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
     public DbSet<VehiclesDocument> VehiclesDocuments { get; set; }
     public DbSet<VehicleDriverDocuments> VehicleDriverDocuments { set; get; }
-    public DbSet<PersonnelRules> PersonnelRules { get; set; }
+    public DbSet<PersonnelRoles> PersonnelRoles { get; set; }
+    public DbSet<RolePersonnel> RolePersonnels { get; set; }
     private void ConfigureAuditableStates()
     {
         var DateTimeNow = DateTime.Now;

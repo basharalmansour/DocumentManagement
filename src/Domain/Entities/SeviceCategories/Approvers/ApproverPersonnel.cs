@@ -11,8 +11,8 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
 public class ApproverPersonnel : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("ServiceCategoryApprovment")]
+    [ForeignKey("ServiceCategoryRoles")]
     public int ServiceCategoryApprovmentId { get; set; }
-    public ServiceCategoryApprovment ServiceCategoryApprovment { get; set; }
+    public ServiceCategoryRoles ServiceCategoryApprovment { get; set; }
     public int PersonnelId { get; set; }
 }

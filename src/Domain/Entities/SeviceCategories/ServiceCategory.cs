@@ -22,7 +22,7 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     public int MaxServiceDuration { get; set; }
     public TimeUnit ServiceDurationUnit { get; set; }
     public int MaxPersonnelCount { get; set; }
-
+    public bool IsParallelApprovement { get; set; }
     public List<ServiceCategoryArea> ServiceCategoryAreas { get; set; }
     public List<ServiceCategoryBlock> ServiceCategoryBlocks { get; set; }
     public List<ServiceCategoryBrand> ServiceCategoryBrands { get; set; }
@@ -40,12 +40,5 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     public int? ParentServiceCategoryId { get; set; } 
     public ServiceCategory ParentServiceCategory { get; set; }
     public List<ServiceCategory> SubServiceCategories { get; set; }
-
-    [ForeignKey("ServiceCategoryApprovment") ] 
-    public int ServiceCategoryApprovmentId { get; set; } 
-    public ServiceCategoryApprovment ServiceCategoryApprovement { get; set; } 
-
-    public CategoryPersonnelRules PersonnelRules { get; set; }
-
-
+    public List<ServiceCategoryRoles> ServiceCategoryRoles { get; set; }
 }

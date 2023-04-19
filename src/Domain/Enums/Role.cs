@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Domain.Enums;
-public enum Rule
+public enum Role
 {
     Approver ,
     Observer ,
