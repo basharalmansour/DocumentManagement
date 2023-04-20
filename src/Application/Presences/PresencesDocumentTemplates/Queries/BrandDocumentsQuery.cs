@@ -9,7 +9,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Application.DocumentsTemplate.Queries.Presences;
+namespace CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Queries;
 public class BrandDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public int BrandId { get; set; }
@@ -25,7 +25,11 @@ public class BrandDocumentsQueryHandler : IRequestHandler<BrandDocumentsQuery, L
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(BrandDocumentsQuery request, CancellationToken cancellationToken)
     {
-        var documents = await _applicationDbContext.DocumentTemplateBrands.Where(x => x.BrandId == request.BrandId).Select(x => x.DocumentTemplate).ToListAsync();
+        var documents = await _applicationDbContext.DocumentTemplateBrands
+            .Include(x => x.DocumentTemplate)
+            .Where(x => x.BrandId == request.BrandId)
+            .Select(x => x.DocumentTemplate)
+            .ToListAsync();
         var result = _mapper.Map<List<BasicDocumentTemplateDto>>(documents);
         return result;
     }

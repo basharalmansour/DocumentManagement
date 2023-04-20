@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 using CleanArchitecture.Application.Common.Interfaces;
-using CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
 using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
-using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
-using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
-using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Application.Common;
 
 namespace CleanArchitecture.Application.ServiceCategories.Commands;
@@ -52,11 +42,9 @@ public class CreateServiceCategoryCommandHandler : IRequestHandler<CreateService
     public async Task<int> Handle(CreateServiceCategoryCommand request, CancellationToken cancellationToken)
     {
         request.MaxServiceDuration= FindDuration(request.MaxServiceDuration, request.ServiceDurationUnit);
-        UniqueCode code = new UniqueCode(8, false);
         var serviceCategory = _mapper.Map<ServiceCategory>(request);
-        serviceCategory.UniqueCode="S" + code.CreateUniqueCode(8, false);
+        serviceCategory.UniqueCode= UniqueCode.CreateUniqueCode(8, false, "S");
         _applicationDbContext.ServiceCategories.Add(serviceCategory);
-        
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return serviceCategory.Id;
     }

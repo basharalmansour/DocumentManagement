@@ -8,8 +8,8 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
 
-namespace CleanArchitecture.Application.PresenceGroups.Commands;
-public class EditPresenceGroupCommand :CreatePresenceGroupCommand, IRequest<bool>
+namespace CleanArchitecture.Application.Presences.PresenceGroups.Commands;
+public class EditPresenceGroupCommand : CreatePresenceGroupCommand, IRequest<bool>
 {
     public int Id { get; set; }
 }

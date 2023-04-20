@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CleanArchitecture.Application.PresenceGroups.Commands;
+using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 using FluentValidation;
 
-namespace CleanArchitecture.Application.PresenceGroups.Validators;
-public class AddPresenceGroupCommandValidator : AbstractValidator<CreatePresenceGroupCommand>
+namespace CleanArchitecture.Application.Presences.PresenceGroups.Validators;
+public class EditPresenceGroupCommandValidator : AbstractValidator<EditPresenceGroupCommand>
 {
-    public AddPresenceGroupCommandValidator()
+    public EditPresenceGroupCommandValidator()
     {
         RuleFor(x => x.Name).MaximumLength(64).WithMessage("Name Must be between 1 and 64 character");
         RuleFor(x => x).Must(NotEmpty).WithMessage("New presence group must have one element at least");

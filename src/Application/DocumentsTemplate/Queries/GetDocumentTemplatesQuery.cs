@@ -26,7 +26,7 @@ public class GetDocumentsTemplateHandler : IRequestHandler<GetDocumentTemplatesQ
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(GetDocumentTemplatesQuery request, CancellationToken cancellationToken)
     {
-        var documents =await  _applicationDbContext.DocumentTemplates.Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText)).ToListAsync();
+        var documents = await  _applicationDbContext.DocumentTemplates.Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText)).ToListAsync();
         var documentsDto = _mapper.Map< List<BasicDocumentTemplateDto>>(documents);
         return documentsDto ;
     }

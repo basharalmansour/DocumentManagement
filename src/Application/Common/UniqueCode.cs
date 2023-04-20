@@ -5,13 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Common;
-public class UniqueCode
+public static class UniqueCode
 {
-    public UniqueCode(int codeLength, bool isDigital)
-    {
-        CreateUniqueCode(codeLength, isDigital);
-    }
-    public string CreateUniqueCode(int codeLength , bool isDigital)
+    public static string CreateUniqueCode(int codeLength , bool isDigital, string specialInitial= "")
     {
         Random rnd = new Random();
         string chars;
@@ -24,6 +20,8 @@ public class UniqueCode
         {
             code += chars[rnd.Next(chars.Length)];
         }
+        if (specialInitial != string.Empty)
+            code = specialInitial + code;
         return code;
     }
 }

@@ -1178,39 +1178,6 @@
         }
       }
     },
-    "/api/ServiceCategory/AddRoles": {
-      "post": {
-        "tags": [
-          "ServiceCategory"
-        ],
-        "operationId": "ServiceCategory_AddRoles",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePersonnelRole"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/ServiceCategory/GetPersonnelRoles": {
       "get": {
         "tags": [
@@ -1264,6 +1231,270 @@
             "x-position": 1
           }
         ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Presence/GetAreaDocuments": {
+      "get": {
+        "tags": [
+          "Presence"
+        ],
+        "operationId": "Presence_GetAreaDocuments",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AreaDocumentsQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Presence/GetBlockDocuments": {
+      "get": {
+        "tags": [
+          "Presence"
+        ],
+        "operationId": "Presence_GetBlockDocuments",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlockDocumentsQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Presence/GetBrandDocuments": {
+      "get": {
+        "tags": [
+          "Presence"
+        ],
+        "operationId": "Presence_GetBrandDocuments",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandDocumentsQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Presence/GetCompanyDocuments": {
+      "get": {
+        "tags": [
+          "Presence"
+        ],
+        "operationId": "Presence_GetCompanyDocuments",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyDocumentsQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Presence/GetPresenceGroupDocuments": {
+      "get": {
+        "tags": [
+          "Presence"
+        ],
+        "operationId": "Presence_GetPresenceGroupDocuments",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PresenceGroupDocumentsQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Presence/GetSiteDocuments": {
+      "get": {
+        "tags": [
+          "Presence"
+        ],
+        "operationId": "Presence_GetSiteDocuments",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SiteDocumentsQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Presence/GetUnitDocuments": {
+      "get": {
+        "tags": [
+          "Presence"
+        ],
+        "operationId": "Presence_GetUnitDocuments",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnitDocumentsQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Presence/GetZoneDocuments": {
+      "get": {
+        "tags": [
+          "Presence"
+        ],
+        "operationId": "Presence_GetZoneDocuments",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZoneDocumentsQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -1474,7 +1705,7 @@
         }
       }
     },
-    "/api/Form/AddForm": {
+    "/api/Form/CreateForm": {
       "post": {
         "tags": [
           "Form"
@@ -1507,7 +1738,7 @@
         }
       }
     },
-    "/api/Form/ViewForms": {
+    "/api/Form/GetForms": {
       "get": {
         "tags": [
           "Form"
@@ -1543,7 +1774,7 @@
         }
       }
     },
-    "/api/Form/ViewFormById": {
+    "/api/Form/GetFormById": {
       "get": {
         "tags": [
           "Form"
@@ -1641,7 +1872,7 @@
         }
       }
     },
-    "/api/DocumentTemplate/AddDocumentTemplate": {
+    "/api/DocumentTemplate/CreateDocumentTemplate": {
       "post": {
         "tags": [
           "DocumentTemplate"
@@ -1738,6 +1969,42 @@
         }
       }
     },
+    "/api/DocumentTemplate/GetDocumentTemplateTypes": {
+      "get": {
+        "tags": [
+          "DocumentTemplate"
+        ],
+        "operationId": "DocumentTemplate_GetDocumentTemplateTypes",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/GetDocumentTemplateTypesQuery"
+                }
+              ]
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/DocumentTemplate/EditDocumentTemplate": {
       "post": {
         "tags": [
@@ -1783,270 +2050,6 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/RemoveDocumentTemplateCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/DocumentTemplate/GetAreaDocuments": {
-      "get": {
-        "tags": [
-          "DocumentTemplate"
-        ],
-        "operationId": "DocumentTemplate_GetAreaDocuments",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AreaDocumentsQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/DocumentTemplate/GetBlockDocuments": {
-      "get": {
-        "tags": [
-          "DocumentTemplate"
-        ],
-        "operationId": "DocumentTemplate_GetBlockDocuments",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BlockDocumentsQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/DocumentTemplate/GetBrandDocuments": {
-      "get": {
-        "tags": [
-          "DocumentTemplate"
-        ],
-        "operationId": "DocumentTemplate_GetBrandDocuments",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BrandDocumentsQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/DocumentTemplate/GetCompanyDocuments": {
-      "get": {
-        "tags": [
-          "DocumentTemplate"
-        ],
-        "operationId": "DocumentTemplate_GetCompanyDocuments",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompanyDocumentsQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/DocumentTemplate/GetPresenceGroupDocuments": {
-      "get": {
-        "tags": [
-          "DocumentTemplate"
-        ],
-        "operationId": "DocumentTemplate_GetPresenceGroupDocuments",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PresenceGroupDocumentsQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/DocumentTemplate/GetSiteDocuments": {
-      "get": {
-        "tags": [
-          "DocumentTemplate"
-        ],
-        "operationId": "DocumentTemplate_GetSiteDocuments",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SiteDocumentsQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/DocumentTemplate/GetUnitDocuments": {
-      "get": {
-        "tags": [
-          "DocumentTemplate"
-        ],
-        "operationId": "DocumentTemplate_GetUnitDocuments",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UnitDocumentsQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/DocumentTemplate/GetZoneDocuments": {
-      "get": {
-        "tags": [
-          "DocumentTemplate"
-        ],
-        "operationId": "DocumentTemplate_GetZoneDocuments",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ZoneDocumentsQuery"
               }
             }
           },
@@ -2558,14 +2561,6 @@
           "isParallelApprovement": {
             "type": "boolean"
           },
-          "serviceCategoryApprovement": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/CreateCategoryRoleDto"
-              }
-            ]
-          },
           "serviceCategoryRoles": {
             "nullable": true,
             "oneOf": [
@@ -2793,30 +2788,89 @@
           }
         }
       },
-      "CreatePersonnelRole": {
+      "GetAllApproversQuery": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "AreaDocumentsQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "personRoles": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/Role"
-            }
-          },
-          "personnelId": {
+          "areaId": {
             "type": "integer",
             "format": "int32"
           }
         }
       },
-      "GetAllApproversQuery": {
+      "BlockDocumentsQuery": {
         "type": "object",
-        "additionalProperties": false
+        "additionalProperties": false,
+        "properties": {
+          "blockId": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "BrandDocumentsQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "brandId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CompanyDocumentsQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "companyId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PresenceGroupDocumentsQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "presenceGroupId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SiteDocumentsQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "siteId": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "UnitDocumentsQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "unitId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ZoneDocumentsQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "zoneId": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
       },
       "CreatePresenceGroupCommand": {
         "type": "object",
@@ -2940,27 +2994,30 @@
             "$ref": "#/components/schemas/QuestionType"
           },
           "answersCount": {
-            "type": "integer"
+            "type": "integer",
+            "nullable": true
           },
           "dateQuestionOptions": {
-            "type": "array",
             "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/DateQuestionOptionsDto"
-            }
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DateQuestionOptionsRequestDto"
+              }
+            ]
           },
           "fileQuestionOptions": {
-            "type": "array",
             "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/FileQuestionOptionsDto"
-            }
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FileQuestionOptionsRequestDto"
+              }
+            ]
           },
           "multiChoicesQuestions": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/MultiChoicesQuestionDto"
+              "$ref": "#/components/schemas/MultiChoicesQuestionRequestDto"
             }
           }
         }
@@ -2969,7 +3026,7 @@
         "type": "integer",
         "description": "",
         "x-enumNames": [
-          "MultiAnswer",
+          "MultiAnswers",
           "OneOfMany",
           "DateAnswer",
           "FileAnswer",
@@ -2983,7 +3040,7 @@
           4
         ]
       },
-      "DateQuestionOptionsDto": {
+      "DateQuestionOptionsRequestDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2996,7 +3053,7 @@
           }
         }
       },
-      "FileQuestionOptionsDto": {
+      "FileQuestionOptionsRequestDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3023,7 +3080,7 @@
           2
         ]
       },
-      "MultiChoicesQuestionDto": {
+      "MultiChoicesQuestionRequestDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3089,8 +3146,20 @@
           },
           "hasValidationDate": {
             "type": "boolean"
+          },
+          "forms": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
+      },
+      "GetDocumentTemplateTypesQuery": {
+        "type": "object",
+        "additionalProperties": false
       },
       "EditDocumentTemplateCommand": {
         "allOf": [
@@ -3116,86 +3185,6 @@
           "id": {
             "type": "integer",
             "format": "int32"
-          }
-        }
-      },
-      "AreaDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "areaId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "BlockDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "blockId": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "BrandDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "brandId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "CompanyDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "companyId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "PresenceGroupDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "presenceGroupId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "SiteDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "siteId": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "UnitDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "unitId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "ZoneDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "zoneId": {
-            "type": "string",
-            "format": "guid"
           }
         }
       }

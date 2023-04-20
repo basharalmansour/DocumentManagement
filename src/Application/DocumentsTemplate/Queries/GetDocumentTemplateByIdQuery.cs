@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.DocumentsTemplate.Queries;
 
-public class GetDocumentTemplateByIdQuery : IRequest<GetDocumentTemplateDto>
+public class GetDocumentTemplateByIdQuery : IRequest<GetDocumentTemplateDto>//
 {
     public int Id { get; set; }
 }
@@ -27,7 +27,10 @@ public class GetDocumentTemplateByIdHandler : IRequestHandler<GetDocumentTemplat
     }
     public async Task<GetDocumentTemplateDto> Handle(GetDocumentTemplateByIdQuery request, CancellationToken cancellationToken)
     {
-        var document = await _applicationDbContext.DocumentTemplates.Include(x=>x.DocumentTemplateFileTypes).FirstOrDefaultAsync(x=>x.Id==request.Id);
+        var document = await _applicationDbContext.DocumentTemplates
+            .Include(x=>x.DocumentTemplateFileTypes)
+            .Include(x=>x.Forms)
+            .FirstOrDefaultAsync(x=>x.Id==request.Id);
         var documentDto = _mapper.Map<GetDocumentTemplateDto>(document);
         return documentDto;
     }

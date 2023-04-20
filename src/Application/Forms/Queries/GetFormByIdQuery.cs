@@ -27,7 +27,14 @@ public class GetFormByIdQueryHandler : IRequestHandler<GetFormByIdQuery, FormDto
     }
     public async Task<FormDto> Handle(GetFormByIdQuery request, CancellationToken cancellationToken)
     {
-        var form =await _applicationDbContext.Forms.Include(x=>x.Questions).FirstOrDefaultAsync(x => x.Id == request.Id);
+        var form =await _applicationDbContext.Forms
+            .Include(x=>x.Questions)
+            .ThenInclude(x=>x.MultiChoicesQuestions)
+            .Include(x => x.Questions)
+            .ThenInclude(x => x.DateQuestionOptions)
+            .Include(x => x.Questions)
+            .ThenInclude(x => x.FileQuestionOptions)
+            .FirstOrDefaultAsync(x => x.Id == request.Id);
         var formDto = _mapper.Map<FormDto>(form);
         return formDto;
     }

@@ -19,10 +19,6 @@ public  class AddFormCommandValidator : AbstractValidator<CreateFormCommand>
 
     private bool NamesCheck(List<AddQuestionRequest> request)
     {
-        foreach (var question in request)
-            if (question.Name == null)
-                return false;
-        return true;
-
+        return !request.Any(question => question.Name == null);
     }
 }

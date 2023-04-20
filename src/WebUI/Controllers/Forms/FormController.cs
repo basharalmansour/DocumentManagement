@@ -6,19 +6,19 @@ namespace CleanArchitecture.WebUI.Controllers.Forms;
 
 public class FormController : ApiControllerBase
 {
-    [HttpPost("AddForm")]
+    [HttpPost("CreateForm")]
     public async Task<IActionResult> CreateForm([FromBody] CreateFormCommand request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpGet("ViewForms")]
+    [HttpGet("GetForms")]
     public async Task<IActionResult> GetForms([FromQuery] GetFormsQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpGet("ViewFormById")]
+    [HttpGet("GetFormById")]
     public async Task<IActionResult> GetFormById([FromQuery] GetFormByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);

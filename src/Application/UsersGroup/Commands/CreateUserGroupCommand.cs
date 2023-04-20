@@ -29,9 +29,8 @@ public class CreateUserGroupCommandHandler : IRequestHandler<CreateUserGroupComm
     }
     public async Task<int> Handle(CreateUserGroupCommand request, CancellationToken cancellationToken)
     {
-        UniqueCode code = new UniqueCode(8, false) ;
         var userGroup = _mapper.Map<UserGroup>(request);
-        userGroup.UniqueCode ="U" + code.CreateUniqueCode(8, false);
+        userGroup.UniqueCode = UniqueCode.CreateUniqueCode(8, false,"U");
         _applicationDbContext.UserGroups.Add(userGroup);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return userGroup.Id;

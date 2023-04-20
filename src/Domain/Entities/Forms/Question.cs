@@ -10,13 +10,17 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Entities.Forms;
-public class Question : LightBaseEntity<int>, IEntity<int>
+public class Question : LightBaseEntity<int>, IEntity<int>//
 {
     public string Name { get; set; }
     public QuestionType QuestionType { get; set; }
+    
+    /// <summary>
+    /// in case of multi answers type or one of many type
+    /// </summary>
     public short? AnswersCount { get; set; }
-    public List<DateQuestionOptions> DateQuestionOptions { get; set; }
-    public List<FileQuestionOptions> FileQuestionOptions { get; set; }
+    public DateQuestionOptions DateQuestionOptions { get; set; }
+    public FileQuestionOptions FileQuestionOptions { get; set; }
     public List<MultiChoicesQuestion> MultiChoicesQuestions { get; set; }
     [ForeignKey("Form")]
     public int FormId { get; set; }

@@ -9,7 +9,7 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.Forms;
-public class MultiChoicesQuestion : LightBaseEntity<int>, IEntity<int>
+public class MultiChoicesQuestion : LightBaseEntity<int>, IEntity<int>//
 {
     public string Choice { get; set; } 
     [ForeignKey("Question")]

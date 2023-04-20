@@ -9,7 +9,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Application.DocumentsTemplate.Queries.Presences;
+namespace CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Queries;
 public class SiteDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public Guid SiteId { get; set; }
@@ -25,7 +25,11 @@ public class SiteDocumentsQueryHandler : IRequestHandler<SiteDocumentsQuery, Lis
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(SiteDocumentsQuery request, CancellationToken cancellationToken)
     {
-        var documents = await _applicationDbContext.DocumentTemplateSites.Where(x => x.SiteId == request.SiteId).Select(x => x.DocumentTemplate).ToListAsync();
+        var documents = await _applicationDbContext.DocumentTemplateSites
+            .Include(x => x.DocumentTemplate)
+            .Where(x => x.SiteId == request.SiteId)
+            .Select(x => x.DocumentTemplate)
+            .ToListAsync();
         var result = _mapper.Map<List<BasicDocumentTemplateDto>>(documents);
         return result;
     }

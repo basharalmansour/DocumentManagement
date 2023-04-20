@@ -20,6 +20,7 @@ public class CreateDocumentTemplateCommand : IRequest<int>
     public int DocumentTemplateTypeId { get; set; }
     public List<DocumentFileType> DocumentTemplateFileTypes { get; set; }
     public bool HasValidationDate { get; set; }
+    public List<int> Forms { get; set; }
 }
 
 public class CreateDocumentTemplateCommandHandler :IRequestHandler<CreateDocumentTemplateCommand, int>
@@ -34,9 +35,8 @@ public class CreateDocumentTemplateCommandHandler :IRequestHandler<CreateDocumen
 
     public async Task<int> Handle(CreateDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
-        UniqueCode code = new UniqueCode(8, false);
         var documentTemplate = _mapper.Map<DocumentTemplate>(request);
-        documentTemplate.UniqueCode= "D"+ code.CreateUniqueCode(8, false);
+        documentTemplate.UniqueCode = UniqueCode.CreateUniqueCode(8, false, "D");
         _applicationDbContext.DocumentTemplates.Add(documentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return documentTemplate.Id; 

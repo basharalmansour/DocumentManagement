@@ -10,7 +10,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities.Documents;
 using MediatR;
 
-namespace CleanArchitecture.Application.PresenceGroups.Queries;
+namespace CleanArchitecture.Application.Presences.PresenceGroups.Queries;
 public class PresenceDocumentsQuery : IRequest<List<GetDocumentTemplateDto>>
 {
     public int Id { get; set; }
@@ -28,12 +28,12 @@ public class PresenceDocumentsQueryHandler : IRequestHandler<PresenceDocumentsQu
     {
         List<DocumentTemplate> result = new List<DocumentTemplate>();
         var documentsIds = _applicationDbContext.DocumentTemplatePresenceGroups.Where(x => x.PresenceGroupId == request.Id).Select(x => x.DocumentTemplateId).ToList();
-        foreach(int id in documentsIds)
+        foreach (int id in documentsIds)
         {
             var document = _applicationDbContext.DocumentTemplates.FirstOrDefault(x => x.Id == id);
             result.Add(document);
         }
-        var resultDto= _mapper.Map<List<GetDocumentTemplateDto>>(result);
+        var resultDto = _mapper.Map<List<GetDocumentTemplateDto>>(result);
         return resultDto;
     }
 }

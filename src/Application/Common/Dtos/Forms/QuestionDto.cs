@@ -10,9 +10,24 @@ using CleanArchitecture.Domain.Enums;
 namespace CleanArchitecture.Application.Common.Dtos.Forms;
 public class QuestionDto 
 {
+    public int Id { get; set; }
+    public int FormId { get; set; }
     public string Name { get; set; }
     public QuestionType QuestionType { get; set; }
-    public short AnswersCount { get; set; }
-    public int FormId { get; set; }
-    public int Id { get; set; }
+    public short? AnswersCount { get; set; }
+    public DateQuestionOptionsDto DateQuestionOptions { get; set; }
+    public FileQuestionOptionsDto FileQuestionOptions { get; set; }
+    public List<MultiChoicesQuestionDto> MultiChoicesQuestions { get; set; }
+}
+public class DateQuestionOptionsDto
+{
+    public bool IsMultiDate { get; set; }
+}
+public class FileQuestionOptionsDto
+{
+    public DocumentFileType DocumentFileType { get; set; }
+}
+public class MultiChoicesQuestionDto
+{
+    public string Choice { get; set; }
 }

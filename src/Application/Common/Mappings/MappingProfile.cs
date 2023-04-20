@@ -9,7 +9,6 @@ using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 using CleanArchitecture.Application.Common.Dtos.PresenceGroups;
-using CleanArchitecture.Application.PresenceGroups.Commands;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 using CleanArchitecture.Application.Common.Dtos.Vehicles;
 using CleanArchitecture.Application.Vehicles.Commands;
@@ -25,10 +24,8 @@ using CleanArchitecture.Application.DocumentsTemplate.Commands;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
-using CleanArchitecture.Application.Roles.Commands;
-using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Entities.Definitions;
-using CleanArchitecture.Application.Roles.Commands;
+using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -42,7 +39,6 @@ public class MappingProfile : Profile
         ApplyMappingsOfUserGroup();
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
-        CreateMap<CreatePersonnelRole, PersonnelRoles>();
         CreateMap<Role, RolePersonnel>()
             .ForMember(des => des.Role, opt => opt.MapFrom(res => res));
     }
@@ -156,23 +152,34 @@ public class MappingProfile : Profile
     }
     private void ApplyMappingsOfForm()
     {
+        CreateMap<Form, BasicFormDto>();
+
         CreateMap<Form, FormDto>();
         CreateMap<Question, QuestionDto>();
+        CreateMap<DateQuestionOptions, DateQuestionOptionsDto>();
+        CreateMap<FileQuestionOptions, FileQuestionOptionsDto>();
+        CreateMap<MultiChoicesQuestion, MultiChoicesQuestionDto>();
+
         CreateMap<CreateFormCommand, Form>();
         CreateMap<AddQuestionRequest, Question>();
+        CreateMap<DateQuestionOptionsRequestDto, DateQuestionOptions>();
+        CreateMap<FileQuestionOptionsRequestDto, FileQuestionOptions>();
+        CreateMap<MultiChoicesQuestionRequestDto, MultiChoicesQuestion>();
+
         CreateMap<EditFormCommand, Form>();
     }
     private void ApplyMappingsOfDocumentTemplate()
     {
         CreateMap<DocumentTemplate, GetDocumentTemplateDto>()
-            .ForMember(dest => dest.DocumentTemplateFileTypes, opt => opt.MapFrom(src => src.DocumentTemplateFileTypes.Select(x => x.FileType).ToList()));
-        CreateMap<DocumentTemplateFileType, DocumentTemplateFileTypeDto>();
+            .ForMember(dest => dest.DocumentTemplateFileTypes, opt => opt.MapFrom(src => src.DocumentTemplateFileTypes.Select(x => x.FileType).ToList()))
+            .ForMember(dest => dest.Forms, opt => opt.MapFrom(src => src.Forms.Select(x => x.FormId).ToList()));
         CreateMap<DocumentTemplate, BasicDocumentTemplateDto>();
-        CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>();
-        CreateMap<EditDocumentTemplateCommand, DocumentTemplate>();
+        CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>()
+            .ForMember(dest=>dest.Forms, opt=>opt.MapFrom(src=> src.Forms.Select(j=>new DocumentTemplateForm() { FormId = j}).ToList()));
+        CreateMap<EditDocumentTemplateCommand, DocumentTemplate>()
+            .ForMember(dest => dest.Forms, opt => opt.MapFrom(src => src.Forms.Select(j => new DocumentTemplateForm() { FormId = j }).ToList()));
         CreateMap<DocumentFileType, DocumentTemplateFileType>()
             .ForMember(dest => dest.FileType, opt => opt.MapFrom(src => src));
-
     }
 }
 

@@ -32,7 +32,10 @@ public class EditDocumentTemplateCommandHandler : IRequestHandler<EditDocumentTe
 
     public async Task<int> Handle(EditDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
-        var documentTemplate = _applicationDbContext.DocumentTemplates.Include(x=>x.DocumentTemplateFileTypes).FirstOrDefault(x => x.Id == request.Id & x.IsDeleted == false);
+        var documentTemplate = _applicationDbContext.DocumentTemplates
+            .Include(x=>x.DocumentTemplateFileTypes)
+            .Include(x=>x.Forms)
+            .FirstOrDefault(x => x.Id == request.Id & x.IsDeleted == false);
         _mapper.Map(request, documentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return documentTemplate.Id;

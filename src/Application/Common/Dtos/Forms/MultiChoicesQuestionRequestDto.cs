@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Application.Common.Dtos.Forms;
-public class FileQuestionOptionsDto
+public class MultiChoicesQuestionRequestDto
 {
-    public DocumentFileType DocumentFileType { get; set; }
+    public string Choice { get; set; }
     public int QuestionId { get; set; }
 }

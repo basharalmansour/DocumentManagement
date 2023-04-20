@@ -11,8 +11,8 @@ public class AddQuestionRequest
 {
     public string Name { get; set; }
     public QuestionType QuestionType { get; set; }
-    public short AnswersCount { get; set; }
-    public List<DateQuestionOptionsDto> DateQuestionOptions { get; set; }
-    public List<FileQuestionOptionsDto> FileQuestionOptions { get; set; }
-    public List<MultiChoicesQuestionDto> MultiChoicesQuestions { get; set; }
+    public short? AnswersCount { get; set; }
+    public DateQuestionOptionsRequestDto DateQuestionOptions { get; set; }
+    public FileQuestionOptionsRequestDto FileQuestionOptions { get; set; }
+    public List<MultiChoicesQuestionRequestDto> MultiChoicesQuestions { get; set; }
 }

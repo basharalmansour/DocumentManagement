@@ -1,8 +1,8 @@
-﻿using CleanArchitecture.Application.PresenceGroups.Commands;
-using CleanArchitecture.Application.PresenceGroups.Queries;
+﻿using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
+using CleanArchitecture.Application.Presences.PresenceGroups.Queries;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CleanArchitecture.WebUI.Controllers.PresncesGroup;
+namespace CleanArchitecture.WebUI.Controllers.Presnces;
 
 public class PresenceGroupController : ApiControllerBase
 {

@@ -1573,7 +1573,6 @@ export interface IServiceCategoryClient {
     editServiceCategory(request: EditServiceCategoryCommand): Observable<FileResponse>;
     deleteServiceCategory(request: RemoveServiceCategoryCommand): Observable<FileResponse>;
     getPersonnelCategories(presonnelId: number | undefined): Observable<FileResponse>;
-    addRoles(request: CreatePersonnelRole): Observable<FileResponse>;
     getPersonnelRoles(personnelId: number | undefined): Observable<FileResponse>;
     getAllApprovers(request: GetAllApproversQuery | null | undefined): Observable<FileResponse>;
 }
@@ -1889,56 +1888,6 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
-    addRoles(request: CreatePersonnelRole) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/ServiceCategory/AddRoles";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddRoles(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processAddRoles(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processAddRoles(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<FileResponse>(<any>null);
-    }
-
     getPersonnelRoles(personnelId: number | undefined) : Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/ServiceCategory/GetPersonnelRoles?";
         if (personnelId === null)
@@ -2018,6 +1967,431 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
     }
 
     protected processGetAllApprovers(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+}
+
+export interface IPresenceClient {
+    getAreaDocuments(request: AreaDocumentsQuery): Observable<FileResponse>;
+    getBlockDocuments(request: BlockDocumentsQuery): Observable<FileResponse>;
+    getBrandDocuments(request: BrandDocumentsQuery): Observable<FileResponse>;
+    getCompanyDocuments(request: CompanyDocumentsQuery): Observable<FileResponse>;
+    getPresenceGroupDocuments(request: PresenceGroupDocumentsQuery): Observable<FileResponse>;
+    getSiteDocuments(request: SiteDocumentsQuery): Observable<FileResponse>;
+    getUnitDocuments(request: UnitDocumentsQuery): Observable<FileResponse>;
+    getZoneDocuments(request: ZoneDocumentsQuery): Observable<FileResponse>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class PresenceClient implements IPresenceClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAreaDocuments(request: AreaDocumentsQuery) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/GetAreaDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAreaDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAreaDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAreaDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    getBlockDocuments(request: BlockDocumentsQuery) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/GetBlockDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBlockDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBlockDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBlockDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    getBrandDocuments(request: BrandDocumentsQuery) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/GetBrandDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBrandDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBrandDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBrandDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    getCompanyDocuments(request: CompanyDocumentsQuery) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/GetCompanyDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCompanyDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCompanyDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCompanyDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    getPresenceGroupDocuments(request: PresenceGroupDocumentsQuery) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/GetPresenceGroupDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPresenceGroupDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPresenceGroupDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPresenceGroupDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    getSiteDocuments(request: SiteDocumentsQuery) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/GetSiteDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSiteDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSiteDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSiteDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    getUnitDocuments(request: UnitDocumentsQuery) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/GetUnitDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUnitDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUnitDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUnitDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    getZoneDocuments(request: ZoneDocumentsQuery) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/GetZoneDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetZoneDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetZoneDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetZoneDocuments(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2381,7 +2755,7 @@ export class FormClient implements IFormClient {
     }
 
     createForm(request: CreateFormCommand) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Form/AddForm";
+        let url_ = this.baseUrl + "/api/Form/CreateForm";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2431,7 +2805,7 @@ export class FormClient implements IFormClient {
     }
 
     getForms(request: GetFormsQuery | null | undefined) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Form/ViewForms?";
+        let url_ = this.baseUrl + "/api/Form/GetForms?";
         if (request !== undefined && request !== null)
             url_ += "request=" + encodeURIComponent("" + request) + "&";
         url_ = url_.replace(/[?&]$/, "");
@@ -2479,7 +2853,7 @@ export class FormClient implements IFormClient {
     }
 
     getFormById(id: number | undefined) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Form/ViewFormById?";
+        let url_ = this.baseUrl + "/api/Form/GetFormById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -2633,16 +3007,9 @@ export interface IDocumentTemplateClient {
     createDocumentTemplate(request: CreateDocumentTemplateCommand): Observable<FileResponse>;
     getDocumentTemplates(searchText: string | null | undefined): Observable<FileResponse>;
     getDocumentTemplateById(id: number | undefined): Observable<FileResponse>;
+    getDocumentTemplateTypes(request: GetDocumentTemplateTypesQuery | null | undefined): Observable<FileResponse>;
     editDocumentTemplate(request: EditDocumentTemplateCommand): Observable<FileResponse>;
     deleteDocumentTemplate(request: RemoveDocumentTemplateCommand): Observable<FileResponse>;
-    getAreaDocuments(request: AreaDocumentsQuery): Observable<FileResponse>;
-    getBlockDocuments(request: BlockDocumentsQuery): Observable<FileResponse>;
-    getBrandDocuments(request: BrandDocumentsQuery): Observable<FileResponse>;
-    getCompanyDocuments(request: CompanyDocumentsQuery): Observable<FileResponse>;
-    getPresenceGroupDocuments(request: PresenceGroupDocumentsQuery): Observable<FileResponse>;
-    getSiteDocuments(request: SiteDocumentsQuery): Observable<FileResponse>;
-    getUnitDocuments(request: UnitDocumentsQuery): Observable<FileResponse>;
-    getZoneDocuments(request: ZoneDocumentsQuery): Observable<FileResponse>;
 }
 
 @Injectable({
@@ -2659,7 +3026,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
     }
 
     createDocumentTemplate(request: CreateDocumentTemplateCommand) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/DocumentTemplate/AddDocumentTemplate";
+        let url_ = this.baseUrl + "/api/DocumentTemplate/CreateDocumentTemplate";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2806,6 +3173,54 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
+    getDocumentTemplateTypes(request: GetDocumentTemplateTypesQuery | null | undefined) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/DocumentTemplate/GetDocumentTemplateTypes?";
+        if (request !== undefined && request !== null)
+            url_ += "request=" + encodeURIComponent("" + request) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDocumentTemplateTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDocumentTemplateTypes(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDocumentTemplateTypes(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
     editDocumentTemplate(request: EditDocumentTemplateCommand) : Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/EditDocumentTemplate";
         url_ = url_.replace(/[?&]$/, "");
@@ -2887,406 +3302,6 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
     }
 
     protected processDeleteDocumentTemplate(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<FileResponse>(<any>null);
-    }
-
-    getAreaDocuments(request: AreaDocumentsQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/DocumentTemplate/GetAreaDocuments";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAreaDocuments(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAreaDocuments(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetAreaDocuments(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<FileResponse>(<any>null);
-    }
-
-    getBlockDocuments(request: BlockDocumentsQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/DocumentTemplate/GetBlockDocuments";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetBlockDocuments(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetBlockDocuments(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetBlockDocuments(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<FileResponse>(<any>null);
-    }
-
-    getBrandDocuments(request: BrandDocumentsQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/DocumentTemplate/GetBrandDocuments";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetBrandDocuments(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetBrandDocuments(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetBrandDocuments(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<FileResponse>(<any>null);
-    }
-
-    getCompanyDocuments(request: CompanyDocumentsQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/DocumentTemplate/GetCompanyDocuments";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetCompanyDocuments(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetCompanyDocuments(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetCompanyDocuments(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<FileResponse>(<any>null);
-    }
-
-    getPresenceGroupDocuments(request: PresenceGroupDocumentsQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/DocumentTemplate/GetPresenceGroupDocuments";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPresenceGroupDocuments(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetPresenceGroupDocuments(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetPresenceGroupDocuments(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<FileResponse>(<any>null);
-    }
-
-    getSiteDocuments(request: SiteDocumentsQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/DocumentTemplate/GetSiteDocuments";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetSiteDocuments(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetSiteDocuments(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetSiteDocuments(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<FileResponse>(<any>null);
-    }
-
-    getUnitDocuments(request: UnitDocumentsQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/DocumentTemplate/GetUnitDocuments";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetUnitDocuments(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetUnitDocuments(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetUnitDocuments(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<FileResponse>(<any>null);
-    }
-
-    getZoneDocuments(request: ZoneDocumentsQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/DocumentTemplate/GetZoneDocuments";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetZoneDocuments(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetZoneDocuments(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetZoneDocuments(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4238,7 +4253,6 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
     personnelDocuments?: number[] | undefined;
     parentServiceCategoryId?: number | undefined;
     isParallelApprovement?: boolean;
-    serviceCategoryApprovement?: CreateCategoryRoleDto | undefined;
     serviceCategoryRoles?: CreateCategoryRoleDto | undefined;
     specialRules?: number[] | undefined;
     documents?: number[] | undefined;
@@ -4274,7 +4288,6 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
             }
             this.parentServiceCategoryId = _data["parentServiceCategoryId"];
             this.isParallelApprovement = _data["isParallelApprovement"];
-            this.serviceCategoryApprovement = _data["serviceCategoryApprovement"] ? CreateCategoryRoleDto.fromJS(_data["serviceCategoryApprovement"]) : <any>undefined;
             this.serviceCategoryRoles = _data["serviceCategoryRoles"] ? CreateCategoryRoleDto.fromJS(_data["serviceCategoryRoles"]) : <any>undefined;
             if (Array.isArray(_data["specialRules"])) {
                 this.specialRules = [] as any;
@@ -4350,7 +4363,6 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
         }
         data["parentServiceCategoryId"] = this.parentServiceCategoryId;
         data["isParallelApprovement"] = this.isParallelApprovement;
-        data["serviceCategoryApprovement"] = this.serviceCategoryApprovement ? this.serviceCategoryApprovement.toJSON() : <any>undefined;
         data["serviceCategoryRoles"] = this.serviceCategoryRoles ? this.serviceCategoryRoles.toJSON() : <any>undefined;
         if (Array.isArray(this.specialRules)) {
             data["specialRules"] = [];
@@ -4415,7 +4427,6 @@ export interface ICreateServiceCategoryCommand {
     personnelDocuments?: number[] | undefined;
     parentServiceCategoryId?: number | undefined;
     isParallelApprovement?: boolean;
-    serviceCategoryApprovement?: CreateCategoryRoleDto | undefined;
     serviceCategoryRoles?: CreateCategoryRoleDto | undefined;
     specialRules?: number[] | undefined;
     documents?: number[] | undefined;
@@ -4681,58 +4692,6 @@ export interface IRemoveServiceCategoryCommand {
     id?: number;
 }
 
-export class CreatePersonnelRole implements ICreatePersonnelRole {
-    name?: string | undefined;
-    personRoles?: Role[] | undefined;
-    personnelId?: number;
-
-    constructor(data?: ICreatePersonnelRole) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            if (Array.isArray(_data["personRoles"])) {
-                this.personRoles = [] as any;
-                for (let item of _data["personRoles"])
-                    this.personRoles!.push(item);
-            }
-            this.personnelId = _data["personnelId"];
-        }
-    }
-
-    static fromJS(data: any): CreatePersonnelRole {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreatePersonnelRole();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        if (Array.isArray(this.personRoles)) {
-            data["personRoles"] = [];
-            for (let item of this.personRoles)
-                data["personRoles"].push(item);
-        }
-        data["personnelId"] = this.personnelId;
-        return data; 
-    }
-}
-
-export interface ICreatePersonnelRole {
-    name?: string | undefined;
-    personRoles?: Role[] | undefined;
-    personnelId?: number;
-}
-
 export class GetAllApproversQuery implements IGetAllApproversQuery {
 
     constructor(data?: IGetAllApproversQuery) {
@@ -4761,681 +4720,6 @@ export class GetAllApproversQuery implements IGetAllApproversQuery {
 }
 
 export interface IGetAllApproversQuery {
-}
-
-export class CreatePresenceGroupCommand implements ICreatePresenceGroupCommand {
-    name?: string | undefined;
-    presenceGroupAreas?: number[] | undefined;
-    presenceGroupBlocks?: string[] | undefined;
-    presenceGroupCompanies?: number[] | undefined;
-    presenceGroupBrands?: number[] | undefined;
-    presenceGroupSites?: string[] | undefined;
-    presenceGroupUnits?: number[] | undefined;
-    presenceGroupZones?: string[] | undefined;
-
-    constructor(data?: ICreatePresenceGroupCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            if (Array.isArray(_data["presenceGroupAreas"])) {
-                this.presenceGroupAreas = [] as any;
-                for (let item of _data["presenceGroupAreas"])
-                    this.presenceGroupAreas!.push(item);
-            }
-            if (Array.isArray(_data["presenceGroupBlocks"])) {
-                this.presenceGroupBlocks = [] as any;
-                for (let item of _data["presenceGroupBlocks"])
-                    this.presenceGroupBlocks!.push(item);
-            }
-            if (Array.isArray(_data["presenceGroupCompanies"])) {
-                this.presenceGroupCompanies = [] as any;
-                for (let item of _data["presenceGroupCompanies"])
-                    this.presenceGroupCompanies!.push(item);
-            }
-            if (Array.isArray(_data["presenceGroupBrands"])) {
-                this.presenceGroupBrands = [] as any;
-                for (let item of _data["presenceGroupBrands"])
-                    this.presenceGroupBrands!.push(item);
-            }
-            if (Array.isArray(_data["presenceGroupSites"])) {
-                this.presenceGroupSites = [] as any;
-                for (let item of _data["presenceGroupSites"])
-                    this.presenceGroupSites!.push(item);
-            }
-            if (Array.isArray(_data["presenceGroupUnits"])) {
-                this.presenceGroupUnits = [] as any;
-                for (let item of _data["presenceGroupUnits"])
-                    this.presenceGroupUnits!.push(item);
-            }
-            if (Array.isArray(_data["presenceGroupZones"])) {
-                this.presenceGroupZones = [] as any;
-                for (let item of _data["presenceGroupZones"])
-                    this.presenceGroupZones!.push(item);
-            }
-        }
-    }
-
-    static fromJS(data: any): CreatePresenceGroupCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreatePresenceGroupCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        if (Array.isArray(this.presenceGroupAreas)) {
-            data["presenceGroupAreas"] = [];
-            for (let item of this.presenceGroupAreas)
-                data["presenceGroupAreas"].push(item);
-        }
-        if (Array.isArray(this.presenceGroupBlocks)) {
-            data["presenceGroupBlocks"] = [];
-            for (let item of this.presenceGroupBlocks)
-                data["presenceGroupBlocks"].push(item);
-        }
-        if (Array.isArray(this.presenceGroupCompanies)) {
-            data["presenceGroupCompanies"] = [];
-            for (let item of this.presenceGroupCompanies)
-                data["presenceGroupCompanies"].push(item);
-        }
-        if (Array.isArray(this.presenceGroupBrands)) {
-            data["presenceGroupBrands"] = [];
-            for (let item of this.presenceGroupBrands)
-                data["presenceGroupBrands"].push(item);
-        }
-        if (Array.isArray(this.presenceGroupSites)) {
-            data["presenceGroupSites"] = [];
-            for (let item of this.presenceGroupSites)
-                data["presenceGroupSites"].push(item);
-        }
-        if (Array.isArray(this.presenceGroupUnits)) {
-            data["presenceGroupUnits"] = [];
-            for (let item of this.presenceGroupUnits)
-                data["presenceGroupUnits"].push(item);
-        }
-        if (Array.isArray(this.presenceGroupZones)) {
-            data["presenceGroupZones"] = [];
-            for (let item of this.presenceGroupZones)
-                data["presenceGroupZones"].push(item);
-        }
-        return data; 
-    }
-}
-
-export interface ICreatePresenceGroupCommand {
-    name?: string | undefined;
-    presenceGroupAreas?: number[] | undefined;
-    presenceGroupBlocks?: string[] | undefined;
-    presenceGroupCompanies?: number[] | undefined;
-    presenceGroupBrands?: number[] | undefined;
-    presenceGroupSites?: string[] | undefined;
-    presenceGroupUnits?: number[] | undefined;
-    presenceGroupZones?: string[] | undefined;
-}
-
-export class EditPresenceGroupCommand extends CreatePresenceGroupCommand implements IEditPresenceGroupCommand {
-    id?: number;
-
-    constructor(data?: IEditPresenceGroupCommand) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): EditPresenceGroupCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new EditPresenceGroupCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IEditPresenceGroupCommand extends ICreatePresenceGroupCommand {
-    id?: number;
-}
-
-export class RemovePresenceGroupCommand implements IRemovePresenceGroupCommand {
-    id?: number;
-
-    constructor(data?: IRemovePresenceGroupCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): RemovePresenceGroupCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new RemovePresenceGroupCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface IRemovePresenceGroupCommand {
-    id?: number;
-}
-
-export class CreateFormCommand implements ICreateFormCommand {
-    name?: string | undefined;
-    questions?: AddQuestionRequest[] | undefined;
-
-    constructor(data?: ICreateFormCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            if (Array.isArray(_data["questions"])) {
-                this.questions = [] as any;
-                for (let item of _data["questions"])
-                    this.questions!.push(AddQuestionRequest.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): CreateFormCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateFormCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        if (Array.isArray(this.questions)) {
-            data["questions"] = [];
-            for (let item of this.questions)
-                data["questions"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface ICreateFormCommand {
-    name?: string | undefined;
-    questions?: AddQuestionRequest[] | undefined;
-}
-
-export class AddQuestionRequest implements IAddQuestionRequest {
-    name?: string | undefined;
-    questionType?: QuestionType;
-    answersCount?: number;
-    dateQuestionOptions?: DateQuestionOptionsDto[] | undefined;
-    fileQuestionOptions?: FileQuestionOptionsDto[] | undefined;
-    multiChoicesQuestions?: MultiChoicesQuestionDto[] | undefined;
-
-    constructor(data?: IAddQuestionRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.questionType = _data["questionType"];
-            this.answersCount = _data["answersCount"];
-            if (Array.isArray(_data["dateQuestionOptions"])) {
-                this.dateQuestionOptions = [] as any;
-                for (let item of _data["dateQuestionOptions"])
-                    this.dateQuestionOptions!.push(DateQuestionOptionsDto.fromJS(item));
-            }
-            if (Array.isArray(_data["fileQuestionOptions"])) {
-                this.fileQuestionOptions = [] as any;
-                for (let item of _data["fileQuestionOptions"])
-                    this.fileQuestionOptions!.push(FileQuestionOptionsDto.fromJS(item));
-            }
-            if (Array.isArray(_data["multiChoicesQuestions"])) {
-                this.multiChoicesQuestions = [] as any;
-                for (let item of _data["multiChoicesQuestions"])
-                    this.multiChoicesQuestions!.push(MultiChoicesQuestionDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): AddQuestionRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new AddQuestionRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["questionType"] = this.questionType;
-        data["answersCount"] = this.answersCount;
-        if (Array.isArray(this.dateQuestionOptions)) {
-            data["dateQuestionOptions"] = [];
-            for (let item of this.dateQuestionOptions)
-                data["dateQuestionOptions"].push(item.toJSON());
-        }
-        if (Array.isArray(this.fileQuestionOptions)) {
-            data["fileQuestionOptions"] = [];
-            for (let item of this.fileQuestionOptions)
-                data["fileQuestionOptions"].push(item.toJSON());
-        }
-        if (Array.isArray(this.multiChoicesQuestions)) {
-            data["multiChoicesQuestions"] = [];
-            for (let item of this.multiChoicesQuestions)
-                data["multiChoicesQuestions"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IAddQuestionRequest {
-    name?: string | undefined;
-    questionType?: QuestionType;
-    answersCount?: number;
-    dateQuestionOptions?: DateQuestionOptionsDto[] | undefined;
-    fileQuestionOptions?: FileQuestionOptionsDto[] | undefined;
-    multiChoicesQuestions?: MultiChoicesQuestionDto[] | undefined;
-}
-
-export enum QuestionType {
-    MultiAnswer = 0,
-    OneOfMany = 1,
-    DateAnswer = 2,
-    FileAnswer = 3,
-    TextAnswer = 4,
-}
-
-export class DateQuestionOptionsDto implements IDateQuestionOptionsDto {
-    isMultiDate?: boolean;
-    questionId?: number;
-
-    constructor(data?: IDateQuestionOptionsDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.isMultiDate = _data["isMultiDate"];
-            this.questionId = _data["questionId"];
-        }
-    }
-
-    static fromJS(data: any): DateQuestionOptionsDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new DateQuestionOptionsDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["isMultiDate"] = this.isMultiDate;
-        data["questionId"] = this.questionId;
-        return data; 
-    }
-}
-
-export interface IDateQuestionOptionsDto {
-    isMultiDate?: boolean;
-    questionId?: number;
-}
-
-export class FileQuestionOptionsDto implements IFileQuestionOptionsDto {
-    documentFileType?: DocumentFileType;
-    questionId?: number;
-
-    constructor(data?: IFileQuestionOptionsDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.documentFileType = _data["documentFileType"];
-            this.questionId = _data["questionId"];
-        }
-    }
-
-    static fromJS(data: any): FileQuestionOptionsDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new FileQuestionOptionsDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["documentFileType"] = this.documentFileType;
-        data["questionId"] = this.questionId;
-        return data; 
-    }
-}
-
-export interface IFileQuestionOptionsDto {
-    documentFileType?: DocumentFileType;
-    questionId?: number;
-}
-
-export enum DocumentFileType {
-    PDF = 0,
-    Word = 1,
-    TxtFile = 2,
-}
-
-export class MultiChoicesQuestionDto implements IMultiChoicesQuestionDto {
-    choice?: string | undefined;
-    questionId?: number;
-
-    constructor(data?: IMultiChoicesQuestionDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.choice = _data["choice"];
-            this.questionId = _data["questionId"];
-        }
-    }
-
-    static fromJS(data: any): MultiChoicesQuestionDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new MultiChoicesQuestionDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["choice"] = this.choice;
-        data["questionId"] = this.questionId;
-        return data; 
-    }
-}
-
-export interface IMultiChoicesQuestionDto {
-    choice?: string | undefined;
-    questionId?: number;
-}
-
-export class GetFormsQuery implements IGetFormsQuery {
-
-    constructor(data?: IGetFormsQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-    }
-
-    static fromJS(data: any): GetFormsQuery {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetFormsQuery();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        return data; 
-    }
-}
-
-export interface IGetFormsQuery {
-}
-
-export class EditFormCommand extends CreateFormCommand implements IEditFormCommand {
-    id?: number;
-
-    constructor(data?: IEditFormCommand) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): EditFormCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new EditFormCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IEditFormCommand extends ICreateFormCommand {
-    id?: number;
-}
-
-export class RemoveFormCommand implements IRemoveFormCommand {
-    id?: number;
-
-    constructor(data?: IRemoveFormCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): RemoveFormCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new RemoveFormCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface IRemoveFormCommand {
-    id?: number;
-}
-
-export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCommand {
-    name?: string | undefined;
-    documentTemplateTypeId?: number;
-    documentTemplateFileTypes?: DocumentFileType[] | undefined;
-    hasValidationDate?: boolean;
-
-    constructor(data?: ICreateDocumentTemplateCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.documentTemplateTypeId = _data["documentTemplateTypeId"];
-            if (Array.isArray(_data["documentTemplateFileTypes"])) {
-                this.documentTemplateFileTypes = [] as any;
-                for (let item of _data["documentTemplateFileTypes"])
-                    this.documentTemplateFileTypes!.push(item);
-            }
-            this.hasValidationDate = _data["hasValidationDate"];
-        }
-    }
-
-    static fromJS(data: any): CreateDocumentTemplateCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateDocumentTemplateCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["documentTemplateTypeId"] = this.documentTemplateTypeId;
-        if (Array.isArray(this.documentTemplateFileTypes)) {
-            data["documentTemplateFileTypes"] = [];
-            for (let item of this.documentTemplateFileTypes)
-                data["documentTemplateFileTypes"].push(item);
-        }
-        data["hasValidationDate"] = this.hasValidationDate;
-        return data; 
-    }
-}
-
-export interface ICreateDocumentTemplateCommand {
-    name?: string | undefined;
-    documentTemplateTypeId?: number;
-    documentTemplateFileTypes?: DocumentFileType[] | undefined;
-    hasValidationDate?: boolean;
-}
-
-export class EditDocumentTemplateCommand extends CreateDocumentTemplateCommand implements IEditDocumentTemplateCommand {
-    id?: number;
-
-    constructor(data?: IEditDocumentTemplateCommand) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): EditDocumentTemplateCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new EditDocumentTemplateCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IEditDocumentTemplateCommand extends ICreateDocumentTemplateCommand {
-    id?: number;
-}
-
-export class RemoveDocumentTemplateCommand implements IRemoveDocumentTemplateCommand {
-    id?: number;
-
-    constructor(data?: IRemoveDocumentTemplateCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): RemoveDocumentTemplateCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new RemoveDocumentTemplateCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface IRemoveDocumentTemplateCommand {
-    id?: number;
 }
 
 export class AreaDocumentsQuery implements IAreaDocumentsQuery {
@@ -5724,6 +5008,707 @@ export class ZoneDocumentsQuery implements IZoneDocumentsQuery {
 
 export interface IZoneDocumentsQuery {
     zoneId?: string;
+}
+
+export class CreatePresenceGroupCommand implements ICreatePresenceGroupCommand {
+    name?: string | undefined;
+    presenceGroupAreas?: number[] | undefined;
+    presenceGroupBlocks?: string[] | undefined;
+    presenceGroupCompanies?: number[] | undefined;
+    presenceGroupBrands?: number[] | undefined;
+    presenceGroupSites?: string[] | undefined;
+    presenceGroupUnits?: number[] | undefined;
+    presenceGroupZones?: string[] | undefined;
+
+    constructor(data?: ICreatePresenceGroupCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            if (Array.isArray(_data["presenceGroupAreas"])) {
+                this.presenceGroupAreas = [] as any;
+                for (let item of _data["presenceGroupAreas"])
+                    this.presenceGroupAreas!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupBlocks"])) {
+                this.presenceGroupBlocks = [] as any;
+                for (let item of _data["presenceGroupBlocks"])
+                    this.presenceGroupBlocks!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupCompanies"])) {
+                this.presenceGroupCompanies = [] as any;
+                for (let item of _data["presenceGroupCompanies"])
+                    this.presenceGroupCompanies!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupBrands"])) {
+                this.presenceGroupBrands = [] as any;
+                for (let item of _data["presenceGroupBrands"])
+                    this.presenceGroupBrands!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupSites"])) {
+                this.presenceGroupSites = [] as any;
+                for (let item of _data["presenceGroupSites"])
+                    this.presenceGroupSites!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupUnits"])) {
+                this.presenceGroupUnits = [] as any;
+                for (let item of _data["presenceGroupUnits"])
+                    this.presenceGroupUnits!.push(item);
+            }
+            if (Array.isArray(_data["presenceGroupZones"])) {
+                this.presenceGroupZones = [] as any;
+                for (let item of _data["presenceGroupZones"])
+                    this.presenceGroupZones!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): CreatePresenceGroupCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreatePresenceGroupCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        if (Array.isArray(this.presenceGroupAreas)) {
+            data["presenceGroupAreas"] = [];
+            for (let item of this.presenceGroupAreas)
+                data["presenceGroupAreas"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupBlocks)) {
+            data["presenceGroupBlocks"] = [];
+            for (let item of this.presenceGroupBlocks)
+                data["presenceGroupBlocks"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupCompanies)) {
+            data["presenceGroupCompanies"] = [];
+            for (let item of this.presenceGroupCompanies)
+                data["presenceGroupCompanies"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupBrands)) {
+            data["presenceGroupBrands"] = [];
+            for (let item of this.presenceGroupBrands)
+                data["presenceGroupBrands"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupSites)) {
+            data["presenceGroupSites"] = [];
+            for (let item of this.presenceGroupSites)
+                data["presenceGroupSites"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupUnits)) {
+            data["presenceGroupUnits"] = [];
+            for (let item of this.presenceGroupUnits)
+                data["presenceGroupUnits"].push(item);
+        }
+        if (Array.isArray(this.presenceGroupZones)) {
+            data["presenceGroupZones"] = [];
+            for (let item of this.presenceGroupZones)
+                data["presenceGroupZones"].push(item);
+        }
+        return data; 
+    }
+}
+
+export interface ICreatePresenceGroupCommand {
+    name?: string | undefined;
+    presenceGroupAreas?: number[] | undefined;
+    presenceGroupBlocks?: string[] | undefined;
+    presenceGroupCompanies?: number[] | undefined;
+    presenceGroupBrands?: number[] | undefined;
+    presenceGroupSites?: string[] | undefined;
+    presenceGroupUnits?: number[] | undefined;
+    presenceGroupZones?: string[] | undefined;
+}
+
+export class EditPresenceGroupCommand extends CreatePresenceGroupCommand implements IEditPresenceGroupCommand {
+    id?: number;
+
+    constructor(data?: IEditPresenceGroupCommand) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): EditPresenceGroupCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditPresenceGroupCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IEditPresenceGroupCommand extends ICreatePresenceGroupCommand {
+    id?: number;
+}
+
+export class RemovePresenceGroupCommand implements IRemovePresenceGroupCommand {
+    id?: number;
+
+    constructor(data?: IRemovePresenceGroupCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): RemovePresenceGroupCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemovePresenceGroupCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IRemovePresenceGroupCommand {
+    id?: number;
+}
+
+export class CreateFormCommand implements ICreateFormCommand {
+    name?: string | undefined;
+    questions?: AddQuestionRequest[] | undefined;
+
+    constructor(data?: ICreateFormCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            if (Array.isArray(_data["questions"])) {
+                this.questions = [] as any;
+                for (let item of _data["questions"])
+                    this.questions!.push(AddQuestionRequest.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateFormCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateFormCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        if (Array.isArray(this.questions)) {
+            data["questions"] = [];
+            for (let item of this.questions)
+                data["questions"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ICreateFormCommand {
+    name?: string | undefined;
+    questions?: AddQuestionRequest[] | undefined;
+}
+
+export class AddQuestionRequest implements IAddQuestionRequest {
+    name?: string | undefined;
+    questionType?: QuestionType;
+    answersCount?: number | undefined;
+    dateQuestionOptions?: DateQuestionOptionsRequestDto | undefined;
+    fileQuestionOptions?: FileQuestionOptionsRequestDto | undefined;
+    multiChoicesQuestions?: MultiChoicesQuestionRequestDto[] | undefined;
+
+    constructor(data?: IAddQuestionRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.questionType = _data["questionType"];
+            this.answersCount = _data["answersCount"];
+            this.dateQuestionOptions = _data["dateQuestionOptions"] ? DateQuestionOptionsRequestDto.fromJS(_data["dateQuestionOptions"]) : <any>undefined;
+            this.fileQuestionOptions = _data["fileQuestionOptions"] ? FileQuestionOptionsRequestDto.fromJS(_data["fileQuestionOptions"]) : <any>undefined;
+            if (Array.isArray(_data["multiChoicesQuestions"])) {
+                this.multiChoicesQuestions = [] as any;
+                for (let item of _data["multiChoicesQuestions"])
+                    this.multiChoicesQuestions!.push(MultiChoicesQuestionRequestDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AddQuestionRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddQuestionRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["questionType"] = this.questionType;
+        data["answersCount"] = this.answersCount;
+        data["dateQuestionOptions"] = this.dateQuestionOptions ? this.dateQuestionOptions.toJSON() : <any>undefined;
+        data["fileQuestionOptions"] = this.fileQuestionOptions ? this.fileQuestionOptions.toJSON() : <any>undefined;
+        if (Array.isArray(this.multiChoicesQuestions)) {
+            data["multiChoicesQuestions"] = [];
+            for (let item of this.multiChoicesQuestions)
+                data["multiChoicesQuestions"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IAddQuestionRequest {
+    name?: string | undefined;
+    questionType?: QuestionType;
+    answersCount?: number | undefined;
+    dateQuestionOptions?: DateQuestionOptionsRequestDto | undefined;
+    fileQuestionOptions?: FileQuestionOptionsRequestDto | undefined;
+    multiChoicesQuestions?: MultiChoicesQuestionRequestDto[] | undefined;
+}
+
+export enum QuestionType {
+    MultiAnswers = 0,
+    OneOfMany = 1,
+    DateAnswer = 2,
+    FileAnswer = 3,
+    TextAnswer = 4,
+}
+
+export class DateQuestionOptionsRequestDto implements IDateQuestionOptionsRequestDto {
+    isMultiDate?: boolean;
+    questionId?: number;
+
+    constructor(data?: IDateQuestionOptionsRequestDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isMultiDate = _data["isMultiDate"];
+            this.questionId = _data["questionId"];
+        }
+    }
+
+    static fromJS(data: any): DateQuestionOptionsRequestDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DateQuestionOptionsRequestDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isMultiDate"] = this.isMultiDate;
+        data["questionId"] = this.questionId;
+        return data; 
+    }
+}
+
+export interface IDateQuestionOptionsRequestDto {
+    isMultiDate?: boolean;
+    questionId?: number;
+}
+
+export class FileQuestionOptionsRequestDto implements IFileQuestionOptionsRequestDto {
+    documentFileType?: DocumentFileType;
+    questionId?: number;
+
+    constructor(data?: IFileQuestionOptionsRequestDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.documentFileType = _data["documentFileType"];
+            this.questionId = _data["questionId"];
+        }
+    }
+
+    static fromJS(data: any): FileQuestionOptionsRequestDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FileQuestionOptionsRequestDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentFileType"] = this.documentFileType;
+        data["questionId"] = this.questionId;
+        return data; 
+    }
+}
+
+export interface IFileQuestionOptionsRequestDto {
+    documentFileType?: DocumentFileType;
+    questionId?: number;
+}
+
+export enum DocumentFileType {
+    PDF = 0,
+    Word = 1,
+    TxtFile = 2,
+}
+
+export class MultiChoicesQuestionRequestDto implements IMultiChoicesQuestionRequestDto {
+    choice?: string | undefined;
+    questionId?: number;
+
+    constructor(data?: IMultiChoicesQuestionRequestDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.choice = _data["choice"];
+            this.questionId = _data["questionId"];
+        }
+    }
+
+    static fromJS(data: any): MultiChoicesQuestionRequestDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MultiChoicesQuestionRequestDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["choice"] = this.choice;
+        data["questionId"] = this.questionId;
+        return data; 
+    }
+}
+
+export interface IMultiChoicesQuestionRequestDto {
+    choice?: string | undefined;
+    questionId?: number;
+}
+
+export class GetFormsQuery implements IGetFormsQuery {
+
+    constructor(data?: IGetFormsQuery) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): GetFormsQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetFormsQuery();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export interface IGetFormsQuery {
+}
+
+export class EditFormCommand extends CreateFormCommand implements IEditFormCommand {
+    id?: number;
+
+    constructor(data?: IEditFormCommand) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): EditFormCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditFormCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IEditFormCommand extends ICreateFormCommand {
+    id?: number;
+}
+
+export class RemoveFormCommand implements IRemoveFormCommand {
+    id?: number;
+
+    constructor(data?: IRemoveFormCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): RemoveFormCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveFormCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IRemoveFormCommand {
+    id?: number;
+}
+
+export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCommand {
+    name?: string | undefined;
+    documentTemplateTypeId?: number;
+    documentTemplateFileTypes?: DocumentFileType[] | undefined;
+    hasValidationDate?: boolean;
+    forms?: number[] | undefined;
+
+    constructor(data?: ICreateDocumentTemplateCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.documentTemplateTypeId = _data["documentTemplateTypeId"];
+            if (Array.isArray(_data["documentTemplateFileTypes"])) {
+                this.documentTemplateFileTypes = [] as any;
+                for (let item of _data["documentTemplateFileTypes"])
+                    this.documentTemplateFileTypes!.push(item);
+            }
+            this.hasValidationDate = _data["hasValidationDate"];
+            if (Array.isArray(_data["forms"])) {
+                this.forms = [] as any;
+                for (let item of _data["forms"])
+                    this.forms!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateDocumentTemplateCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateDocumentTemplateCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["documentTemplateTypeId"] = this.documentTemplateTypeId;
+        if (Array.isArray(this.documentTemplateFileTypes)) {
+            data["documentTemplateFileTypes"] = [];
+            for (let item of this.documentTemplateFileTypes)
+                data["documentTemplateFileTypes"].push(item);
+        }
+        data["hasValidationDate"] = this.hasValidationDate;
+        if (Array.isArray(this.forms)) {
+            data["forms"] = [];
+            for (let item of this.forms)
+                data["forms"].push(item);
+        }
+        return data; 
+    }
+}
+
+export interface ICreateDocumentTemplateCommand {
+    name?: string | undefined;
+    documentTemplateTypeId?: number;
+    documentTemplateFileTypes?: DocumentFileType[] | undefined;
+    hasValidationDate?: boolean;
+    forms?: number[] | undefined;
+}
+
+export class GetDocumentTemplateTypesQuery implements IGetDocumentTemplateTypesQuery {
+
+    constructor(data?: IGetDocumentTemplateTypesQuery) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): GetDocumentTemplateTypesQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDocumentTemplateTypesQuery();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export interface IGetDocumentTemplateTypesQuery {
+}
+
+export class EditDocumentTemplateCommand extends CreateDocumentTemplateCommand implements IEditDocumentTemplateCommand {
+    id?: number;
+
+    constructor(data?: IEditDocumentTemplateCommand) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): EditDocumentTemplateCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditDocumentTemplateCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IEditDocumentTemplateCommand extends ICreateDocumentTemplateCommand {
+    id?: number;
+}
+
+export class RemoveDocumentTemplateCommand implements IRemoveDocumentTemplateCommand {
+    id?: number;
+
+    constructor(data?: IRemoveDocumentTemplateCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): RemoveDocumentTemplateCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveDocumentTemplateCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IRemoveDocumentTemplateCommand {
+    id?: number;
 }
 
 export interface FileResponse {

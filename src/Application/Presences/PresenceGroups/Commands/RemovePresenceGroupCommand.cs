@@ -7,7 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using MediatR;
 
-namespace CleanArchitecture.Application.PresenceGroups.Commands;
+namespace CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 public class RemovePresenceGroupCommand : IRequest<bool>
 {
     public int Id { get; set; }

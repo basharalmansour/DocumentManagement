@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 using CleanArchitecture.Domain.Entities.Forms;
 
 namespace CleanArchitecture.Application.Common.Dtos.Forms;
-public class FormDto
+
+public class BasicFormDto
 {
     public int Id { get; set; }
     public string Name { get; set; }
     public string UniqueCode { get; set; }
+}
+public class FormDto: BasicFormDto
+{
     public List<QuestionDto> Questions { get; set;  } 
 }

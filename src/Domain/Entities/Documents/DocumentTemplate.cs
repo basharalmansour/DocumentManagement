@@ -9,7 +9,7 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.Documents;
-public class DocumentTemplate : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
+public class DocumentTemplate : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>//
 {
     [StringLength(StringLengths.MediumString)]
     public string Name { get; set; }
@@ -19,4 +19,6 @@ public class DocumentTemplate : BaseEntity<int>, ISoftDeletable, IAuditable, IEn
     [ForeignKey("DocumentTemplateType")]
     public int DocumentTemplateTypeId { get; set; }
     public DocumentTemplateType DocumentTemplateType { get; set; }
+
+    public List<DocumentTemplateForm> Forms { get; set; }
 }

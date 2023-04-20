@@ -9,7 +9,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Application.DocumentsTemplate.Queries.Presences;
+namespace CleanArchitecture.Application.Presences.PresenceGroups.Queries;
 public class PresenceGroupDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public int PresenceGroupId { get; set; }
@@ -25,7 +25,11 @@ public class PresenceGroupDocumentsQueryHandler : IRequestHandler<PresenceGroupD
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(PresenceGroupDocumentsQuery request, CancellationToken cancellationToken)
     {
-        var documents = await _applicationDbContext.DocumentTemplatePresenceGroups.Where(x => x.PresenceGroupId  == request.PresenceGroupId).Select(x => x.DocumentTemplate).ToListAsync();
+        var documents = await _applicationDbContext.DocumentTemplatePresenceGroups
+            .Include(x => x.DocumentTemplate)
+            .Where(x => x.PresenceGroupId == request.PresenceGroupId)
+            .Select(x => x.DocumentTemplate)
+            .ToListAsync();
         var result = _mapper.Map<List<BasicDocumentTemplateDto>>(documents);
         return result;
     }

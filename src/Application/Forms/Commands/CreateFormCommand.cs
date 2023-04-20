@@ -32,9 +32,8 @@ public class CreateFormCommandHandler : IRequestHandler<CreateFormCommand, int>
     }
     public async Task<int> Handle(CreateFormCommand request, CancellationToken cancellationToken)
     {
-        UniqueCode code = new UniqueCode(8, false);
         var form = _mapper.Map<Form>(request);
-        form.UniqueCode = "F" + code.CreateUniqueCode(8, false);
+        form.UniqueCode = UniqueCode.CreateUniqueCode(8, false, "F");
         _applicationDbContext.Forms.Add(form);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return form.Id;

@@ -8,15 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Basket\Queries\**" />
       <Compile Remove="Cart\**" />
       <Compile Remove="Common\Dtos\Sms\**" />
       <Compile Remove="Order\**" />
-      <EmbeddedResource Remove="Basket\Queries\**" />
       <EmbeddedResource Remove="Cart\**" />
       <EmbeddedResource Remove="Common\Dtos\Sms\**" />
       <EmbeddedResource Remove="Order\**" />
-      <None Remove="Basket\Queries\**" />
       <None Remove="Cart\**" />
       <None Remove="Common\Dtos\Sms\**" />
       <None Remove="Order\**" />
@@ -41,6 +38,7 @@
 
     <ItemGroup>
       <Folder Include="CondoLife\Commands\" />
+      <Folder Include="Presences\PresencesDocumentTemplates\Commands\" />
     </ItemGroup>
 
     <ItemGroup>

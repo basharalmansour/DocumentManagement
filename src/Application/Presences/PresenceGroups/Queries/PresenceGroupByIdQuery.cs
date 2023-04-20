@@ -9,7 +9,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Application.PresenceGroups.Queries;
+namespace CleanArchitecture.Application.Presences.PresenceGroups.Queries;
 public class PresenceGroupByIdQuery : IRequest<PresenceGroupDto>
 {
     public int Id { get; set; }
@@ -33,7 +33,7 @@ public class PresenceGroupByIdQueryHandler : IRequestHandler<PresenceGroupByIdQu
             .Include(x => x.PresenceGroupSites)
             .Include(x => x.PresenceGroupUnits)
             .Include(x => x.PresenceGroupZones)
-            .FirstOrDefaultAsync(x=>x.Id==request.Id);
+            .FirstOrDefaultAsync(x => x.Id == request.Id);
         var presenceGroupDto = _mapper.Map<PresenceGroupDto>(presenceGroup);
         return presenceGroupDto;
     }

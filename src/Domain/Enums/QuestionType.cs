@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CleanArchitecture.Domain.Enums;
 public enum QuestionType
 {
-    MultiAnswer,
+    MultiAnswers,
     OneOfMany,
     DateAnswer,
     FileAnswer,
