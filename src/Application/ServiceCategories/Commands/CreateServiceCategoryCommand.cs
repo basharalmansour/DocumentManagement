@@ -13,7 +13,6 @@ using CleanArchitecture.Domain.Enums;
 using MediatR;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
-using static StackExchange.Redis.Role;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Application.Common;
 
@@ -27,13 +26,12 @@ public class CreateServiceCategoryCommand : IRequest<int>
     public TimeUnit ServiceDurationUnit { get; set; }
     public int MaxPersonnelCount { get; set; }
     public List<int> PersonnelDocuments { get; set; }
-    public int? ParentServiceCategoryId { get; set; } 
-    public CreateApprovementDto ServiceCategoryApprovement { get; set; }
-    public CreateCategoryPersonnelRules PersonnelRules { get; set; }
+    public int? ParentServiceCategoryId { get; set; }
+    public bool IsParallelApprovement { get; set; }
+    public CreateCategoryRoleDto ServiceCategoryRoles { get; set; }
     public List<int> SpecialRules { get; set; }
     public List<int> Documents { get; set; }
     public List<CreateVehicleCategoryDto> Vehicles { get; set; }
-
     public List<int> ServiceCategoryAreas { get; set; }
     public List<Guid> ServiceCategoryBlocks { get; set; }
     public List<int> ServiceCategoryBrands { get; set; }

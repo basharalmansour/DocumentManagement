@@ -11,23 +11,23 @@ using CleanArchitecture.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Application.Rules.Queries;
-public class GetPersonnelRuleQuery : IRequest<List<Rule>>
+namespace CleanArchitecture.Application.Roles.Queries;
+public class GetPersonnelRoleQuery : IRequest<List<Role>>
 {
     public int PersonnelId { get; set; }
 }
-public class GetPersonnelRuleQueryHandler : IRequestHandler<GetPersonnelRuleQuery, List<Rule>>
+public class GetPersonnelRoleQueryHandler : IRequestHandler<GetPersonnelRoleQuery, List<Role>>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
-    public GetPersonnelRuleQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public GetPersonnelRoleQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
     {
         _applicationDbContext = applicationDbContext;
         _mapper = mapper;
     }
-    public async Task<List<Rule>> Handle(GetPersonnelRuleQuery request, CancellationToken cancellationToken)
+    public async Task<List<Role>> Handle(GetPersonnelRoleQuery request, CancellationToken cancellationToken)
     {
-        var result=await _applicationDbContext.PersonnelRules.FirstOrDefaultAsync(x => x.Id == request.PersonnelId);
-        return result.PersonRules;
+        var result= _applicationDbContext.PersonnelRoles.FirstOrDefault(x => x.Id == request.PersonnelId).PersonRoles.Select(x => x.Role).ToList();
+        return result;
     }
 }

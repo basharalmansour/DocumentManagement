@@ -22,9 +22,9 @@ public class GetAllApproversQueryHandler : IRequestHandler<GetAllApproversQuery,
     }
     public async Task<List<int>> Handle(GetAllApproversQuery request, CancellationToken cancellationToken)
     {
-        var result = await _applicationDbContext.PersonnelRules
-            .Where(x => x.PersonRules.Contains(Rule.Approver))
-            .Select(x=>x.PersonnelId)
+        var result = await _applicationDbContext.RolePersonnels
+            .Where(x => x.Role==Role.Approver)
+            .Select(x=>x.PersonnelRoles.PersonnelId)
             .ToListAsync();
         return result;
     }

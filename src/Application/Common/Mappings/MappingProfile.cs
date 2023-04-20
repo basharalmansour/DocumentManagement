@@ -25,8 +25,10 @@ using CleanArchitecture.Application.DocumentsTemplate.Commands;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
-using CleanArchitecture.Application.Rules.Commands;
+using CleanArchitecture.Application.Roles.Commands;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Entities.Definitions;
+using CleanArchitecture.Application.Roles.Commands;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -40,7 +42,9 @@ public class MappingProfile : Profile
         ApplyMappingsOfUserGroup();
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
-        CreateMap<CreatePersonnelRule, PersonnelRules>();
+        CreateMap<CreatePersonnelRole, PersonnelRoles>();
+        CreateMap<Role, RolePersonnel>()
+            .ForMember(des => des.Role, opt => opt.MapFrom(res => res));
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
@@ -84,12 +88,10 @@ public class MappingProfile : Profile
             .ForMember(des => des.SpecialRules, opt => opt.MapFrom(src => src.SpecialRules.Select(x => new CategorySpecialRules { SpecialRuleId = x })))
             .ForMember(des => des.Documents, opt => opt.MapFrom(src => src.Documents.Select(x => new CategoryDocument { DocumentTemplateId = x })));
 
-        CreateMap<CreateApprovementDto, ServiceCategoryApprovment>()
+        CreateMap<CreateCategoryRoleDto, ServiceCategoryRoles>()
             .ForMember(des => des.ApproverDepartments, opt => opt.MapFrom(src => src.ApproverDepartments.Select(x => new ApproverDepartment { DepartmentId = x })))
             .ForMember(des => des.ApproverPersonnels, opt => opt.MapFrom(src => src.ApproverPersonnels.Select(x => new ApproverPersonnel { PersonnelId = x })))
             .ForMember(des => des.ApproverUserGroups, opt => opt.MapFrom(src => src.ApproverUserGroups.Select(x => new ApproverUserGroup { UserGroupId = x })));
-        CreateMap<CreateCategoryPersonnelRules, CategoryPersonnelRules>();
-        CreateMap<CategoryPersonnelRules, CategoryPersonnelRulesDto>();
         CreateMap<VehicleCategory, VehicleCategoryDto>();
         CreateMap<CategoryVehicleDocuments, CategoryVehicleDocumentsDto>();
         CreateMap<CategoryDocument, CategoryDocumentDto>();
@@ -99,7 +101,7 @@ public class MappingProfile : Profile
         CreateMap<CategoryDocumentDto, CategoryDocument>();
         CreateMap<CategoryPersonnelDocument, CategoryPersonnelDocumentDto>();
         CreateMap<CategorySpecialRulesDto, CategorySpecialRules>();
-        CreateMap<ServiceCategoryApprovment, ServiceCategoryApprovmentDto>();
+        CreateMap<ServiceCategoryRoles, ServiceCategoryRoleDto>();
         CreateMap<ApproverDepartment, ApproverDepartmentDto>();
         CreateMap<ApproverPersonnel, ApproverPersonnelDto>();
         CreateMap<ApproverUserGroup, ApproverUserGroupDto>();

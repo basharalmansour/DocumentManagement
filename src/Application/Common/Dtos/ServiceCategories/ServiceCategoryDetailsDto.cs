@@ -26,12 +26,11 @@ public class ServiceCategoryDetailsDto
     public int ParentServiceCategoryId { get; set; }
     public int ServiceCategoryApprovmentId { get; set; }
     public List<CategorySpecialRulesDto> SpecialRules { get; set; }
-    public List<ServiceCategoryDetailsDto> SubServiceCategories { get; set; }
+    public List<LightServiceCategoryDto> SubServiceCategories { get; set; }
     public List<VehicleCategoryDto> Vehicles { get; set; }
     public List<CategoryDocumentDto> Documents { get; set; }
     public List<CategoryPersonnelDocumentDto > PersonnelDocuments { get; set; }
-    public ServiceCategoryApprovmentDto ServiceCategoryApprovment { get; set; }
-    public CategoryPersonnelRulesDto PersonnelRules { get; set; }
+    public ServiceCategoryRoleDto ServiceCategoryRoles { get; set; }
     public List<ServiceCategoryAreaDto> ServiceCategoryAreas { get; set; }
     public List<ServiceCategoryBlockDto> ServiceCategoryBlocks { get; set; }
     public List<ServiceCategoryBrandDto> ServiceCategoryBrands { get; set; }

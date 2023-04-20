@@ -39,7 +39,7 @@ public class ServiceCategoryByIdQueryHandler : IRequestHandler<ServiceCategoryBy
             .Include(x => x.ServiceCategoryUnits)
             .Include(x => x.ServiceCategoryZones)
             .FirstOrDefaultAsync(x=>x.Id==request.Id);
-        var specialRuleIds = _applicationDbContext.CategorySpecialRules.Where(x => x.ServiceCategoryId == category.Id).Select(x=>x.Id).ToList();
+        var specialRuleIds = _applicationDbContext.CategorySpecialRoles.Where(x => x.ServiceCategoryId == category.Id).Select(x=>x.Id).ToList();
 
         var categoryDto = _mapper.Map<ServiceCategoryDetailsDto>(category);
         return categoryDto; 

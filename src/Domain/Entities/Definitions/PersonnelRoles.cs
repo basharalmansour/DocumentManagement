@@ -8,9 +8,8 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Entities.Definitions;
-public class PersonnelRules : LightBaseEntity<int>, IEntity<int>
+public class PersonnelRoles : LightBaseEntity<int>, IEntity<int>
 {
-    public string Name { get; set; }
-    public List<Rule> PersonRules { get; set; }
+    public List<RolePersonnel> PersonRoles { get; set; }
     public int PersonnelId { get; set; }
 }
