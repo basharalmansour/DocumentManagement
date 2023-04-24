@@ -28,7 +28,8 @@ public class AreaDocumentsQueryHandler : IRequestHandler<AreaDocumentsQuery, Lis
         var documents = await _applicationDbContext.DocumentTemplateAreas
             .Include(x => x.DocumentTemplate)
             .Where(x => x.AreaId == request.AreaId)
-            .Select(x => x.DocumentTemplate).ToListAsync();
+            .Select(x => x.DocumentTemplate)
+            .ToListAsync();
         var result = _mapper.Map<List<BasicDocumentTemplateDto>>(documents);
         return result;
     }

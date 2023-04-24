@@ -38,7 +38,6 @@
 
     <ItemGroup>
       <Folder Include="CondoLife\Commands\" />
-      <Folder Include="Presences\PresencesDocumentTemplates\Commands\" />
     </ItemGroup>
 
     <ItemGroup>

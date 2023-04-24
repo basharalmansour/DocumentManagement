@@ -35,7 +35,7 @@ public class OrderDetailStatusesJobManager
             
         //    ((OrderDetailDto) orderPropertyDetail.Detail).Status = TransactionStatus.Completed;
 
-        //    await _mongoDbRepository.UpdateAsync(orderPropertyDetail.Id, orderPropertyDetail, cancellationToken);
+        //    await _mongoDbRepository.UpdateAsync(orderPropertyDetail.PresenceGruopId, orderPropertyDetail, cancellationToken);
         //}
         
         //_logger.LogInformation("OrderDetailStatusesJobManager background job completed...");
