@@ -37,7 +37,7 @@ public class CondoLifeHttpClientAuthHandler : DelegatingHandler
         }
         request.Headers.Clear();
         request.Headers.Add("Authorization", jwt);
-        request.Headers.Add("Site-PresenceGruopId", siteId);
+        request.Headers.Add("Site-Id", siteId);
 
         var result = await base.SendAsync(request, cancellationToken);
         try
@@ -66,7 +66,7 @@ public class CondoLifeHttpClientAuthHandler : DelegatingHandler
                         jwt = "Bearer " +await _condoLifeAuthorizationAdapter.GetAccessToken(true);
                         request.Headers.Clear();
                         request.Headers.Add("Authorization", jwt);
-                        request.Headers.Add("Site-PresenceGruopId", siteId);
+                        request.Headers.Add("Site-Id", siteId);
                         await SendAsync(request, cancellationToken);
                     }
                     throw new UnauthorizedAccessException();

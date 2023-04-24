@@ -17,5 +17,5 @@ public class CurrentUserService : ICurrentUserService
 
     public string JWT => _httpContextAccessor.HttpContext?.Request?.Headers["Authorization"];
 
-    public string SiteId => _httpContextAccessor.HttpContext?.Request?.Headers["Site-PresenceGruopId"];
+    public string SiteId => _httpContextAccessor.HttpContext?.Request?.Headers["Site-Id"];
 }
