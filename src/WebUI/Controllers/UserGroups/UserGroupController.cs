@@ -1,6 +1,7 @@
-﻿using CleanArchitecture.Application.UsersGroup.Commands;
+﻿using AutoWrapper.Wrappers;
+using CleanArchitecture.Application.UsersGroup.Commands;
 using CleanArchitecture.Application.UsersGroup.Queries;
-using CleanArchitecture.WebUI.Controllers;
+using CleanArchitecture.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers.UserGroups;
@@ -8,39 +9,81 @@ namespace CleanArchitecture.WebUI.Controllers.UserGroups;
 public class UserGroupController : ApiControllerBase
 {
     [HttpPost("AddUserGroup")]
-    public async Task<IActionResult> CreateUserGroup([FromBody] CreateUserGroupCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> CreateUserGroup([FromBody] CreateUserGroupCommand request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpGet("ViewUserGroups")]
-    public async Task<IActionResult> GetUserGroups([FromQuery] GetUserGroupQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetUserGroups([FromQuery] GetUserGroupQuery request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpGet("GetUserGroupById")]
-    public async Task<IActionResult> GetUserGroupById([FromQuery] UserGroupByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetUserGroupById([FromQuery] UserGroupByIdQuery request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpPost("EditUserGroup")]
-    public async Task<IActionResult> EditUserGroup([FromBody] EditUserGroupCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> EditUserGroup([FromBody] EditUserGroupCommand request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpDelete("DeleteUserGroup")]
-    public async Task<IActionResult> DeleteUserGroup([FromBody] RemoveUserGroupCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> DeleteUserGroup([FromBody] RemoveUserGroupCommand request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpGet("GetUserGroupApprovers")]
-    public async Task<IActionResult> GetUserGroupApprovers([FromQuery] UserGroupApproversQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetUserGroupApprovers([FromQuery] UserGroupApproversQuery request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
 }

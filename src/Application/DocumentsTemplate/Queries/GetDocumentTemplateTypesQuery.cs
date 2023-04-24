@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,14 +14,10 @@ namespace CleanArchitecture.Application.DocumentsTemplate.Queries;
 public class GetDocumentTemplateTypesQuery : IRequest<List<KeyValuePair<int,string>>>
 {
 }
-public class GetDocumentTemplateTypesHandler : IRequestHandler<GetDocumentTemplateTypesQuery, List<KeyValuePair<int, string>>>
+public class GetDocumentTemplateTypesHandler : BaseCommandQueryHandler, IRequestHandler<GetDocumentTemplateTypesQuery, List<KeyValuePair<int, string>>>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public GetDocumentTemplateTypesHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public GetDocumentTemplateTypesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<List<KeyValuePair<int, string>>> Handle(GetDocumentTemplateTypesQuery request, CancellationToken cancellationToken)
     {

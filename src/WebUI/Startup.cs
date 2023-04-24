@@ -1,4 +1,4 @@
-﻿    using CleanArchitecture.Application;
+﻿using CleanArchitecture.Application;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Infrastructure.Persistence;
@@ -8,13 +8,11 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using NSwag;
 using NSwag.Generation.Processors.Security;
-using IdentityModel.Client;
 using CleanArchitecture.Domain.Common;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-    using CleanArchitecture.Infrastructure.Services;
+using CleanArchitecture.Infrastructure.Services;
 using Hangfire;
 using CleanArchitecture.Infrastructure.BackgroundJobs;
+using AutoWrapper;
 
 namespace CleanArchitecture.WebUI;
 
@@ -118,10 +116,10 @@ public class Startup
             AppPath = "", //Dashboard üzerindeki "back to site" butonu,
         });
 
-        GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 7 }); 
+        GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 7 });
 
-     
 
+        app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions { IsDebug = true });
         app.UseRouting();
 
         app.UseAuthentication();
