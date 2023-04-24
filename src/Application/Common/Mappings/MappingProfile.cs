@@ -27,6 +27,8 @@ using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
 using CleanArchitecture.Domain.Entities.Definitions;
 using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 using CleanArchitecture.Application.Common.Helpers;
+using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
+using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -40,8 +42,20 @@ public class MappingProfile : Profile
         ApplyMappingsOfUserGroup();
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
+        ApplyMappingsOfPresences();
         CreateMap<Role, RolePersonnel>()
             .ForMember(des => des.Role, opt => opt.MapFrom(res => res));
+    }
+
+    private void ApplyMappingsOfPresences()
+    {
+        CreateMap<AddAreaDocuments, DocumentTemplateArea>();
+        CreateMap<AddBlockDocuments, DocumentTemplateBlock>();
+        CreateMap<AddBrandDocuments, DocumentTemplateBrand>();
+        CreateMap<AddCompanyDocuments, DocumentTemplateCompany>();
+        CreateMap<AddSiteDocuments, DocumentTemplateSite>();
+        CreateMap<AddUnitDocuments, DocumentTemplateUnit>();
+        CreateMap<AddZoneDocuments, DocumentTemplateZone>();
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
