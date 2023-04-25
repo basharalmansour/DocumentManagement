@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
@@ -20,14 +21,10 @@ public class EditDocumentTemplateCommand :CreateDocumentTemplateCommand, IReques
     public int Id { get; set; }
 }
 
-public class EditDocumentTemplateCommandHandler : IRequestHandler<EditDocumentTemplateCommand, int>
+public class EditDocumentTemplateCommandHandler : BaseCommandQueryHandler, IRequestHandler<EditDocumentTemplateCommand, int> 
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public EditDocumentTemplateCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null)
+    public EditDocumentTemplateCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null) : base(mapper, applicationDbContext)
     {
-        _mapper = mapper;
-        _applicationDbContext = applicationDbContext;
     }
 
     public async Task<int> Handle(EditDocumentTemplateCommand request, CancellationToken cancellationToken)

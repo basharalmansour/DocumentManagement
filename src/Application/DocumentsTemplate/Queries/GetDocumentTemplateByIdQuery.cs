@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,14 +17,10 @@ public class GetDocumentTemplateByIdQuery : IRequest<GetDocumentTemplateDto>//
 {
     public int Id { get; set; }
 }
-public class GetDocumentTemplateByIdHandler : IRequestHandler<GetDocumentTemplateByIdQuery, GetDocumentTemplateDto>
+public class GetDocumentTemplateByIdHandler : BaseCommandQueryHandler, IRequestHandler<GetDocumentTemplateByIdQuery, GetDocumentTemplateDto>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public GetDocumentTemplateByIdHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public GetDocumentTemplateByIdHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<GetDocumentTemplateDto> Handle(GetDocumentTemplateByIdQuery request, CancellationToken cancellationToken)
     {

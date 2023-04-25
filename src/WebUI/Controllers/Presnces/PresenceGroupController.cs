@@ -1,5 +1,7 @@
-﻿using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
+﻿using AutoWrapper.Wrappers;
+using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 using CleanArchitecture.Application.Presences.PresenceGroups.Queries;
+using CleanArchitecture.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers.Presnces;
@@ -7,39 +9,82 @@ namespace CleanArchitecture.WebUI.Controllers.Presnces;
 public class PresenceGroupController : ApiControllerBase
 {
     [HttpPost("AddPresenceGroup")]
-    public async Task<IActionResult> CreatePresenceGroup([FromBody] CreatePresenceGroupCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> CreatePresenceGroup([FromBody] CreatePresenceGroupCommand request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpGet("ViewPresenceGroups")]
-    public async Task<IActionResult> GetPresenceGroups([FromQuery] PresencesGroupQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetPresenceGroups([FromQuery] PresencesGroupQuery request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpGet("ViewPresenceGroupById")]
-    public async Task<IActionResult> GetPresenceGroupById([FromQuery] PresenceGroupByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetPresenceGroupById([FromQuery] PresenceGroupByIdQuery request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpPost("EditPresenceGroup")]
-    public async Task<IActionResult> EditPresenceGroup([FromBody] EditPresenceGroupCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> EditPresenceGroup([FromBody] EditPresenceGroupCommand request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpDelete("DeletePresenceGroup")]
-    public async Task<IActionResult> DeletePresenceGroup([FromBody] RemovePresenceGroupCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> DeletePresenceGroup([FromBody] RemovePresenceGroupCommand request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
-    public async Task<IActionResult> DeletePresenceGroup([FromQuery] PresenceDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> DeletePresenceGroup([FromQuery] PresenceDocumentsQuery request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
 
 }

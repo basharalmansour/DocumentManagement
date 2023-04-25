@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +15,10 @@ public class RemoveDocumentTemplateCommand : IRequest<bool>
 {
     public int Id { get; set; }
 }
-public class RemoveDocumentTemplateHandler : IRequestHandler<RemoveDocumentTemplateCommand,bool>
+public class RemoveDocumentTemplateHandler : BaseCommandQueryHandler, IRequestHandler<RemoveDocumentTemplateCommand,bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    public RemoveDocumentTemplateHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public RemoveDocumentTemplateHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
     }
     public async Task<bool> Handle(RemoveDocumentTemplateCommand request, CancellationToken cancellationToken)
     {

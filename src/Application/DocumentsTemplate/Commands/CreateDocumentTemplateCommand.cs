@@ -7,7 +7,9 @@ using AutoMapper;
 using CleanArchitecture.Application.Common;
 using CleanArchitecture.Application.Common.Dtos.Customer;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
@@ -16,21 +18,17 @@ using Microsoft.Extensions.Logging;
 namespace CleanArchitecture.Application.DocumentsTemplate.Commands;
 public class CreateDocumentTemplateCommand : IRequest<int>
 {
-    public string Name { get; set; }
+    public LanguageString Name { get; set; }
     public int DocumentTemplateTypeId { get; set; }
     public List<DocumentFileType> DocumentTemplateFileTypes { get; set; }
     public bool HasValidationDate { get; set; }
     public List<int> Forms { get; set; }
 }
 
-public class CreateDocumentTemplateCommandHandler :IRequestHandler<CreateDocumentTemplateCommand, int>
+public class CreateDocumentTemplateCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreateDocumentTemplateCommand, int>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public CreateDocumentTemplateCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null)
+    public CreateDocumentTemplateCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null) : base(mapper, applicationDbContext)
     {
-        _mapper = mapper;
-        _applicationDbContext = applicationDbContext;
     }
 
     public async Task<int> Handle(CreateDocumentTemplateCommand request, CancellationToken cancellationToken)

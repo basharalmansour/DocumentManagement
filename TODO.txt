@@ -1,5 +1,7 @@
-1- try to remove "is deleted" condition from all queries
-2- strings will be multi language
-3- wrapper
-4- mapping list properties
-5- events when deleting and editing
+            TODO                                             ||        Done
+====================================================================================================================
+1- try to remove "is deleted" condition from all queries     ||
+                                                             ||    2- strings will be multi language
+                                                             ||    3- wrapper
+4- mapping list properties (edit functions)                                   ||
+5- events when deleting and editing                          ||

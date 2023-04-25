@@ -1,7 +1,7 @@
-﻿using CleanArchitecture.Application.Vehicles.Commands;
+﻿using AutoWrapper.Wrappers;
+using CleanArchitecture.Application.Vehicles.Commands;
 using CleanArchitecture.Application.Vehicles.Queries;
-using MassTransit.Internals.GraphValidation;
-using MediatR;
+using CleanArchitecture.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers.Vehicles;
@@ -9,33 +9,73 @@ namespace CleanArchitecture.WebUI.Controllers.Vehicles;
 public class VehicleController : ApiControllerBase
 {
     [HttpPost("AddVehicle")]
-    public async Task<IActionResult> CreateVehicle([FromBody] CreateVehicleCommand request , CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> CreateVehicle([FromBody] CreateVehicleCommand request , CancellationToken cancellationToken)
     {
-        var result=  await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+        
     }
     [HttpGet("ViewVehicles")]
-    public async Task<IActionResult> GetVehicles([FromQuery] GetVehicleQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetVehicles([FromQuery] GetVehicleQuery request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+        
     }
     [HttpGet("GetVehicle")]
-    public async Task<IActionResult> GetVehicleById([FromQuery] GetVehicleByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetVehicleById([FromQuery] GetVehicleByIdQuery request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+        
     }
     [HttpPost("EditVehicle")]
-    public async Task<IActionResult> EditVehicle([FromBody] EditVehicleCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> EditVehicle([FromBody] EditVehicleCommand request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+        
     }
     [HttpDelete("DeleteVehicle")]
-    public async Task<IActionResult> DeleteVehicle([FromBody] RemoveVehicleCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> DeleteVehicle([FromBody] RemoveVehicleCommand request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+        
     }
 }

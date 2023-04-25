@@ -26,6 +26,9 @@ using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
 using CleanArchitecture.Domain.Entities.Definitions;
 using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
+using CleanArchitecture.Application.Common.Helpers;
+using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
+using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -39,8 +42,20 @@ public class MappingProfile : Profile
         ApplyMappingsOfUserGroup();
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
+        ApplyMappingsOfPresences();
         CreateMap<Role, RolePersonnel>()
             .ForMember(des => des.Role, opt => opt.MapFrom(res => res));
+    }
+
+    private void ApplyMappingsOfPresences()
+    {
+        CreateMap<AddAreaDocuments, DocumentTemplateArea>();
+        CreateMap<AddBlockDocuments, DocumentTemplateBlock>();
+        CreateMap<AddBrandDocuments, DocumentTemplateBrand>();
+        CreateMap<AddCompanyDocuments, DocumentTemplateCompany>();
+        CreateMap<AddSiteDocuments, DocumentTemplateSite>();
+        CreateMap<AddUnitDocuments, DocumentTemplateUnit>();
+        CreateMap<AddZoneDocuments, DocumentTemplateZone>();
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
@@ -171,12 +186,16 @@ public class MappingProfile : Profile
     private void ApplyMappingsOfDocumentTemplate()
     {
         CreateMap<DocumentTemplate, GetDocumentTemplateDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)))
             .ForMember(dest => dest.DocumentTemplateFileTypes, opt => opt.MapFrom(src => src.DocumentTemplateFileTypes.Select(x => x.FileType).ToList()))
             .ForMember(dest => dest.Forms, opt => opt.MapFrom(src => src.Forms.Select(x => x.FormId).ToList()));
-        CreateMap<DocumentTemplate, BasicDocumentTemplateDto>();
+        CreateMap<DocumentTemplate, BasicDocumentTemplateDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
         CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>()
+            .ForMember(dest=>dest.Name, opt=>opt.MapFrom(src=> LanguageJsonFormatter.SerializObject(src.Name)))
             .ForMember(dest=>dest.Forms, opt=>opt.MapFrom(src=> src.Forms.Select(j=>new DocumentTemplateForm() { FormId = j}).ToList()));
         CreateMap<EditDocumentTemplateCommand, DocumentTemplate>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
             .ForMember(dest => dest.Forms, opt => opt.MapFrom(src => src.Forms.Select(j => new DocumentTemplateForm() { FormId = j }).ToList()));
         CreateMap<DocumentFileType, DocumentTemplateFileType>()
             .ForMember(dest => dest.FileType, opt => opt.MapFrom(src => src));
