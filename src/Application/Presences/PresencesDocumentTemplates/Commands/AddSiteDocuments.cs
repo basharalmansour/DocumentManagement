@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using MediatR;
 
@@ -14,14 +15,10 @@ public class AddSiteDocuments : IRequest<bool>
     public Guid SiteId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class AddSiteDocumentsHandler : IRequestHandler<AddSiteDocuments, bool>
+public class AddSiteDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<AddSiteDocuments, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public AddSiteDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public AddSiteDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<bool> Handle(AddSiteDocuments request, CancellationToken cancellationToken)
     {

@@ -12,21 +12,19 @@ using CleanArchitecture.Application.Common.Dtos.ServiceCategories.PresenceCatego
 using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
+using CleanArchitecture.Application.Common.Helpers;
 
 namespace CleanArchitecture.Application.Common.Dtos.ServiceCategories;
-public class ServiceCategoryDetailsDto
+public class ServiceCategoryDetailsDto: BasicServiceCategoryDto
 {
-    public int Id { get; set; }
-    public string UniqueCode { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
+    public LanguageString Description { get; set; }
     public int MaxServiceDuration { get; set; }
     public TimeUnit ServiceDurationUnit { get; set; }
     public int MaxPersonnelCount { get; set; }
     public int ParentServiceCategoryId { get; set; }
     public int ServiceCategoryApprovmentId { get; set; }
     public List<CategorySpecialRulesDto> SpecialRules { get; set; }
-    public List<LightServiceCategoryDto> SubServiceCategories { get; set; }
+    public List<BasicServiceCategoryDto> SubServiceCategories { get; set; }
     public List<VehicleCategoryDto> Vehicles { get; set; }
     public List<CategoryDocumentDto> Documents { get; set; }
     public List<CategoryPersonnelDocumentDto > PersonnelDocuments { get; set; }

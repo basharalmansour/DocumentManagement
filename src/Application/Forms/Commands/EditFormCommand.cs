@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Forms;
 using MediatR;
 
@@ -14,14 +15,12 @@ public class EditFormCommand :CreateFormCommand, IRequest<bool>
 {
     public int Id { get; set; }
 }
-public class EditFormCommandHandler : IRequestHandler<EditFormCommand, bool>
+public class EditFormCommandHandler : BaseCommandQueryHandler, IRequestHandler<EditFormCommand, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public EditFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+
+    public EditFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
+
     }
     public async Task<bool> Handle(EditFormCommand request, CancellationToken cancellationToken)
     {

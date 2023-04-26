@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.Forms;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,14 +14,11 @@ namespace CleanArchitecture.Application.Forms.Queries;
 public class GetFormsQuery : IRequest<List<BasicFormDto>>
 {
 }
-public class GetFormsQueryHandler : IRequestHandler<GetFormsQuery, List<BasicFormDto>>
+public class GetFormsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetFormsQuery, List<BasicFormDto>>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public GetFormsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+
+    public GetFormsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<List<BasicFormDto>> Handle(GetFormsQuery request, CancellationToken cancellationToken)
     {

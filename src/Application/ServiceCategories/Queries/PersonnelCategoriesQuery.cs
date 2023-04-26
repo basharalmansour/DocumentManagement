@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,14 +16,10 @@ public class PersonnelCategoriesQuery : IRequest<UserGroupApproversDto>
 {
     public int PresonnelId { get; set; }
 }
-public class PersonnelCategoriesQueryHandler : IRequestHandler<PersonnelCategoriesQuery, UserGroupApproversDto>
+public class PersonnelCategoriesQueryHandler : BaseCommandQueryHandler, IRequestHandler<PersonnelCategoriesQuery, UserGroupApproversDto>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public PersonnelCategoriesQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public PersonnelCategoriesQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<UserGroupApproversDto> Handle(PersonnelCategoriesQuery request, CancellationToken cancellationToken)
     {

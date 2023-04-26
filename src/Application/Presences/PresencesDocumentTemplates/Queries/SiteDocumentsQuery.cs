@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,14 +15,10 @@ public class SiteDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public Guid SiteId { get; set; }
 }
-public class SiteDocumentsQueryHandler : IRequestHandler<SiteDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class SiteDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<SiteDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public SiteDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public SiteDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(SiteDocumentsQuery request, CancellationToken cancellationToken)
     {

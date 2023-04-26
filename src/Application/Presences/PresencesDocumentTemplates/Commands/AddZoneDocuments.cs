@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using MediatR;
 
@@ -14,14 +15,10 @@ public class AddZoneDocuments : IRequest<bool>
     public Guid ZoneId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class AddZoneDocumentsHandler : IRequestHandler<AddZoneDocuments, bool>
+public class AddZoneDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<AddZoneDocuments, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public AddZoneDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public AddZoneDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<bool> Handle(AddZoneDocuments request, CancellationToken cancellationToken)
     {

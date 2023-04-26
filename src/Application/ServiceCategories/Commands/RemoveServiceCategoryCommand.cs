@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.ServiceCategories.Queries;
 using MediatR;
 
@@ -14,14 +15,10 @@ public class RemoveServiceCategoryCommand : IRequest<bool>
 {
     public int Id { get; set; }
 }
-public class RemoveServiceCategoryCommandHandler : IRequestHandler<RemoveServiceCategoryCommand, bool>
+public class RemoveServiceCategoryCommandHandler : BaseCommandQueryHandler, IRequestHandler<RemoveServiceCategoryCommand, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public RemoveServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public RemoveServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<bool> Handle(RemoveServiceCategoryCommand request, CancellationToken cancellationToken)
     {

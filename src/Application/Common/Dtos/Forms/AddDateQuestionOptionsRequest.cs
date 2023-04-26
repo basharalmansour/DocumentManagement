@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Common.Dtos.Forms;
-public class DateQuestionOptionsRequestDto
+public class AddDateQuestionOptionsRequest
 {
     public bool IsMultiDate { get; set; }
     public int QuestionId { get; set; }

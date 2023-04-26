@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.PresenceGroups;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,14 +15,12 @@ public class PresenceGroupByIdQuery : IRequest<PresenceGroupDto>
 {
     public int Id { get; set; }
 }
-public class PresenceGroupByIdQueryHandler : IRequestHandler<PresenceGroupByIdQuery, PresenceGroupDto>
+public class PresenceGroupByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<PresenceGroupByIdQuery, PresenceGroupDto>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public PresenceGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+
+    public PresenceGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
+
     }
     public async Task<PresenceGroupDto> Handle(PresenceGroupByIdQuery request, CancellationToken cancellationToken)
     {

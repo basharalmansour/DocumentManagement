@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,14 +16,11 @@ public class UserGroupApproversQuery : IRequest<List<UserGroupApproversDto>>
     public int Id { get; set; }
 }
 
-public class UserGroupApproversQueryHandler : IRequestHandler<UserGroupApproversQuery, List<UserGroupApproversDto>>
+public class UserGroupApproversQueryHandler : BaseCommandQueryHandler, IRequestHandler<UserGroupApproversQuery, List<UserGroupApproversDto>>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public UserGroupApproversQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper)
+    public UserGroupApproversQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
+
     }
 
     public async Task<List<UserGroupApproversDto>> Handle(UserGroupApproversQuery request, CancellationToken cancellationToken)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.UserGroups;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,14 +17,11 @@ public class EditUserGroupCommand :CreateUserGroupCommand , IRequest<bool>
     public int Id { get; set; }
 }
 
-public class EditUserGroupCommandHandler : IRequestHandler<EditUserGroupCommand, bool>
+public class EditUserGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<EditUserGroupCommand, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public EditUserGroupCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null)
+
+    public EditUserGroupCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null) : base(mapper, applicationDbContext)
     {
-        _mapper = mapper;
-        _applicationDbContext = applicationDbContext;
     }
     public async Task<bool> Handle(EditUserGroupCommand request, CancellationToken cancellationToken)
     {

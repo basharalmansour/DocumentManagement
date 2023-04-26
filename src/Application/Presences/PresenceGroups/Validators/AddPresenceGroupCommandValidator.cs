@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 using FluentValidation;
 
@@ -11,8 +12,13 @@ public class AddPresenceGroupCommandValidator : AbstractValidator<CreatePresence
 {
     public AddPresenceGroupCommandValidator()
     {
-        RuleFor(x => x.Name).MaximumLength(64).WithMessage("Name Must be between 1 and 64 character");
+        RuleFor(x => x.Name).Must((obj, domain) => ValidateMultiLanguage(obj.Name, 64)).WithMessage("Name Must be between 1 and 64 character");
         RuleFor(x => x).Must(NotEmpty).WithMessage("New presence group must have one element at least");
+    }
+
+    private bool ValidateMultiLanguage(LanguageString multiLanguageObject, int length)
+    {
+        return !multiLanguageObject.Any(x => x.Value.Length > length);
     }
 
     private bool NotEmpty(CreatePresenceGroupCommand presenceGroup)

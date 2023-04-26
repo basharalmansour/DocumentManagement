@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using MediatR;
 
@@ -14,14 +15,12 @@ public class RemoveAreaDocuments : IRequest<bool>
     public int AreaId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class RemoveAreaDocumentsHandler : IRequestHandler<RemoveAreaDocuments, bool>
+public class RemoveAreaDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<RemoveAreaDocuments, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public RemoveAreaDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+
+    public RemoveAreaDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
+
     }
     public async Task<bool> Handle(RemoveAreaDocuments request, CancellationToken cancellationToken)
     {
