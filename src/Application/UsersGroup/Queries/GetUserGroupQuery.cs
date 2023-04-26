@@ -28,6 +28,5 @@ public class GetUserGroupQueryHandler : BaseCommandQueryHandler, IRequestHandler
         var userGroups =await _applicationDbContext.UserGroups.Where(x => x.IsDeleted == false).ToListAsync();
         var userGroupsDto= _mapper.Map<List<GetUserGroupDto>>(userGroups);
         return userGroupsDto;
-
     }
 }

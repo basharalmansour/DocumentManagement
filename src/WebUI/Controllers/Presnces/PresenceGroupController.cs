@@ -21,6 +21,7 @@ public class PresenceGroupController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
+
     [HttpGet("ViewPresenceGroups")]
     public async Task<ApplicationResponse> GetPresenceGroups([FromQuery] PresencesGroupQuery request, CancellationToken cancellationToken)
     {
@@ -34,6 +35,7 @@ public class PresenceGroupController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
+
     [HttpGet("ViewPresenceGroupById")]
     public async Task<ApplicationResponse> GetPresenceGroupById([FromQuery] PresenceGroupByIdQuery request, CancellationToken cancellationToken)
     {
@@ -47,6 +49,7 @@ public class PresenceGroupController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
+
     [HttpPost("EditPresenceGroup")]
     public async Task<ApplicationResponse> EditPresenceGroup([FromBody] EditPresenceGroupCommand request, CancellationToken cancellationToken)
     {
@@ -60,6 +63,7 @@ public class PresenceGroupController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
+
     [HttpDelete("DeletePresenceGroup")]
     public async Task<ApplicationResponse> DeletePresenceGroup([FromBody] RemovePresenceGroupCommand request, CancellationToken cancellationToken)
     {
@@ -74,6 +78,26 @@ public class PresenceGroupController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("GetPresenceGroupDocuments")]
+    public async Task<ApplicationResponse> GetPresenceGroupDocuments([FromBody] PresenceGroupDocumentsQuery request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+    }
+
     [HttpPost("AddPresenceGroupDocument")]
     public async Task<ApplicationResponse> AddPresenceGroupDocument([FromQuery] AddPresenceGroupDocument request, CancellationToken cancellationToken)
     {
@@ -87,6 +111,7 @@ public class PresenceGroupController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
+
     [HttpDelete("RemovePresenceGroupDocument")]
     public async Task<ApplicationResponse> RemovePresenceGroupDocument([FromBody] RemovePresenceGroupDocument request, CancellationToken cancellationToken)
     {

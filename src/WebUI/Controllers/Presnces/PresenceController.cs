@@ -60,19 +60,7 @@ public class PresenceController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
-    [HttpGet("GetPresenceGroupDocuments")]
-    public async Task<ApplicationResponse> GetPresenceGroupDocuments([FromBody] PresenceGroupDocumentsQuery request, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
-        }
-        catch (Exception e)
-        {
-            return new ApplicationResponse(e);
-        }
-    }
+    
     [HttpGet("GetSiteDocuments")]
     public async Task<ApplicationResponse> GetSiteDocuments([FromBody] SiteDocumentsQuery request, CancellationToken cancellationToken)
     {

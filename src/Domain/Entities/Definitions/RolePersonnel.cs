@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Enums;
