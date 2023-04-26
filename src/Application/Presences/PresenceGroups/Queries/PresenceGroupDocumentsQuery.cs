@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,14 +15,12 @@ public class PresenceGroupDocumentsQuery : IRequest<List<BasicDocumentTemplateDt
 {
     public int PresenceGroupId { get; set; }
 }
-public class PresenceGroupDocumentsQueryHandler : IRequestHandler<PresenceGroupDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class PresenceGroupDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<PresenceGroupDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public PresenceGroupDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+
+    public PresenceGroupDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
+
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(PresenceGroupDocumentsQuery request, CancellationToken cancellationToken)
     {

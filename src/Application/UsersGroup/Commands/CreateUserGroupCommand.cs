@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.UserGroups;
 using MediatR;
 
@@ -14,18 +16,14 @@ namespace CleanArchitecture.Application.UsersGroup.Commands;
 
 public class CreateUserGroupCommand : IRequest<int>
 {
-    public string Name { get; set; }
+    public LanguageString Name { get; set; }
     public List<int> PersonnelIds { get; set; }
 }
 
-public class CreateUserGroupCommandHandler : IRequestHandler<CreateUserGroupCommand, int>
+public class CreateUserGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreateUserGroupCommand, int>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public CreateUserGroupCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null)
+    public CreateUserGroupCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null) : base(mapper, applicationDbContext)
     {
-        _mapper = mapper;
-        _applicationDbContext = applicationDbContext;
     }
     public async Task<int> Handle(CreateUserGroupCommand request, CancellationToken cancellationToken)
     {

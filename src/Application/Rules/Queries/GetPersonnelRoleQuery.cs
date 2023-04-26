@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.ServiceCategories.Queries;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
@@ -16,14 +17,12 @@ public class GetPersonnelRoleQuery : IRequest<List<Role>>
 {
     public int PersonnelId { get; set; }
 }
-public class GetPersonnelRoleQueryHandler : IRequestHandler<GetPersonnelRoleQuery, List<Role>>
+public class GetPersonnelRoleQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetPersonnelRoleQuery, List<Role>>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public GetPersonnelRoleQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+
+    public GetPersonnelRoleQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
+
     }
     public async Task<List<Role>> Handle(GetPersonnelRoleQuery request, CancellationToken cancellationToken)
     {

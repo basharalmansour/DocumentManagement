@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,14 +15,10 @@ public class BlockDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public Guid BlockId { get; set; }
 }
-public class BlockDocumentsQueryHandler : IRequestHandler<BlockDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class BlockDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<BlockDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public BlockDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public BlockDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(BlockDocumentsQuery request, CancellationToken cancellationToken)
     {

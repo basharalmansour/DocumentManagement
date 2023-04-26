@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 
 namespace CleanArchitecture.Application.Vehicles.Commands;
@@ -13,14 +14,11 @@ public class EditVehicleCommand :CreateVehicleCommand , IRequest<bool>
     public int Id { get; set; }
 }
 
-public class EditVehicleCommandHandler : IRequestHandler<EditVehicleCommand, bool>
+public class EditVehicleCommandHandler : BaseCommandQueryHandler, IRequestHandler<EditVehicleCommand, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public EditVehicleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+
+    public EditVehicleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
 
     public async Task<bool> Handle(EditVehicleCommand request, CancellationToken cancellationToken)

@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Dtos.Vehicles;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Documents;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,14 +18,10 @@ public  class VehicleDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
     public int VehicleId { get; set; }
 }
 
-public class VehicleDocumentsQueryHandler : IRequestHandler<VehicleDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class VehicleDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<VehicleDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public VehicleDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+    public VehicleDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(VehicleDocumentsQuery request, CancellationToken cancellationToken)
     {

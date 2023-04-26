@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Domain.Enums;
 
@@ -12,7 +13,7 @@ public class QuestionDto
 {
     public int Id { get; set; }
     public int FormId { get; set; }
-    public string Name { get; set; }
+    public LanguageString Name { get; set; }
     public QuestionType QuestionType { get; set; }
     public short? AnswersCount { get; set; }
     public DateQuestionOptionsDto DateQuestionOptions { get; set; }
@@ -29,5 +30,5 @@ public class FileQuestionOptionsDto
 }
 public class MultiChoicesQuestionDto
 {
-    public string Choice { get; set; }
+    public LanguageString Choice { get; set; }
 }

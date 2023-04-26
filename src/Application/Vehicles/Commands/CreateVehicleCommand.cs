@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.Vehicles;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Vehicles.Queries;
 using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
 using MediatR;
@@ -13,20 +15,16 @@ using MediatR;
 namespace CleanArchitecture.Application.Vehicles.Commands;
 public class CreateVehicleCommand : IRequest<int>
 {
-    public string Name { get; set; }
+    public LanguageString Name { get; set; }
     public bool IsNeedDriver { get; set; }
     public List<int> VehicleDocuments { get; set; }
     public List<int> DriverDocuments { get; set; }
 }
 
-public class CreateVehicleCommandHandler : IRequestHandler<CreateVehicleCommand, int>
+public class CreateVehicleCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreateVehicleCommand, int>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public CreateVehicleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+    public CreateVehicleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
 
     public async Task<int> Handle(CreateVehicleCommand request, CancellationToken cancellationToken)

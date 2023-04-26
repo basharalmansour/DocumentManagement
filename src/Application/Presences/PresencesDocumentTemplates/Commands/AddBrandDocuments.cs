@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using MediatR;
 
@@ -14,14 +15,11 @@ public class AddBrandDocuments : IRequest<bool>
     public int BrandId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class AddBrandDocumentsHandler : IRequestHandler<AddBrandDocuments, bool>
+public class AddBrandDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<AddBrandDocuments, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public AddBrandDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+
+    public AddBrandDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<bool> Handle(AddBrandDocuments request, CancellationToken cancellationToken)
     {

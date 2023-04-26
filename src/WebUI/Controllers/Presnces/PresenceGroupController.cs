@@ -74,7 +74,8 @@ public class PresenceGroupController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
-    public async Task<ApplicationResponse> DeletePresenceGroup([FromQuery] PresenceDocumentsQuery request, CancellationToken cancellationToken)
+    [HttpPost("AddPresenceGroupDocument")]
+    public async Task<ApplicationResponse> AddPresenceGroupDocument([FromQuery] AddPresenceGroupDocument request, CancellationToken cancellationToken)
     {
         try
         {
@@ -86,5 +87,17 @@ public class PresenceGroupController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
-
+    [HttpDelete("RemovePresenceGroupDocument")]
+    public async Task<ApplicationResponse> RemovePresenceGroupDocument([FromBody] RemovePresenceGroupDocument request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+    }
 }

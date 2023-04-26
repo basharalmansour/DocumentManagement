@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Application.Common.Helpers;
 
 namespace CleanArchitecture.Application.Common.Dtos.Forms;
-public class MultiChoicesQuestionRequestDto
+public class AddMultiChoicesQuestion
 {
-    public string Choice { get; set; }
+    public LanguageString Choice { get; set; }
     public int QuestionId { get; set; }
 }

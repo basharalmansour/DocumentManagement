@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common;
 using CleanArchitecture.Application.Common.Dtos.PresenceGroups;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
@@ -15,7 +17,7 @@ using Pipelines.Sockets.Unofficial.Arenas;
 namespace CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 public class CreatePresenceGroupCommand : IRequest<int>
 {
-    public string Name { get; set; }
+    public LanguageString Name { get; set; }
     public List<int> PresenceGroupAreas { get; set; }
     public List<Guid> PresenceGroupBlocks { get; set; }
     public List<int> presenceGroupCompanies { get; set; }
@@ -24,14 +26,12 @@ public class CreatePresenceGroupCommand : IRequest<int>
     public List<int> PresenceGroupUnits { get; set; }
     public List<Guid> PresenceGroupZones { get; set; }
 }
-public class CreatePresenceGroupCommandHandler : IRequestHandler<CreatePresenceGroupCommand, int>
+public class CreatePresenceGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreatePresenceGroupCommand, int>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public CreatePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+
+    public CreatePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
+
     }
     public async Task<int> Handle(CreatePresenceGroupCommand request, CancellationToken cancellationToken)
     {

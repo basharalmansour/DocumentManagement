@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,14 +17,10 @@ public class RemoveUserGroupCommand : IRequest<bool>
     public int Id { get; set; }
 }
 
-public class RemoveUserGroupCommandHandler : IRequestHandler<RemoveUserGroupCommand, bool>
+public class RemoveUserGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<RemoveUserGroupCommand, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public RemoveUserGroupCommandHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper)
+    public RemoveUserGroupCommandHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
 
     public async Task<bool> Handle(RemoveUserGroupCommand request, CancellationToken cancellationToken)

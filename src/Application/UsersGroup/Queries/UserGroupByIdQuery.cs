@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,14 +16,11 @@ public class UserGroupByIdQuery : IRequest<GetUserGroupDto>
     public int Id { get; set; }
 }
 
-public class UserGroupByIdQueryHandler : IRequestHandler<UserGroupByIdQuery, GetUserGroupDto>
+public class UserGroupByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<UserGroupByIdQuery, GetUserGroupDto>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public UserGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper)
+
+    public UserGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
 
     public async Task<GetUserGroupDto> Handle(UserGroupByIdQuery request, CancellationToken cancellationToken)

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
@@ -13,14 +14,10 @@ public class RemoveUnitDocuments : IRequest<bool>
     public int UnitId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class RemoveUnitDocumentsHandler : IRequestHandler<RemoveUnitDocuments, bool>
+public class RemoveUnitDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<RemoveUnitDocuments, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public RemoveUnitDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public RemoveUnitDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<bool> Handle(RemoveUnitDocuments request, CancellationToken cancellationToken)
     {

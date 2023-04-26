@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,14 +15,10 @@ public class ServiceCategoryByIdQuery : IRequest<ServiceCategoryDetailsDto>
 {
     public int Id { get; set; }
 }
-public class ServiceCategoryByIdQueryHandler : IRequestHandler<ServiceCategoryByIdQuery, ServiceCategoryDetailsDto>
+public class ServiceCategoryByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<ServiceCategoryByIdQuery, ServiceCategoryDetailsDto>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public ServiceCategoryByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public ServiceCategoryByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<ServiceCategoryDetailsDto> Handle(ServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {

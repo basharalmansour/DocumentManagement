@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresenceGroups.Commands;
@@ -12,14 +13,11 @@ public class RemovePresenceGroupCommand : IRequest<bool>
 {
     public int Id { get; set; }
 }
-public class RemovePresenceGroupCommandHandler : IRequestHandler<RemovePresenceGroupCommand, bool>
+public class RemovePresenceGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<RemovePresenceGroupCommand, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public RemovePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+
+    public RemovePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<bool> Handle(RemovePresenceGroupCommand request, CancellationToken cancellationToken)
     {

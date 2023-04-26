@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.Forms;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Forms.Commands;
 using CleanArchitecture.Domain.Entities.Forms;
 using MediatR;
@@ -16,14 +17,11 @@ public class GetFormByIdQuery : IRequest<FormDto>
 {
     public int Id { get; set; }
 }
-public class GetFormByIdQueryHandler : IRequestHandler<GetFormByIdQuery, FormDto>
+public class GetFormByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetFormByIdQuery, FormDto>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public GetFormByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+
+    public GetFormByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<FormDto> Handle(GetFormByIdQuery request, CancellationToken cancellationToken)
     {

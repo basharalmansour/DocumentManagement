@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,14 +15,10 @@ public class ZoneDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public Guid ZoneId { get; set; }
 }
-public class ZoneDocumentsQueryHandler : IRequestHandler<ZoneDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class ZoneDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<ZoneDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public ZoneDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public ZoneDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(ZoneDocumentsQuery request, CancellationToken cancellationToken)
     {

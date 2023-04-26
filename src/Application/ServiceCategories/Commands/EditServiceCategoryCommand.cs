@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
@@ -15,14 +16,11 @@ public  class EditServiceCategoryCommand : CreateServiceCategoryCommand, IReques
 {
     public int Id { get; set; }
 }
-public class EditServiceCategoryCommandHandler : IRequestHandler<EditServiceCategoryCommand, bool>
+public class EditServiceCategoryCommandHandler : BaseCommandQueryHandler, IRequestHandler<EditServiceCategoryCommand, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public EditServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+
+    public EditServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<bool> Handle(EditServiceCategoryCommand request, CancellationToken cancellationToken)
     {

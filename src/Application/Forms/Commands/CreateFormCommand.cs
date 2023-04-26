@@ -7,7 +7,9 @@ using AutoMapper;
 using CleanArchitecture.Application.Common;
 using CleanArchitecture.Application.Common.Dtos.Customer;
 using CleanArchitecture.Application.Common.Dtos.Forms;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Customer.Commands;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.Forms;
@@ -18,17 +20,13 @@ using Microsoft.Extensions.Options;
 namespace CleanArchitecture.Application.Forms.Commands;
 public class CreateFormCommand : IRequest<int>
 {
-    public string Name { get; set; }
-    public List<AddQuestionRequest> Questions { get; set; }
+    public LanguageString Name { get; set; }
+    public List<CreateQuestionRequest> Questions { get; set; }
 }
-public class CreateFormCommandHandler : IRequestHandler<CreateFormCommand, int>
+public class CreateFormCommandHandler :BaseCommandQueryHandler ,IRequestHandler<CreateFormCommand, int>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public CreateFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+    public CreateFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<int> Handle(CreateFormCommand request, CancellationToken cancellationToken)
     {

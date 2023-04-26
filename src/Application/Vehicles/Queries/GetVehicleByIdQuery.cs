@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.Vehicles;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,14 +16,10 @@ public class GetVehicleByIdQuery : IRequest<VehicleDto>
     public int Id { get; set; }
 }
 
-public class GetVehicleByIdQueryHandler : IRequestHandler<GetVehicleByIdQuery, VehicleDto>
+public class GetVehicleByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetVehicleByIdQuery, VehicleDto>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public GetVehicleByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+    public GetVehicleByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
 
     public async Task<VehicleDto> Handle(GetVehicleByIdQuery request, CancellationToken cancellationToken)

@@ -6,30 +6,28 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.ServiceCategories.Queries;
-public class GetServiceCategoryQuery : IRequest<List<LightServiceCategoryDto>>
+public class GetServiceCategoryQuery : IRequest<List<BasicServiceCategoryDto>>
 {
     public string SearchText { get; set; }
 }
-public class GetServiceCategoryHandler : IRequestHandler<GetServiceCategoryQuery, List<LightServiceCategoryDto>>
+public class GetServiceCategoryHandler : BaseCommandQueryHandler, IRequestHandler<GetServiceCategoryQuery, List<BasicServiceCategoryDto>>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public GetServiceCategoryHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+
+    public GetServiceCategoryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
-    public async Task<List<LightServiceCategoryDto>> Handle(GetServiceCategoryQuery request, CancellationToken cancellationToken)
+    public async Task<List<BasicServiceCategoryDto>> Handle(GetServiceCategoryQuery request, CancellationToken cancellationToken)
     {
         var categories =await _applicationDbContext.ServiceCategories
             .Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText))
             .Include(x=>x.SubServiceCategories.Where(x => x.IsDeleted == false))
             .ToListAsync();
-        var categoriesDto = _mapper.Map<List<LightServiceCategoryDto>>(categories);
+        var categoriesDto = _mapper.Map<List<BasicServiceCategoryDto>>(categories);
         return categoriesDto;
     }
 }

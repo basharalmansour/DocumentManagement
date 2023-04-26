@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using MediatR;
 
@@ -14,14 +15,10 @@ public  class AddBlockDocuments : IRequest<bool>
     public Guid BlockId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class AddBlockDocumentsHandler : IRequestHandler<AddBlockDocuments, bool>
+public class AddBlockDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<AddBlockDocuments, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public AddBlockDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public AddBlockDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<bool> Handle(AddBlockDocuments request, CancellationToken cancellationToken)
     {

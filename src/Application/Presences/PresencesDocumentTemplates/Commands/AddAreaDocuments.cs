@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Queries;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using MediatR;
@@ -17,14 +18,12 @@ public class AddAreaDocuments : IRequest<bool>
     public int AreaId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class AddAreaDocumentsHandler : IRequestHandler<AddAreaDocuments, bool>
+public class AddAreaDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<AddAreaDocuments, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public AddAreaDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+
+    public AddAreaDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
+
     }
     public async Task<bool> Handle(AddAreaDocuments request, CancellationToken cancellationToken)
     {

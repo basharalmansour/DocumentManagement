@@ -5,13 +5,15 @@ using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
 using CleanArchitecture.Application.Common;
+using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.Common.Helpers;
 
 namespace CleanArchitecture.Application.ServiceCategories.Commands;
 
 public class CreateServiceCategoryCommand : IRequest<int>
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
+    public LanguageString Name { get; set; }
+    public LanguageString Description { get; set; }
     public int MaxServiceDuration { get; set; }
     public TimeUnit ServiceDurationUnit { get; set; }
     public int MaxPersonnelCount { get; set; }
@@ -30,14 +32,11 @@ public class CreateServiceCategoryCommand : IRequest<int>
     public List<int> ServiceCategoryUnits { get; set; }
     public List<Guid> ServiceCategoryZones { get; set; }
 }
-public class CreateServiceCategoryCommandHandler : IRequestHandler<CreateServiceCategoryCommand, int>
+public class CreateServiceCategoryCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreateServiceCategoryCommand, int>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public CreateServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+
+    public CreateServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
     }
     public async Task<int> Handle(CreateServiceCategoryCommand request, CancellationToken cancellationToken)
     {

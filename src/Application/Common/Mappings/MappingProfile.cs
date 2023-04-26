@@ -78,8 +78,11 @@ public class MappingProfile : Profile
     }
     private void ApplyMappingsOfServiceCategory()
     {
-        CreateMap<ServiceCategory, ServiceCategoryDetailsDto>();
-        CreateMap<ServiceCategory, LightServiceCategoryDto>();
+        CreateMap<ServiceCategory, ServiceCategoryDetailsDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)));
+        CreateMap<ServiceCategory, BasicServiceCategoryDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
         CreateMap<ServiceCategoryArea, ServiceCategoryAreaDto>();
         CreateMap<ServiceCategoryBlock, ServiceCategoryBlockDto>();
         CreateMap<ServiceCategoryBrand, ServiceCategoryBrandDto>();
@@ -88,6 +91,8 @@ public class MappingProfile : Profile
         CreateMap<ServiceCategoryUnit, ServiceCategoryUnitDto>();
         CreateMap<ServiceCategoryZone, ServiceCategoryZoneDto>();
         CreateMap<CreateServiceCategoryCommand, ServiceCategory>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)))
             .ForMember(des => des.ServiceCategoryAreas, opt => opt.MapFrom(src => src.ServiceCategoryAreas.Select(x => new ServiceCategoryArea { AreaId = x })))
             .ForMember(des => des.ServiceCategoryBlocks, opt => opt.MapFrom(src => src.ServiceCategoryBlocks.Select(x => new ServiceCategoryBlock { BlockId = x })))
             .ForMember(des => des.ServiceCategoryBrands, opt => opt.MapFrom(src => src.ServiceCategoryBrands.Select(x => new ServiceCategoryBrand { BrandId = x })))
@@ -128,19 +133,23 @@ public class MappingProfile : Profile
     }
     private void ApplyMappingsOfVehicle()
     {
-        CreateMap<Vehicle, VehicleDto>();
+        CreateMap<Vehicle, VehicleDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
         CreateMap<VehicleDriverDocuments, VehicleDriverDocumentsDto>();
         CreateMap<VehiclesDocument, VehiclesDocumentDto>();
         CreateMap<CreateVehicleCommand, Vehicle>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
             .ForMember(des => des.VehicleDocuments, opt => opt.MapFrom(src => src.VehicleDocuments.Select(x => new VehiclesDocument { DocumentTemplateId = x })))
             .ForMember(des => des.DriverDocuments, opt => opt.MapFrom(src => src.DriverDocuments.Select(x => new VehicleDriverDocuments { DocumentTemplateId = x })));
         CreateMap<EditVehicleCommand, Vehicle>();
     }
     private void ApplyMappingsOfPresenceGroup()
     {
-        CreateMap<PresenceGroup, PresenceGroupDto>();
+        CreateMap<PresenceGroup, PresenceGroupDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
 
         CreateMap<CreatePresenceGroupCommand, PresenceGroup>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
             .ForMember(des => des.PresenceGroupAreas, opt => opt.MapFrom(src => src.PresenceGroupAreas.Select(x => new PresenceGroupArea { AreaId = x }).ToList()))
             .ForMember(des => des.PresenceGroupBlocks, opt => opt.MapFrom(src => src.PresenceGroupBlocks.Select(x => new PresenceGroupBlock { BlockId = x }).ToList()))
             .ForMember(des => des.PresenceGroupBrands, opt => opt.MapFrom(src => src.PresenceGroupBrands.Select(x => new PresenceGroupBrand { BrandId = x }).ToList()))
@@ -159,27 +168,34 @@ public class MappingProfile : Profile
     private void ApplyMappingsOfUserGroup()
     {
         CreateMap<CreateUserGroupCommand, UserGroup>()
-        .ForMember(des => des.Personnels, opt => opt.MapFrom(src => src.PersonnelIds.Select(x => new UserGroupPersonnel { PersonnelId = x }).ToList()));
-
-        CreateMap<UserGroup, GetUserGroupDto>();
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
+            .ForMember(des => des.Personnels, opt => opt.MapFrom(src => src.PersonnelIds.Select(x => new UserGroupPersonnel { PersonnelId = x }).ToList()));
+        CreateMap<UserGroup, GetUserGroupDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
         CreateMap<UserGroupPersonnel, UserGroupPersonnelDto>();
         CreateMap<EditUserGroupCommand, UserGroup>();
     }
     private void ApplyMappingsOfForm()
     {
-        CreateMap<Form, BasicFormDto>();
-
-        CreateMap<Form, FormDto>();
-        CreateMap<Question, QuestionDto>();
+        CreateMap<Form, BasicFormDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
+        CreateMap<Form, FormDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
+        CreateMap<Question, QuestionDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
         CreateMap<DateQuestionOptions, DateQuestionOptionsDto>();
         CreateMap<FileQuestionOptions, FileQuestionOptionsDto>();
-        CreateMap<MultiChoicesQuestion, MultiChoicesQuestionDto>();
+        CreateMap<MultiChoicesQuestion, MultiChoicesQuestionDto>()
+            .ForMember(dest => dest.Choice, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Choice)));
 
-        CreateMap<CreateFormCommand, Form>();
-        CreateMap<AddQuestionRequest, Question>();
-        CreateMap<DateQuestionOptionsRequestDto, DateQuestionOptions>();
-        CreateMap<FileQuestionOptionsRequestDto, FileQuestionOptions>();
-        CreateMap<MultiChoicesQuestionRequestDto, MultiChoicesQuestion>();
+        CreateMap<CreateFormCommand, Form>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)));
+        CreateMap<CreateQuestionRequest, Question>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)));
+        CreateMap<AddDateQuestionOptionsRequest, DateQuestionOptions>();
+        CreateMap<AddFileQuestionOptionsRequest, FileQuestionOptions>();
+        CreateMap<AddMultiChoicesQuestion, MultiChoicesQuestion>()
+            .ForMember(dest => dest.Choice, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Choice)));
 
         CreateMap<EditFormCommand, Form>();
     }

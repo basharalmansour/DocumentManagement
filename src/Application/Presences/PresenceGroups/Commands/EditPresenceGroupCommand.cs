@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Enums;
 using MediatR;
 
@@ -13,14 +14,12 @@ public class EditPresenceGroupCommand : CreatePresenceGroupCommand, IRequest<boo
 {
     public int Id { get; set; }
 }
-public class EditPresenceGroupCommandHandler : IRequestHandler<EditPresenceGroupCommand, bool>
+public class EditPresenceGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<EditPresenceGroupCommand, bool>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-    public EditPresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null)
+
+    public EditPresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
+
     }
     public async Task<bool> Handle(EditPresenceGroupCommand request, CancellationToken cancellationToken)
     {
