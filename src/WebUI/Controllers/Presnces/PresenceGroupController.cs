@@ -60,8 +60,8 @@ public class PresenceGroupController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
-    [HttpDelete("DeletePresenceGroup")]
-    public async Task<ApplicationResponse> DeletePresenceGroup([FromBody] RemovePresenceGroupCommand request, CancellationToken cancellationToken)
+    [HttpDelete("RemovePresenceGroup")]
+    public async Task<ApplicationResponse> RemovePresenceGroup([FromBody] RemovePresenceGroupCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -74,7 +74,21 @@ public class PresenceGroupController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
-    public async Task<ApplicationResponse> DeletePresenceGroup([FromQuery] PresenceDocumentsQuery request, CancellationToken cancellationToken)
+    [HttpGet("GetPresenceGroupDocuments")]
+    public async Task<ApplicationResponse> GetPresenceGroupDocuments([FromBody] GetPresenceGroupDocumentsQuery request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+    }
+    [HttpPost("AddPresenceGroupDocument")]
+    public async Task<ApplicationResponse> AddPresenceGroupDocument([FromQuery] AddPresenceGroupDocument request, CancellationToken cancellationToken)
     {
         try
         {
@@ -87,4 +101,17 @@ public class PresenceGroupController : ApiControllerBase
         }
     }
 
+    [HttpDelete("RemovePresenceGroupDocument")]
+    public async Task<ApplicationResponse> RemovePresenceGroupDocument([FromBody] RemovePresenceGroupDocument request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+    }
 }

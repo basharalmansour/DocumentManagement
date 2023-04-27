@@ -8,7 +8,7 @@ namespace CleanArchitecture.WebUI.Controllers.UserGroups;
 
 public class UserGroupController : ApiControllerBase
 {
-    [HttpPost("CrreateUserGroup")]
+    [HttpPost("CreateUserGroup")]
     public async Task<ApplicationResponse> CreateUserGroup([FromBody] CreateUserGroupCommand request, CancellationToken cancellationToken)
     {
         try

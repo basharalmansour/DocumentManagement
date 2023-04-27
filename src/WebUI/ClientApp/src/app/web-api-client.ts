@@ -976,11 +976,11 @@ export class CustomerClient implements ICustomerClient {
 }
 
 export interface IVehicleClient {
-    createVehicle(request: CreateVehicleCommand): Observable<FileResponse>;
-    getVehicles(request: GetVehicleQuery | null | undefined): Observable<FileResponse>;
-    getVehicleById(id: number | undefined): Observable<FileResponse>;
-    editVehicle(request: EditVehicleCommand): Observable<FileResponse>;
-    deleteVehicle(request: RemoveVehicleCommand): Observable<FileResponse>;
+    createVehicle(request: CreateVehicleCommand): Observable<ApplicationResponse>;
+    getVehicles(request: GetVehicleQuery | null | undefined): Observable<ApplicationResponse>;
+    getVehicleById(id: number | undefined): Observable<ApplicationResponse>;
+    editVehicle(request: EditVehicleCommand): Observable<ApplicationResponse>;
+    deleteVehicle(request: RemoveVehicleCommand): Observable<ApplicationResponse>;
 }
 
 @Injectable({
@@ -996,7 +996,7 @@ export class VehicleClient implements IVehicleClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createVehicle(request: CreateVehicleCommand) : Observable<FileResponse> {
+    createVehicle(request: CreateVehicleCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Vehicle/AddVehicle";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1008,7 +1008,7 @@ export class VehicleClient implements IVehicleClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1019,34 +1019,36 @@ export class VehicleClient implements IVehicleClient {
                 try {
                     return this.processCreateVehicle(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateVehicle(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateVehicle(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getVehicles(request: GetVehicleQuery | null | undefined) : Observable<FileResponse> {
+    getVehicles(request: GetVehicleQuery | null | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Vehicle/ViewVehicles?";
         if (request !== undefined && request !== null)
             url_ += "request=" + encodeURIComponent("" + request) + "&";
@@ -1056,7 +1058,7 @@ export class VehicleClient implements IVehicleClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1067,34 +1069,36 @@ export class VehicleClient implements IVehicleClient {
                 try {
                     return this.processGetVehicles(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetVehicles(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetVehicles(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getVehicleById(id: number | undefined) : Observable<FileResponse> {
+    getVehicleById(id: number | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Vehicle/GetVehicle?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -1106,7 +1110,7 @@ export class VehicleClient implements IVehicleClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1117,34 +1121,36 @@ export class VehicleClient implements IVehicleClient {
                 try {
                     return this.processGetVehicleById(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetVehicleById(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetVehicleById(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    editVehicle(request: EditVehicleCommand) : Observable<FileResponse> {
+    editVehicle(request: EditVehicleCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Vehicle/EditVehicle";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1156,7 +1162,7 @@ export class VehicleClient implements IVehicleClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1167,34 +1173,36 @@ export class VehicleClient implements IVehicleClient {
                 try {
                     return this.processEditVehicle(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditVehicle(response: HttpResponseBase): Observable<FileResponse> {
+    protected processEditVehicle(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    deleteVehicle(request: RemoveVehicleCommand) : Observable<FileResponse> {
+    deleteVehicle(request: RemoveVehicleCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Vehicle/DeleteVehicle";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1206,7 +1214,7 @@ export class VehicleClient implements IVehicleClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1217,41 +1225,43 @@ export class VehicleClient implements IVehicleClient {
                 try {
                     return this.processDeleteVehicle(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeleteVehicle(response: HttpResponseBase): Observable<FileResponse> {
+    protected processDeleteVehicle(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 }
 
 export interface IUserGroupClient {
-    createUserGroup(request: CreateUserGroupCommand): Observable<FileResponse>;
-    getUserGroups(request: GetUserGroupQuery | null | undefined): Observable<FileResponse>;
-    getUserGroupById(id: number | undefined): Observable<FileResponse>;
-    editUserGroup(request: EditUserGroupCommand): Observable<FileResponse>;
-    deleteUserGroup(request: RemoveUserGroupCommand): Observable<FileResponse>;
-    getUserGroupApprovers(id: number | undefined): Observable<FileResponse>;
+    createUserGroup(request: CreateUserGroupCommand): Observable<ApplicationResponse>;
+    getUserGroups(searchText: string | null | undefined): Observable<ApplicationResponse>;
+    getUserGroupById(id: number | undefined): Observable<ApplicationResponse>;
+    editUserGroup(request: EditUserGroupCommand): Observable<ApplicationResponse>;
+    deleteUserGroup(request: RemoveUserGroupCommand): Observable<ApplicationResponse>;
+    getUserGroupApprovers(id: number | undefined): Observable<ApplicationResponse>;
 }
 
 @Injectable({
@@ -1267,8 +1277,8 @@ export class UserGroupClient implements IUserGroupClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createUserGroup(request: CreateUserGroupCommand) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/UserGroup/AddUserGroup";
+    createUserGroup(request: CreateUserGroupCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/UserGroup/CreateUserGroup";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -1279,7 +1289,7 @@ export class UserGroupClient implements IUserGroupClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1290,44 +1300,46 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processCreateUserGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateUserGroup(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateUserGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getUserGroups(request: GetUserGroupQuery | null | undefined) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/UserGroup/ViewUserGroups?";
-        if (request !== undefined && request !== null)
-            url_ += "request=" + encodeURIComponent("" + request) + "&";
+    getUserGroups(searchText: string | null | undefined) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/UserGroup/GetUserGroups?";
+        if (searchText !== undefined && searchText !== null)
+            url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1338,34 +1350,36 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processGetUserGroups(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetUserGroups(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetUserGroups(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getUserGroupById(id: number | undefined) : Observable<FileResponse> {
+    getUserGroupById(id: number | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/UserGroup/GetUserGroupById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -1377,7 +1391,7 @@ export class UserGroupClient implements IUserGroupClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1388,34 +1402,36 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processGetUserGroupById(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetUserGroupById(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetUserGroupById(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    editUserGroup(request: EditUserGroupCommand) : Observable<FileResponse> {
+    editUserGroup(request: EditUserGroupCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/UserGroup/EditUserGroup";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1427,7 +1443,7 @@ export class UserGroupClient implements IUserGroupClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1438,34 +1454,36 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processEditUserGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditUserGroup(response: HttpResponseBase): Observable<FileResponse> {
+    protected processEditUserGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    deleteUserGroup(request: RemoveUserGroupCommand) : Observable<FileResponse> {
+    deleteUserGroup(request: RemoveUserGroupCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/UserGroup/DeleteUserGroup";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1477,7 +1495,7 @@ export class UserGroupClient implements IUserGroupClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1488,34 +1506,36 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processDeleteUserGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeleteUserGroup(response: HttpResponseBase): Observable<FileResponse> {
+    protected processDeleteUserGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getUserGroupApprovers(id: number | undefined) : Observable<FileResponse> {
+    getUserGroupApprovers(id: number | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/UserGroup/GetUserGroupApprovers?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -1527,7 +1547,7 @@ export class UserGroupClient implements IUserGroupClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1538,43 +1558,45 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processGetUserGroupApprovers(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetUserGroupApprovers(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetUserGroupApprovers(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 }
 
 export interface IServiceCategoryClient {
-    createServiceCategory(request: CreateServiceCategoryCommand): Observable<FileResponse>;
-    getServiceCategories(searchText: string | null | undefined): Observable<FileResponse>;
-    getServiceCategoryById(id: number | undefined): Observable<FileResponse>;
-    editServiceCategory(request: EditServiceCategoryCommand): Observable<FileResponse>;
-    deleteServiceCategory(request: RemoveServiceCategoryCommand): Observable<FileResponse>;
-    getPersonnelCategories(presonnelId: number | undefined): Observable<FileResponse>;
-    getPersonnelRoles(personnelId: number | undefined): Observable<FileResponse>;
-    getAllApprovers(request: GetAllApproversQuery | null | undefined): Observable<FileResponse>;
+    createServiceCategory(request: CreateServiceCategoryCommand): Observable<ApplicationResponse>;
+    getServiceCategories(searchText: string | null | undefined): Observable<ApplicationResponse>;
+    getServiceCategoryById(id: number | undefined): Observable<ApplicationResponse>;
+    editServiceCategory(request: EditServiceCategoryCommand): Observable<ApplicationResponse>;
+    deleteServiceCategory(request: RemoveServiceCategoryCommand): Observable<ApplicationResponse>;
+    getPersonnelCategories(presonnelId: number | undefined): Observable<ApplicationResponse>;
+    getPersonnelRoles(personnelId: number | undefined): Observable<ApplicationResponse>;
+    getAllApprovers(request: GetAllApproversQuery | null | undefined): Observable<ApplicationResponse>;
 }
 
 @Injectable({
@@ -1590,7 +1612,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createServiceCategory(request: CreateServiceCategoryCommand) : Observable<FileResponse> {
+    createServiceCategory(request: CreateServiceCategoryCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/ServiceCategory/CreateServiceCategory";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1602,7 +1624,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1613,34 +1635,36 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processCreateServiceCategory(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateServiceCategory(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateServiceCategory(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getServiceCategories(searchText: string | null | undefined) : Observable<FileResponse> {
+    getServiceCategories(searchText: string | null | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/ServiceCategory/ViewServiceCategories?";
         if (searchText !== undefined && searchText !== null)
             url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
@@ -1650,7 +1674,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1661,34 +1685,36 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processGetServiceCategories(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetServiceCategories(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetServiceCategories(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getServiceCategoryById(id: number | undefined) : Observable<FileResponse> {
+    getServiceCategoryById(id: number | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/ServiceCategory/ViewServiceCategoryById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -1700,7 +1726,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1711,34 +1737,36 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processGetServiceCategoryById(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetServiceCategoryById(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetServiceCategoryById(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    editServiceCategory(request: EditServiceCategoryCommand) : Observable<FileResponse> {
+    editServiceCategory(request: EditServiceCategoryCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/ServiceCategory/EditServiceCategory";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1750,7 +1778,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1761,34 +1789,36 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processEditServiceCategory(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditServiceCategory(response: HttpResponseBase): Observable<FileResponse> {
+    protected processEditServiceCategory(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    deleteServiceCategory(request: RemoveServiceCategoryCommand) : Observable<FileResponse> {
+    deleteServiceCategory(request: RemoveServiceCategoryCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/ServiceCategory/DeleteServiceCategory";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1800,7 +1830,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1811,34 +1841,36 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processDeleteServiceCategory(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeleteServiceCategory(response: HttpResponseBase): Observable<FileResponse> {
+    protected processDeleteServiceCategory(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getPersonnelCategories(presonnelId: number | undefined) : Observable<FileResponse> {
+    getPersonnelCategories(presonnelId: number | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/ServiceCategory/GetPersonnelCategories?";
         if (presonnelId === null)
             throw new Error("The parameter 'presonnelId' cannot be null.");
@@ -1850,7 +1882,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1861,34 +1893,36 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processGetPersonnelCategories(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetPersonnelCategories(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetPersonnelCategories(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getPersonnelRoles(personnelId: number | undefined) : Observable<FileResponse> {
+    getPersonnelRoles(personnelId: number | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/ServiceCategory/GetPersonnelRoles?";
         if (personnelId === null)
             throw new Error("The parameter 'personnelId' cannot be null.");
@@ -1900,7 +1934,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1911,34 +1945,36 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processGetPersonnelRoles(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetPersonnelRoles(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetPersonnelRoles(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getAllApprovers(request: GetAllApproversQuery | null | undefined) : Observable<FileResponse> {
+    getAllApprovers(request: GetAllApproversQuery | null | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/ServiceCategory/GetAllApprovers?";
         if (request !== undefined && request !== null)
             url_ += "request=" + encodeURIComponent("" + request) + "&";
@@ -1948,7 +1984,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -1959,43 +1995,58 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processGetAllApprovers(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAllApprovers(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetAllApprovers(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 }
 
 export interface IPresenceClient {
-    getAreaDocuments(request: AreaDocumentsQuery): Observable<FileResponse>;
-    getBlockDocuments(request: BlockDocumentsQuery): Observable<FileResponse>;
-    getBrandDocuments(request: BrandDocumentsQuery): Observable<FileResponse>;
-    getCompanyDocuments(request: CompanyDocumentsQuery): Observable<FileResponse>;
-    getPresenceGroupDocuments(request: PresenceGroupDocumentsQuery): Observable<FileResponse>;
-    getSiteDocuments(request: SiteDocumentsQuery): Observable<FileResponse>;
-    getUnitDocuments(request: UnitDocumentsQuery): Observable<FileResponse>;
-    getZoneDocuments(request: ZoneDocumentsQuery): Observable<FileResponse>;
+    getAreaDocuments(request: AreaDocumentsQuery): Observable<ApplicationResponse>;
+    getBlockDocuments(request: BlockDocumentsQuery): Observable<ApplicationResponse>;
+    getBrandDocuments(request: BrandDocumentsQuery): Observable<ApplicationResponse>;
+    getCompanyDocuments(request: CompanyDocumentsQuery): Observable<ApplicationResponse>;
+    getSiteDocuments(request: SiteDocumentsQuery): Observable<ApplicationResponse>;
+    getUnitDocuments(request: UnitDocumentsQuery): Observable<ApplicationResponse>;
+    getZoneDocuments(request: ZoneDocumentsQuery): Observable<ApplicationResponse>;
+    addAreaDocuments(request: AddAreaDocuments): Observable<FileResponse>;
+    addBlockDocuments(request: AddBlockDocuments): Observable<FileResponse>;
+    addBrandDocuments(request: AddBrandDocuments): Observable<FileResponse>;
+    addCompanyDocuments(request: AddCompanyDocuments): Observable<FileResponse>;
+    addSiteDocuments(request: AddSiteDocuments): Observable<FileResponse>;
+    addUnitDocuments(request: AddUnitDocuments): Observable<FileResponse>;
+    addZoneDocuments(request: AddZoneDocuments): Observable<FileResponse>;
+    removeAreaDocuments(request: RemoveAreaDocuments): Observable<FileResponse>;
+    removeBlockDocuments(request: RemoveBlockDocuments): Observable<FileResponse>;
+    removeBrandDocuments(request: RemoveBrandDocuments): Observable<FileResponse>;
+    removeCompanyDocuments(request: RemoveCompanyDocuments): Observable<FileResponse>;
+    removeSiteDocuments(request: RemoveSiteDocuments): Observable<FileResponse>;
+    removeUnitDocuments(request: RemoveUnitDocuments): Observable<FileResponse>;
+    removeZoneDocuments(request: RemoveZoneDocuments): Observable<FileResponse>;
 }
 
 @Injectable({
@@ -2011,7 +2062,7 @@ export class PresenceClient implements IPresenceClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getAreaDocuments(request: AreaDocumentsQuery) : Observable<FileResponse> {
+    getAreaDocuments(request: AreaDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetAreaDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2023,7 +2074,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2034,34 +2085,36 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetAreaDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAreaDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetAreaDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getBlockDocuments(request: BlockDocumentsQuery) : Observable<FileResponse> {
+    getBlockDocuments(request: BlockDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetBlockDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2073,7 +2126,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2084,34 +2137,36 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetBlockDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetBlockDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetBlockDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getBrandDocuments(request: BrandDocumentsQuery) : Observable<FileResponse> {
+    getBrandDocuments(request: BrandDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetBrandDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2123,7 +2178,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2134,34 +2189,36 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetBrandDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetBrandDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetBrandDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getCompanyDocuments(request: CompanyDocumentsQuery) : Observable<FileResponse> {
+    getCompanyDocuments(request: CompanyDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetCompanyDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2173,7 +2230,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2184,84 +2241,36 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetCompanyDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetCompanyDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetCompanyDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getPresenceGroupDocuments(request: PresenceGroupDocumentsQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Presence/GetPresenceGroupDocuments";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPresenceGroupDocuments(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetPresenceGroupDocuments(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetPresenceGroupDocuments(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<FileResponse>(<any>null);
-    }
-
-    getSiteDocuments(request: SiteDocumentsQuery) : Observable<FileResponse> {
+    getSiteDocuments(request: SiteDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetSiteDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2273,7 +2282,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2284,34 +2293,36 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetSiteDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetSiteDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetSiteDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getUnitDocuments(request: UnitDocumentsQuery) : Observable<FileResponse> {
+    getUnitDocuments(request: UnitDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetUnitDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2323,7 +2334,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2334,6 +2345,110 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetUnitDocuments(<any>response_);
                 } catch (e) {
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUnitDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ApplicationResponse>(<any>null);
+    }
+
+    getZoneDocuments(request: ZoneDocumentsQuery) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Presence/GetZoneDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetZoneDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetZoneDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetZoneDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ApplicationResponse>(<any>null);
+    }
+
+    addAreaDocuments(request: AddAreaDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/AddAreaDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddAreaDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddAreaDocuments(<any>response_);
+                } catch (e) {
                     return <Observable<FileResponse>><any>_observableThrow(e);
                 }
             } else
@@ -2341,7 +2456,7 @@ export class PresenceClient implements IPresenceClient {
         }));
     }
 
-    protected processGetUnitDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processAddAreaDocuments(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2361,8 +2476,8 @@ export class PresenceClient implements IPresenceClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
-    getZoneDocuments(request: ZoneDocumentsQuery) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Presence/GetZoneDocuments";
+    addBlockDocuments(request: AddBlockDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/AddBlockDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2377,12 +2492,12 @@ export class PresenceClient implements IPresenceClient {
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetZoneDocuments(response_);
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddBlockDocuments(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetZoneDocuments(<any>response_);
+                    return this.processAddBlockDocuments(<any>response_);
                 } catch (e) {
                     return <Observable<FileResponse>><any>_observableThrow(e);
                 }
@@ -2391,7 +2506,607 @@ export class PresenceClient implements IPresenceClient {
         }));
     }
 
-    protected processGetZoneDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processAddBlockDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    addBrandDocuments(request: AddBrandDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/AddBrandDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddBrandDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddBrandDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddBrandDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    addCompanyDocuments(request: AddCompanyDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/AddCompanyDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddCompanyDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddCompanyDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddCompanyDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    addSiteDocuments(request: AddSiteDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/AddSiteDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddSiteDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddSiteDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddSiteDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    addUnitDocuments(request: AddUnitDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/AddUnitDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddUnitDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddUnitDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddUnitDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    addZoneDocuments(request: AddZoneDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/AddZoneDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddZoneDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddZoneDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddZoneDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    removeAreaDocuments(request: RemoveAreaDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/RemoveAreaDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemoveAreaDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemoveAreaDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRemoveAreaDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    removeBlockDocuments(request: RemoveBlockDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/RemoveBlockDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemoveBlockDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemoveBlockDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRemoveBlockDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    removeBrandDocuments(request: RemoveBrandDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/RemoveBrandDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemoveBrandDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemoveBrandDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRemoveBrandDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    removeCompanyDocuments(request: RemoveCompanyDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/RemoveCompanyDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemoveCompanyDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemoveCompanyDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRemoveCompanyDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    removeSiteDocuments(request: RemoveSiteDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/RemoveSiteDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemoveSiteDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemoveSiteDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRemoveSiteDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    removeUnitDocuments(request: RemoveUnitDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/RemoveUnitDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemoveUnitDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemoveUnitDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRemoveUnitDocuments(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    removeZoneDocuments(request: RemoveZoneDocuments) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Presence/RemoveZoneDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemoveZoneDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemoveZoneDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRemoveZoneDocuments(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2413,12 +3128,14 @@ export class PresenceClient implements IPresenceClient {
 }
 
 export interface IPresenceGroupClient {
-    createPresenceGroup(request: CreatePresenceGroupCommand): Observable<FileResponse>;
-    getPresenceGroups(searchText: string | null | undefined): Observable<FileResponse>;
-    getPresenceGroupById(id: number | undefined): Observable<FileResponse>;
-    editPresenceGroup(request: EditPresenceGroupCommand): Observable<FileResponse>;
-    deletePresenceGroupDELETE(request: RemovePresenceGroupCommand): Observable<FileResponse>;
-    deletePresenceGroupGET(id: number | undefined): Observable<FileResponse>;
+    createPresenceGroup(request: CreatePresenceGroupCommand): Observable<ApplicationResponse>;
+    getPresenceGroups(searchText: string | null | undefined): Observable<ApplicationResponse>;
+    getPresenceGroupById(id: number | undefined): Observable<ApplicationResponse>;
+    editPresenceGroup(request: EditPresenceGroupCommand): Observable<ApplicationResponse>;
+    removePresenceGroup(request: RemovePresenceGroupCommand): Observable<ApplicationResponse>;
+    getPresenceGroupDocuments(request: GetPresenceGroupDocumentsQuery): Observable<ApplicationResponse>;
+    addPresenceGroupDocument(presenceGroupId: number | undefined, documentTemplateId: number | undefined): Observable<ApplicationResponse>;
+    removePresenceGroupDocument(request: RemovePresenceGroupDocument): Observable<ApplicationResponse>;
 }
 
 @Injectable({
@@ -2434,8 +3151,8 @@ export class PresenceGroupClient implements IPresenceGroupClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createPresenceGroup(request: CreatePresenceGroupCommand) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/PresenceGroup/AddPresenceGroup";
+    createPresenceGroup(request: CreatePresenceGroupCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/CreatePresenceGroup";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2446,7 +3163,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2457,35 +3174,37 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processCreatePresenceGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreatePresenceGroup(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreatePresenceGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getPresenceGroups(searchText: string | null | undefined) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/PresenceGroup/ViewPresenceGroups?";
+    getPresenceGroups(searchText: string | null | undefined) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/GetPresenceGroups?";
         if (searchText !== undefined && searchText !== null)
             url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
         url_ = url_.replace(/[?&]$/, "");
@@ -2494,7 +3213,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2505,35 +3224,37 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processGetPresenceGroups(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetPresenceGroups(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetPresenceGroups(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getPresenceGroupById(id: number | undefined) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/PresenceGroup/ViewPresenceGroupById?";
+    getPresenceGroupById(id: number | undefined) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/GetPresenceGroupById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -2544,7 +3265,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2555,34 +3276,36 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processGetPresenceGroupById(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetPresenceGroupById(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetPresenceGroupById(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    editPresenceGroup(request: EditPresenceGroupCommand) : Observable<FileResponse> {
+    editPresenceGroup(request: EditPresenceGroupCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/PresenceGroup/EditPresenceGroup";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2594,7 +3317,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2605,35 +3328,37 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processEditPresenceGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditPresenceGroup(response: HttpResponseBase): Observable<FileResponse> {
+    protected processEditPresenceGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    deletePresenceGroupDELETE(request: RemovePresenceGroupCommand) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/PresenceGroup/DeletePresenceGroup";
+    removePresenceGroup(request: RemovePresenceGroupCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/RemovePresenceGroup";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2644,101 +3369,213 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeletePresenceGroupDELETE(response_);
+            return this.processRemovePresenceGroup(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDeletePresenceGroupDELETE(<any>response_);
+                    return this.processRemovePresenceGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeletePresenceGroupDELETE(response: HttpResponseBase): Observable<FileResponse> {
+    protected processRemovePresenceGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    deletePresenceGroupGET(id: number | undefined) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/PresenceGroup?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+    getPresenceGroupDocuments(request: GetPresenceGroupDocumentsQuery) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/GetPresenceGroupDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPresenceGroupDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPresenceGroupDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPresenceGroupDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ApplicationResponse>(<any>null);
+    }
+
+    addPresenceGroupDocument(presenceGroupId: number | undefined, documentTemplateId: number | undefined) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/AddPresenceGroupDocument?";
+        if (presenceGroupId === null)
+            throw new Error("The parameter 'presenceGroupId' cannot be null.");
+        else if (presenceGroupId !== undefined)
+            url_ += "PresenceGroupId=" + encodeURIComponent("" + presenceGroupId) + "&";
+        if (documentTemplateId === null)
+            throw new Error("The parameter 'documentTemplateId' cannot be null.");
+        else if (documentTemplateId !== undefined)
+            url_ += "DocumentTemplateId=" + encodeURIComponent("" + documentTemplateId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeletePresenceGroupGET(response_);
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddPresenceGroupDocument(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDeletePresenceGroupGET(<any>response_);
+                    return this.processAddPresenceGroupDocument(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeletePresenceGroupGET(response: HttpResponseBase): Observable<FileResponse> {
+    protected processAddPresenceGroupDocument(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
+    }
+
+    removePresenceGroupDocument(request: RemovePresenceGroupDocument) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/PresenceGroup/RemovePresenceGroupDocument";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemovePresenceGroupDocument(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemovePresenceGroupDocument(<any>response_);
+                } catch (e) {
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRemovePresenceGroupDocument(response: HttpResponseBase): Observable<ApplicationResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 }
 
 export interface IFormClient {
-    createForm(request: CreateFormCommand): Observable<FileResponse>;
-    getForms(request: GetFormsQuery | null | undefined): Observable<FileResponse>;
-    getFormById(id: number | undefined): Observable<FileResponse>;
-    editForm(request: EditFormCommand): Observable<FileResponse>;
-    deleteForm(request: RemoveFormCommand): Observable<FileResponse>;
+    createForm(request: CreateFormCommand): Observable<ApplicationResponse>;
+    getForms(request: GetFormsQuery | null | undefined): Observable<ApplicationResponse>;
+    getFormById(id: number | undefined): Observable<ApplicationResponse>;
+    editForm(request: EditFormCommand): Observable<ApplicationResponse>;
+    deleteForm(request: RemoveFormCommand): Observable<ApplicationResponse>;
 }
 
 @Injectable({
@@ -2754,7 +3591,7 @@ export class FormClient implements IFormClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createForm(request: CreateFormCommand) : Observable<FileResponse> {
+    createForm(request: CreateFormCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Form/CreateForm";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2766,7 +3603,7 @@ export class FormClient implements IFormClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2777,34 +3614,36 @@ export class FormClient implements IFormClient {
                 try {
                     return this.processCreateForm(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateForm(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateForm(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getForms(request: GetFormsQuery | null | undefined) : Observable<FileResponse> {
+    getForms(request: GetFormsQuery | null | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Form/GetForms?";
         if (request !== undefined && request !== null)
             url_ += "request=" + encodeURIComponent("" + request) + "&";
@@ -2814,7 +3653,7 @@ export class FormClient implements IFormClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2825,34 +3664,36 @@ export class FormClient implements IFormClient {
                 try {
                     return this.processGetForms(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetForms(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetForms(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getFormById(id: number | undefined) : Observable<FileResponse> {
+    getFormById(id: number | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Form/GetFormById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -2864,7 +3705,7 @@ export class FormClient implements IFormClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2875,34 +3716,36 @@ export class FormClient implements IFormClient {
                 try {
                     return this.processGetFormById(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetFormById(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetFormById(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    editForm(request: EditFormCommand) : Observable<FileResponse> {
+    editForm(request: EditFormCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Form/EditForm";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2914,7 +3757,7 @@ export class FormClient implements IFormClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2925,34 +3768,36 @@ export class FormClient implements IFormClient {
                 try {
                     return this.processEditForm(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditForm(response: HttpResponseBase): Observable<FileResponse> {
+    protected processEditForm(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    deleteForm(request: RemoveFormCommand) : Observable<FileResponse> {
+    deleteForm(request: RemoveFormCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Form/DeleteForm";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2964,7 +3809,7 @@ export class FormClient implements IFormClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2975,41 +3820,43 @@ export class FormClient implements IFormClient {
                 try {
                     return this.processDeleteForm(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeleteForm(response: HttpResponseBase): Observable<FileResponse> {
+    protected processDeleteForm(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 }
 
 export interface IDocumentTemplateClient {
-    createDocumentTemplate(request: CreateDocumentTemplateCommand): Observable<FileResponse>;
-    getDocumentTemplates(searchText: string | null | undefined): Observable<FileResponse>;
-    getDocumentTemplateById(id: number | undefined): Observable<FileResponse>;
-    getDocumentTemplateTypes(request: GetDocumentTemplateTypesQuery | null | undefined): Observable<FileResponse>;
-    editDocumentTemplate(request: EditDocumentTemplateCommand): Observable<FileResponse>;
-    deleteDocumentTemplate(request: RemoveDocumentTemplateCommand): Observable<FileResponse>;
+    createDocumentTemplate(request: CreateDocumentTemplateCommand): Observable<ApplicationResponse>;
+    getDocumentTemplates(searchText: string | null | undefined): Observable<ApplicationResponse>;
+    getDocumentTemplateById(id: number | undefined): Observable<ApplicationResponse>;
+    getDocumentTemplateTypes(request: GetDocumentTemplateTypesQuery | null | undefined): Observable<ApplicationResponse>;
+    editDocumentTemplate(request: EditDocumentTemplateCommand): Observable<ApplicationResponse>;
+    deleteDocumentTemplate(request: RemoveDocumentTemplateCommand): Observable<ApplicationResponse>;
 }
 
 @Injectable({
@@ -3025,7 +3872,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createDocumentTemplate(request: CreateDocumentTemplateCommand) : Observable<FileResponse> {
+    createDocumentTemplate(request: CreateDocumentTemplateCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/CreateDocumentTemplate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3037,7 +3884,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -3048,34 +3895,36 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processCreateDocumentTemplate(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateDocumentTemplate(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateDocumentTemplate(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getDocumentTemplates(searchText: string | null | undefined) : Observable<FileResponse> {
+    getDocumentTemplates(searchText: string | null | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/GetDocumentTemplates?";
         if (searchText !== undefined && searchText !== null)
             url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
@@ -3085,7 +3934,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -3096,34 +3945,36 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processGetDocumentTemplates(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetDocumentTemplates(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetDocumentTemplates(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getDocumentTemplateById(id: number | undefined) : Observable<FileResponse> {
+    getDocumentTemplateById(id: number | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/GetDocumentTemplateById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -3135,7 +3986,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -3146,34 +3997,36 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processGetDocumentTemplateById(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetDocumentTemplateById(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetDocumentTemplateById(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getDocumentTemplateTypes(request: GetDocumentTemplateTypesQuery | null | undefined) : Observable<FileResponse> {
+    getDocumentTemplateTypes(request: GetDocumentTemplateTypesQuery | null | undefined) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/GetDocumentTemplateTypes?";
         if (request !== undefined && request !== null)
             url_ += "request=" + encodeURIComponent("" + request) + "&";
@@ -3183,7 +4036,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -3194,34 +4047,36 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processGetDocumentTemplateTypes(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetDocumentTemplateTypes(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetDocumentTemplateTypes(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    editDocumentTemplate(request: EditDocumentTemplateCommand) : Observable<FileResponse> {
+    editDocumentTemplate(request: EditDocumentTemplateCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/EditDocumentTemplate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3233,7 +4088,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -3244,34 +4099,36 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processEditDocumentTemplate(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditDocumentTemplate(response: HttpResponseBase): Observable<FileResponse> {
+    protected processEditDocumentTemplate(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    deleteDocumentTemplate(request: RemoveDocumentTemplateCommand) : Observable<FileResponse> {
+    deleteDocumentTemplate(request: RemoveDocumentTemplateCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/DeleteDocumentTemplate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3283,7 +4140,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -3294,31 +4151,33 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processDeleteDocumentTemplate(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeleteDocumentTemplate(response: HttpResponseBase): Observable<FileResponse> {
+    protected processDeleteDocumentTemplate(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 }
 
@@ -3934,8 +4793,52 @@ export interface ISendOtpToCustomerCommand {
     phoneNumber?: string | undefined;
 }
 
+export class ApplicationResponse implements IApplicationResponse {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: any | undefined;
+
+    constructor(data?: IApplicationResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"];
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result;
+        return data; 
+    }
+}
+
+export interface IApplicationResponse {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: any | undefined;
+}
+
 export class CreateVehicleCommand implements ICreateVehicleCommand {
-    name?: string | undefined;
+    name?: LanguageString | undefined;
     isNeedDriver?: boolean;
     vehicleDocuments?: number[] | undefined;
     driverDocuments?: number[] | undefined;
@@ -3951,7 +4854,7 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
 
     init(_data?: any) {
         if (_data) {
-            this.name = _data["name"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
             this.isNeedDriver = _data["isNeedDriver"];
             if (Array.isArray(_data["vehicleDocuments"])) {
                 this.vehicleDocuments = [] as any;
@@ -3975,7 +4878,7 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
         data["isNeedDriver"] = this.isNeedDriver;
         if (Array.isArray(this.vehicleDocuments)) {
             data["vehicleDocuments"] = [];
@@ -3992,10 +4895,59 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
 }
 
 export interface ICreateVehicleCommand {
-    name?: string | undefined;
+    name?: LanguageString | undefined;
     isNeedDriver?: boolean;
     vehicleDocuments?: number[] | undefined;
     driverDocuments?: number[] | undefined;
+}
+
+export class LanguageString implements ILanguageString {
+
+    [key: string]: string | any; 
+
+    constructor(data?: ILanguageString) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+        }
+    }
+
+    static fromJS(data: any): LanguageString {
+        data = typeof data === 'object' ? data : {};
+        let result = new LanguageString();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        return data; 
+    }
+}
+
+export interface ILanguageString {
+
+    [key: string]: string | any; 
+}
+
+export enum LanguageCode {
+    Tr = 1,
+    En = 2,
 }
 
 export class GetVehicleQuery implements IGetVehicleQuery {
@@ -4098,7 +5050,7 @@ export interface IRemoveVehicleCommand {
 }
 
 export class CreateUserGroupCommand implements ICreateUserGroupCommand {
-    name?: string | undefined;
+    name?: LanguageString | undefined;
     personnelIds?: number[] | undefined;
 
     constructor(data?: ICreateUserGroupCommand) {
@@ -4112,7 +5064,7 @@ export class CreateUserGroupCommand implements ICreateUserGroupCommand {
 
     init(_data?: any) {
         if (_data) {
-            this.name = _data["name"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
             if (Array.isArray(_data["personnelIds"])) {
                 this.personnelIds = [] as any;
                 for (let item of _data["personnelIds"])
@@ -4130,7 +5082,7 @@ export class CreateUserGroupCommand implements ICreateUserGroupCommand {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
         if (Array.isArray(this.personnelIds)) {
             data["personnelIds"] = [];
             for (let item of this.personnelIds)
@@ -4141,38 +5093,8 @@ export class CreateUserGroupCommand implements ICreateUserGroupCommand {
 }
 
 export interface ICreateUserGroupCommand {
-    name?: string | undefined;
+    name?: LanguageString | undefined;
     personnelIds?: number[] | undefined;
-}
-
-export class GetUserGroupQuery implements IGetUserGroupQuery {
-
-    constructor(data?: IGetUserGroupQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-    }
-
-    static fromJS(data: any): GetUserGroupQuery {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetUserGroupQuery();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        return data; 
-    }
-}
-
-export interface IGetUserGroupQuery {
 }
 
 export class EditUserGroupCommand extends CreateUserGroupCommand implements IEditUserGroupCommand {
@@ -4245,8 +5167,8 @@ export interface IRemoveUserGroupCommand {
 }
 
 export class CreateServiceCategoryCommand implements ICreateServiceCategoryCommand {
-    name?: string | undefined;
-    description?: string | undefined;
+    name?: LanguageString | undefined;
+    description?: LanguageString | undefined;
     maxServiceDuration?: number;
     serviceDurationUnit?: TimeUnit;
     maxPersonnelCount?: number;
@@ -4276,8 +5198,8 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
 
     init(_data?: any) {
         if (_data) {
-            this.name = _data["name"];
-            this.description = _data["description"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
+            this.description = _data["description"] ? LanguageString.fromJS(_data["description"]) : <any>undefined;
             this.maxServiceDuration = _data["maxServiceDuration"];
             this.serviceDurationUnit = _data["serviceDurationUnit"];
             this.maxPersonnelCount = _data["maxPersonnelCount"];
@@ -4351,8 +5273,8 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["description"] = this.description;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
+        data["description"] = this.description ? this.description.toJSON() : <any>undefined;
         data["maxServiceDuration"] = this.maxServiceDuration;
         data["serviceDurationUnit"] = this.serviceDurationUnit;
         data["maxPersonnelCount"] = this.maxPersonnelCount;
@@ -4419,8 +5341,8 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
 }
 
 export interface ICreateServiceCategoryCommand {
-    name?: string | undefined;
-    description?: string | undefined;
+    name?: LanguageString | undefined;
+    description?: LanguageString | undefined;
     maxServiceDuration?: number;
     serviceDurationUnit?: TimeUnit;
     maxPersonnelCount?: number;
@@ -4866,42 +5788,6 @@ export interface ICompanyDocumentsQuery {
     companyId?: number;
 }
 
-export class PresenceGroupDocumentsQuery implements IPresenceGroupDocumentsQuery {
-    presenceGroupId?: number;
-
-    constructor(data?: IPresenceGroupDocumentsQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.presenceGroupId = _data["presenceGroupId"];
-        }
-    }
-
-    static fromJS(data: any): PresenceGroupDocumentsQuery {
-        data = typeof data === 'object' ? data : {};
-        let result = new PresenceGroupDocumentsQuery();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["presenceGroupId"] = this.presenceGroupId;
-        return data; 
-    }
-}
-
-export interface IPresenceGroupDocumentsQuery {
-    presenceGroupId?: number;
-}
-
 export class SiteDocumentsQuery implements ISiteDocumentsQuery {
     siteId?: string;
 
@@ -5010,8 +5896,568 @@ export interface IZoneDocumentsQuery {
     zoneId?: string;
 }
 
+export class AddAreaDocuments implements IAddAreaDocuments {
+    areaId?: number;
+    documentTemplateId?: number;
+
+    constructor(data?: IAddAreaDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.areaId = _data["areaId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): AddAreaDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddAreaDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["areaId"] = this.areaId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IAddAreaDocuments {
+    areaId?: number;
+    documentTemplateId?: number;
+}
+
+export class AddBlockDocuments implements IAddBlockDocuments {
+    blockId?: string;
+    documentTemplateId?: number;
+
+    constructor(data?: IAddBlockDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.blockId = _data["blockId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): AddBlockDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddBlockDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["blockId"] = this.blockId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IAddBlockDocuments {
+    blockId?: string;
+    documentTemplateId?: number;
+}
+
+export class AddBrandDocuments implements IAddBrandDocuments {
+    brandId?: number;
+    documentTemplateId?: number;
+
+    constructor(data?: IAddBrandDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.brandId = _data["brandId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): AddBrandDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddBrandDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["brandId"] = this.brandId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IAddBrandDocuments {
+    brandId?: number;
+    documentTemplateId?: number;
+}
+
+export class AddCompanyDocuments implements IAddCompanyDocuments {
+    companyId?: number;
+    documentTemplateId?: number;
+
+    constructor(data?: IAddCompanyDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.companyId = _data["companyId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): AddCompanyDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddCompanyDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyId"] = this.companyId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IAddCompanyDocuments {
+    companyId?: number;
+    documentTemplateId?: number;
+}
+
+export class AddSiteDocuments implements IAddSiteDocuments {
+    siteId?: string;
+    documentTemplateId?: number;
+
+    constructor(data?: IAddSiteDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.siteId = _data["siteId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): AddSiteDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddSiteDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["siteId"] = this.siteId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IAddSiteDocuments {
+    siteId?: string;
+    documentTemplateId?: number;
+}
+
+export class AddUnitDocuments implements IAddUnitDocuments {
+    unitId?: number;
+    documentTemplateId?: number;
+
+    constructor(data?: IAddUnitDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.unitId = _data["unitId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): AddUnitDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddUnitDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["unitId"] = this.unitId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IAddUnitDocuments {
+    unitId?: number;
+    documentTemplateId?: number;
+}
+
+export class AddZoneDocuments implements IAddZoneDocuments {
+    zoneId?: string;
+    documentTemplateId?: number;
+
+    constructor(data?: IAddZoneDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.zoneId = _data["zoneId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): AddZoneDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddZoneDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["zoneId"] = this.zoneId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IAddZoneDocuments {
+    zoneId?: string;
+    documentTemplateId?: number;
+}
+
+export class RemoveAreaDocuments implements IRemoveAreaDocuments {
+    areaId?: number;
+    documentTemplateId?: number;
+
+    constructor(data?: IRemoveAreaDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.areaId = _data["areaId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): RemoveAreaDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveAreaDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["areaId"] = this.areaId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IRemoveAreaDocuments {
+    areaId?: number;
+    documentTemplateId?: number;
+}
+
+export class RemoveBlockDocuments implements IRemoveBlockDocuments {
+    blockId?: string;
+    documentTemplateId?: number;
+
+    constructor(data?: IRemoveBlockDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.blockId = _data["blockId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): RemoveBlockDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveBlockDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["blockId"] = this.blockId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IRemoveBlockDocuments {
+    blockId?: string;
+    documentTemplateId?: number;
+}
+
+export class RemoveBrandDocuments implements IRemoveBrandDocuments {
+    brandId?: number;
+    documentTemplateId?: number;
+
+    constructor(data?: IRemoveBrandDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.brandId = _data["brandId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): RemoveBrandDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveBrandDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["brandId"] = this.brandId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IRemoveBrandDocuments {
+    brandId?: number;
+    documentTemplateId?: number;
+}
+
+export class RemoveCompanyDocuments implements IRemoveCompanyDocuments {
+    companyId?: number;
+    documentTemplateId?: number;
+
+    constructor(data?: IRemoveCompanyDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.companyId = _data["companyId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): RemoveCompanyDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveCompanyDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyId"] = this.companyId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IRemoveCompanyDocuments {
+    companyId?: number;
+    documentTemplateId?: number;
+}
+
+export class RemoveSiteDocuments implements IRemoveSiteDocuments {
+    siteId?: string;
+    documentTemplateId?: number;
+
+    constructor(data?: IRemoveSiteDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.siteId = _data["siteId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): RemoveSiteDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveSiteDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["siteId"] = this.siteId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IRemoveSiteDocuments {
+    siteId?: string;
+    documentTemplateId?: number;
+}
+
+export class RemoveUnitDocuments implements IRemoveUnitDocuments {
+    unitId?: number;
+    documentTemplateId?: number;
+
+    constructor(data?: IRemoveUnitDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.unitId = _data["unitId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): RemoveUnitDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveUnitDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["unitId"] = this.unitId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IRemoveUnitDocuments {
+    unitId?: number;
+    documentTemplateId?: number;
+}
+
+export class RemoveZoneDocuments implements IRemoveZoneDocuments {
+    zoneId?: string;
+    documentTemplateId?: number;
+
+    constructor(data?: IRemoveZoneDocuments) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.zoneId = _data["zoneId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): RemoveZoneDocuments {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveZoneDocuments();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["zoneId"] = this.zoneId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IRemoveZoneDocuments {
+    zoneId?: string;
+    documentTemplateId?: number;
+}
+
 export class CreatePresenceGroupCommand implements ICreatePresenceGroupCommand {
-    name?: string | undefined;
+    name?: LanguageString | undefined;
     presenceGroupAreas?: number[] | undefined;
     presenceGroupBlocks?: string[] | undefined;
     presenceGroupCompanies?: number[] | undefined;
@@ -5031,7 +6477,7 @@ export class CreatePresenceGroupCommand implements ICreatePresenceGroupCommand {
 
     init(_data?: any) {
         if (_data) {
-            this.name = _data["name"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
             if (Array.isArray(_data["presenceGroupAreas"])) {
                 this.presenceGroupAreas = [] as any;
                 for (let item of _data["presenceGroupAreas"])
@@ -5079,7 +6525,7 @@ export class CreatePresenceGroupCommand implements ICreatePresenceGroupCommand {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
         if (Array.isArray(this.presenceGroupAreas)) {
             data["presenceGroupAreas"] = [];
             for (let item of this.presenceGroupAreas)
@@ -5120,7 +6566,7 @@ export class CreatePresenceGroupCommand implements ICreatePresenceGroupCommand {
 }
 
 export interface ICreatePresenceGroupCommand {
-    name?: string | undefined;
+    name?: LanguageString | undefined;
     presenceGroupAreas?: number[] | undefined;
     presenceGroupBlocks?: string[] | undefined;
     presenceGroupCompanies?: number[] | undefined;
@@ -5199,9 +6645,85 @@ export interface IRemovePresenceGroupCommand {
     id?: number;
 }
 
+export class GetPresenceGroupDocumentsQuery implements IGetPresenceGroupDocumentsQuery {
+    presenceGroupId?: number;
+
+    constructor(data?: IGetPresenceGroupDocumentsQuery) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.presenceGroupId = _data["presenceGroupId"];
+        }
+    }
+
+    static fromJS(data: any): GetPresenceGroupDocumentsQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPresenceGroupDocumentsQuery();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["presenceGroupId"] = this.presenceGroupId;
+        return data; 
+    }
+}
+
+export interface IGetPresenceGroupDocumentsQuery {
+    presenceGroupId?: number;
+}
+
+export class RemovePresenceGroupDocument implements IRemovePresenceGroupDocument {
+    presenceGroupId?: number;
+    documentTemplateId?: number;
+
+    constructor(data?: IRemovePresenceGroupDocument) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.presenceGroupId = _data["presenceGroupId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): RemovePresenceGroupDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemovePresenceGroupDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["presenceGroupId"] = this.presenceGroupId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        return data; 
+    }
+}
+
+export interface IRemovePresenceGroupDocument {
+    presenceGroupId?: number;
+    documentTemplateId?: number;
+}
+
 export class CreateFormCommand implements ICreateFormCommand {
-    name?: string | undefined;
-    questions?: AddQuestionRequest[] | undefined;
+    name?: LanguageString | undefined;
+    questions?: CreateQuestionRequest[] | undefined;
 
     constructor(data?: ICreateFormCommand) {
         if (data) {
@@ -5214,11 +6736,11 @@ export class CreateFormCommand implements ICreateFormCommand {
 
     init(_data?: any) {
         if (_data) {
-            this.name = _data["name"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
             if (Array.isArray(_data["questions"])) {
                 this.questions = [] as any;
                 for (let item of _data["questions"])
-                    this.questions!.push(AddQuestionRequest.fromJS(item));
+                    this.questions!.push(CreateQuestionRequest.fromJS(item));
             }
         }
     }
@@ -5232,7 +6754,7 @@ export class CreateFormCommand implements ICreateFormCommand {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
         if (Array.isArray(this.questions)) {
             data["questions"] = [];
             for (let item of this.questions)
@@ -5243,19 +6765,19 @@ export class CreateFormCommand implements ICreateFormCommand {
 }
 
 export interface ICreateFormCommand {
-    name?: string | undefined;
-    questions?: AddQuestionRequest[] | undefined;
+    name?: LanguageString | undefined;
+    questions?: CreateQuestionRequest[] | undefined;
 }
 
-export class AddQuestionRequest implements IAddQuestionRequest {
-    name?: string | undefined;
+export class CreateQuestionRequest implements ICreateQuestionRequest {
+    name?: LanguageString | undefined;
     questionType?: QuestionType;
     answersCount?: number | undefined;
-    dateQuestionOptions?: DateQuestionOptionsRequestDto | undefined;
-    fileQuestionOptions?: FileQuestionOptionsRequestDto | undefined;
-    multiChoicesQuestions?: MultiChoicesQuestionRequestDto[] | undefined;
+    dateQuestionOptions?: AddDateQuestionOptionsRequest | undefined;
+    fileQuestionOptions?: AddFileQuestionOptionsRequest | undefined;
+    multiChoicesQuestions?: AddMultiChoicesQuestion[] | undefined;
 
-    constructor(data?: IAddQuestionRequest) {
+    constructor(data?: ICreateQuestionRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5266,29 +6788,29 @@ export class AddQuestionRequest implements IAddQuestionRequest {
 
     init(_data?: any) {
         if (_data) {
-            this.name = _data["name"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
             this.questionType = _data["questionType"];
             this.answersCount = _data["answersCount"];
-            this.dateQuestionOptions = _data["dateQuestionOptions"] ? DateQuestionOptionsRequestDto.fromJS(_data["dateQuestionOptions"]) : <any>undefined;
-            this.fileQuestionOptions = _data["fileQuestionOptions"] ? FileQuestionOptionsRequestDto.fromJS(_data["fileQuestionOptions"]) : <any>undefined;
+            this.dateQuestionOptions = _data["dateQuestionOptions"] ? AddDateQuestionOptionsRequest.fromJS(_data["dateQuestionOptions"]) : <any>undefined;
+            this.fileQuestionOptions = _data["fileQuestionOptions"] ? AddFileQuestionOptionsRequest.fromJS(_data["fileQuestionOptions"]) : <any>undefined;
             if (Array.isArray(_data["multiChoicesQuestions"])) {
                 this.multiChoicesQuestions = [] as any;
                 for (let item of _data["multiChoicesQuestions"])
-                    this.multiChoicesQuestions!.push(MultiChoicesQuestionRequestDto.fromJS(item));
+                    this.multiChoicesQuestions!.push(AddMultiChoicesQuestion.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): AddQuestionRequest {
+    static fromJS(data: any): CreateQuestionRequest {
         data = typeof data === 'object' ? data : {};
-        let result = new AddQuestionRequest();
+        let result = new CreateQuestionRequest();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
         data["questionType"] = this.questionType;
         data["answersCount"] = this.answersCount;
         data["dateQuestionOptions"] = this.dateQuestionOptions ? this.dateQuestionOptions.toJSON() : <any>undefined;
@@ -5302,13 +6824,13 @@ export class AddQuestionRequest implements IAddQuestionRequest {
     }
 }
 
-export interface IAddQuestionRequest {
-    name?: string | undefined;
+export interface ICreateQuestionRequest {
+    name?: LanguageString | undefined;
     questionType?: QuestionType;
     answersCount?: number | undefined;
-    dateQuestionOptions?: DateQuestionOptionsRequestDto | undefined;
-    fileQuestionOptions?: FileQuestionOptionsRequestDto | undefined;
-    multiChoicesQuestions?: MultiChoicesQuestionRequestDto[] | undefined;
+    dateQuestionOptions?: AddDateQuestionOptionsRequest | undefined;
+    fileQuestionOptions?: AddFileQuestionOptionsRequest | undefined;
+    multiChoicesQuestions?: AddMultiChoicesQuestion[] | undefined;
 }
 
 export enum QuestionType {
@@ -5319,11 +6841,11 @@ export enum QuestionType {
     TextAnswer = 4,
 }
 
-export class DateQuestionOptionsRequestDto implements IDateQuestionOptionsRequestDto {
+export class AddDateQuestionOptionsRequest implements IAddDateQuestionOptionsRequest {
     isMultiDate?: boolean;
     questionId?: number;
 
-    constructor(data?: IDateQuestionOptionsRequestDto) {
+    constructor(data?: IAddDateQuestionOptionsRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5339,9 +6861,9 @@ export class DateQuestionOptionsRequestDto implements IDateQuestionOptionsReques
         }
     }
 
-    static fromJS(data: any): DateQuestionOptionsRequestDto {
+    static fromJS(data: any): AddDateQuestionOptionsRequest {
         data = typeof data === 'object' ? data : {};
-        let result = new DateQuestionOptionsRequestDto();
+        let result = new AddDateQuestionOptionsRequest();
         result.init(data);
         return result;
     }
@@ -5354,16 +6876,16 @@ export class DateQuestionOptionsRequestDto implements IDateQuestionOptionsReques
     }
 }
 
-export interface IDateQuestionOptionsRequestDto {
+export interface IAddDateQuestionOptionsRequest {
     isMultiDate?: boolean;
     questionId?: number;
 }
 
-export class FileQuestionOptionsRequestDto implements IFileQuestionOptionsRequestDto {
+export class AddFileQuestionOptionsRequest implements IAddFileQuestionOptionsRequest {
     documentFileType?: DocumentFileType;
     questionId?: number;
 
-    constructor(data?: IFileQuestionOptionsRequestDto) {
+    constructor(data?: IAddFileQuestionOptionsRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5379,9 +6901,9 @@ export class FileQuestionOptionsRequestDto implements IFileQuestionOptionsReques
         }
     }
 
-    static fromJS(data: any): FileQuestionOptionsRequestDto {
+    static fromJS(data: any): AddFileQuestionOptionsRequest {
         data = typeof data === 'object' ? data : {};
-        let result = new FileQuestionOptionsRequestDto();
+        let result = new AddFileQuestionOptionsRequest();
         result.init(data);
         return result;
     }
@@ -5394,7 +6916,7 @@ export class FileQuestionOptionsRequestDto implements IFileQuestionOptionsReques
     }
 }
 
-export interface IFileQuestionOptionsRequestDto {
+export interface IAddFileQuestionOptionsRequest {
     documentFileType?: DocumentFileType;
     questionId?: number;
 }
@@ -5405,11 +6927,11 @@ export enum DocumentFileType {
     TxtFile = 2,
 }
 
-export class MultiChoicesQuestionRequestDto implements IMultiChoicesQuestionRequestDto {
-    choice?: string | undefined;
+export class AddMultiChoicesQuestion implements IAddMultiChoicesQuestion {
+    choice?: LanguageString | undefined;
     questionId?: number;
 
-    constructor(data?: IMultiChoicesQuestionRequestDto) {
+    constructor(data?: IAddMultiChoicesQuestion) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5420,28 +6942,28 @@ export class MultiChoicesQuestionRequestDto implements IMultiChoicesQuestionRequ
 
     init(_data?: any) {
         if (_data) {
-            this.choice = _data["choice"];
+            this.choice = _data["choice"] ? LanguageString.fromJS(_data["choice"]) : <any>undefined;
             this.questionId = _data["questionId"];
         }
     }
 
-    static fromJS(data: any): MultiChoicesQuestionRequestDto {
+    static fromJS(data: any): AddMultiChoicesQuestion {
         data = typeof data === 'object' ? data : {};
-        let result = new MultiChoicesQuestionRequestDto();
+        let result = new AddMultiChoicesQuestion();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["choice"] = this.choice;
+        data["choice"] = this.choice ? this.choice.toJSON() : <any>undefined;
         data["questionId"] = this.questionId;
         return data; 
     }
 }
 
-export interface IMultiChoicesQuestionRequestDto {
-    choice?: string | undefined;
+export interface IAddMultiChoicesQuestion {
+    choice?: LanguageString | undefined;
     questionId?: number;
 }
 
@@ -5545,7 +7067,7 @@ export interface IRemoveFormCommand {
 }
 
 export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCommand {
-    name?: string | undefined;
+    name?: LanguageString | undefined;
     documentTemplateTypeId?: number;
     documentTemplateFileTypes?: DocumentFileType[] | undefined;
     hasValidationDate?: boolean;
@@ -5562,7 +7084,7 @@ export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCom
 
     init(_data?: any) {
         if (_data) {
-            this.name = _data["name"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
             this.documentTemplateTypeId = _data["documentTemplateTypeId"];
             if (Array.isArray(_data["documentTemplateFileTypes"])) {
                 this.documentTemplateFileTypes = [] as any;
@@ -5587,7 +7109,7 @@ export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCom
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
         data["documentTemplateTypeId"] = this.documentTemplateTypeId;
         if (Array.isArray(this.documentTemplateFileTypes)) {
             data["documentTemplateFileTypes"] = [];
@@ -5605,7 +7127,7 @@ export class CreateDocumentTemplateCommand implements ICreateDocumentTemplateCom
 }
 
 export interface ICreateDocumentTemplateCommand {
-    name?: string | undefined;
+    name?: LanguageString | undefined;
     documentTemplateTypeId?: number;
     documentTemplateFileTypes?: DocumentFileType[] | undefined;
     hasValidationDate?: boolean;
