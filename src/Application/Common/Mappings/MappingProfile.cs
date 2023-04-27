@@ -147,7 +147,8 @@ public class MappingProfile : Profile
     {
         CreateMap<PresenceGroup, PresenceGroupDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
-
+        CreateMap<PresenceGroup, BasicPresenceGroupDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
         CreateMap<CreatePresenceGroupCommand, PresenceGroup>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
             .ForMember(des => des.PresenceGroupAreas, opt => opt.MapFrom(src => src.PresenceGroupAreas.Select(x => new PresenceGroupArea { AreaId = x }).ToList()))

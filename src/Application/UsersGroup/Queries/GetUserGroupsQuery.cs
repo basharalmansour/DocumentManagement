@@ -11,11 +11,12 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.UsersGroup.Queries;
-public class GetUserGroupQuery : IRequest<List<GetUserGroupDto>>
+public class GetUserGroupsQuery : IRequest<List<GetUserGroupDto>>
 {
+    public string SearchText { get; set; }
 }
 
-public class GetUserGroupQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetUserGroupQuery, List<GetUserGroupDto>>
+public class GetUserGroupQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetUserGroupsQuery, List<GetUserGroupDto>>
 {
 
     public GetUserGroupQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(mapper, applicationDbContext)
@@ -23,7 +24,7 @@ public class GetUserGroupQueryHandler : BaseCommandQueryHandler, IRequestHandler
 
     }
 
-    public async Task<List<GetUserGroupDto>> Handle(GetUserGroupQuery request, CancellationToken cancellationToken)
+    public async Task<List<GetUserGroupDto>> Handle(GetUserGroupsQuery request, CancellationToken cancellationToken)
     {
         var userGroups =await _applicationDbContext.UserGroups.Where(x => x.IsDeleted == false).ToListAsync();
         var userGroupsDto= _mapper.Map<List<GetUserGroupDto>>(userGroups);

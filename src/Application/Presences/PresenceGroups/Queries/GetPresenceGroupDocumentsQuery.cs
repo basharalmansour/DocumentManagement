@@ -11,18 +11,18 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Presences.PresenceGroups.Queries;
-public class PresenceGroupDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
+public class GetPresenceGroupDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public int PresenceGroupId { get; set; }
 }
-public class PresenceGroupDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<PresenceGroupDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class GetPresenceGroupDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetPresenceGroupDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
 
-    public PresenceGroupDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetPresenceGroupDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
 
     }
-    public async Task<List<BasicDocumentTemplateDto>> Handle(PresenceGroupDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<List<BasicDocumentTemplateDto>> Handle(GetPresenceGroupDocumentsQuery request, CancellationToken cancellationToken)
     {
         var documents = await _applicationDbContext.DocumentTemplatePresenceGroups
             .Include(x => x.DocumentTemplate)

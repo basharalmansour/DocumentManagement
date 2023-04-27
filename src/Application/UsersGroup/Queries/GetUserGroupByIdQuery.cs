@@ -11,19 +11,19 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.UsersGroup.Queries;
-public class UserGroupByIdQuery : IRequest<GetUserGroupDto>
+public class GetUserGroupByIdQuery : IRequest<GetUserGroupDto>
 {
     public int Id { get; set; }
 }
 
-public class UserGroupByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<UserGroupByIdQuery, GetUserGroupDto>
+public class GetUserGroupByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetUserGroupByIdQuery, GetUserGroupDto>
 {
 
-    public UserGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetUserGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(mapper, applicationDbContext)
     {
     }
 
-    public async Task<GetUserGroupDto> Handle(UserGroupByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetUserGroupDto> Handle(GetUserGroupByIdQuery request, CancellationToken cancellationToken)
     {
         var userGroup =await _applicationDbContext.UserGroups.Include(x=>x.Personnels).FirstOrDefaultAsync (x => x.Id == request.Id);
         var userGroupDto = _mapper.Map<GetUserGroupDto>(userGroup);

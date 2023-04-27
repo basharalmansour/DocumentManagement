@@ -9,4 +9,5 @@ namespace CleanArchitecture.Application.Common.Dtos.PresenceGroups;
 public class PresenceGroupBlockDto
 {
     public Guid BlockId { get; set; }
+    public string BlockName { get; set; }
 }

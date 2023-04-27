@@ -8,7 +8,7 @@ namespace CleanArchitecture.WebUI.Controllers.UserGroups;
 
 public class UserGroupController : ApiControllerBase
 {
-    [HttpPost("AddUserGroup")]
+    [HttpPost("CrreateUserGroup")]
     public async Task<ApplicationResponse> CreateUserGroup([FromBody] CreateUserGroupCommand request, CancellationToken cancellationToken)
     {
         try
@@ -21,8 +21,8 @@ public class UserGroupController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
-    [HttpGet("ViewUserGroups")]
-    public async Task<ApplicationResponse> GetUserGroups([FromQuery] GetUserGroupQuery request, CancellationToken cancellationToken)
+    [HttpGet("GetUserGroups")]
+    public async Task<ApplicationResponse> GetUserGroups([FromQuery] GetUserGroupsQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -35,7 +35,7 @@ public class UserGroupController : ApiControllerBase
         }
     }
     [HttpGet("GetUserGroupById")]
-    public async Task<ApplicationResponse> GetUserGroupById([FromQuery] UserGroupByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetUserGroupById([FromQuery] GetUserGroupByIdQuery request, CancellationToken cancellationToken)
     {
         try
         {
