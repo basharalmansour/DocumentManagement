@@ -60,7 +60,19 @@ public class PresenceController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
-    
+    [HttpGet("GetPresenceGroupDocuments")]
+    public async Task<ApplicationResponse> GetPresenceGroupDocuments([FromBody] GetPresenceGroupDocumentsQuery request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+    }
     [HttpGet("GetSiteDocuments")]
     public async Task<ApplicationResponse> GetSiteDocuments([FromBody] SiteDocumentsQuery request, CancellationToken cancellationToken)
     {
@@ -142,44 +154,44 @@ public class PresenceController : ApiControllerBase
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpPost("RemoveAreaDocuments")]
-    public async Task<IActionResult> RemoveAreaDocuments([FromBody] RemoveAreaDocuments request, CancellationToken cancellationToken)
+    [HttpPost("AddAreaDocuments")]
+    public async Task<IActionResult> AddAreaDocuments([FromBody] AddAreaDocuments request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpPost("RemoveBlockDocuments")]
-    public async Task<IActionResult> RemoveBlockDocuments([FromBody] RemoveBlockDocuments request, CancellationToken cancellationToken)
+    [HttpPost("AddBlockDocuments")]
+    public async Task<IActionResult> AddBlockDocuments([FromBody] AddBlockDocuments request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpPost("RemoveBrandDocuments")]
-    public async Task<IActionResult> RemoveBrandDocuments([FromBody] RemoveBrandDocuments request, CancellationToken cancellationToken)
+    [HttpPost("AddBrandDocuments")]
+    public async Task<IActionResult> AddBrandDocuments([FromBody] AddBrandDocuments request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpPost("RemoveCompanyDocuments")]
-    public async Task<IActionResult> RemoveCompanyDocuments([FromBody] RemoveCompanyDocuments request, CancellationToken cancellationToken)
+    [HttpPost("AddCompanyDocuments")]
+    public async Task<IActionResult> AddCompanyDocuments([FromBody] AddCompanyDocuments request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     } 
-    [HttpPost("RemoveSiteDocuments")]
-    public async Task<IActionResult> RemoveSiteDocuments([FromBody] RemoveSiteDocuments request, CancellationToken cancellationToken)
+    [HttpPost("AddSiteDocuments")]
+    public async Task<IActionResult> AddSiteDocuments([FromBody] AddSiteDocuments request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpPost("RemoveUnitDocuments")]
-    public async Task<IActionResult> RemoveUnitDocuments([FromBody] RemoveUnitDocuments request, CancellationToken cancellationToken)
+    [HttpPost("AddUnitDocuments")]
+    public async Task<IActionResult> AddUnitDocuments([FromBody] AddUnitDocuments request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);
     }
-    [HttpPost("RemoveZoneDocuments")]
-    public async Task<IActionResult> RemoveZoneDocuments([FromBody] RemoveZoneDocuments request, CancellationToken cancellationToken)
+    [HttpPost("AddZoneDocuments")]
+    public async Task<IActionResult> AddZoneDocuments([FromBody] AddZoneDocuments request, CancellationToken cancellationToken)
     {
         var result = await Sender.Send(request, cancellationToken);
         return Ok(result);

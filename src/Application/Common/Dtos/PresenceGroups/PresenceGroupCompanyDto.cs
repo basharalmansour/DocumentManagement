@@ -9,4 +9,5 @@ namespace CleanArchitecture.Application.Common.Dtos.PresenceGroups;
 public  class PresenceGroupCompanyDto
 {
     public int CompanyId { get; set; }
+    public string CompanyName { get; set; }
 }

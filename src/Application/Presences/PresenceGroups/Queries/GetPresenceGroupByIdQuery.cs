@@ -11,18 +11,18 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Presences.PresenceGroups.Queries;
-public class PresenceGroupByIdQuery : IRequest<PresenceGroupDto>
+public class GetPresenceGroupByIdQuery : IRequest<PresenceGroupDto>
 {
     public int Id { get; set; }
 }
-public class PresenceGroupByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<PresenceGroupByIdQuery, PresenceGroupDto>
+public class GetPresenceGroupByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetPresenceGroupByIdQuery, PresenceGroupDto>
 {
 
-    public PresenceGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public GetPresenceGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
     {
 
     }
-    public async Task<PresenceGroupDto> Handle(PresenceGroupByIdQuery request, CancellationToken cancellationToken)
+    public async Task<PresenceGroupDto> Handle(GetPresenceGroupByIdQuery request, CancellationToken cancellationToken)
     {
         var presenceGroup = await _applicationDbContext.PresenceGroups
             .Include(x => x.PresenceGroupAreas)

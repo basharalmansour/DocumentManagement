@@ -9,4 +9,5 @@ namespace CleanArchitecture.Application.Common.Dtos.PresenceGroups;
 public  class PresenceGroupSiteDto
 {
     public Guid SiteId { get; set; }
+    public string SiteName { get; set; }
 }
