@@ -99,88 +99,189 @@ public class PresenceController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
-    [HttpPost("AddAreaDocuments")]
-    public async Task<IActionResult> AddAreaDocuments([FromBody] AddAreaDocuments request, CancellationToken cancellationToken)
+    [HttpPost("CreateAreaDocuments")]
+    public async Task<ApplicationResponse> CreateAreaDocuments([FromBody] AddAreaDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
-    [HttpPost("AddBlockDocuments")]
-    public async Task<IActionResult> AddBlockDocuments([FromBody] AddBlockDocuments request, CancellationToken cancellationToken)
+
+    [HttpPost("CreateBlockDocuments")]
+    public async Task<ApplicationResponse> CreateBlockDocuments([FromBody] AddBlockDocuments request, CancellationToken cancellationToken)
     {
+        try
+        {
         var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+        return new ApplicationResponse(e);
+        }
+
     }
-    [HttpPost("AddBrandDocuments")]
-    public async Task<IActionResult> AddBrandDocuments([FromBody] AddBrandDocuments request, CancellationToken cancellationToken)
+    [HttpPost("CreateBrandDocuments")]
+    public async Task<ApplicationResponse> CreateBrandDocuments([FromBody] AddBrandDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
-    [HttpPost("AddCompanyDocuments")]
-    public async Task<IActionResult> AddCompanyDocuments([FromBody] AddCompanyDocuments request, CancellationToken cancellationToken)
+
+    [HttpPost("CreateCompanyDocuments")]
+    public async Task<ApplicationResponse> CreateCompanyDocuments([FromBody] AddCompanyDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
-    } 
-    [HttpPost("AddSiteDocuments")]
-    public async Task<IActionResult> AddSiteDocuments([FromBody] AddSiteDocuments request, CancellationToken cancellationToken)
-    {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
-    [HttpPost("AddUnitDocuments")]
-    public async Task<IActionResult> AddUnitDocuments([FromBody] AddUnitDocuments request, CancellationToken cancellationToken)
+    [HttpPost("CreateSiteDocuments")]
+    public async Task<ApplicationResponse> CreateSiteDocuments([FromBody] AddSiteDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
-    [HttpPost("AddZoneDocuments")]
-    public async Task<IActionResult> AddZoneDocuments([FromBody] AddZoneDocuments request, CancellationToken cancellationToken)
+    [HttpPost("CreateUnitDocuments")]
+    public async Task<ApplicationResponse> CreateUnitDocuments([FromBody] AddUnitDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+    }
+    [HttpPost("CreateZoneDocuments")]
+    public async Task<ApplicationResponse> CreateZoneDocuments([FromBody] AddZoneDocuments request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpPost("RemoveAreaDocuments")]
-    public async Task<IActionResult> RemoveAreaDocuments([FromBody] RemoveAreaDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveAreaDocuments([FromBody] RemoveAreaDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpPost("RemoveBlockDocuments")]
-    public async Task<IActionResult> RemoveBlockDocuments([FromBody] RemoveBlockDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveBlockDocuments([FromBody] RemoveBlockDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpPost("RemoveBrandDocuments")]
-    public async Task<IActionResult> RemoveBrandDocuments([FromBody] RemoveBrandDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveBrandDocuments([FromBody] RemoveBrandDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpPost("RemoveCompanyDocuments")]
-    public async Task<IActionResult> RemoveCompanyDocuments([FromBody] RemoveCompanyDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveCompanyDocuments([FromBody] RemoveCompanyDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
-    } 
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+    }
     [HttpPost("RemoveSiteDocuments")]
-    public async Task<IActionResult> RemoveSiteDocuments([FromBody] RemoveSiteDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveSiteDocuments([FromBody] RemoveSiteDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpPost("RemoveUnitDocuments")]
-    public async Task<IActionResult> RemoveUnitDocuments([FromBody] RemoveUnitDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveUnitDocuments([FromBody] RemoveUnitDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
     [HttpPost("RemoveZoneDocuments")]
-    public async Task<IActionResult> RemoveZoneDocuments([FromBody] RemoveZoneDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveZoneDocuments([FromBody] RemoveZoneDocuments request, CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(request, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
     }
 }
