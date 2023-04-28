@@ -8,7 +8,7 @@ namespace CleanArchitecture.WebUI.Controllers.Vehicles;
 
 public class VehicleController : ApiControllerBase
 {
-    [HttpPost("AddVehicle")]
+    [HttpPost("CreateVehicle")]
     public async Task<ApplicationResponse> CreateVehicle([FromBody] CreateVehicleCommand request , CancellationToken cancellationToken)
     {
         try
@@ -22,7 +22,7 @@ public class VehicleController : ApiControllerBase
         }
         
     }
-    [HttpGet("ViewVehicles")]
+    [HttpGet("GetVehicles")]
     public async Task<ApplicationResponse> GetVehicles([FromQuery] GetVehicleQuery request, CancellationToken cancellationToken)
     {
         try
@@ -64,8 +64,8 @@ public class VehicleController : ApiControllerBase
         }
         
     }
-    [HttpDelete("DeleteVehicle")]
-    public async Task<ApplicationResponse> DeleteVehicle([FromBody] RemoveVehicleCommand request, CancellationToken cancellationToken)
+    [HttpDelete("RemoveVehicle")]
+    public async Task<ApplicationResponse> RemoveVehicle([FromBody] RemoveVehicleCommand request, CancellationToken cancellationToken)
     {
         try
         {

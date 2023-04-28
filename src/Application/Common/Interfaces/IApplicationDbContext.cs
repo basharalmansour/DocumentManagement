@@ -67,7 +67,6 @@ public interface IApplicationDbContext
     public DbSet<PersonnelRoles> PersonnelRoles { get; set; }
     public DbSet<VehiclesDocument> VehiclesDocuments { get; set; }
     public DbSet<VehicleDriverDocuments> VehicleDriverDocuments { set; get; }
-    public DbSet<RolePersonnel> RolePersonnels { get; set; }
     public DatabaseFacade Database { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     int SaveChanges();

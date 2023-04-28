@@ -21,9 +21,9 @@ public class GetAllApproversQueryHandler : BaseCommandQueryHandler, IRequestHand
     }
     public async Task<List<int>> Handle(GetAllApproversQuery request, CancellationToken cancellationToken)
     {
-        var result = await _applicationDbContext.RolePersonnels
+        var result = await _applicationDbContext.PersonnelRoles
             .Where(x => x.Role==Role.Approver)
-            .Select(x=>x.PersonnelRoles.PersonnelId)
+            .Select(x=>x.PersonnelId)
             .ToListAsync();
         return result;
     }

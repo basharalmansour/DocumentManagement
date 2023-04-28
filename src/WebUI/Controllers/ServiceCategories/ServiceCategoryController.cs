@@ -93,19 +93,6 @@ public class ServiceCategoryController : ApiControllerBase
     //    var result = await Sender.Send(request, cancellationToken);
     //    return Ok(result);
     //}
-    [HttpGet("GetPersonnelRoles")]
-    public async Task<ApplicationResponse> GetPersonnelRoles([FromQuery] GetPersonnelRoleQuery request, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
-        }
-        catch (Exception e)
-        {
-            return new ApplicationResponse(e);
-        }
-    }
     [HttpGet("GetAllApprovers")]
     public async Task<ApplicationResponse> GetAllApprovers([FromQuery] GetAllApproversQuery request, CancellationToken cancellationToken)
     {

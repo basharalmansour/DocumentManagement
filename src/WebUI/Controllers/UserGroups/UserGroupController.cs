@@ -1,4 +1,5 @@
 ﻿using AutoWrapper.Wrappers;
+using CleanArchitecture.Application.Roles.Queries;
 using CleanArchitecture.Application.UsersGroup.Commands;
 using CleanArchitecture.Application.UsersGroup.Queries;
 using CleanArchitecture.Domain.Common;
@@ -74,7 +75,20 @@ public class UserGroupController : ApiControllerBase
         }
     }
     [HttpGet("GetUserGroupApprovers")]
-    public async Task<ApplicationResponse> GetUserGroupApprovers([FromQuery] UserGroupApproversQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetUserGroupApprovers([FromQuery] GetUserGroupApproversQuery request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse(e);
+        }
+    }
+    [HttpGet("GetPersonnelRoles")]
+    public async Task<ApplicationResponse> GetPersonnelRoles([FromQuery] GetPersonnelRoleQuery request, CancellationToken cancellationToken)
     {
         try
         {

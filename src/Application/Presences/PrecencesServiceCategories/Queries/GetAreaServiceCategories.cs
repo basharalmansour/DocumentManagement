@@ -13,18 +13,22 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Presences.PrecencesServiceCategories.Queries;
-public  class GetAreaServiceCategory : IRequest<List<BasicServiceCategoryDto>>
+public  class GetAreaServiceCategories : IRequest<List<BasicServiceCategoryDto>>
 {
     public int AreaId { get; set; }
 }
-public class GetAreaServiceCategoryHandler : BaseCommandQueryHandler, IRequestHandler<GetAreaServiceCategory, List<BasicServiceCategoryDto>>
+public class GetAreaServiceCategoriesHandler : BaseCommandQueryHandler, IRequestHandler<GetAreaServiceCategories, List<BasicServiceCategoryDto>>
 {
-    public GetAreaServiceCategoryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetAreaServiceCategoriesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
     {
     }
-    public async Task<List<BasicServiceCategoryDto>> Handle(GetAreaServiceCategory request, CancellationToken cancellationToken)
+    public async Task<List<BasicServiceCategoryDto>> Handle(GetAreaServiceCategories request, CancellationToken cancellationToken)
     {
-        var serviceCategories =await _applicationDbContext.ServiceCategoryAreas.Where(x => x.AreaId ==request.AreaId).Select(x => x.ServiceCategory).ToListAsync();
+        var serviceCategories =await _applicationDbContext.ServiceCategoryAreas
+            .Include(x=>x.ServiceCategory)
+            .Where(x => x.AreaId ==request.AreaId)
+            .Select(x => x.ServiceCategory)
+            .ToListAsync();
         var result= _mapper.Map<List<BasicServiceCategoryDto>>(serviceCategories);
         return result;    
     }

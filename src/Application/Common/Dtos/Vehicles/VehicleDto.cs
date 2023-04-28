@@ -7,10 +7,8 @@ using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
 
 namespace CleanArchitecture.Application.Common.Dtos.Vehicles;
-public class VehicleDto
+public class VehicleDto: BasicVehicleDto
 {
-    public string Id { get; set; }
-    public LanguageString Name { get; set; }
     public List<VehiclesDocumentDto> VehicleDocuments { get; set; }
     public List<VehicleDriverDocumentsDto> DriverDocuments { get; set; }
 }
