@@ -26,7 +26,7 @@ public class CreateRolesForPersonnelCommandHandler : BaseCommandQueryHandler, IR
     }
     public async Task<bool> Handle(CreateRolesForPersonnelCommand request, CancellationToken cancellationToken)
     {
-        var personnelRole= _mapper.Map<PersonnelRoles>(request);
+        var personnelRole= _mapper.Map<PersonnelRole>(request);
         _applicationDbContext.PersonnelRoles.Add(personnelRole);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

@@ -9,12 +9,12 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
-public class ServiceCategoryRoles : LightBaseEntity<int>, IEntity<int>
+public class ServiceCategoryRole : LightBaseEntity<int>, IEntity<int>
 {
     public Role Role { get; set; }
-    public List<ApproverDepartment> ApproverDepartments { get; set; }
-    public List<ApproverPersonnel > ApproverPersonnels { get; set; }
-    public List<ApproverUserGroup > ApproverUserGroups { get; set; }
+    public List<ResponsibleDepartment> ResponsibleDepartments { get; set; }
+    public List<ResponsiblePersonnel> ResponsiblePersonnels { get; set; }
+    public List<ResponsibleUserGroup> ResponsibleUserGroups { get; set; }
     [ForeignKey("ServiceCategory")]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; }

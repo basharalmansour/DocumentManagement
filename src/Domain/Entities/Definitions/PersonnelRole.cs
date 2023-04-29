@@ -8,7 +8,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Entities.Definitions;
-public class PersonnelRoles : LightBaseEntity<int>, IEntity<int>
+public class PersonnelRole : LightBaseEntity<int>, IEntity<int>
 {
     public Role Role { set; get; }
     public int PersonnelId { get; set; }

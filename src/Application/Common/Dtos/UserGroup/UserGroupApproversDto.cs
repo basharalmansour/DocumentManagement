@@ -10,5 +10,5 @@ public class UserGroupApproversDto
 {
     public int PersonnelId { get; set; }
     public string PersonnelName { get; set; }
-    public List<BasicServiceCategoryDto> ServiceCategory { get; set; }
+    public List<BasicServiceCategoryDto> ServiceCategories { get; set; }
 }

@@ -2,8 +2,8 @@
 
 namespace CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
 
-public class ApproverPersonnelDto
+public class ResponsibleDepartmentDto
 {
-    public int ServiceCategoryApprovmentId { get; set; }
-    public int PersonnelId { get; set; }
+    public int ServiceCategoryRoleId { get; set; }
+    public int DepartmentId { get; set; }
 }

@@ -6,7 +6,7 @@ namespace CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvemen
 public class ServiceCategoryRoleDto
 {
     public Role Role { get; set; }
-    public List<ApproverDepartmentDto> ApproverDepartments { get; set; }
-    public List<ApproverPersonnelDto> ApproverPersonnels { get; set; }
-    public List<ApproverUserGroupDto> ApproverUserGroups { get; set; }
+    public List<ResponsibleDepartmentDto> ResponsibleDepartments { get; set; }
+    public List<ResponsiblePersonnelDto> ResponsiblePersonnels { get; set; }
+    public List<ResponsibleUserGroupDto> ResponsibleUserGroups { get; set; }
 }

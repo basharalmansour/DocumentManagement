@@ -37,7 +37,7 @@ public class GetUserGroupApproversQueryHandler : BaseCommandQueryHandler, IReque
             {
                 result.Add(new UserGroupApproversDto
                 {
-                    ServiceCategory =_mapper.Map<List<BasicServiceCategoryDto>>(approvers.Select(x=>x.ServiceCategoryApprovment.ServiceCategory).ToList()),
+                    ServiceCategories =_mapper.Map<List<BasicServiceCategoryDto>>(approvers.Select(x=>x.ServiceCategoryRole.ServiceCategory).ToList()),
                     PersonnelId = id
                 });
             }

@@ -29,7 +29,6 @@ using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
-using CleanArchitecture.Application.Rules.Command;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -44,9 +43,8 @@ public class MappingProfile : Profile
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
         ApplyMappingsOfPresences();
-        CreateMap<Role, PersonnelRoles>()
+        CreateMap<Role, PersonnelRole>()
             .ForMember(des => des.Role, opt => opt.MapFrom(res => res));
-        CreateMap<CreateRolesForPersonnelCommand, PersonnelRoles>();
     }
 
     private void ApplyMappingsOfPresences()
@@ -106,38 +104,25 @@ public class MappingProfile : Profile
             .ForMember(des => des.SpecialRules, opt => opt.MapFrom(src => src.SpecialRules.Select(x => new CategorySpecialRules { SpecialRuleId = x })))
             .ForMember(des => des.Documents, opt => opt.MapFrom(src => src.Documents.Select(x => new CategoryDocument { DocumentTemplateId = x })));
 
-        CreateMap<CreateCategoryRoleDto, ServiceCategoryRoles>()
-            .ForMember(des => des.ApproverDepartments, opt => opt.MapFrom(src => src.ApproverDepartments.Select(x => new ApproverDepartment { DepartmentId = x })))
-            .ForMember(des => des.ApproverPersonnels, opt => opt.MapFrom(src => src.ApproverPersonnels.Select(x => new ApproverPersonnel { PersonnelId = x })))
-            .ForMember(des => des.ApproverUserGroups, opt => opt.MapFrom(src => src.ApproverUserGroups.Select(x => new ApproverUserGroup { UserGroupId = x })));
+        CreateMap<CreateCategoryRoleDto, ServiceCategoryRole>()
+            .ForMember(des => des.ResponsibleDepartments, opt => opt.MapFrom(src => src.ResponsibleDepartments.Select(x => new ResponsibleDepartment { DepartmentId = x })))
+            .ForMember(des => des.ResponsiblePersonnels, opt => opt.MapFrom(src => src.ResponsiblePersonnels.Select(x => new ResponsiblePersonnel { PersonnelId = x })))
+            .ForMember(des => des.ResponsibleUserGroups, opt => opt.MapFrom(src => src.ResponsibleUserGroups.Select(x => new ResponsibleUserGroup { UserGroupId = x })));
         CreateMap<VehicleCategory, VehicleCategoryDto>();
         CreateMap<CategoryVehicleDocuments, CategoryVehicleDocumentsDto>();
         CreateMap<CategoryDocument, CategoryDocumentDto>();
         CreateMap<CreateVehicleCategoryDto, VehicleCategory>();
         CreateMap<CreateCategoryVehicleDocuments, CategoryVehicleDocuments>();
-        CreateMap<CategoryVehicleDocuments, CategoryVehicleDocumentsDto>();
-        CreateMap<CategoryDocumentDto, CategoryDocument>();
         CreateMap<CategoryPersonnelDocument, CategoryPersonnelDocumentDto>();
-        CreateMap<CategorySpecialRulesDto, CategorySpecialRules>();
-        CreateMap<ServiceCategoryRoles, ServiceCategoryRoleDto>();
-        CreateMap<ApproverDepartment, ApproverDepartmentDto>();
-        CreateMap<ApproverPersonnel, ApproverPersonnelDto>();
-        CreateMap<ApproverUserGroup, ApproverUserGroupDto>();
-        CreateMap<DocumentCategoryDto, CategoryDocument>();
-        CreateMap<CategorySpecialRules,CategorySpecialRulesDto>();
-        CreateMap<ServiceCategoryArea, ServiceCategoryAreaDto>();
-        CreateMap<ServiceCategoryBlock, ServiceCategoryBlockDto>();
-        CreateMap<ServiceCategoryBrand , ServiceCategoryBrandDto>();
-        CreateMap<ServiceCategoryCompany , ServiceCategoryCompanyDto>();
-        CreateMap<ServiceCategorySite, ServiceCategorySiteDto>();
-        CreateMap<ServiceCategoryUnit , ServiceCategoryUnitDto>();
-        CreateMap<ServiceCategoryZone, ServiceCategoryZoneDto>();
+        CreateMap<ServiceCategoryRole, ServiceCategoryRoleDto>();
+        CreateMap<ResponsibleDepartment, ResponsibleDepartmentDto>();
+        CreateMap<ResponsiblePersonnel, ResponsiblePersonnelDto>();
+        CreateMap<ResponsibleUserGroup, ResponsibleUserGroupDto>();
+        CreateMap<CategorySpecialRules, CategorySpecialRulesDto>();
     }
     private void ApplyMappingsOfVehicle()
     {
         CreateMap<Vehicle, VehicleDto>()
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
-        CreateMap<Vehicle, BasicVehicleDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
         CreateMap<VehicleDriverDocuments, VehicleDriverDocumentsDto>();
         CreateMap<VehiclesDocument, VehiclesDocumentDto>();

@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
 
-public class ApproverUserGroupDto
+public class ResponsibleUserGroupDto
 {
-    public int ServiceCategoryApprovmentId { get; set; }
+    public int ServiceCategoryRoleId { get; set; }
     public int UserGroupId { get; set; }
 }

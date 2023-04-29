@@ -6,8 +6,7 @@ namespace CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 public class CreateCategoryRoleDto
 {
     public Role Role { get; set; }
-    public List<int> ApproverDepartments { get; set; }
-    public List<int> ApproverPersonnels { get; set; }
-    public List<int> ApproverUserGroups { get; set; }
-    public int ServiceCategoryId { get; set; }
+    public List<int> ResponsibleDepartments { get; set; }
+    public List<int> ResponsiblePersonnels { get; set; }
+    public List<int> ResponsibleUserGroups { get; set; }
 }

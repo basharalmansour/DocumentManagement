@@ -25,7 +25,7 @@ public class GetServiceCategoryHandler : BaseCommandQueryHandler, IRequestHandle
     {
         var categories =await _applicationDbContext.ServiceCategories
             .Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText))
-            .Include(x=>x.SubServiceCategories.Where(x => x.IsDeleted == false))
+            .Include(x=>x.SubServiceCategories.Where(x => !x.IsDeleted))
             .ToListAsync();
         var categoriesDto = _mapper.Map<List<BasicServiceCategoryDto>>(categories);
         return categoriesDto;

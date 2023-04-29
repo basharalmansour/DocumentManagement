@@ -24,10 +24,11 @@ public class ServiceCategoryByIdQueryHandler : BaseCommandQueryHandler, IRequest
     {
 
         var category = await _applicationDbContext.ServiceCategories
-            .Include(x => x.SubServiceCategories.Where(x => x.IsDeleted == false))
+            .Include(x => x.SubServiceCategories.Where(x => !x.IsDeleted))
             .Include(x => x.SpecialRules)
             .Include(x => x.Vehicles)
             .Include(x => x.Documents)
+            .Include(x => x.PersonnelDocuments)
             .Include(x => x.ServiceCategoryAreas)
             .Include(x => x.ServiceCategoryBlocks)
             .Include(x => x.ServiceCategoryBrands)
@@ -35,9 +36,8 @@ public class ServiceCategoryByIdQueryHandler : BaseCommandQueryHandler, IRequest
             .Include(x => x.ServiceCategorySites)
             .Include(x => x.ServiceCategoryUnits)
             .Include(x => x.ServiceCategoryZones)
+            .Include(x => x.ServiceCategoryRoles)
             .FirstOrDefaultAsync(x=>x.Id==request.Id);
-        var specialRuleIds = _applicationDbContext.CategorySpecialRoles.Where(x => x.ServiceCategoryId == category.Id).Select(x=>x.Id).ToList();
-
         var categoryDto = _mapper.Map<ServiceCategoryDetailsDto>(category);
         return categoryDto; 
     }

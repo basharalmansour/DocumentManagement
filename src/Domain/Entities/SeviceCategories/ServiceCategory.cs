@@ -40,5 +40,5 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     public int? ParentServiceCategoryId { get; set; } 
     public ServiceCategory ParentServiceCategory { get; set; }
     public List<ServiceCategory> SubServiceCategories { get; set; }
-    public List<ServiceCategoryRoles> ServiceCategoryRoles { get; set; }
+    public List<ServiceCategoryRole> ServiceCategoryRoles { get; set; }
 }

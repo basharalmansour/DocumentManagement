@@ -7,11 +7,11 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
-public class ApproverUserGroup : LightBaseEntity<int>, IEntity<int>
+public class ResponsibleUserGroup : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("ServiceCategoryRoles")]
-    public int ServiceCategoryApprovmentId { get; set; }
-    public ServiceCategoryRoles ServiceCategoryApprovment { get; set; }
+    [ForeignKey("ServiceCategoryRole")]
+    public int ServiceCategoryRoleId { get; set; }
+    public ServiceCategoryRole ServiceCategoryRole { get; set; }
 
     [ForeignKey("UserGroup")]
     public int UserGroupId { get; set; }

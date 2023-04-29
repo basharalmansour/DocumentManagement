@@ -9,10 +9,10 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
-public class ApproverDepartment : LightBaseEntity<int>, IEntity<int>
+public class ResponsibleDepartment : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("ServiceCategoryRoles")]
-    public int ServiceCategoryApprovmentId { get; set; }
-    public ServiceCategoryRoles ServiceCategoryApprovment { get; set; }
+    [ForeignKey("ServiceCategoryRole")]
+    public int ServiceCategoryRoleId { get; set; }
+    public ServiceCategoryRole ServiceCategoryRole { get; set; }
     public int DepartmentId { get; set; } 
 }

@@ -40,7 +40,6 @@ public class CreateServiceCategoryCommandHandler : BaseCommandQueryHandler, IReq
     }
     public async Task<int> Handle(CreateServiceCategoryCommand request, CancellationToken cancellationToken)
     {
-        request.MaxServiceDuration= FindDuration(request.MaxServiceDuration, request.ServiceDurationUnit);
         var serviceCategory = _mapper.Map<ServiceCategory>(request);
         serviceCategory.UniqueCode= UniqueCode.CreateUniqueCode(8, false, "S");
         _applicationDbContext.ServiceCategories.Add(serviceCategory);
@@ -48,16 +47,16 @@ public class CreateServiceCategoryCommandHandler : BaseCommandQueryHandler, IReq
         return serviceCategory.Id;
     }
 
-    private int FindDuration(int maxServiceDuration, TimeUnit serviceDurationUnit)
-    {
-        if (serviceDurationUnit == TimeUnit.Days)
-            maxServiceDuration *= 24;
-        else if (serviceDurationUnit == TimeUnit.Weeks)
-            maxServiceDuration *= 168;
-        else if (serviceDurationUnit == TimeUnit.Months)
-            maxServiceDuration *= 720;
-        else if (serviceDurationUnit == TimeUnit.Years)
-            maxServiceDuration *= 8760;
-        return maxServiceDuration;
-    }
+    //private int DurationInHours(int maxServiceDuration, TimeUnit serviceDurationUnit)
+    //{
+    //    if (serviceDurationUnit == TimeUnit.Days)
+    //        maxServiceDuration *= 24;
+    //    else if (serviceDurationUnit == TimeUnit.Weeks)
+    //        maxServiceDuration *= 168;
+    //    else if (serviceDurationUnit == TimeUnit.Months)
+    //        maxServiceDuration *= 720;
+    //    else if (serviceDurationUnit == TimeUnit.Years)
+    //        maxServiceDuration *= 8760;
+    //    return maxServiceDuration;
+    //}
 }

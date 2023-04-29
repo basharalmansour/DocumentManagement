@@ -64,10 +64,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<DocumentTemplateUnit> DocumentTemplateUnits { get; set; }
     public DbSet<DocumentTemplateZone> DocumentTemplateZones { get; set; }
     public DbSet<DocumentTemplatePresenceGroup> DocumentTemplatePresenceGroups { get; set; }
-    public DbSet<ApproverDepartment> ApproverDepartments { get; set; }
-    public DbSet<ApproverPersonnel> ApproverPersonnels { get; set; }
-    public DbSet<ApproverUserGroup> ApproverUserGroups { get; set; }
-    public DbSet<ServiceCategoryRoles> ServiceCategoryApprovments { get; set; }
+    public DbSet<ResponsibleDepartment> ApproverDepartments { get; set; }
+    public DbSet<ResponsiblePersonnel> ApproverPersonnels { get; set; }
+    public DbSet<ResponsibleUserGroup> ApproverUserGroups { get; set; }
+    public DbSet<ServiceCategoryRole> ServiceCategoryApprovments { get; set; }
     public DbSet<CategoryDocument> CategoryDocuments { get; set; }
     public DbSet<CategoryPersonnelDocument> CategoryPersonnelDocuments { get; set; }
     public DbSet<ServiceCategoryArea> ServiceCategoryAreas { get; set; }
@@ -85,7 +85,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
     public DbSet<VehiclesDocument> VehiclesDocuments { get; set; }
     public DbSet<VehicleDriverDocuments> VehicleDriverDocuments { set; get; }
-    public DbSet<PersonnelRoles> PersonnelRoles { get; set; }
+    public DbSet<PersonnelRole> PersonnelRoles { get; set; }
+    public DbSet<RolePersonnel> RolePersonnels { get; set; }
     private void ConfigureAuditableStates()
     {
         var DateTimeNow = DateTime.Now;

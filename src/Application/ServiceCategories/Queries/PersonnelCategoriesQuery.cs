@@ -26,9 +26,9 @@ public class PersonnelCategoriesQueryHandler : BaseCommandQueryHandler, IRequest
         UserGroupApproversDto result = new UserGroupApproversDto();
         var categories=await _applicationDbContext.ApproverPersonnels
             .Where(x => x.PersonnelId== request.PresonnelId)
-            .Select(x => x.ServiceCategoryApprovment.ServiceCategory)
+            .Select(x => x.ServiceCategoryRole.ServiceCategory)
             .ToListAsync();
-        result.ServiceCategory = _mapper.Map<List<BasicServiceCategoryDto>>(categories);
+        result.ServiceCategories = _mapper.Map<List<BasicServiceCategoryDto>>(categories);
         result.PersonnelId = request.PresonnelId;
         return result;
     }
