@@ -29,6 +29,7 @@ using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
+using CleanArchitecture.Application.Rules.Command;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -43,8 +44,9 @@ public class MappingProfile : Profile
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
         ApplyMappingsOfPresences();
-        CreateMap<Role, RolePersonnel>()
+        CreateMap<Role, PersonnelRoles>()
             .ForMember(des => des.Role, opt => opt.MapFrom(res => res));
+        CreateMap<CreateRolesForPersonnelCommand, PersonnelRoles>();
     }
 
     private void ApplyMappingsOfPresences()
@@ -134,6 +136,8 @@ public class MappingProfile : Profile
     private void ApplyMappingsOfVehicle()
     {
         CreateMap<Vehicle, VehicleDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
+        CreateMap<Vehicle, BasicVehicleDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
         CreateMap<VehicleDriverDocuments, VehicleDriverDocumentsDto>();
         CreateMap<VehiclesDocument, VehiclesDocumentDto>();

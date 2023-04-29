@@ -10,6 +10,6 @@ using CleanArchitecture.Domain.Enums;
 namespace CleanArchitecture.Domain.Entities.Definitions;
 public class PersonnelRoles : LightBaseEntity<int>, IEntity<int>
 {
-    public List<RolePersonnel> PersonRoles { get; set; }
+    public Role Role { set; get; }
     public int PersonnelId { get; set; }
 }

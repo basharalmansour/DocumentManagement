@@ -28,8 +28,7 @@ public class PersonnelCategoriesQueryHandler : BaseCommandQueryHandler, IRequest
             .Where(x => x.PersonnelId== request.PresonnelId)
             .Select(x => x.ServiceCategoryApprovment.ServiceCategory)
             .ToListAsync();
-        result.CategoryIds = categories.Select(x => x.Id).ToList();
-        result.CategoryNames = categories.Select(x => x.Name).ToList();
+        result.ServiceCategory = _mapper.Map<List<BasicServiceCategoryDto>>(categories);
         result.PersonnelId = request.PresonnelId;
         return result;
     }

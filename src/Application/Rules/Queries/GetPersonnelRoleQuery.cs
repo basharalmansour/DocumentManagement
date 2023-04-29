@@ -26,7 +26,7 @@ public class GetPersonnelRoleQueryHandler : BaseCommandQueryHandler, IRequestHan
     }
     public async Task<List<Role>> Handle(GetPersonnelRoleQuery request, CancellationToken cancellationToken)
     {
-        var result= _applicationDbContext.PersonnelRoles.FirstOrDefault(x => x.Id == request.PersonnelId).PersonRoles.Select(x => x.Role).ToList();
+        var result= _applicationDbContext.PersonnelRoles.Where(x => x.Id == request.PersonnelId).Select(x => x.Role).ToList();
         return result;
     }
 }

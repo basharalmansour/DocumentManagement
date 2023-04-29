@@ -24,7 +24,7 @@ public class GetVehicleByIdQueryHandler : BaseCommandQueryHandler, IRequestHandl
 
     public async Task<VehicleDto> Handle(GetVehicleByIdQuery request, CancellationToken cancellationToken)
     {
-        var vehicle = await _applicationDbContext.Vehicles.FirstOrDefaultAsync(x => x.IsDeleted == false && x.Id==request.Id);
+        var vehicle = await _applicationDbContext.Vehicles.Include(x=>x.VehicleDocuments).Include(x=>x.DriverDocuments).FirstOrDefaultAsync(x => x.IsDeleted == false && x.Id==request.Id);
         var vehicleDto = _mapper.Map<VehicleDto>(vehicle);
         return vehicleDto;
     }
