@@ -10,6 +10,7 @@ using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.UserGroups;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.UsersGroup.Commands;
@@ -20,9 +21,9 @@ public class CreateUserGroupCommand : IRequest<int>
     public List<int> PersonnelIds { get; set; }
 }
 
-public class CreateUserGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreateUserGroupCommand, int>
+public class CreateUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<CreateUserGroupCommand, int>
 {
-    public CreateUserGroupCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null) : base(mapper, applicationDbContext)
+    public CreateUserGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<int> Handle(CreateUserGroupCommand request, CancellationToken cancellationToken)

@@ -15,9 +15,9 @@ public class GetAreaDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public int AreaId { get; set; }
 }
-public class AreaDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetAreaDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class AreaDocumentsQueryHandler : BaseQueryHandler, IRequestHandler<GetAreaDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    public AreaDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public AreaDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(GetAreaDocumentsQuery request, CancellationToken cancellationToken)

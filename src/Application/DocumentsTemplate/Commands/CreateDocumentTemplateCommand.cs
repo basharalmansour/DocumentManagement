@@ -12,7 +12,9 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
+using MassTransit;
 using MediatR;
+using MessageBroker.Events.DocumentTemplates;
 using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Application.DocumentsTemplate.Commands;
@@ -25,9 +27,9 @@ public class CreateDocumentTemplateCommand : IRequest<int>
     public List<int> Forms { get; set; }
 }
 
-public class CreateDocumentTemplateCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreateDocumentTemplateCommand, int>
+public class CreateDocumentTemplateCommandHandler : BaseCommandHandler, IRequestHandler<CreateDocumentTemplateCommand, int>
 {
-    public CreateDocumentTemplateCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null) : base(mapper, applicationDbContext)
+    public CreateDocumentTemplateCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext,mapper, publishEndpoint)
     {
     }
 

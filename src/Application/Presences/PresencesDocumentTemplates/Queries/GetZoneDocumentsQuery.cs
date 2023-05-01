@@ -15,9 +15,9 @@ public class GetZoneDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public Guid ZoneId { get; set; }
 }
-public class ZoneDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetZoneDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class ZoneDocumentsQueryHandler : BaseQueryHandler, IRequestHandler<GetZoneDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    public ZoneDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public ZoneDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(GetZoneDocumentsQuery request, CancellationToken cancellationToken)

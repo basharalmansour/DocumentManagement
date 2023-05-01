@@ -8,6 +8,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresenceGroups.Commands;
@@ -16,10 +17,10 @@ public class CreatePresenceGroupDocumentCommand : IRequest<bool>
     public int PresenceGroupId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class AddPresenceGroupDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<CreatePresenceGroupDocumentCommand, bool>
+public class AddPresenceGroupDocumentsHandler : BaseCommandHandler, IRequestHandler<CreatePresenceGroupDocumentCommand, bool>
 {
 
-    public AddPresenceGroupDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public AddPresenceGroupDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
 
     }

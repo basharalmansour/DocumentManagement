@@ -14,10 +14,10 @@ namespace CleanArchitecture.Application.Forms.Queries;
 public class GetFormsQuery : IRequest<List<BasicFormDto>>
 {
 }
-public class GetFormsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetFormsQuery, List<BasicFormDto>>
+public class GetFormsQueryHandler : BaseQueryHandler, IRequestHandler<GetFormsQuery, List<BasicFormDto>>
 {
 
-    public GetFormsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public GetFormsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicFormDto>> Handle(GetFormsQuery request, CancellationToken cancellationToken)

@@ -16,10 +16,10 @@ public class GetUserGroupByIdQuery : IRequest<GetUserGroupDto>
     public int Id { get; set; }
 }
 
-public class GetUserGroupByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetUserGroupByIdQuery, GetUserGroupDto>
+public class GetUserGroupByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetUserGroupByIdQuery, GetUserGroupDto>
 {
 
-    public GetUserGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetUserGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
 

@@ -16,10 +16,10 @@ public class GetUserGroupsQuery : IRequest<List<GetUserGroupDto>>
     public string SearchText { get; set; }
 }
 
-public class GetUserGroupQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetUserGroupsQuery, List<GetUserGroupDto>>
+public class GetUserGroupQueryHandler : BaseQueryHandler, IRequestHandler<GetUserGroupsQuery, List<GetUserGroupDto>>
 {
 
-    public GetUserGroupQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetUserGroupQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }

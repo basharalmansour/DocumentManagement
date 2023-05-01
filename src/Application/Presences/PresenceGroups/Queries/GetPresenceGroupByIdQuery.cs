@@ -15,10 +15,10 @@ public class GetPresenceGroupByIdQuery : IRequest<PresenceGroupDto>
 {
     public int Id { get; set; }
 }
-public class GetPresenceGroupByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetPresenceGroupByIdQuery, PresenceGroupDto>
+public class GetPresenceGroupByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetPresenceGroupByIdQuery, PresenceGroupDto>
 {
 
-    public GetPresenceGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public GetPresenceGroupByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(applicationDbContext, mapper)
     {
 
     }

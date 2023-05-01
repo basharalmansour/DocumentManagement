@@ -15,9 +15,9 @@ public class GetCompanyDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public int CompanyId { get; set; }
 }
-public class CompanyDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetCompanyDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class CompanyDocumentsQueryHandler : BaseQueryHandler, IRequestHandler<GetCompanyDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    public CompanyDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public CompanyDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(GetCompanyDocumentsQuery request, CancellationToken cancellationToken)

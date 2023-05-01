@@ -17,9 +17,9 @@ public class GetDocumentTemplateByIdQuery : IRequest<GetDocumentTemplateDto>//
 {
     public int Id { get; set; }
 }
-public class GetDocumentTemplateByIdHandler : BaseCommandQueryHandler, IRequestHandler<GetDocumentTemplateByIdQuery, GetDocumentTemplateDto>
+public class GetDocumentTemplateByIdHandler : BaseQueryHandler, IRequestHandler<GetDocumentTemplateByIdQuery, GetDocumentTemplateDto>
 {
-    public GetDocumentTemplateByIdHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetDocumentTemplateByIdHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<GetDocumentTemplateDto> Handle(GetDocumentTemplateByIdQuery request, CancellationToken cancellationToken)

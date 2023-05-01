@@ -17,10 +17,10 @@ public class GetPersonnelRoleQuery : IRequest<List<Role>>
 {
     public int PersonnelId { get; set; }
 }
-public class GetPersonnelRoleQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetPersonnelRoleQuery, List<Role>>
+public class GetPersonnelRoleQueryHandler : BaseQueryHandler, IRequestHandler<GetPersonnelRoleQuery, List<Role>>
 {
 
-    public GetPersonnelRoleQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetPersonnelRoleQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }

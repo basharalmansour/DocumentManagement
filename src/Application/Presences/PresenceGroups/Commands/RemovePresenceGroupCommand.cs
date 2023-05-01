@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresenceGroups.Commands;
@@ -13,10 +14,10 @@ public class RemovePresenceGroupCommand : IRequest<bool>
 {
     public int Id { get; set; }
 }
-public class RemovePresenceGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<RemovePresenceGroupCommand, bool>
+public class RemovePresenceGroupCommandHandler : BaseCommandHandler, IRequestHandler<RemovePresenceGroupCommand, bool>
 {
 
-    public RemovePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public RemovePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<bool> Handle(RemovePresenceGroupCommand request, CancellationToken cancellationToken)

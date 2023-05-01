@@ -15,10 +15,10 @@ public class GetServiceCategoryQuery : IRequest<List<BasicServiceCategoryDto>>
 {
     public string SearchText { get; set; }
 }
-public class GetServiceCategoryHandler : BaseCommandQueryHandler, IRequestHandler<GetServiceCategoryQuery, List<BasicServiceCategoryDto>>
+public class GetServiceCategoryHandler : BaseQueryHandler, IRequestHandler<GetServiceCategoryQuery, List<BasicServiceCategoryDto>>
 {
 
-    public GetServiceCategoryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetServiceCategoryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicServiceCategoryDto>> Handle(GetServiceCategoryQuery request, CancellationToken cancellationToken)

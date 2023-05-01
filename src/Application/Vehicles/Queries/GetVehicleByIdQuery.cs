@@ -16,9 +16,9 @@ public class GetVehicleByIdQuery : IRequest<VehicleDto>
     public int Id { get; set; }
 }
 
-public class GetVehicleByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetVehicleByIdQuery, VehicleDto>
+public class GetVehicleByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetVehicleByIdQuery, VehicleDto>
 {
-    public GetVehicleByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public GetVehicleByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(applicationDbContext, mapper)
     {
     }
 

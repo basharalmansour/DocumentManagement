@@ -9,6 +9,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Queries;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,10 +19,10 @@ public class CreateAreaDocumentsCommand : IRequest<bool>
     public int AreaId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class AddAreaDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<CreateAreaDocumentsCommand, bool>
+public class AddAreaDocumentsHandler : BaseCommandHandler, IRequestHandler<CreateAreaDocumentsCommand, bool>
 {
 
-    public AddAreaDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public AddAreaDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
 
     }

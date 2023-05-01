@@ -14,6 +14,7 @@ using CleanArchitecture.Application.Customer.Commands;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Options;
 
@@ -23,9 +24,9 @@ public class CreateFormCommand : IRequest<int>
     public LanguageString Name { get; set; }
     public List<CreateQuestionRequest> Questions { get; set; }
 }
-public class CreateFormCommandHandler :BaseCommandQueryHandler ,IRequestHandler<CreateFormCommand, int>
+public class CreateFormCommandHandler : BaseCommandHandler, IRequestHandler<CreateFormCommand, int>
 {
-    public CreateFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public CreateFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<int> Handle(CreateFormCommand request, CancellationToken cancellationToken)

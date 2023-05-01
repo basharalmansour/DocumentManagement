@@ -20,10 +20,10 @@ public class GetVehicleQuery : IRequest<List<BasicVehicleDto>>
 
 }
 
-public class GetVehicleQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetVehicleQuery, List<BasicVehicleDto>>
+public class GetVehicleQueryHandler : BaseQueryHandler, IRequestHandler<GetVehicleQuery, List<BasicVehicleDto>>
 {
 
-    public GetVehicleQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public GetVehicleQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(applicationDbContext, mapper)
     {
     }
 

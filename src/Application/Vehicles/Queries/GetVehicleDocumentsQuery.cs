@@ -18,9 +18,9 @@ public  class GetVehicleDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>
     public int VehicleId { get; set; }
 }
 
-public class GetVehicleDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetVehicleDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class GetVehicleDocumentsQueryHandler : BaseQueryHandler, IRequestHandler<GetVehicleDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    public GetVehicleDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public GetVehicleDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(GetVehicleDocumentsQuery request, CancellationToken cancellationToken)

@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Enums;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresenceGroups.Commands;
@@ -14,10 +15,10 @@ public class EditPresenceGroupCommand : CreatePresenceGroupCommand, IRequest<boo
 {
     public int Id { get; set; }
 }
-public class EditPresenceGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<EditPresenceGroupCommand, bool>
+public class EditPresenceGroupCommandHandler : BaseCommandHandler, IRequestHandler<EditPresenceGroupCommand, bool>
 {
 
-    public EditPresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public EditPresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
 
     }

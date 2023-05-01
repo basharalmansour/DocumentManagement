@@ -15,9 +15,9 @@ public class GetBrandDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public int BrandId { get; set; }
 }
-public class BrandDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetBrandDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class BrandDocumentsQueryHandler : BaseQueryHandler, IRequestHandler<GetBrandDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    public BrandDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public BrandDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(GetBrandDocumentsQuery request, CancellationToken cancellationToken)

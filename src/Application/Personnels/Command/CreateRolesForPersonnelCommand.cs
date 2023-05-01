@@ -9,6 +9,7 @@ using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Personnels.Queries;
 using CleanArchitecture.Domain.Entities.Definitions;
 using CleanArchitecture.Domain.Enums;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Personnels.Command;
@@ -17,10 +18,10 @@ public class CreateRolesForPersonnelCommand : IRequest<bool>
     public Role Role { set; get; }
     public int PersonnelId { get; set; }
 }
-public class CreateRolesForPersonnelCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreateRolesForPersonnelCommand, bool>
+public class CreateRolesForPersonnelCommandHandler : BaseCommandHandler, IRequestHandler<CreateRolesForPersonnelCommand, bool>
 {
 
-    public CreateRolesForPersonnelCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public CreateRolesForPersonnelCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
 
     }

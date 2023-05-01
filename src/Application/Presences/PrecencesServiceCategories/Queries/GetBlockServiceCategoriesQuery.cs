@@ -15,9 +15,9 @@ public  class GetBlockServiceCategoriesQuery : IRequest<List<BasicServiceCategor
 {
     public Guid BlockId { get; set; }
 }
-public class GetBlockServiceCategoriesHandler : BaseCommandQueryHandler, IRequestHandler<GetBlockServiceCategoriesQuery, List<BasicServiceCategoryDto>>
+public class GetBlockServiceCategoriesHandler : BaseQueryHandler, IRequestHandler<GetBlockServiceCategoriesQuery, List<BasicServiceCategoryDto>>
 {
-    public GetBlockServiceCategoriesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetBlockServiceCategoriesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicServiceCategoryDto>> Handle(GetBlockServiceCategoriesQuery request, CancellationToken cancellationToken)

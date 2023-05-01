@@ -15,9 +15,9 @@ public class GetSiteServiceCategoriesQuery : IRequest<List<BasicServiceCategoryD
 {
     public Guid SiteId { get; set; }
 }
-public class GetSiteServiceCategoriesHandler : BaseCommandQueryHandler, IRequestHandler<GetSiteServiceCategoriesQuery, List<BasicServiceCategoryDto>>
+public class GetSiteServiceCategoriesHandler : BaseQueryHandler, IRequestHandler<GetSiteServiceCategoriesQuery, List<BasicServiceCategoryDto>>
 {
-    public GetSiteServiceCategoriesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetSiteServiceCategoriesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicServiceCategoryDto>> Handle(GetSiteServiceCategoriesQuery request, CancellationToken cancellationToken)

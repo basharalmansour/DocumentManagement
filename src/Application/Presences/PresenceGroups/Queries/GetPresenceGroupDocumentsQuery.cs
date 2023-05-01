@@ -15,10 +15,10 @@ public class GetPresenceGroupDocumentsQuery : IRequest<List<BasicDocumentTemplat
 {
     public int PresenceGroupId { get; set; }
 }
-public class GetPresenceGroupDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetPresenceGroupDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class GetPresenceGroupDocumentsQueryHandler : BaseQueryHandler, IRequestHandler<GetPresenceGroupDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
 
-    public GetPresenceGroupDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetPresenceGroupDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }

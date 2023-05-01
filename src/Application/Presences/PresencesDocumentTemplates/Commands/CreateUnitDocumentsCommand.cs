@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
@@ -15,10 +16,10 @@ public class CreateUnitDocumentsCommand : IRequest<bool>
     public int UnitId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class AddUnitDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<CreateUnitDocumentsCommand, bool>
+public class AddUnitDocumentsHandler : BaseCommandHandler, IRequestHandler<CreateUnitDocumentsCommand, bool>
 {
 
-    public AddUnitDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public AddUnitDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<bool> Handle(CreateUnitDocumentsCommand request, CancellationToken cancellationToken)

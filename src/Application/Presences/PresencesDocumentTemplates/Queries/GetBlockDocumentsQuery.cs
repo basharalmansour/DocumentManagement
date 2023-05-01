@@ -15,9 +15,9 @@ public class GetBlockDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public Guid BlockId { get; set; }
 }
-public class BlockDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetBlockDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class BlockDocumentsQueryHandler : BaseQueryHandler, IRequestHandler<GetBlockDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    public BlockDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public BlockDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(GetBlockDocumentsQuery request, CancellationToken cancellationToken)

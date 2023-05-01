@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,9 +18,9 @@ public class RemoveUserGroupCommand : IRequest<bool>
     public int Id { get; set; }
 }
 
-public class RemoveUserGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<RemoveUserGroupCommand, bool>
+public class RemoveUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<RemoveUserGroupCommand, bool>
 {
-    public RemoveUserGroupCommandHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(mapper, applicationDbContext)
+    public RemoveUserGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
 
