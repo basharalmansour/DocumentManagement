@@ -15,9 +15,9 @@ public class SiteDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public Guid SiteId { get; set; }
 }
-public class SiteDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<SiteDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class SiteDocumentsQueryHandler : BaseQueryHandler, IRequestHandler<SiteDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    public SiteDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public SiteDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(SiteDocumentsQuery request, CancellationToken cancellationToken)

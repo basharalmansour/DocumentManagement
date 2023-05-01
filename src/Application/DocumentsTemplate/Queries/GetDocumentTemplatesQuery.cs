@@ -16,9 +16,9 @@ public class GetDocumentTemplatesQuery : IRequest<List<BasicDocumentTemplateDto>
 {
     public string SearchText { get; set; }
 }
-public class GetDocumentsTemplateHandler : BaseCommandQueryHandler, IRequestHandler<GetDocumentTemplatesQuery, List<BasicDocumentTemplateDto>>
+public class GetDocumentsTemplateHandler : BaseQueryHandler, IRequestHandler<GetDocumentTemplatesQuery, List<BasicDocumentTemplateDto>>
 {
-    public GetDocumentsTemplateHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetDocumentsTemplateHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(GetDocumentTemplatesQuery request, CancellationToken cancellationToken)

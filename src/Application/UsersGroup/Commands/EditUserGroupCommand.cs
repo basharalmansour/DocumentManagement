@@ -8,6 +8,7 @@ using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.UserGroups;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,10 +18,10 @@ public class EditUserGroupCommand :CreateUserGroupCommand , IRequest<bool>
     public int Id { get; set; }
 }
 
-public class EditUserGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<EditUserGroupCommand, bool>
+public class EditUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<EditUserGroupCommand, bool>
 {
 
-    public EditUserGroupCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null) : base(mapper, applicationDbContext)
+    public EditUserGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<bool> Handle(EditUserGroupCommand request, CancellationToken cancellationToken)

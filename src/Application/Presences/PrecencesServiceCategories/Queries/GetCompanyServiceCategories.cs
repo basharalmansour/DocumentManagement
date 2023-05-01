@@ -15,9 +15,9 @@ public  class GetCompanyServiceCategories : IRequest<List<BasicServiceCategoryDt
 {
     public int CompanyId { get; set; }
 }
-public class GetCompanyServiceCategoriesHandler : BaseCommandQueryHandler, IRequestHandler<GetCompanyServiceCategories, List<BasicServiceCategoryDto>>
+public class GetCompanyServiceCategoriesHandler : BaseQueryHandler, IRequestHandler<GetCompanyServiceCategories, List<BasicServiceCategoryDto>>
 {
-    public GetCompanyServiceCategoriesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetCompanyServiceCategoriesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicServiceCategoryDto>> Handle(GetCompanyServiceCategories request, CancellationToken cancellationToken)

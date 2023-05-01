@@ -9,6 +9,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 using CleanArchitecture.Domain.Enums;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.ServiceCategories.Commands;
@@ -16,10 +17,10 @@ public  class EditServiceCategoryCommand : CreateServiceCategoryCommand, IReques
 {
     public int Id { get; set; }
 }
-public class EditServiceCategoryCommandHandler : BaseCommandQueryHandler, IRequestHandler<EditServiceCategoryCommand, bool>
+public class EditServiceCategoryCommandHandler : BaseCommandHandler, IRequestHandler<EditServiceCategoryCommand, bool>
 {
 
-    public EditServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public EditServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<bool> Handle(EditServiceCategoryCommand request, CancellationToken cancellationToken)

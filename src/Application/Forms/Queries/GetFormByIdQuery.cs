@@ -17,10 +17,10 @@ public class GetFormByIdQuery : IRequest<FormDto>
 {
     public int Id { get; set; }
 }
-public class GetFormByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetFormByIdQuery, FormDto>
+public class GetFormByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetFormByIdQuery, FormDto>
 {
 
-    public GetFormByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public GetFormByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(applicationDbContext, mapper)
     {
     }
     public async Task<FormDto> Handle(GetFormByIdQuery request, CancellationToken cancellationToken)

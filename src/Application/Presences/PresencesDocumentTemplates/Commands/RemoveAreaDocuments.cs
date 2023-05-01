@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
@@ -15,10 +16,10 @@ public class RemoveAreaDocuments : IRequest<bool>
     public int AreaId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class RemoveAreaDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<RemoveAreaDocuments, bool>
+public class RemoveAreaDocumentsHandler : BaseCommandHandler, IRequestHandler<RemoveAreaDocuments, bool>
 {
 
-    public RemoveAreaDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public RemoveAreaDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
 
     }

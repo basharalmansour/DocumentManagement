@@ -11,6 +11,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 using CleanArchitecture.Domain.Enums;
+using MassTransit;
 using MediatR;
 using Pipelines.Sockets.Unofficial.Arenas;
 
@@ -26,10 +27,10 @@ public class CreatePresenceGroupCommand : IRequest<int>
     public List<int> PresenceGroupUnits { get; set; }
     public List<Guid> PresenceGroupZones { get; set; }
 }
-public class CreatePresenceGroupCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreatePresenceGroupCommand, int>
+public class CreatePresenceGroupCommandHandler : BaseCommandHandler, IRequestHandler<CreatePresenceGroupCommand, int>
 {
 
-    public CreatePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public CreatePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
 
     }

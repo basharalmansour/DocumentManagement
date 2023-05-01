@@ -14,9 +14,9 @@ namespace CleanArchitecture.Application.DocumentsTemplate.Queries;
 public class GetDocumentTemplateTypesQuery : IRequest<List<KeyValuePair<int,string>>>
 {
 }
-public class GetDocumentTemplateTypesHandler : BaseCommandQueryHandler, IRequestHandler<GetDocumentTemplateTypesQuery, List<KeyValuePair<int, string>>>
+public class GetDocumentTemplateTypesHandler : BaseQueryHandler, IRequestHandler<GetDocumentTemplateTypesQuery, List<KeyValuePair<int, string>>>
 {
-    public GetDocumentTemplateTypesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetDocumentTemplateTypesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<KeyValuePair<int, string>>> Handle(GetDocumentTemplateTypesQuery request, CancellationToken cancellationToken)

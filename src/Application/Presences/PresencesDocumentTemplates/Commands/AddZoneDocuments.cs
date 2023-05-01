@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
@@ -15,9 +16,9 @@ public class AddZoneDocuments : IRequest<bool>
     public Guid ZoneId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class AddZoneDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<AddZoneDocuments, bool>
+public class AddZoneDocumentsHandler : BaseCommandHandler, IRequestHandler<AddZoneDocuments, bool>
 {
-    public AddZoneDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public AddZoneDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<bool> Handle(AddZoneDocuments request, CancellationToken cancellationToken)

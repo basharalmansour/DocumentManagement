@@ -17,9 +17,9 @@ public class GetUserGroupApproversQuery : IRequest<List<UserGroupApproversDto>>
     public int Id { get; set; }
 }
 
-public class GetUserGroupApproversQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetUserGroupApproversQuery, List<UserGroupApproversDto>>
+public class GetUserGroupApproversQueryHandler : BaseQueryHandler, IRequestHandler<GetUserGroupApproversQuery, List<UserGroupApproversDto>>
 {
-    public GetUserGroupApproversQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetUserGroupApproversQueryHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }

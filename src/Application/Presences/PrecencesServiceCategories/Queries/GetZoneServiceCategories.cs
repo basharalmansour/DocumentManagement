@@ -15,9 +15,9 @@ public class GetZoneServiceCategories : IRequest<List<BasicServiceCategoryDto>>
 {
     public Guid ZoneId { get; set; }
 }
-public class GetZoneServiceCategoriesHandler : BaseCommandQueryHandler, IRequestHandler<GetZoneServiceCategories, List<BasicServiceCategoryDto>>
+public class GetZoneServiceCategoriesHandler : BaseQueryHandler, IRequestHandler<GetZoneServiceCategories, List<BasicServiceCategoryDto>>
 {
-    public GetZoneServiceCategoriesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetZoneServiceCategoriesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicServiceCategoryDto>> Handle(GetZoneServiceCategories request, CancellationToken cancellationToken)

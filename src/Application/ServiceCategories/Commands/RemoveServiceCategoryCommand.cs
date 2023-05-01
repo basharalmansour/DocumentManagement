@@ -8,6 +8,7 @@ using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.ServiceCategories.Queries;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.ServiceCategories.Commands;
@@ -15,9 +16,9 @@ public class RemoveServiceCategoryCommand : IRequest<bool>
 {
     public int Id { get; set; }
 }
-public class RemoveServiceCategoryCommandHandler : BaseCommandQueryHandler, IRequestHandler<RemoveServiceCategoryCommand, bool>
+public class RemoveServiceCategoryCommandHandler : BaseCommandHandler, IRequestHandler<RemoveServiceCategoryCommand, bool>
 {
-    public RemoveServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public RemoveServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<bool> Handle(RemoveServiceCategoryCommand request, CancellationToken cancellationToken)

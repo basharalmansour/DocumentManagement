@@ -7,6 +7,7 @@ using MediatR;
 using CleanArchitecture.Application.Common;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Common.Helpers;
+using MassTransit;
 
 namespace CleanArchitecture.Application.ServiceCategories.Commands;
 
@@ -32,10 +33,10 @@ public class CreateServiceCategoryCommand : IRequest<int>
     public List<int> ServiceCategoryUnits { get; set; }
     public List<Guid> ServiceCategoryZones { get; set; }
 }
-public class CreateServiceCategoryCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreateServiceCategoryCommand, int>
+public class CreateServiceCategoryCommandHandler : BaseCommandHandler, IRequestHandler<CreateServiceCategoryCommand, int>
 {
 
-    public CreateServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public CreateServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<int> Handle(CreateServiceCategoryCommand request, CancellationToken cancellationToken)

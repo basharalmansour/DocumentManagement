@@ -10,6 +10,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +22,9 @@ public class EditDocumentTemplateCommand :CreateDocumentTemplateCommand, IReques
     public int Id { get; set; }
 }
 
-public class EditDocumentTemplateCommandHandler : BaseCommandQueryHandler, IRequestHandler<EditDocumentTemplateCommand, int> 
+public class EditDocumentTemplateCommandHandler : BaseCommandHandler, IRequestHandler<EditDocumentTemplateCommand, int> 
 {
-    public EditDocumentTemplateCommandHandler(IMapper mapper, IApplicationDbContext applicationDbContext = null) : base(mapper, applicationDbContext)
+    public EditDocumentTemplateCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
 

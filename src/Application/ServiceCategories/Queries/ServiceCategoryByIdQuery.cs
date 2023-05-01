@@ -15,9 +15,9 @@ public class ServiceCategoryByIdQuery : IRequest<ServiceCategoryDetailsDto>
 {
     public int Id { get; set; }
 }
-public class ServiceCategoryByIdQueryHandler : BaseCommandQueryHandler, IRequestHandler<ServiceCategoryByIdQuery, ServiceCategoryDetailsDto>
+public class ServiceCategoryByIdQueryHandler : BaseQueryHandler, IRequestHandler<ServiceCategoryByIdQuery, ServiceCategoryDetailsDto>
 {
-    public ServiceCategoryByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public ServiceCategoryByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<ServiceCategoryDetailsDto> Handle(ServiceCategoryByIdQuery request, CancellationToken cancellationToken)

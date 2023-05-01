@@ -10,6 +10,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Vehicles.Queries;
 using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Vehicles.Commands;
@@ -21,9 +22,9 @@ public class CreateVehicleCommand : IRequest<int>
     public List<int> DriverDocuments { get; set; }
 }
 
-public class CreateVehicleCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreateVehicleCommand, int>
+public class CreateVehicleCommandHandler : BaseCommandHandler, IRequestHandler<CreateVehicleCommand, int>
 {
-    public CreateVehicleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public CreateVehicleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
 

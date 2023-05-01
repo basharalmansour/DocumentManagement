@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
@@ -14,10 +15,10 @@ public class RemoveBlockDocuments : IRequest<bool>
     public Guid  BlockId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class RemoveBlockDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<RemoveBlockDocuments, bool>
+public class RemoveBlockDocumentsHandler : BaseCommandHandler, IRequestHandler<RemoveBlockDocuments, bool>
 {
 
-    public RemoveBlockDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public RemoveBlockDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<bool> Handle(RemoveBlockDocuments request, CancellationToken cancellationToken)

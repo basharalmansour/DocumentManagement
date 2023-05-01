@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Forms;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using static StackExchange.Redis.Role;
@@ -16,10 +17,10 @@ public class RemoveFormCommand : IRequest<bool>
 {
     public int Id { get; set; }
 }
-public class RemoveFormCommandHandler :BaseCommandQueryHandler,  IRequestHandler<RemoveFormCommand, bool>
+public class RemoveFormCommandHandler : BaseCommandHandler,  IRequestHandler<RemoveFormCommand, bool>
 {
 
-    public RemoveFormCommandHandler(IApplicationDbContext applicationDbContext) : base(null, applicationDbContext)
+    public RemoveFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<bool> Handle(RemoveFormCommand request, CancellationToken cancellationToken)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
@@ -14,10 +15,10 @@ public class RemoveCompanyDocuments : IRequest<bool>
     public int CompanyId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class RemoveCompanyDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<RemoveCompanyDocuments, bool>
+public class RemoveCompanyDocumentsHandler : BaseCommandHandler, IRequestHandler<RemoveCompanyDocuments, bool>
 {
 
-    public RemoveCompanyDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public RemoveCompanyDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<bool> Handle(RemoveCompanyDocuments request, CancellationToken cancellationToken)

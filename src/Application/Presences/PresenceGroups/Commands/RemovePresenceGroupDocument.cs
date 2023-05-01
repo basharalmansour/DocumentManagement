@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresenceGroups.Commands;
@@ -15,10 +16,10 @@ public class RemovePresenceGroupDocument : IRequest<bool>
     public int PresenceGroupId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class RemovePresenceGroupDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<RemovePresenceGroupDocument, bool>
+public class RemovePresenceGroupDocumentsHandler : BaseCommandHandler, IRequestHandler<RemovePresenceGroupDocument, bool>
 {
 
-    public RemovePresenceGroupDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public RemovePresenceGroupDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
 
     }

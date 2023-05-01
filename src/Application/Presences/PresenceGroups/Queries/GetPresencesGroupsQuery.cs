@@ -16,10 +16,10 @@ public class GetPresencesGroupsQuery : IRequest<List<BasicPresenceGroupDto>>
 {
     public string SearchText { get; set; }
 }
-public class GetPresencesGroupsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetPresencesGroupsQuery, List<BasicPresenceGroupDto>>
+public class GetPresencesGroupsQueryHandler : BaseQueryHandler, IRequestHandler<GetPresencesGroupsQuery, List<BasicPresenceGroupDto>>
 {
 
-    public GetPresencesGroupsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public GetPresencesGroupsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(applicationDbContext, mapper)
     {
 
     }

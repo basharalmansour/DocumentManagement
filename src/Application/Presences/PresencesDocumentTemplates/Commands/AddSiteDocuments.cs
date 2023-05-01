@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
@@ -15,9 +16,9 @@ public class AddSiteDocuments : IRequest<bool>
     public Guid SiteId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class AddSiteDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<AddSiteDocuments, bool>
+public class AddSiteDocumentsHandler : BaseCommandHandler, IRequestHandler<AddSiteDocuments, bool>
 {
-    public AddSiteDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public AddSiteDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<bool> Handle(AddSiteDocuments request, CancellationToken cancellationToken)

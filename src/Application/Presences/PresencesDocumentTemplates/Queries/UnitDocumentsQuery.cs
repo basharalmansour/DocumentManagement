@@ -15,9 +15,9 @@ public class UnitDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public int UnitId { get; set; }
 }
-public class UnitDocumentsQueryHandler : BaseCommandQueryHandler, IRequestHandler<UnitDocumentsQuery, List<BasicDocumentTemplateDto>>
+public class UnitDocumentsQueryHandler : BaseQueryHandler, IRequestHandler<UnitDocumentsQuery, List<BasicDocumentTemplateDto>>
 {
-    public UnitDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public UnitDocumentsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(UnitDocumentsQuery request, CancellationToken cancellationToken)

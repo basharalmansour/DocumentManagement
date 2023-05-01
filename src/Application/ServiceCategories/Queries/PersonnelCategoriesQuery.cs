@@ -16,9 +16,9 @@ public class PersonnelCategoriesQuery : IRequest<UserGroupApproversDto>
 {
     public int PresonnelId { get; set; }
 }
-public class PersonnelCategoriesQueryHandler : BaseCommandQueryHandler, IRequestHandler<PersonnelCategoriesQuery, UserGroupApproversDto>
+public class PersonnelCategoriesQueryHandler : BaseQueryHandler, IRequestHandler<PersonnelCategoriesQuery, UserGroupApproversDto>
 {
-    public PersonnelCategoriesQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public PersonnelCategoriesQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<UserGroupApproversDto> Handle(PersonnelCategoriesQuery request, CancellationToken cancellationToken)

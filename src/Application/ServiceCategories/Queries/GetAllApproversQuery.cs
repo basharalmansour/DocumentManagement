@@ -12,10 +12,10 @@ namespace CleanArchitecture.WebUI.Controllers.ServiceCategories;
 public class GetAllApproversQuery : IRequest<List<int>>
 {
 }
-public class GetAllApproversQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetAllApproversQuery, List<int>>
+public class GetAllApproversQueryHandler : BaseQueryHandler, IRequestHandler<GetAllApproversQuery, List<int>>
 {
 
-    public GetAllApproversQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetAllApproversQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }

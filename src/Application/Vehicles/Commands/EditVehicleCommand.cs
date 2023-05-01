@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Vehicles.Commands;
@@ -14,10 +15,10 @@ public class EditVehicleCommand :CreateVehicleCommand , IRequest<bool>
     public int Id { get; set; }
 }
 
-public class EditVehicleCommandHandler : BaseCommandQueryHandler, IRequestHandler<EditVehicleCommand, bool>
+public class EditVehicleCommandHandler : BaseCommandHandler, IRequestHandler<EditVehicleCommand, bool>
 {
 
-    public EditVehicleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(mapper, applicationDbContext)
+    public EditVehicleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
 

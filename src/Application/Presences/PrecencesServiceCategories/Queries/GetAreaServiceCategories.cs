@@ -17,9 +17,9 @@ public  class GetAreaServiceCategories : IRequest<List<BasicServiceCategoryDto>>
 {
     public int AreaId { get; set; }
 }
-public class GetAreaServiceCategoriesHandler : BaseCommandQueryHandler, IRequestHandler<GetAreaServiceCategories, List<BasicServiceCategoryDto>>
+public class GetAreaServiceCategoriesHandler : BaseQueryHandler, IRequestHandler<GetAreaServiceCategories, List<BasicServiceCategoryDto>>
 {
-    public GetAreaServiceCategoriesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetAreaServiceCategoriesHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<List<BasicServiceCategoryDto>> Handle(GetAreaServiceCategories request, CancellationToken cancellationToken)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
@@ -14,10 +15,10 @@ public  class RemoveZoneDocuments : IRequest<bool>
     public Guid ZoneId { get; set; }
     public int DocumentTemplateId { get; set; }
 }
-public class RemoveZoneDocumentsHandler : BaseCommandQueryHandler, IRequestHandler<RemoveZoneDocuments, bool>
+public class RemoveZoneDocumentsHandler : BaseCommandHandler, IRequestHandler<RemoveZoneDocuments, bool>
 {
 
-    public RemoveZoneDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public RemoveZoneDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
     public async Task<bool> Handle(RemoveZoneDocuments request, CancellationToken cancellationToken)
