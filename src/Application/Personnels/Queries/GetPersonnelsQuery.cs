@@ -15,10 +15,10 @@ public class GetPersonnelsQuery : IRequest<List<int>>
     public string SearchText { get; set; }
     public int DepartmentId { get; set; }
 }
-public class GetPersonnelsQueryHandler : BaseCommandQueryHandler, IRequestHandler<GetPersonnelsQuery, List<int>>
+public class GetPersonnelsQueryHandler : BaseQueryHandler, IRequestHandler<GetPersonnelsQuery, List<int>>
 {
 
-    public GetPersonnelsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public GetPersonnelsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }

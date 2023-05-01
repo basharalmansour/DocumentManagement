@@ -7,6 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Enums;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,10 +17,10 @@ public class RemovePersonnelRoleCommand : IRequest<bool>
     public Role Role { set; get; }
     public int PersonnelId { get; set; }
 }
-public class RemovePersonnelRoleCommandHandler : BaseCommandQueryHandler, IRequestHandler<RemovePersonnelRoleCommand, bool>
+public class RemovePersonnelRoleCommandHandler : BaseCommandHandler, IRequestHandler<RemovePersonnelRoleCommand, bool>
 {
 
-    public RemovePersonnelRoleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(mapper, applicationDbContext)
+    public RemovePersonnelRoleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
 
     }

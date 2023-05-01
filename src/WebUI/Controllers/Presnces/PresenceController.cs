@@ -6,7 +6,7 @@ using CleanArchitecture.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers.Personnels;
-public class PersonnelController : ApiControllerBase
+public class PresenceController : ApiControllerBase
 {
     [HttpGet("GetAreaDocuments")]
     public async Task<ApplicationResponse> GetAreaDocuments([FromBody] GetAreaDocumentsQuery request, CancellationToken cancellationToken)
