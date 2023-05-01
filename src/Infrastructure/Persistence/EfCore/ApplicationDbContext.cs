@@ -77,6 +77,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<ServiceCategorySite> ServiceCategorySites { get; set; }
     public DbSet<ServiceCategoryUnit> ServiceCategoryUnits { get; set; }
     public DbSet<ServiceCategoryZone> ServiceCategoryZones { get; set; }
+    public DbSet<ServiceCategoryPresenceGroup> ServiceCategoryPresenceGroups { get; set; }
     public DbSet<CategoryVehicleDocuments> CategoryVehicleDocuments { get; set; }
     public DbSet<VehicleCategory> VehicleCategories { get; set; }
     public DbSet<CategorySpecialRules> CategorySpecialRoles { get; set; }

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Enums;
@@ -7,6 +6,7 @@ using MediatR;
 using CleanArchitecture.Application.Common;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Common.Helpers;
+using CleanArchitecture.Application.Common.Dtos.ServiceCategories.CreateDtos;
 
 namespace CleanArchitecture.Application.ServiceCategories.Commands;
 
@@ -31,6 +31,7 @@ public class CreateServiceCategoryCommand : IRequest<int>
     public List<Guid> ServiceCategorySites { get; set; }
     public List<int> ServiceCategoryUnits { get; set; }
     public List<Guid> ServiceCategoryZones { get; set; }
+    public List<int> ServiceCategoryPresenceGroups { get; set; }
 }
 public class CreateServiceCategoryCommandHandler : BaseCommandQueryHandler, IRequestHandler<CreateServiceCategoryCommand, int>
 {

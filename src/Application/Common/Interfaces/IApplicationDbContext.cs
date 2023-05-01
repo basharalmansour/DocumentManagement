@@ -44,6 +44,7 @@ public interface IApplicationDbContext
     public DbSet<DocumentTemplateSite> DocumentTemplateSites { get; set; }
     public DbSet<DocumentTemplateUnit> DocumentTemplateUnits { get; set; }
     public DbSet<DocumentTemplateZone> DocumentTemplateZones { get; set; }
+    public DbSet<ServiceCategoryPresenceGroup> ServiceCategoryPresenceGroups { get; set; }
     public DbSet<DocumentTemplatePresenceGroup> DocumentTemplatePresenceGroups { get; set; }
     public DbSet<ResponsibleDepartment> ApproverDepartments { get; set; }
     public DbSet<ResponsiblePersonnel> ApproverPersonnels { get; set; }

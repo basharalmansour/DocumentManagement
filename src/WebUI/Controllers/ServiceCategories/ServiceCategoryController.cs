@@ -1,5 +1,6 @@
 ﻿using AutoWrapper.Wrappers;
-using CleanArchitecture.Application.Roles.Queries;
+using CleanArchitecture.Application.Personnels.Queries;
+using CleanArchitecture.Application.Personnels.Queries;
 using CleanArchitecture.Application.ServiceCategories.Commands;
 using CleanArchitecture.Application.ServiceCategories.Queries;
 using CleanArchitecture.Domain.Common;
@@ -36,7 +37,7 @@ public class ServiceCategoryController : ApiControllerBase
         }
     }
     [HttpGet("ViewServiceCategoryById")]
-    public async Task<ApplicationResponse> GetServiceCategoryById([FromQuery] ServiceCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetServiceCategoryById([FromQuery] GetServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -75,7 +76,7 @@ public class ServiceCategoryController : ApiControllerBase
         }
     }
     [HttpGet("GetPersonnelCategories")]
-    public async Task<ApplicationResponse> GetPersonnelCategories([FromQuery] PersonnelCategoriesQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetPersonnelCategories([FromQuery] GetPersonnelCategoriesQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -93,8 +94,8 @@ public class ServiceCategoryController : ApiControllerBase
     //    var result = await Sender.Send(request, cancellationToken);
     //    return Ok(result);
     //}
-    [HttpGet("GetAllApprovers")]
-    public async Task<ApplicationResponse> GetAllApprovers([FromQuery] GetAllApproversQuery request, CancellationToken cancellationToken)
+    [HttpGet("GetPersonnelRoles")]
+    public async Task<ApplicationResponse> GetPersonnelRoles([FromQuery] GetPersonnelRoleQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -106,4 +107,5 @@ public class ServiceCategoryController : ApiControllerBase
             return new ApplicationResponse(e);
         }
     }
+
 }

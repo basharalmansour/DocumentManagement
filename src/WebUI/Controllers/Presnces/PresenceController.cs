@@ -5,11 +5,11 @@ using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Queries
 using CleanArchitecture.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CleanArchitecture.WebUI.Controllers.Presnces;
-public class PresenceController : ApiControllerBase
+namespace CleanArchitecture.WebUI.Controllers.Personnels;
+public class PersonnelController : ApiControllerBase
 {
     [HttpGet("GetAreaDocuments")]
-    public async Task<ApplicationResponse> GetAreaDocuments([FromBody] AreaDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetAreaDocuments([FromBody] GetAreaDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -22,7 +22,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpGet("GetBlockDocuments")]
-    public async Task<ApplicationResponse> GetBlockDocuments([FromBody] BlockDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetBlockDocuments([FromBody] GetBlockDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -35,7 +35,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpGet("GetBrandDocuments")]
-    public async Task<ApplicationResponse> GetBrandDocuments([FromBody] BrandDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetBrandDocuments([FromBody] GetBrandDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -48,7 +48,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpGet("GetCompanyDocuments")]
-    public async Task<ApplicationResponse> GetCompanyDocuments([FromBody] CompanyDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetCompanyDocuments([FromBody] GetCompanyDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -61,7 +61,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpGet("GetSiteDocuments")]
-    public async Task<ApplicationResponse> GetSiteDocuments([FromBody] SiteDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetSiteDocuments([FromBody] GetSiteDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -74,7 +74,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpGet("GetUnitDocuments")]
-    public async Task<ApplicationResponse> GetUnitDocuments([FromBody] UnitDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetUnitDocuments([FromBody] GetUnitDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -87,7 +87,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpGet("GetZoneDocuments")]
-    public async Task<ApplicationResponse> GetZoneDocuments([FromBody] ZoneDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetZoneDocuments([FromBody] GetZoneDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -100,7 +100,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpPost("CreateAreaDocuments")]
-    public async Task<ApplicationResponse> CreateAreaDocuments([FromBody] AddAreaDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> CreateAreaDocuments([FromBody] CreateAreaDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -114,7 +114,7 @@ public class PresenceController : ApiControllerBase
     }
 
     [HttpPost("CreateBlockDocuments")]
-    public async Task<ApplicationResponse> CreateBlockDocuments([FromBody] AddBlockDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> CreateBlockDocuments([FromBody] CreateBlockDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -128,7 +128,7 @@ public class PresenceController : ApiControllerBase
 
     }
     [HttpPost("CreateBrandDocuments")]
-    public async Task<ApplicationResponse> CreateBrandDocuments([FromBody] AddBrandDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> CreateBrandDocuments([FromBody] CreateBrandDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -142,7 +142,7 @@ public class PresenceController : ApiControllerBase
     }
 
     [HttpPost("CreateCompanyDocuments")]
-    public async Task<ApplicationResponse> CreateCompanyDocuments([FromBody] AddCompanyDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> CreateCompanyDocuments([FromBody] CreateCompanyDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -155,7 +155,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpPost("CreateSiteDocuments")]
-    public async Task<ApplicationResponse> CreateSiteDocuments([FromBody] AddSiteDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> CreateSiteDocuments([FromBody] CreateSiteDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -168,7 +168,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpPost("CreateUnitDocuments")]
-    public async Task<ApplicationResponse> CreateUnitDocuments([FromBody] AddUnitDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> CreateUnitDocuments([FromBody] CreateUnitDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -181,7 +181,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpPost("CreateZoneDocuments")]
-    public async Task<ApplicationResponse> CreateZoneDocuments([FromBody] AddZoneDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> CreateZoneDocuments([FromBody] CreateZoneDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -194,7 +194,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpPost("RemoveAreaDocuments")]
-    public async Task<ApplicationResponse> RemoveAreaDocuments([FromBody] RemoveAreaDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveAreaDocuments([FromBody] RemoveAreaDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -207,7 +207,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpPost("RemoveBlockDocuments")]
-    public async Task<ApplicationResponse> RemoveBlockDocuments([FromBody] RemoveBlockDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveBlockDocuments([FromBody] RemoveBlockDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -220,7 +220,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpPost("RemoveBrandDocuments")]
-    public async Task<ApplicationResponse> RemoveBrandDocuments([FromBody] RemoveBrandDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveBrandDocuments([FromBody] RemoveBrandDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -233,7 +233,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpPost("RemoveCompanyDocuments")]
-    public async Task<ApplicationResponse> RemoveCompanyDocuments([FromBody] RemoveCompanyDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveCompanyDocuments([FromBody] RemoveCompanyDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -246,7 +246,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpPost("RemoveSiteDocuments")]
-    public async Task<ApplicationResponse> RemoveSiteDocuments([FromBody] RemoveSiteDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveSiteDocuments([FromBody] RemoveSiteDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -259,7 +259,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpPost("RemoveUnitDocuments")]
-    public async Task<ApplicationResponse> RemoveUnitDocuments([FromBody] RemoveUnitDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveUnitDocuments([FromBody] RemoveUnitDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -272,7 +272,7 @@ public class PresenceController : ApiControllerBase
         }
     }
     [HttpPost("RemoveZoneDocuments")]
-    public async Task<ApplicationResponse> RemoveZoneDocuments([FromBody] RemoveZoneDocuments request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveZoneDocuments([FromBody] RemoveZoneDocumentsCommand request, CancellationToken cancellationToken)
     {
         try
         {

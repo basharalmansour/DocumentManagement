@@ -4,7 +4,7 @@ using CleanArchitecture.Application.Presences.PresenceGroups.Queries;
 using CleanArchitecture.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CleanArchitecture.WebUI.Controllers.Presnces;
+namespace CleanArchitecture.WebUI.Controllers.Personnels;
 
 public class PresenceGroupController : ApiControllerBase
 {
@@ -88,7 +88,7 @@ public class PresenceGroupController : ApiControllerBase
         }
     }
     [HttpPost("AddPresenceGroupDocument")]
-    public async Task<ApplicationResponse> AddPresenceGroupDocument([FromQuery] AddPresenceGroupDocument request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> AddPresenceGroupDocument([FromQuery] CreatePresenceGroupDocumentCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -102,7 +102,7 @@ public class PresenceGroupController : ApiControllerBase
     }
 
     [HttpDelete("RemovePresenceGroupDocument")]
-    public async Task<ApplicationResponse> RemovePresenceGroupDocument([FromBody] RemovePresenceGroupDocument request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemovePresenceGroupDocument([FromBody] RemovePresenceGroupDocumentCommand request, CancellationToken cancellationToken)
     {
         try
         {
