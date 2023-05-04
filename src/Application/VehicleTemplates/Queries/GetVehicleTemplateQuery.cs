@@ -14,7 +14,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace CleanArchitecture.Application.Vehicles.Queries;
+namespace CleanArchitecture.Application.VehicleTemplates.Queries;
 public class GetVehicleTemplateQuery : IRequest<List<BasicVehicleTemplateDto>>
 {
 

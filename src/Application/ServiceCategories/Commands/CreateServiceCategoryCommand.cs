@@ -22,7 +22,6 @@ public class CreateServiceCategoryCommand : IRequest<int>
     public int? ParentServiceCategoryId { get; set; }
     public bool IsParallelApprovement { get; set; }
     public CreateCategoryRoleDto ServiceCategoryRoles { get; set; }
-    public List<int> SpecialRules { get; set; }
     public List<int> Documents { get; set; }
     public List<CreateVehicleTemplateCategoryDto> VehicleTemplates { get; set; }
     public List<int> ServiceCategoryAreas { get; set; }

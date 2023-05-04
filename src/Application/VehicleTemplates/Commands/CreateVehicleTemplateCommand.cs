@@ -8,12 +8,12 @@ using CleanArchitecture.Application.Common.Dtos.VehicleTemplates;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
-using CleanArchitecture.Application.Vehicles.Queries;
+using CleanArchitecture.Application.VehicleTemplates.Queries;
 using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
 using MassTransit;
 using MediatR;
 
-namespace CleanArchitecture.Application.Vehicles.Commands;
+namespace CleanArchitecture.Application.VehicleTemplates.Commands;
 public class CreateVehicleTemplateCommand : IRequest<int>
 {
     public LanguageString Name { get; set; }

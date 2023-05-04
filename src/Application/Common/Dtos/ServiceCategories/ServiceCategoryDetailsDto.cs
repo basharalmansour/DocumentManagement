@@ -23,8 +23,6 @@ public class ServiceCategoryDetailsDto : BasicServiceCategoryDto
     public int MaxPersonnelCount { get; set; }
     public int ParentServiceCategoryId { get; set; }
     public int ServiceCategoryApprovmentId { get; set; }
-    public List<CategorySpecialRulesDto> SpecialRules { get; set; }
-    public List<BasicServiceCategoryDto> SubServiceCategories { get; set; }
     public List<VehicleCategoryDto> Vehicles { get; set; }
     public List<CategoryDocumentDto> Documents { get; set; }
     public List<CategoryPersonnelDocumentDto> PersonnelDocuments { get; set; }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.Common.Helpers;
-using CleanArchitecture.Application.Vehicles.Commands;
+using CleanArchitecture.Application.VehicleTemplates.Commands;
 using FluentValidation;
 
-namespace CleanArchitecture.Application.Vehicles.Validators;
+namespace CleanArchitecture.Application.VehicleTemplates.Validators;
 public class EditVehicleTemplateCommandValidator : AbstractValidator<EditVehicleTemplateCommand>
 {
     public EditVehicleTemplateCommandValidator()

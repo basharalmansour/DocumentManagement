@@ -12,7 +12,7 @@ using CleanArchitecture.Domain.Entities.Documents;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Application.Vehicles.Queries;
+namespace CleanArchitecture.Application.VehicleTemplates.Queries;
 public  class GetVehicleTemplateDocumentsQuery : IRequest<List<BasicDocumentTemplateDto>>
 {
     public int VehicleId { get; set; }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.UsersGroup.Commands;
-using CleanArchitecture.Application.Vehicles.Commands;
+using CleanArchitecture.Application.VehicleTemplates.Commands;
 using FluentValidation;
 
 namespace CleanArchitecture.Application.UsersGroup.Validators;

@@ -10,7 +10,7 @@ using CleanArchitecture.Application.Common.Models;
 using MassTransit;
 using MediatR;
 
-namespace CleanArchitecture.Application.Vehicles.Commands;
+namespace CleanArchitecture.Application.VehicleTemplates.Commands;
 public class RemoveVehicleTemplateCommand : IRequest<bool>
 {
     public int Id { get; set; }

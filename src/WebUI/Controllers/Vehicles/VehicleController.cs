@@ -1,6 +1,6 @@
 ﻿using AutoWrapper.Wrappers;
-using CleanArchitecture.Application.Vehicles.Commands;
-using CleanArchitecture.Application.Vehicles.Queries;
+using CleanArchitecture.Application.VehicleTemplates.Commands;
+using CleanArchitecture.Application.VehicleTemplates.Queries;
 using CleanArchitecture.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 

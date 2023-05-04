@@ -11,7 +11,7 @@ using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Application.Vehicles.Queries;
+namespace CleanArchitecture.Application.VehicleTemplates.Queries;
 public class GetVehicleTemplateByIdQuery : IRequest<VehicleTemplateDto>
 {
     public int Id { get; set; }
