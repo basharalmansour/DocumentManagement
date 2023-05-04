@@ -29,7 +29,7 @@ public class EditUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<E
     {
         var userGroup = _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.Id);
         if (userGroup == null)
-            await NullHandleProcesser.ExeptionsThrow("UserGroup");
+            throw new Exception("UserGroup was NOT found");
         var newPresonnels = request.PersonnelIds.ToList();
 
         foreach (var id in userGroup.Personnels.Select(x => x.PersonnelId))

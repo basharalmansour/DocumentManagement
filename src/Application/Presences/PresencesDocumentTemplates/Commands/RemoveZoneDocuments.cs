@@ -24,6 +24,8 @@ public class RemoveZoneDocumentsHandler : BaseCommandHandler, IRequestHandler<Re
     public async Task<bool> Handle(RemoveZoneDocuments request, CancellationToken cancellationToken)
     {
         var document = _applicationDbContext.DocumentTemplateZones.FirstOrDefault(x => x.DocumentId == request.DocumentTemplateId && x.ZoneId == request.ZoneId);
+        if (document == null)
+            throw new Exception("DocumentTemplate was NOT found");
         _applicationDbContext.DocumentTemplateZones.Remove(document);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

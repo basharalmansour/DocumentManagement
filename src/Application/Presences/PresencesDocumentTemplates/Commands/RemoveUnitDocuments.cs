@@ -23,6 +23,8 @@ public class RemoveUnitDocumentsHandler : BaseCommandHandler, IRequestHandler<Re
     public async Task<bool> Handle(RemoveUnitDocuments request, CancellationToken cancellationToken)
     {
         var document = _applicationDbContext.DocumentTemplateUnits.FirstOrDefault(x => x.DocumentTemplateId == request.DocumentTemplateId && x.UnitId == request.UnitId);
+        if (document == null)
+            throw new Exception("DocumentTemplate was NOT found");
         _applicationDbContext.DocumentTemplateUnits.Remove(document);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

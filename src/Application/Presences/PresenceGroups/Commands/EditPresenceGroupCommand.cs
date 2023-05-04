@@ -27,7 +27,7 @@ public class EditPresenceGroupCommandHandler : BaseCommandHandler, IRequestHandl
     {
         var editedPrecenceGroup = _applicationDbContext.PresenceGroups.FirstOrDefault(x => x.Id == request.Id);
         if (editedPrecenceGroup == null)
-            await NullHandleProcesser.ExeptionsThrow("PresenceGroup");
+            throw new Exception("PresenceGroup was NOT found");
         editedPrecenceGroup.PresenceGroupAreas.Clear();
         editedPrecenceGroup.PresenceGroupBlocks.Clear();
         editedPrecenceGroup.PresenceGroupBrands.Clear();

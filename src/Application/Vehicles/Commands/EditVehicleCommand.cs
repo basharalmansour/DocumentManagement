@@ -27,7 +27,7 @@ public class EditVehicleCommandHandler : BaseCommandHandler, IRequestHandler<Edi
     {
         var editedVehicle = _applicationDbContext.Vehicles.FirstOrDefault(x => x.Id == request.Id);
         if (editedVehicle == null)
-            await NullHandleProcesser.ExeptionsThrow("Vehicle");
+            throw new Exception("Vehicle was NOT found");
         _mapper.Map(request, editedVehicle);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true; 

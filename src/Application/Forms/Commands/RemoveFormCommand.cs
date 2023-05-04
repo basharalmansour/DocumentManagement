@@ -27,8 +27,8 @@ public class RemoveFormCommandHandler : BaseCommandHandler,  IRequestHandler<Rem
     public async Task<bool> Handle(RemoveFormCommand request, CancellationToken cancellationToken)
     {
         var deletedForm = _applicationDbContext.Forms.FirstOrDefault(x => x.Id == request.Id);
-        if (request == null)
-            await NullHandleProcesser.ExeptionsThrow("Form");
+        if (deletedForm == null)
+            throw new Exception("Form was NOT found");
         deletedForm.IsDeleted = true;
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

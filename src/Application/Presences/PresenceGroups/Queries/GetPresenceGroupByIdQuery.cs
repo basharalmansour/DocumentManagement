@@ -35,7 +35,7 @@ public class GetPresenceGroupByIdQueryHandler : BaseQueryHandler, IRequestHandle
             .Include(x => x.PresenceGroupZones)
             .FirstOrDefaultAsync(x => x.Id == request.Id);
         if (presenceGroup == null)
-            await NullHandleProcesser.ExeptionsThrow("PresenceGroup");
+            throw new Exception("PresenceGroup was NOT found");
         var presenceGroupDto = _mapper.Map<PresenceGroupDto>(presenceGroup);
         return presenceGroupDto;
     }

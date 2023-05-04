@@ -28,7 +28,7 @@ public class EditServiceCategoryCommandHandler : BaseCommandHandler, IRequestHan
     {
         var editedCategory = _applicationDbContext.ServiceCategories.FirstOrDefault(x => x.Id == request.Id);
         if (editedCategory == null)
-            await NullHandleProcesser.ExeptionsThrow("ServiceCategory");
+            throw new Exception("Service Category was NOT found");
         _mapper.Map(request, editedCategory);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

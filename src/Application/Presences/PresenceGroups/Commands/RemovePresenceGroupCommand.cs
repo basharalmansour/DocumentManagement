@@ -25,7 +25,7 @@ public class RemovePresenceGroupCommandHandler : BaseCommandHandler, IRequestHan
     {
         var deletedPresenceGroup = _applicationDbContext.PresenceGroups.FirstOrDefault(x => x.Id == request.Id);
         if (deletedPresenceGroup == null)
-            await NullHandleProcesser.ExeptionsThrow("PresenceGroup");
+            throw new Exception("PresenceGroup was NOT found");
         deletedPresenceGroup.IsDeleted = true;
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

@@ -35,7 +35,7 @@ public class GetFormByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetForm
             .ThenInclude(x => x.FileQuestionOptions)
             .FirstOrDefaultAsync(x => x.Id == request.Id);
         if (form == null)
-            await NullHandleProcesser.ExeptionsThrow("Form");
+            throw new Exception("Form was NOT found");
         var formDto = _mapper.Map<FormDto>(form);
         return formDto;
     }

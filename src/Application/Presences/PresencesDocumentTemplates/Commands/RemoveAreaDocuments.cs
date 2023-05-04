@@ -26,6 +26,8 @@ public class RemoveAreaDocumentsHandler : BaseCommandHandler, IRequestHandler<Re
     public async Task<bool> Handle(RemoveAreaDocuments request, CancellationToken cancellationToken)
     {
         var document= _applicationDbContext.DocumentTemplateAreas.FirstOrDefault(x => x.DocumentTemplateId == request.DocumentTemplateId && x.AreaId == request.AreaId);
+        if (document == null)
+            throw new Exception("DocumentTemplate was NOT found");
         _applicationDbContext.DocumentTemplateAreas.Remove(document);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

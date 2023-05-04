@@ -27,7 +27,7 @@ public class RemoveVehicleCommandHandler : BaseCommandHandler, IRequestHandler<R
     {
         var deletedVehicle = _applicationDbContext.Vehicles.FirstOrDefault(x => x.Id == request.Id);
         if (deletedVehicle == null)
-            await NullHandleProcesser.ExeptionsThrow("Vehicle");
+            throw new Exception("Vehicle was NOT found");
         deletedVehicle.IsDeleted = true;
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

@@ -34,7 +34,7 @@ public class EditDocumentTemplateCommandHandler : BaseCommandHandler, IRequestHa
             .Include(x => x.Forms)
             .FirstOrDefault(x => x.Id == request.Id & x.IsDeleted == false);
         if (documentTemplate == null)
-            await NullHandleProcesser.ExeptionsThrow("Document Template");
+            throw new Exception ("Document Template was NOT found");
         _mapper.Map(request, documentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return documentTemplate.Id;

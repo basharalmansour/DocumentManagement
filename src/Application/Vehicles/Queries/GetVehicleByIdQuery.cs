@@ -30,7 +30,7 @@ public class GetVehicleByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetV
             .Include(x=>x.DriverDocuments)
             .FirstOrDefaultAsync(x => x.IsDeleted == false && x.Id==request.Id);
         if (vehicle == null)
-            await NullHandleProcesser.ExeptionsThrow("Vehicle");
+            throw new Exception("Vehicle was NOT found");
         var vehicleDto = _mapper.Map<VehicleDto>(vehicle);
         return vehicleDto;
     }

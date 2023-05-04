@@ -30,7 +30,7 @@ public class GetDocumentTemplateByIdHandler : BaseQueryHandler, IRequestHandler<
             .Include(x=>x.Forms)
             .FirstOrDefaultAsync(x=>x.Id==request.Id);
         if (document == null)
-            await NullHandleProcesser.ExeptionsThrow("Document Template");
+            throw new Exception("Document Template was NOT found");
         var documentDto = _mapper.Map<GetDocumentTemplateDto>(document);
         return documentDto;
     }

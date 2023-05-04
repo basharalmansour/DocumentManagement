@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -28,9 +29,11 @@ public class GetPersonnelRoleQueryHandler : BaseQueryHandler, IRequestHandler<Ge
     }
     public async Task<List<Role>> Handle(GetPersonnelRoleQuery request, CancellationToken cancellationToken)
     {
-        var result= _applicationDbContext.PersonnelRoles.Where(x => x.Id == request.PersonnelId).Select(x => x.Role).ToList();
+        var result= _applicationDbContext.PersonnelRoles
+            .Where(x => x.Id == request.PersonnelId)
+            .Select(x => x.Role).ToList();
         if (result == null)
-            await NullHandleProcesser.ExeptionsThrow("Personnel's Role");
+            throw new Exception("Role or Personnel was NOT found");
         return result;
     }
 }

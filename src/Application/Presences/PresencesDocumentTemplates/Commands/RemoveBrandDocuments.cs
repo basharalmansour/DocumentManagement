@@ -23,6 +23,8 @@ public class RemoveBrandDocumentsHandler : BaseCommandHandler, IRequestHandler<R
     public async Task<bool> Handle(RemoveBrandDocuments request, CancellationToken cancellationToken)
     {
         var document = _applicationDbContext.DocumentTemplateBrands.FirstOrDefault(x => x.DocumentTemplateId == request.DocumentTemplateId && x.BrandId == request.BrandId);
+        if (document == null)
+            throw new Exception("DocumentTemplate was NOT found");
         _applicationDbContext.DocumentTemplateBrands.Remove(document);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

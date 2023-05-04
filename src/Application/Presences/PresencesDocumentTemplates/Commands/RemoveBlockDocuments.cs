@@ -24,6 +24,8 @@ public class RemoveBlockDocumentsHandler : BaseCommandHandler, IRequestHandler<R
     public async Task<bool> Handle(RemoveBlockDocuments request, CancellationToken cancellationToken)
     {
         var document = _applicationDbContext.DocumentTemplateBlocks.FirstOrDefault(x => x.DocumentTemplateId == request.DocumentTemplateId && x.BlockId == request.BlockId);
+        if (document == null)
+            throw new Exception("DocumentTemplate was NOT found");
         _applicationDbContext.DocumentTemplateBlocks.Remove(document);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

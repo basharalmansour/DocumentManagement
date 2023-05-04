@@ -28,7 +28,7 @@ public class EditFormCommandHandler : BaseCommandHandler, IRequestHandler<EditFo
     {
         var form = _applicationDbContext.Forms.FirstOrDefault(x => x.Id == request.Id);
         if (form == null)
-            await NullHandleProcesser.ExeptionsThrow("Form");
+            throw new Exception("Form was NOT found");
         form.Questions.Clear();
         _mapper.Map(request, form);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);

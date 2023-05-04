@@ -39,7 +39,7 @@ public class ServiceCategoryByIdQueryHandler : BaseQueryHandler, IRequestHandler
             .Include(x => x.ServiceCategoryRoles)
             .FirstOrDefaultAsync(x=>x.Id==request.Id);
         if (category == null)
-            await NullHandleProcesser.ExeptionsThrow("ServiceCategory");
+            throw new Exception("Service Category was NOT found");
         var categoryDto = _mapper.Map<ServiceCategoryDetailsDto>(category);
         return categoryDto; 
     }
