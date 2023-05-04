@@ -26,6 +26,8 @@ public class RemovePresenceGroupDocumentsHandler : BaseCommandHandler, IRequestH
     public async Task<bool> Handle(RemovePresenceGroupDocumentCommand request, CancellationToken cancellationToken)
     {
         var document = _applicationDbContext.DocumentTemplatePresenceGroups.FirstOrDefault(x => x.DocumentTemplateId == request.DocumentTemplateId && x.PresenceGroupId == request.PresenceGroupId);
+        if (document == null)
+            throw new Exception("PresenceGroup or DocumentTemplate was NOT found");
         _applicationDbContext.DocumentTemplatePresenceGroups.Remove(document);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

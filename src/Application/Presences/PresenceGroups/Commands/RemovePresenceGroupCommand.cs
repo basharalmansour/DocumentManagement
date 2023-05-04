@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using MassTransit;
@@ -23,6 +24,8 @@ public class RemovePresenceGroupCommandHandler : BaseCommandHandler, IRequestHan
     public async Task<bool> Handle(RemovePresenceGroupCommand request, CancellationToken cancellationToken)
     {
         var deletedPresenceGroup = _applicationDbContext.PresenceGroups.FirstOrDefault(x => x.Id == request.Id);
+        if (deletedPresenceGroup == null)
+            throw new Exception("PresenceGroup was NOT found");
         deletedPresenceGroup.IsDeleted = true;
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

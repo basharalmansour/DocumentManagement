@@ -17,23 +17,24 @@ using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver.Core.Authentication;
 
 namespace CleanArchitecture.Application.DocumentsTemplate.Commands;
-public class EditDocumentTemplateCommand :CreateDocumentTemplateCommand, IRequest<int>
+public class EditDocumentTemplateCommand : CreateDocumentTemplateCommand, IRequest<int>
 {
     public int Id { get; set; }
 }
 
-public class EditDocumentTemplateCommandHandler : BaseCommandHandler, IRequestHandler<EditDocumentTemplateCommand, int> 
+public class EditDocumentTemplateCommandHandler : BaseCommandHandler, IRequestHandler<EditDocumentTemplateCommand, int>
 {
     public EditDocumentTemplateCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
-
     public async Task<int> Handle(EditDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
         var documentTemplate = _applicationDbContext.DocumentTemplates
-            .Include(x=>x.DocumentTemplateFileTypes)
-            .Include(x=>x.Forms)
+            .Include(x => x.DocumentTemplateFileTypes)
+            .Include(x => x.Forms)
             .FirstOrDefault(x => x.Id == request.Id & x.IsDeleted == false);
+        if (documentTemplate == null)
+            throw new Exception ("Document Template was NOT found");
         _mapper.Map(request, documentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return documentTemplate.Id;

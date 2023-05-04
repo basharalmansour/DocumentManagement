@@ -23,7 +23,10 @@ public class RemoveCompanyDocumentsHandler : BaseCommandHandler, IRequestHandler
     }
     public async Task<bool> Handle(RemoveCompanyDocumentsCommand request, CancellationToken cancellationToken)
     {
-        var document = _applicationDbContext.DocumentTemplateCompanies.FirstOrDefault(x => x.DocumentTemplateId == request.DocumentTemplateId && x.CompanyId == request.CompanyId);
+        var document = _applicationDbContext.DocumentTemplateCompanies
+            .FirstOrDefault(x => x.DocumentTemplateId == request.DocumentTemplateId && x.CompanyId == request.CompanyId);
+        if (document == null)
+            throw new Exception("DocumentTemplate was NOT found");
         _applicationDbContext.DocumentTemplateCompanies.Remove(document);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

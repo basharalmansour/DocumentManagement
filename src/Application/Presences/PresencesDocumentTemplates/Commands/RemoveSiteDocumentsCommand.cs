@@ -23,6 +23,8 @@ public class RemoveSiteDocumentsHandler : BaseCommandHandler, IRequestHandler<Re
     public async Task<bool> Handle(RemoveSiteDocumentsCommand request, CancellationToken cancellationToken)
     {
         var document = _applicationDbContext.DocumentTemplateSites.FirstOrDefault(x => x.DocumentTemplateId == request.DocumentTemplateId && x.SiteId == request.SiteId);
+        if (document == null)
+            throw new Exception("DocumentTemplate was NOT found");
         _applicationDbContext.DocumentTemplateSites.Remove(document);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

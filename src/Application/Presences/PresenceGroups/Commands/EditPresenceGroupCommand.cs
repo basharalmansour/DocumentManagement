@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Enums;
@@ -25,6 +26,8 @@ public class EditPresenceGroupCommandHandler : BaseCommandHandler, IRequestHandl
     public async Task<bool> Handle(EditPresenceGroupCommand request, CancellationToken cancellationToken)
     {
         var editedPrecenceGroup = _applicationDbContext.PresenceGroups.FirstOrDefault(x => x.Id == request.Id);
+        if (editedPrecenceGroup == null)
+            throw new Exception("PresenceGroup was NOT found");
         editedPrecenceGroup.PresenceGroupAreas.Clear();
         editedPrecenceGroup.PresenceGroupBlocks.Clear();
         editedPrecenceGroup.PresenceGroupBrands.Clear();

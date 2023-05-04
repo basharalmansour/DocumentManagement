@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using MediatR;
@@ -38,6 +39,8 @@ public class ServiceCategoryByIdQueryHandler : BaseQueryHandler, IRequestHandler
             .Include(x=> x.ServiceCategoryPresenceGroups)
             .Include(x => x.ServiceCategoryRoles)
             .FirstOrDefaultAsync(x=>x.Id==request.Id);
+        if (category == null)
+            throw new Exception("Service Category was NOT found");
         var categoryDto = _mapper.Map<ServiceCategoryDetailsDto>(category);
         return categoryDto; 
     }

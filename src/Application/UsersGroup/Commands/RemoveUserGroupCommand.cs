@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using MassTransit;
@@ -27,6 +28,8 @@ public class RemoveUserGroupCommandHandler : BaseCommandHandler, IRequestHandler
     public async Task<bool> Handle(RemoveUserGroupCommand request, CancellationToken cancellationToken)
     {
         var userGroup =  _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.Id);
+        if (userGroup == null)
+            throw new Exception("UserGroup was NOT found");
         userGroup.IsDeleted = true;
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

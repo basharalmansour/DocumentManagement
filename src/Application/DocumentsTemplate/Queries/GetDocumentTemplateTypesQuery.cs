@@ -21,7 +21,9 @@ public class GetDocumentTemplateTypesHandler : BaseQueryHandler, IRequestHandler
     }
     public async Task<List<KeyValuePair<int, string>>> Handle(GetDocumentTemplateTypesQuery request, CancellationToken cancellationToken)
     {
-        var documentTypes = await _applicationDbContext.DocumentTemplateTypes.Select(x=> new KeyValuePair<int, string>(x.Id,x.Name)).ToListAsync();
+        var documentTypes = await _applicationDbContext.DocumentTemplateTypes
+            .Select(x=> new KeyValuePair<int, string>(x.Id,x.Name))
+            .ToListAsync();
         return documentTypes;
     }
 }

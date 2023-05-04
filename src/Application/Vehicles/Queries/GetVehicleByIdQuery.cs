@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.Vehicles;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using MediatR;
@@ -24,7 +25,12 @@ public class GetVehicleByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetV
 
     public async Task<VehicleDto> Handle(GetVehicleByIdQuery request, CancellationToken cancellationToken)
     {
-        var vehicle = await _applicationDbContext.Vehicles.Include(x=>x.VehicleDocuments).Include(x=>x.DriverDocuments).FirstOrDefaultAsync(x => x.IsDeleted == false && x.Id==request.Id);
+        var vehicle = await _applicationDbContext.Vehicles
+            .Include(x=>x.VehicleDocuments)
+            .Include(x=>x.DriverDocuments)
+            .FirstOrDefaultAsync(x => x.IsDeleted == false && x.Id==request.Id);
+        if (vehicle == null)
+            throw new Exception("Vehicle was NOT found");
         var vehicleDto = _mapper.Map<VehicleDto>(vehicle);
         return vehicleDto;
     }
