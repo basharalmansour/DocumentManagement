@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Forms;
@@ -26,6 +27,8 @@ public class EditFormCommandHandler : BaseCommandHandler, IRequestHandler<EditFo
     public async Task<bool> Handle(EditFormCommand request, CancellationToken cancellationToken)
     {
         var form = _applicationDbContext.Forms.FirstOrDefault(x => x.Id == request.Id);
+        if (form == null)
+            await NullHandleProcesser.ExeptionsThrow("Form");
         form.Questions.Clear();
         _mapper.Map(request, form);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);

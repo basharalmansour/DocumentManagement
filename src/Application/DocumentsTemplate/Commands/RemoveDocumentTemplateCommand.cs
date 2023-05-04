@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Domain.Entities.Documents;
 using MassTransit;
 using MediatR;
 using MessageBroker.Events.DocumentTemplates;
@@ -25,13 +27,15 @@ public class RemoveDocumentTemplateHandler : BaseCommandHandler, IRequestHandler
     public async Task<bool> Handle(RemoveDocumentTemplateCommand request, CancellationToken cancellationToken)
     {
         var deletedDocumentTemplate= _applicationDbContext.DocumentTemplates.FirstOrDefault(x => x.Id == request.Id);
+        if (deletedDocumentTemplate == null)
+            await NullHandleProcesser.ExeptionsThrow("Document Template");
         deletedDocumentTemplate.IsDeleted = true;
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
-        await _publishEndpoint.Publish(new DocumentTemplateRemoved
-        {
-            DocumentTemplateId = request.Id
-        });
+        //await _publishEndpoint.Publish(new DocumentTemplateRemoved
+        //{
+        //    DocumentTemplateId = request.Id
+        //});
         return true;
     }
 }

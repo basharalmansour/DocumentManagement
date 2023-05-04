@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.PresenceGroups;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using MediatR;
@@ -33,6 +34,8 @@ public class GetPresenceGroupByIdQueryHandler : BaseQueryHandler, IRequestHandle
             .Include(x => x.PresenceGroupUnits)
             .Include(x => x.PresenceGroupZones)
             .FirstOrDefaultAsync(x => x.Id == request.Id);
+        if (presenceGroup == null)
+            await NullHandleProcesser.ExeptionsThrow("PresenceGroup");
         var presenceGroupDto = _mapper.Map<PresenceGroupDto>(presenceGroup);
         return presenceGroupDto;
     }

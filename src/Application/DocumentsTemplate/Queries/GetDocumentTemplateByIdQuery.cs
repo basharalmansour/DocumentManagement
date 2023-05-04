@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Enums;
@@ -28,6 +29,8 @@ public class GetDocumentTemplateByIdHandler : BaseQueryHandler, IRequestHandler<
             .Include(x=>x.DocumentTemplateFileTypes)
             .Include(x=>x.Forms)
             .FirstOrDefaultAsync(x=>x.Id==request.Id);
+        if (document == null)
+            await NullHandleProcesser.ExeptionsThrow("Document Template");
         var documentDto = _mapper.Map<GetDocumentTemplateDto>(document);
         return documentDto;
     }

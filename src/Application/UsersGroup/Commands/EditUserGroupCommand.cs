@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.UserGroups;
@@ -27,7 +28,8 @@ public class EditUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<E
     public async Task<bool> Handle(EditUserGroupCommand request, CancellationToken cancellationToken)
     {
         var userGroup = _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.Id);
-
+        if (userGroup == null)
+            await NullHandleProcesser.ExeptionsThrow("UserGroup");
         var newPresonnels = request.PersonnelIds.ToList();
 
         foreach (var id in userGroup.Personnels.Select(x => x.PersonnelId))

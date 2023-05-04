@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
@@ -26,6 +27,8 @@ public class EditServiceCategoryCommandHandler : BaseCommandHandler, IRequestHan
     public async Task<bool> Handle(EditServiceCategoryCommand request, CancellationToken cancellationToken)
     {
         var editedCategory = _applicationDbContext.ServiceCategories.FirstOrDefault(x => x.Id == request.Id);
+        if (editedCategory == null)
+            await NullHandleProcesser.ExeptionsThrow("ServiceCategory");
         _mapper.Map(request, editedCategory);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;

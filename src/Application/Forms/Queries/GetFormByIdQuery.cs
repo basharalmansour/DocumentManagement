@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.Forms;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Forms.Commands;
@@ -33,6 +34,8 @@ public class GetFormByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetForm
             .Include(x => x.Questions)
             .ThenInclude(x => x.FileQuestionOptions)
             .FirstOrDefaultAsync(x => x.Id == request.Id);
+        if (form == null)
+            await NullHandleProcesser.ExeptionsThrow("Form");
         var formDto = _mapper.Map<FormDto>(form);
         return formDto;
     }

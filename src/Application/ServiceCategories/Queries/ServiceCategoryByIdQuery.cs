@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
+using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using MediatR;
@@ -22,7 +23,6 @@ public class ServiceCategoryByIdQueryHandler : BaseQueryHandler, IRequestHandler
     }
     public async Task<ServiceCategoryDetailsDto> Handle(ServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {
-
         var category = await _applicationDbContext.ServiceCategories
             .Include(x => x.SubServiceCategories.Where(x => !x.IsDeleted))
             .Include(x => x.SpecialRules)
@@ -38,6 +38,8 @@ public class ServiceCategoryByIdQueryHandler : BaseQueryHandler, IRequestHandler
             .Include(x => x.ServiceCategoryZones)
             .Include(x => x.ServiceCategoryRoles)
             .FirstOrDefaultAsync(x=>x.Id==request.Id);
+        if (category == null)
+            await NullHandleProcesser.ExeptionsThrow("ServiceCategory");
         var categoryDto = _mapper.Map<ServiceCategoryDetailsDto>(category);
         return categoryDto; 
     }
