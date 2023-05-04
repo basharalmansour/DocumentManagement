@@ -240,3 +240,6 @@ src/WebUI/ClientApp/package-lock.json
 /src/Infrastructure/Migrations
 /src/WebUI/ClientApp/src/app/web-api-client.ts
 /src/WebUI/wwwroot/api/specification.json
+/src/Application/Common/Interfaces/IApplicationDbContext.cs
+/src/Domain/Entities/SeviceCategories/ServiceCategory.cs
+/src/Domain/Entities/SeviceCategories/Vehicles/CategoryVehicleTemplateDocuments.cs

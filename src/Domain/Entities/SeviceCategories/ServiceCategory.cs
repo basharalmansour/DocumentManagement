@@ -33,7 +33,7 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     public List<ServiceCategoryPresenceGroup> ServiceCategoryPresenceGroups { get; set; }
 
     public List<CategorySpecialRules> SpecialRules { get; set; }
-    public List<VehicleCategory> Vehicles { get; set; }
+    public List<VehicleTemplateCategory> Vehicles { get; set; }
     public List<CategoryDocument> Documents { get; set; }
     public List<CategoryPersonnelDocument> PersonnelDocuments { get; set; }
 

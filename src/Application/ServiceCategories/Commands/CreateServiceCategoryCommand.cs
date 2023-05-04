@@ -24,7 +24,7 @@ public class CreateServiceCategoryCommand : IRequest<int>
     public CreateCategoryRoleDto ServiceCategoryRoles { get; set; }
     public List<int> SpecialRules { get; set; }
     public List<int> Documents { get; set; }
-    public List<CreateVehicleCategoryDto> Vehicles { get; set; }
+    public List<CreateVehicleTemplateCategoryDto> VehicleTemplates { get; set; }
     public List<int> ServiceCategoryAreas { get; set; }
     public List<Guid> ServiceCategoryBlocks { get; set; }
     public List<int> ServiceCategoryBrands { get; set; }

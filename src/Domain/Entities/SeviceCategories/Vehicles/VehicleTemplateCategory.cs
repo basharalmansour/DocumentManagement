@@ -10,7 +10,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
-public class VehicleCategory : LightBaseEntity<int>, IEntity<int>
+public class VehicleTemplateCategory : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey("VehicleTemplate")]
     public int VehicleTemplateId { get; set; }

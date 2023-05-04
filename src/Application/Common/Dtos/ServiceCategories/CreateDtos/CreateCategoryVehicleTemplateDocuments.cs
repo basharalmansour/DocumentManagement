@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Application.Common.Dtos.ServiceCategories.CreateDtos;
 
-public class CreateCategoryVehicleDocuments
+public class CreateCategoryVehicleTemplateDocuments
 {
     public int DocumentTemplateId { get; set; }
     public VehicleDocumentType VehicleDocumentType { get; set; }

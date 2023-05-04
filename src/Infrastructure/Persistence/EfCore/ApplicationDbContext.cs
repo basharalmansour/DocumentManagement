@@ -79,7 +79,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<ServiceCategoryZone> ServiceCategoryZones { get; set; }
     public DbSet<ServiceCategoryPresenceGroup> ServiceCategoryPresenceGroups { get; set; }
     public DbSet<CategoryVehicleTemplateDocuments> CategoryVehicleDocuments { get; set; }
-    public DbSet<VehicleCategory> VehicleCategories { get; set; }
+    public DbSet<VehicleTemplateCategory> VehicleCategories { get; set; }
     public DbSet<CategorySpecialRules> CategorySpecialRoles { get; set; }
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
