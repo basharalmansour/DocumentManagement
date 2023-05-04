@@ -29,6 +29,7 @@ using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
+using CleanArchitecture.Application.Common.Dtos.ServiceCategories.CreateDtos;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -43,19 +44,25 @@ public class MappingProfile : Profile
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
         ApplyMappingsOfPresences();
+        ApplyMappingsOfRoles();
+
+    }
+
+    private void ApplyMappingsOfRoles()
+    {
         CreateMap<Role, PersonnelRole>()
             .ForMember(des => des.Role, opt => opt.MapFrom(res => res));
     }
 
     private void ApplyMappingsOfPresences()
     {
-        CreateMap<AddAreaDocuments, DocumentTemplateArea>();
-        CreateMap<AddBlockDocuments, DocumentTemplateBlock>();
-        CreateMap<AddBrandDocuments, DocumentTemplateBrand>();
-        CreateMap<AddCompanyDocuments, DocumentTemplateCompany>();
-        CreateMap<AddSiteDocuments, DocumentTemplateSite>();
-        CreateMap<AddUnitDocuments, DocumentTemplateUnit>();
-        CreateMap<AddZoneDocuments, DocumentTemplateZone>();
+        CreateMap<CreateAreaDocumentsCommand, DocumentTemplateArea>();
+        CreateMap<CreateBlockDocumentsCommand, DocumentTemplateBlock>();
+        CreateMap<CreateBrandDocumentsCommand, DocumentTemplateBrand>();
+        CreateMap<CreateCompanyDocumentsCommand, DocumentTemplateCompany>();
+        CreateMap<CreateSiteDocumentsCommand, DocumentTemplateSite>();
+        CreateMap<CreateUnitDocumentsCommand, DocumentTemplateUnit>();
+        CreateMap<CreateZoneDocumentsCommand, DocumentTemplateZone>();
     }
 
     private void ApplyMappingsFromAssembly(Assembly assembly)
@@ -90,6 +97,7 @@ public class MappingProfile : Profile
         CreateMap<ServiceCategorySite, ServiceCategorySiteDto>();
         CreateMap<ServiceCategoryUnit, ServiceCategoryUnitDto>();
         CreateMap<ServiceCategoryZone, ServiceCategoryZoneDto>();
+        CreateMap<ServiceCategoryPresenceGroup, ServiceCategoryPresenceGroupDto>();
         CreateMap<CreateServiceCategoryCommand, ServiceCategory>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)))
@@ -100,10 +108,11 @@ public class MappingProfile : Profile
             .ForMember(des => des.ServiceCategorySites, opt => opt.MapFrom(src => src.ServiceCategorySites.Select(x => new ServiceCategorySite { SiteId = x })))
             .ForMember(des => des.ServiceCategoryUnits, opt => opt.MapFrom(src => src.ServiceCategoryUnits.Select(x => new ServiceCategoryUnit { UnitId = x })))
             .ForMember(des => des.ServiceCategoryZones, opt => opt.MapFrom(src => src.ServiceCategoryZones.Select(x => new ServiceCategoryZone { ZoneId = x })))
+            .ForMember(des => des.ServiceCategoryPresenceGroups, opt => opt.MapFrom(src => src.ServiceCategoryPresenceGroups.Select(x => new ServiceCategoryPresenceGroup { PresenceGroupId = x })))
             .ForMember(des => des.PersonnelDocuments, opt => opt.MapFrom(src => src.PersonnelDocuments.Select(x => new CategoryPersonnelDocument { DocumentTemplateId = x })))
             .ForMember(des => des.SpecialRules, opt => opt.MapFrom(src => src.SpecialRules.Select(x => new CategorySpecialRules { SpecialRuleId = x })))
             .ForMember(des => des.Documents, opt => opt.MapFrom(src => src.Documents.Select(x => new CategoryDocument { DocumentTemplateId = x })));
-
+        CreateMap<EditServiceCategoryCommand, ServiceCategory>();
         CreateMap<CreateCategoryRoleDto, ServiceCategoryRole>()
             .ForMember(des => des.ResponsibleDepartments, opt => opt.MapFrom(src => src.ResponsibleDepartments.Select(x => new ResponsibleDepartment { DepartmentId = x })))
             .ForMember(des => des.ResponsiblePersonnels, opt => opt.MapFrom(src => src.ResponsiblePersonnels.Select(x => new ResponsiblePersonnel { PersonnelId = x })))

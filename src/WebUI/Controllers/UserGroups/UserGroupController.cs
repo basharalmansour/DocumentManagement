@@ -1,5 +1,5 @@
 ﻿using AutoWrapper.Wrappers;
-using CleanArchitecture.Application.Roles.Queries;
+using CleanArchitecture.Application.Personnels.Queries;
 using CleanArchitecture.Application.UsersGroup.Commands;
 using CleanArchitecture.Application.UsersGroup.Queries;
 using CleanArchitecture.Domain.Common;
