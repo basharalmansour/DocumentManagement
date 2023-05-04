@@ -9,7 +9,7 @@ namespace CleanArchitecture.WebUI.Controllers.Vehicles;
 public class VehicleController : ApiControllerBase
 {
     [HttpPost("CreateVehicle")]
-    public async Task<ApplicationResponse> CreateVehicle([FromBody] CreateVehicleCommand request , CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> CreateVehicle([FromBody] CreateVehicleTemplateCommand request , CancellationToken cancellationToken)
     {
         try
         {
@@ -23,7 +23,7 @@ public class VehicleController : ApiControllerBase
         
     }
     [HttpGet("GetVehicles")]
-    public async Task<ApplicationResponse> GetVehicles([FromQuery] GetVehicleQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetVehicles([FromQuery] GetVehicleTemplateQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -37,7 +37,7 @@ public class VehicleController : ApiControllerBase
         
     }
     [HttpGet("GetVehicle")]
-    public async Task<ApplicationResponse> GetVehicleById([FromQuery] GetVehicleByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> GetVehicleById([FromQuery] GetVehicleTemplateByIdQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -51,7 +51,7 @@ public class VehicleController : ApiControllerBase
         
     }
     [HttpPost("EditVehicle")]
-    public async Task<ApplicationResponse> EditVehicle([FromBody] EditVehicleCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> EditVehicle([FromBody] EditVehicleTemplateCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -65,7 +65,7 @@ public class VehicleController : ApiControllerBase
         
     }
     [HttpDelete("RemoveVehicle")]
-    public async Task<ApplicationResponse> RemoveVehicle([FromBody] RemoveVehicleCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse> RemoveVehicle([FromBody] RemoveVehicleTemplateCommand request, CancellationToken cancellationToken)
     {
         try
         {

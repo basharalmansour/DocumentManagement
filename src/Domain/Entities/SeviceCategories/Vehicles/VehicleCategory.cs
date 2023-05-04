@@ -7,17 +7,17 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
-using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
+using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 public class VehicleCategory : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("Vehicle")]
-    public int VehicleId { get; set; }
-    public Vehicle Vehicle { get; set; }
+    [ForeignKey("VehicleTemplate")]
+    public int VehicleTemplateId { get; set; }
+    public VehicleTemplate VehicleTemplate { get; set; }
 
     [ForeignKey("ServiceCategory")]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; } 
-    public List<CategoryVehicleDocuments> VehicleDocuments { get; set; }
+    public List<CategoryVehicleTemplateDocuments> VehicleTemplateDocuments { get; set; }
 }

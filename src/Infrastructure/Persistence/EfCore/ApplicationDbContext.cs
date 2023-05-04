@@ -4,7 +4,7 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Entities.Definitions;
 using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
-using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
+using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
@@ -39,7 +39,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
         _dateTime = dateTime;
     }
     public DbSet<SpecialRule> SpecialRules { get; set; }
-    public DbSet<Vehicle> Vehicles { get; set; }
+    public DbSet<VehicleTemplate> VehicleTemplates { get; set; }
     public DbSet<DocumentTemplate> DocumentTemplates { get; set; }
     public DbSet<DocumentTemplateFileType> DocumentTemplateFileTypes { get; set; }
     public DbSet<DocumentTemplateType> DocumentTemplateTypes { get; set; }
@@ -78,14 +78,14 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<ServiceCategoryUnit> ServiceCategoryUnits { get; set; }
     public DbSet<ServiceCategoryZone> ServiceCategoryZones { get; set; }
     public DbSet<ServiceCategoryPresenceGroup> ServiceCategoryPresenceGroups { get; set; }
-    public DbSet<CategoryVehicleDocuments> CategoryVehicleDocuments { get; set; }
+    public DbSet<CategoryVehicleTemplateDocuments> CategoryVehicleDocuments { get; set; }
     public DbSet<VehicleCategory> VehicleCategories { get; set; }
     public DbSet<CategorySpecialRules> CategorySpecialRoles { get; set; }
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
-    public DbSet<VehiclesDocument> VehiclesDocuments { get; set; }
-    public DbSet<VehicleDriverDocuments> VehicleDriverDocuments { set; get; }
+    public DbSet<VehicleTemplatesDocument> VehiclesDocuments { get; set; }
+    public DbSet<VehicleTemplateDriverDocuments> VehicleDriverDocuments { set; get; }
     public DbSet<PersonnelRole> PersonnelRoles { get; set; }
     private void ConfigureAuditableStates()
     {

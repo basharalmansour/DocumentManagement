@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
-namespace CleanArchitecture.Domain.Entities.Definitions.Vehicles;
-public class Vehicle : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
+namespace CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
+public class VehicleTemplate : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
     [StringLength(StringLengths.MediumString)]
     public string Name { get; set; }
     public bool IsNeedDriver { get; set; }
-    public List<VehiclesDocument> VehicleDocuments { get; set; }
-    public List<VehicleDriverDocuments> DriverDocuments { get; set; }
+    public List<VehicleTemplatesDocument> VehicleTemplateDocuments { get; set; }
+    public List<VehicleTemplateDriverDocuments> DriverDocuments { get; set; }
 }

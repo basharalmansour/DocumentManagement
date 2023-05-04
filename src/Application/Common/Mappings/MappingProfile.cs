@@ -10,9 +10,9 @@ using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 using CleanArchitecture.Application.Common.Dtos.PresenceGroups;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
-using CleanArchitecture.Application.Common.Dtos.Vehicles;
+using CleanArchitecture.Application.Common.Dtos.VehicleTemplates;
 using CleanArchitecture.Application.Vehicles.Commands;
-using CleanArchitecture.Domain.Entities.Definitions.Vehicles;
+using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.UsersGroup.Commands;
 using CleanArchitecture.Domain.Entities.UserGroups;
@@ -38,7 +38,7 @@ public class MappingProfile : Profile
     {
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         ApplyMappingsOfServiceCategory();
-        ApplyMappingsOfVehicle();
+        ApplyMappingsOfVehicleTemplate();
         ApplyMappingsOfPresenceGroup();
         ApplyMappingsOfUserGroup();
         ApplyMappingsOfForm();
@@ -118,10 +118,10 @@ public class MappingProfile : Profile
             .ForMember(des => des.ResponsiblePersonnels, opt => opt.MapFrom(src => src.ResponsiblePersonnels.Select(x => new ResponsiblePersonnel { PersonnelId = x })))
             .ForMember(des => des.ResponsibleUserGroups, opt => opt.MapFrom(src => src.ResponsibleUserGroups.Select(x => new ResponsibleUserGroup { UserGroupId = x })));
         CreateMap<VehicleCategory, VehicleCategoryDto>();
-        CreateMap<CategoryVehicleDocuments, CategoryVehicleDocumentsDto>();
+        CreateMap<CategoryVehicleTemplateDocuments, CategoryVehicleDocumentsDto>();
         CreateMap<CategoryDocument, CategoryDocumentDto>();
         CreateMap<CreateVehicleCategoryDto, VehicleCategory>();
-        CreateMap<CreateCategoryVehicleDocuments, CategoryVehicleDocuments>();
+        CreateMap<CreateCategoryVehicleDocuments, CategoryVehicleTemplateDocuments>();
         CreateMap<CategoryPersonnelDocument, CategoryPersonnelDocumentDto>();
         CreateMap<ServiceCategoryRole, ServiceCategoryRoleDto>();
         CreateMap<ResponsibleDepartment, ResponsibleDepartmentDto>();
@@ -129,17 +129,17 @@ public class MappingProfile : Profile
         CreateMap<ResponsibleUserGroup, ResponsibleUserGroupDto>();
         CreateMap<CategorySpecialRules, CategorySpecialRulesDto>();
     }
-    private void ApplyMappingsOfVehicle()
+    private void ApplyMappingsOfVehicleTemplate()
     {
-        CreateMap<Vehicle, VehicleDto>()
+        CreateMap<VehicleTemplate, VehicleTemplateDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
-        CreateMap<VehicleDriverDocuments, VehicleDriverDocumentsDto>();
-        CreateMap<VehiclesDocument, VehiclesDocumentDto>();
-        CreateMap<CreateVehicleCommand, Vehicle>()
+        CreateMap<VehicleTemplateDriverDocuments, VehicleTemplateDriverDocumentsDto>();
+        CreateMap<VehicleTemplatesDocument, VehicleTemplatesDocumentDto>();
+        CreateMap<CreateVehicleTemplateCommand, VehicleTemplate>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
-            .ForMember(des => des.VehicleDocuments, opt => opt.MapFrom(src => src.VehicleDocuments.Select(x => new VehiclesDocument { DocumentTemplateId = x })))
-            .ForMember(des => des.DriverDocuments, opt => opt.MapFrom(src => src.DriverDocuments.Select(x => new VehicleDriverDocuments { DocumentTemplateId = x })));
-        CreateMap<EditVehicleCommand, Vehicle>();
+            .ForMember(des => des.VehicleTemplateDocuments, opt => opt.MapFrom(src => src.VehicleTemplateDocuments.Select(x => new VehicleTemplatesDocument { DocumentTemplateId = x })))
+            .ForMember(des => des.DriverDocuments, opt => opt.MapFrom(src => src.DriverDocuments.Select(x => new VehicleTemplateDriverDocuments { DocumentTemplateId = x })));
+        CreateMap<EditVehicleTemplateCommand, VehicleTemplate>();
     }
     private void ApplyMappingsOfPresenceGroup()
     {

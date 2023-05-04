@@ -8,9 +8,9 @@ using CleanArchitecture.Application.Vehicles.Commands;
 using FluentValidation;
 
 namespace CleanArchitecture.Application.Vehicles.Validators;
-public class AddVehicleCommandValidator : AbstractValidator<CreateVehicleCommand>
+public class EditVehicleTemplateCommandValidator : AbstractValidator<EditVehicleTemplateCommand>
 {
-    public AddVehicleCommandValidator()
+    public EditVehicleTemplateCommandValidator()
     {
         RuleFor(x => x.Name).Must((obj, domain) => ValidateMultiLanguage(obj.Name, 64)).WithMessage("Name Must be between 1 and 64 character");
     }

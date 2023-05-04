@@ -40,7 +40,7 @@ public static class ApplicationDbContextSeed
             });
             context.DocumentTemplateTypes.Add(new DocumentTemplateType
             {
-                Name = "Vehicle"
+                Name = "VehicleTemplate"
             });
             context.DocumentTemplateTypes.Add(new DocumentTemplateType
             {

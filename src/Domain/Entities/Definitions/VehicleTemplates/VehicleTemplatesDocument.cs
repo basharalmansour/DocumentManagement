@@ -8,13 +8,13 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Documents;
 
-namespace CleanArchitecture.Domain.Entities.Definitions.Vehicles;
-public class VehicleDriverDocuments : LightBaseEntity<int>, IEntity<int>
+namespace CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
+public class VehicleTemplatesDocument : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey("DocumentTemplate")]
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
-    [ForeignKey("Vehicle")]
-    public int VehicleId { get; set; }
-    public Vehicle Vehicle { get; set; }
+    [ForeignKey("VehicleTemplate")]
+    public int VehicleTemplateId { get; set; }
+    public VehicleTemplate VehicleTemplate  { get; set; }
 }
