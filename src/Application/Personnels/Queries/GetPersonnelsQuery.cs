@@ -25,7 +25,7 @@ public class GetPersonnelsQueryHandler : BaseQueryHandler, IRequestHandler<GetPe
     public async Task<List<int>> Handle(GetPersonnelsQuery request, CancellationToken cancellationToken)
     {
         if (request.Roles == null)
-            request.Roles= new List<Role> { Role.Approver , Role.Observer ,Role.Reporter};
+            request.Roles= new List<Role> { Role.Approver , Role.Observer ,Role.Reporter , Role.Canceler};
         List<int> result = await _applicationDbContext.PersonnelRoles
              .Where(x =>request.Roles.Contains(x.Role))
              .Select(x => x.PersonnelId)

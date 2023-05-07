@@ -18,4 +18,5 @@ public class CategoryDocument : LightBaseEntity<int>, IEntity<int>
     [ForeignKey("ServiceCategory")]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; }
+    public bool IsRequired { get; set; }
 }

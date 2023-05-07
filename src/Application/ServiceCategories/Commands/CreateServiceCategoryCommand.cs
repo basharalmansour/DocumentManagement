@@ -15,24 +15,8 @@ public class CreateServiceCategoryCommand : IRequest<int>
 {
     public LanguageString Name { get; set; }
     public LanguageString Description { get; set; }
-    public int MaxServiceDuration { get; set; }
-    public TimeUnit ServiceDurationUnit { get; set; }
-    public int MaxPersonnelCount { get; set; }
-    public List<int> PersonnelDocuments { get; set; }
-    public int? ParentServiceCategoryId { get; set; }
-    public bool IsParallelApprovement { get; set; }
-    public CreateCategoryRoleDto ServiceCategoryRoles { get; set; }
-    public List<int> SpecialRules { get; set; }
-    public List<int> Documents { get; set; }
-    public List<CreateVehicleTemplateCategoryDto> VehicleTemplates { get; set; }
-    public List<int> ServiceCategoryAreas { get; set; }
-    public List<Guid> ServiceCategoryBlocks { get; set; }
-    public List<int> ServiceCategoryBrands { get; set; }
-    public List<int> ServiceCategoryCompanies { get; set; }
-    public List<Guid> ServiceCategorySites { get; set; }
-    public List<int> ServiceCategoryUnits { get; set; }
-    public List<Guid> ServiceCategoryZones { get; set; }
-    public List<int> ServiceCategoryPresenceGroups { get; set; }
+    public bool IsMainCategory { get; set; }
+    public CreateServiceCategoryDetailsDto ServiceCategoryDetails { get; set; }
 }
 public class CreateServiceCategoryCommandHandler : BaseCommandHandler, IRequestHandler<CreateServiceCategoryCommand, int>
 {
@@ -42,6 +26,8 @@ public class CreateServiceCategoryCommandHandler : BaseCommandHandler, IRequestH
     }
     public async Task<int> Handle(CreateServiceCategoryCommand request, CancellationToken cancellationToken)
     {
+        if (request.IsMainCategory)
+            request.ServiceCategoryDetails = null;
         var serviceCategory = _mapper.Map<ServiceCategory>(request);
         serviceCategory.UniqueCode= UniqueCode.CreateUniqueCode(8, false, "S");
         _applicationDbContext.ServiceCategories.Add(serviceCategory);

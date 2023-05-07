@@ -20,10 +20,13 @@ public class ServiceCategoryDetailsDto : BasicServiceCategoryDto
     public LanguageString Description { get; set; }
     public int MaxServiceDuration { get; set; }
     public TimeUnit ServiceDurationUnit { get; set; }
+    public int MinOrderDuration { get; set; }
+    public TimeUnit MinOrderDurationUnit { get; set; }
+    public int MaxOrderDuration { get; set; }
+    public TimeUnit MaxOrderDurationUnit { get; set; }
     public int MaxPersonnelCount { get; set; }
     public int ParentServiceCategoryId { get; set; }
     public int ServiceCategoryApprovmentId { get; set; }
-    public List<CategorySpecialRulesDto> SpecialRules { get; set; }
     public List<BasicServiceCategoryDto> SubServiceCategories { get; set; }
     public List<VehicleCategoryDto> Vehicles { get; set; }
     public List<CategoryDocumentDto> Documents { get; set; }

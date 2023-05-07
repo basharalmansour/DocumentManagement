@@ -19,27 +19,10 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     [StringLength(StringLengths.MediumString)]
     public string Name { get; set; }
     public string Description { get; set; }
-    public int MaxServiceDuration { get; set; }
-    public TimeUnit ServiceDurationUnit { get; set; }
-    public int MaxPersonnelCount { get; set; }
-    public bool IsParallelApprovement { get; set; }
-    public List<ServiceCategoryArea> ServiceCategoryAreas { get; set; }
-    public List<ServiceCategoryBlock> ServiceCategoryBlocks { get; set; }
-    public List<ServiceCategoryBrand> ServiceCategoryBrands { get; set; }
-    public List<ServiceCategoryCompany> ServiceCategoryCompanies { get; set; }
-    public List<ServiceCategorySite> ServiceCategorySites { get; set; }
-    public List<ServiceCategoryUnit> ServiceCategoryUnits { get; set; }
-    public List<ServiceCategoryZone> ServiceCategoryZones { get; set; }
-    public List<ServiceCategoryPresenceGroup> ServiceCategoryPresenceGroups { get; set; }
-
-    public List<CategorySpecialRules> SpecialRules { get; set; }
-    public List<VehicleTemplateCategory> Vehicles { get; set; }
-    public List<CategoryDocument> Documents { get; set; }
-    public List<CategoryPersonnelDocument> PersonnelDocuments { get; set; }
-
-    [ForeignKey("ParentServiceCategory") ] 
-    public int? ParentServiceCategoryId { get; set; } 
+    public ServiceCategoryDetails ServiceCategoryDetails { get; set; }
+    [ForeignKey("ParentServiceCategory")]
+    public int? ParentServiceCategoryId { get; set; }
     public ServiceCategory ParentServiceCategory { get; set; }
+    public bool IsMainCategory { get; set; }
     public List<ServiceCategory> SubServiceCategories { get; set; }
-    public List<ServiceCategoryRole> ServiceCategoryRoles { get; set; }
 }

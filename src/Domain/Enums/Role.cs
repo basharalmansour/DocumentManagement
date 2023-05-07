@@ -9,5 +9,6 @@ public enum Role
 {
     Approver ,
     Observer ,
-    Reporter
+    Reporter ,
+    Canceler
 } 
