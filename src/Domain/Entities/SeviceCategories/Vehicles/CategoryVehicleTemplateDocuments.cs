@@ -20,5 +20,6 @@ public class CategoryVehicleTemplateDocuments : LightBaseEntity<int>, IEntity<in
     [ForeignKey ("DocumentTemplate")]
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
+    public bool IsRequired { get; set; }
     public VehicleDocumentType VehicleDocumentType { get; set; }
 } 

@@ -11,5 +11,6 @@ public class BasicServiceCategoryDto
     public int Id { get; set; }
     public string UniqueCode { get; set; }
     public LanguageString Name { get; set; }
+    public bool IsMainCategory { get; set; }
     public List<BasicServiceCategoryDto> SubServiceCategories { get; set; }
 }

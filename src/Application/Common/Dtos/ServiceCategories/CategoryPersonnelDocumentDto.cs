@@ -11,4 +11,5 @@ public class CategoryPersonnelDocumentDto
 {
     public int ServiceCategoryId { get; set; }
     public int DocumentTemplateId { get; set; }
+    public bool IsRequired { get; set; }
 }

@@ -7,4 +7,5 @@ public class CategoryDocumentDto
 {
     public int DocumentTemplateId { get; set; }
     public int ServiceCategoryId { get; set; }
+    public bool IsRequired { get; set; }
 }
