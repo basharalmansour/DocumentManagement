@@ -976,11 +976,11 @@ export class CustomerClient implements ICustomerClient {
 }
 
 export interface IVehicleClient {
-    createVehicle(request: CreateVehicleCommand): Observable<ApplicationResponse>;
-    getVehicles(request: GetVehicleQuery | null | undefined): Observable<ApplicationResponse>;
+    createVehicle(request: CreateVehicleTemplateCommand): Observable<ApplicationResponse>;
+    getVehicles(request: GetVehicleTemplateQuery | null | undefined): Observable<ApplicationResponse>;
     getVehicleById(id: number | undefined): Observable<ApplicationResponse>;
-    editVehicle(request: EditVehicleCommand): Observable<ApplicationResponse>;
-    deleteVehicle(request: RemoveVehicleCommand): Observable<ApplicationResponse>;
+    editVehicle(request: EditVehicleTemplateCommand): Observable<ApplicationResponse>;
+    removeVehicle(request: RemoveVehicleTemplateCommand): Observable<ApplicationResponse>;
 }
 
 @Injectable({
@@ -996,8 +996,8 @@ export class VehicleClient implements IVehicleClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createVehicle(request: CreateVehicleCommand) : Observable<ApplicationResponse> {
-        let url_ = this.baseUrl + "/api/Vehicle/AddVehicle";
+    createVehicle(request: CreateVehicleTemplateCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Vehicle/CreateVehicle";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -1048,8 +1048,8 @@ export class VehicleClient implements IVehicleClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getVehicles(request: GetVehicleQuery | null | undefined) : Observable<ApplicationResponse> {
-        let url_ = this.baseUrl + "/api/Vehicle/ViewVehicles?";
+    getVehicles(request: GetVehicleTemplateQuery | null | undefined) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Vehicle/GetVehicles?";
         if (request !== undefined && request !== null)
             url_ += "request=" + encodeURIComponent("" + request) + "&";
         url_ = url_.replace(/[?&]$/, "");
@@ -1150,7 +1150,7 @@ export class VehicleClient implements IVehicleClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    editVehicle(request: EditVehicleCommand) : Observable<ApplicationResponse> {
+    editVehicle(request: EditVehicleTemplateCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Vehicle/EditVehicle";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1202,8 +1202,8 @@ export class VehicleClient implements IVehicleClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    deleteVehicle(request: RemoveVehicleCommand) : Observable<ApplicationResponse> {
-        let url_ = this.baseUrl + "/api/Vehicle/DeleteVehicle";
+    removeVehicle(request: RemoveVehicleTemplateCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Vehicle/RemoveVehicle";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -1219,11 +1219,11 @@ export class VehicleClient implements IVehicleClient {
         };
 
         return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeleteVehicle(response_);
+            return this.processRemoveVehicle(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDeleteVehicle(<any>response_);
+                    return this.processRemoveVehicle(<any>response_);
                 } catch (e) {
                     return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
@@ -1232,7 +1232,7 @@ export class VehicleClient implements IVehicleClient {
         }));
     }
 
-    protected processDeleteVehicle(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processRemoveVehicle(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1262,6 +1262,7 @@ export interface IUserGroupClient {
     editUserGroup(request: EditUserGroupCommand): Observable<ApplicationResponse>;
     deleteUserGroup(request: RemoveUserGroupCommand): Observable<ApplicationResponse>;
     getUserGroupApprovers(id: number | undefined): Observable<ApplicationResponse>;
+    getPersonnelRoles(personnelId: number | undefined): Observable<ApplicationResponse>;
 }
 
 @Injectable({
@@ -1586,6 +1587,58 @@ export class UserGroupClient implements IUserGroupClient {
         }
         return _observableOf<ApplicationResponse>(<any>null);
     }
+
+    getPersonnelRoles(personnelId: number | undefined) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/UserGroup/GetPersonnelRoles?";
+        if (personnelId === null)
+            throw new Error("The parameter 'personnelId' cannot be null.");
+        else if (personnelId !== undefined)
+            url_ += "PersonnelId=" + encodeURIComponent("" + personnelId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPersonnelRoles(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPersonnelRoles(<any>response_);
+                } catch (e) {
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPersonnelRoles(response: HttpResponseBase): Observable<ApplicationResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ApplicationResponse>(<any>null);
+    }
 }
 
 export interface IServiceCategoryClient {
@@ -1596,7 +1649,6 @@ export interface IServiceCategoryClient {
     deleteServiceCategory(request: RemoveServiceCategoryCommand): Observable<ApplicationResponse>;
     getPersonnelCategories(presonnelId: number | undefined): Observable<ApplicationResponse>;
     getPersonnelRoles(personnelId: number | undefined): Observable<ApplicationResponse>;
-    getAllApprovers(request: GetAllApproversQuery | null | undefined): Observable<ApplicationResponse>;
 }
 
 @Injectable({
@@ -1973,11 +2025,35 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
         }
         return _observableOf<ApplicationResponse>(<any>null);
     }
+}
 
-    getAllApprovers(request: GetAllApproversQuery | null | undefined) : Observable<ApplicationResponse> {
-        let url_ = this.baseUrl + "/api/ServiceCategory/GetAllApprovers?";
-        if (request !== undefined && request !== null)
-            url_ += "request=" + encodeURIComponent("" + request) + "&";
+export interface IPersonnelClient {
+    getAllApprovers(roles: Role[] | null | undefined, searchText: string | null | undefined, departmentId: number | undefined): Observable<ApplicationResponse>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class PersonnelClient implements IPersonnelClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAllApprovers(roles: Role[] | null | undefined, searchText: string | null | undefined, departmentId: number | undefined) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Personnel/GetAllApprovers?";
+        if (roles !== undefined && roles !== null)
+            roles && roles.forEach(item => { url_ += "Roles=" + encodeURIComponent("" + item) + "&"; });
+        if (searchText !== undefined && searchText !== null)
+            url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
+        if (departmentId === null)
+            throw new Error("The parameter 'departmentId' cannot be null.");
+        else if (departmentId !== undefined)
+            url_ += "DepartmentId=" + encodeURIComponent("" + departmentId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2026,27 +2102,27 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
 }
 
 export interface IPresenceClient {
-    getAreaDocuments(request: AreaDocumentsQuery): Observable<ApplicationResponse>;
-    getBlockDocuments(request: BlockDocumentsQuery): Observable<ApplicationResponse>;
-    getBrandDocuments(request: BrandDocumentsQuery): Observable<ApplicationResponse>;
-    getCompanyDocuments(request: CompanyDocumentsQuery): Observable<ApplicationResponse>;
-    getSiteDocuments(request: SiteDocumentsQuery): Observable<ApplicationResponse>;
-    getUnitDocuments(request: UnitDocumentsQuery): Observable<ApplicationResponse>;
-    getZoneDocuments(request: ZoneDocumentsQuery): Observable<ApplicationResponse>;
-    addAreaDocuments(request: AddAreaDocuments): Observable<FileResponse>;
-    addBlockDocuments(request: AddBlockDocuments): Observable<FileResponse>;
-    addBrandDocuments(request: AddBrandDocuments): Observable<FileResponse>;
-    addCompanyDocuments(request: AddCompanyDocuments): Observable<FileResponse>;
-    addSiteDocuments(request: AddSiteDocuments): Observable<FileResponse>;
-    addUnitDocuments(request: AddUnitDocuments): Observable<FileResponse>;
-    addZoneDocuments(request: AddZoneDocuments): Observable<FileResponse>;
-    removeAreaDocuments(request: RemoveAreaDocuments): Observable<FileResponse>;
-    removeBlockDocuments(request: RemoveBlockDocuments): Observable<FileResponse>;
-    removeBrandDocuments(request: RemoveBrandDocuments): Observable<FileResponse>;
-    removeCompanyDocuments(request: RemoveCompanyDocuments): Observable<FileResponse>;
-    removeSiteDocuments(request: RemoveSiteDocuments): Observable<FileResponse>;
-    removeUnitDocuments(request: RemoveUnitDocuments): Observable<FileResponse>;
-    removeZoneDocuments(request: RemoveZoneDocuments): Observable<FileResponse>;
+    getAreaDocuments(request: GetAreaDocumentsQuery): Observable<ApplicationResponse>;
+    getBlockDocuments(request: GetBlockDocumentsQuery): Observable<ApplicationResponse>;
+    getBrandDocuments(request: GetBrandDocumentsQuery): Observable<ApplicationResponse>;
+    getCompanyDocuments(request: GetCompanyDocumentsQuery): Observable<ApplicationResponse>;
+    getSiteDocuments(request: GetSiteDocumentsQuery): Observable<ApplicationResponse>;
+    getUnitDocuments(request: GetUnitDocumentsQuery): Observable<ApplicationResponse>;
+    getZoneDocuments(request: GetZoneDocumentsQuery): Observable<ApplicationResponse>;
+    createAreaDocuments(request: CreateAreaDocumentsCommand): Observable<ApplicationResponse>;
+    createBlockDocuments(request: CreateBlockDocumentsCommand): Observable<ApplicationResponse>;
+    createBrandDocuments(request: CreateBrandDocumentsCommand): Observable<ApplicationResponse>;
+    createCompanyDocuments(request: CreateCompanyDocumentsCommand): Observable<ApplicationResponse>;
+    createSiteDocuments(request: CreateSiteDocumentsCommand): Observable<ApplicationResponse>;
+    createUnitDocuments(request: CreateUnitDocumentsCommand): Observable<ApplicationResponse>;
+    createZoneDocuments(request: CreateZoneDocumentsCommand): Observable<ApplicationResponse>;
+    removeAreaDocuments(request: RemoveAreaDocumentsCommand): Observable<ApplicationResponse>;
+    removeBlockDocuments(request: RemoveBlockDocumentsCommand): Observable<ApplicationResponse>;
+    removeBrandDocuments(request: RemoveBrandDocumentsCommand): Observable<ApplicationResponse>;
+    removeCompanyDocuments(request: RemoveCompanyDocumentsCommand): Observable<ApplicationResponse>;
+    removeSiteDocuments(request: RemoveSiteDocumentsCommand): Observable<ApplicationResponse>;
+    removeUnitDocuments(request: RemoveUnitDocumentsCommand): Observable<ApplicationResponse>;
+    removeZoneDocuments(request: RemoveZoneDocumentsCommand): Observable<ApplicationResponse>;
 }
 
 @Injectable({
@@ -2062,7 +2138,7 @@ export class PresenceClient implements IPresenceClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getAreaDocuments(request: AreaDocumentsQuery) : Observable<ApplicationResponse> {
+    getAreaDocuments(request: GetAreaDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetAreaDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2114,7 +2190,7 @@ export class PresenceClient implements IPresenceClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getBlockDocuments(request: BlockDocumentsQuery) : Observable<ApplicationResponse> {
+    getBlockDocuments(request: GetBlockDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetBlockDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2166,7 +2242,7 @@ export class PresenceClient implements IPresenceClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getBrandDocuments(request: BrandDocumentsQuery) : Observable<ApplicationResponse> {
+    getBrandDocuments(request: GetBrandDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetBrandDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2218,7 +2294,7 @@ export class PresenceClient implements IPresenceClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getCompanyDocuments(request: CompanyDocumentsQuery) : Observable<ApplicationResponse> {
+    getCompanyDocuments(request: GetCompanyDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetCompanyDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2270,7 +2346,7 @@ export class PresenceClient implements IPresenceClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getSiteDocuments(request: SiteDocumentsQuery) : Observable<ApplicationResponse> {
+    getSiteDocuments(request: GetSiteDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetSiteDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2322,7 +2398,7 @@ export class PresenceClient implements IPresenceClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getUnitDocuments(request: UnitDocumentsQuery) : Observable<ApplicationResponse> {
+    getUnitDocuments(request: GetUnitDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetUnitDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2374,7 +2450,7 @@ export class PresenceClient implements IPresenceClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getZoneDocuments(request: ZoneDocumentsQuery) : Observable<ApplicationResponse> {
+    getZoneDocuments(request: GetZoneDocumentsQuery) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/GetZoneDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2426,8 +2502,8 @@ export class PresenceClient implements IPresenceClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    addAreaDocuments(request: AddAreaDocuments) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Presence/AddAreaDocuments";
+    createAreaDocuments(request: CreateAreaDocumentsCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Presence/CreateAreaDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2438,46 +2514,48 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddAreaDocuments(response_);
+            return this.processCreateAreaDocuments(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddAreaDocuments(<any>response_);
+                    return this.processCreateAreaDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processAddAreaDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateAreaDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    addBlockDocuments(request: AddBlockDocuments) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Presence/AddBlockDocuments";
+    createBlockDocuments(request: CreateBlockDocumentsCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Presence/CreateBlockDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2488,46 +2566,48 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddBlockDocuments(response_);
+            return this.processCreateBlockDocuments(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddBlockDocuments(<any>response_);
+                    return this.processCreateBlockDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processAddBlockDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateBlockDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    addBrandDocuments(request: AddBrandDocuments) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Presence/AddBrandDocuments";
+    createBrandDocuments(request: CreateBrandDocumentsCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Presence/CreateBrandDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2538,46 +2618,48 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddBrandDocuments(response_);
+            return this.processCreateBrandDocuments(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddBrandDocuments(<any>response_);
+                    return this.processCreateBrandDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processAddBrandDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateBrandDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    addCompanyDocuments(request: AddCompanyDocuments) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Presence/AddCompanyDocuments";
+    createCompanyDocuments(request: CreateCompanyDocumentsCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Presence/CreateCompanyDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2588,46 +2670,48 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddCompanyDocuments(response_);
+            return this.processCreateCompanyDocuments(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddCompanyDocuments(<any>response_);
+                    return this.processCreateCompanyDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processAddCompanyDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateCompanyDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    addSiteDocuments(request: AddSiteDocuments) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Presence/AddSiteDocuments";
+    createSiteDocuments(request: CreateSiteDocumentsCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Presence/CreateSiteDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2638,46 +2722,48 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddSiteDocuments(response_);
+            return this.processCreateSiteDocuments(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddSiteDocuments(<any>response_);
+                    return this.processCreateSiteDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processAddSiteDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateSiteDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    addUnitDocuments(request: AddUnitDocuments) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Presence/AddUnitDocuments";
+    createUnitDocuments(request: CreateUnitDocumentsCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Presence/CreateUnitDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2688,46 +2774,48 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddUnitDocuments(response_);
+            return this.processCreateUnitDocuments(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddUnitDocuments(<any>response_);
+                    return this.processCreateUnitDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processAddUnitDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateUnitDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    addZoneDocuments(request: AddZoneDocuments) : Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Presence/AddZoneDocuments";
+    createZoneDocuments(request: CreateZoneDocumentsCommand) : Observable<ApplicationResponse> {
+        let url_ = this.baseUrl + "/api/Presence/CreateZoneDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(request);
@@ -2738,45 +2826,47 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddZoneDocuments(response_);
+            return this.processCreateZoneDocuments(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddZoneDocuments(<any>response_);
+                    return this.processCreateZoneDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processAddZoneDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreateZoneDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    removeAreaDocuments(request: RemoveAreaDocuments) : Observable<FileResponse> {
+    removeAreaDocuments(request: RemoveAreaDocumentsCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/RemoveAreaDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2788,7 +2878,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2799,34 +2889,36 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveAreaDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveAreaDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processRemoveAreaDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    removeBlockDocuments(request: RemoveBlockDocuments) : Observable<FileResponse> {
+    removeBlockDocuments(request: RemoveBlockDocumentsCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/RemoveBlockDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2838,7 +2930,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2849,34 +2941,36 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveBlockDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveBlockDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processRemoveBlockDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    removeBrandDocuments(request: RemoveBrandDocuments) : Observable<FileResponse> {
+    removeBrandDocuments(request: RemoveBrandDocumentsCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/RemoveBrandDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2888,7 +2982,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2899,34 +2993,36 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveBrandDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveBrandDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processRemoveBrandDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    removeCompanyDocuments(request: RemoveCompanyDocuments) : Observable<FileResponse> {
+    removeCompanyDocuments(request: RemoveCompanyDocumentsCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/RemoveCompanyDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2938,7 +3034,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2949,34 +3045,36 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveCompanyDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveCompanyDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processRemoveCompanyDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    removeSiteDocuments(request: RemoveSiteDocuments) : Observable<FileResponse> {
+    removeSiteDocuments(request: RemoveSiteDocumentsCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/RemoveSiteDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2988,7 +3086,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -2999,34 +3097,36 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveSiteDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveSiteDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processRemoveSiteDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    removeUnitDocuments(request: RemoveUnitDocuments) : Observable<FileResponse> {
+    removeUnitDocuments(request: RemoveUnitDocumentsCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/RemoveUnitDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3038,7 +3138,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -3049,34 +3149,36 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveUnitDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveUnitDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processRemoveUnitDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    removeZoneDocuments(request: RemoveZoneDocuments) : Observable<FileResponse> {
+    removeZoneDocuments(request: RemoveZoneDocumentsCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/Presence/RemoveZoneDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3088,7 +3190,7 @@ export class PresenceClient implements IPresenceClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -3099,31 +3201,33 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveZoneDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FileResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveZoneDocuments(response: HttpResponseBase): Observable<FileResponse> {
+    protected processRemoveZoneDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse>(<any>null);
+        return _observableOf<ApplicationResponse>(<any>null);
     }
 }
 
@@ -3135,7 +3239,7 @@ export interface IPresenceGroupClient {
     removePresenceGroup(request: RemovePresenceGroupCommand): Observable<ApplicationResponse>;
     getPresenceGroupDocuments(request: GetPresenceGroupDocumentsQuery): Observable<ApplicationResponse>;
     addPresenceGroupDocument(presenceGroupId: number | undefined, documentTemplateId: number | undefined): Observable<ApplicationResponse>;
-    removePresenceGroupDocument(request: RemovePresenceGroupDocument): Observable<ApplicationResponse>;
+    removePresenceGroupDocument(request: RemovePresenceGroupDocumentCommand): Observable<ApplicationResponse>;
 }
 
 @Injectable({
@@ -3517,7 +3621,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    removePresenceGroupDocument(request: RemovePresenceGroupDocument) : Observable<ApplicationResponse> {
+    removePresenceGroupDocument(request: RemovePresenceGroupDocumentCommand) : Observable<ApplicationResponse> {
         let url_ = this.baseUrl + "/api/PresenceGroup/RemovePresenceGroupDocument";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -4837,13 +4941,13 @@ export interface IApplicationResponse {
     result?: any | undefined;
 }
 
-export class CreateVehicleCommand implements ICreateVehicleCommand {
+export class CreateVehicleTemplateCommand implements ICreateVehicleTemplateCommand {
     name?: LanguageString | undefined;
     isNeedDriver?: boolean;
-    vehicleDocuments?: number[] | undefined;
+    vehicleTemplateDocuments?: number[] | undefined;
     driverDocuments?: number[] | undefined;
 
-    constructor(data?: ICreateVehicleCommand) {
+    constructor(data?: ICreateVehicleTemplateCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4856,10 +4960,10 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
         if (_data) {
             this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
             this.isNeedDriver = _data["isNeedDriver"];
-            if (Array.isArray(_data["vehicleDocuments"])) {
-                this.vehicleDocuments = [] as any;
-                for (let item of _data["vehicleDocuments"])
-                    this.vehicleDocuments!.push(item);
+            if (Array.isArray(_data["vehicleTemplateDocuments"])) {
+                this.vehicleTemplateDocuments = [] as any;
+                for (let item of _data["vehicleTemplateDocuments"])
+                    this.vehicleTemplateDocuments!.push(item);
             }
             if (Array.isArray(_data["driverDocuments"])) {
                 this.driverDocuments = [] as any;
@@ -4869,9 +4973,9 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
         }
     }
 
-    static fromJS(data: any): CreateVehicleCommand {
+    static fromJS(data: any): CreateVehicleTemplateCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateVehicleCommand();
+        let result = new CreateVehicleTemplateCommand();
         result.init(data);
         return result;
     }
@@ -4880,10 +4984,10 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name ? this.name.toJSON() : <any>undefined;
         data["isNeedDriver"] = this.isNeedDriver;
-        if (Array.isArray(this.vehicleDocuments)) {
-            data["vehicleDocuments"] = [];
-            for (let item of this.vehicleDocuments)
-                data["vehicleDocuments"].push(item);
+        if (Array.isArray(this.vehicleTemplateDocuments)) {
+            data["vehicleTemplateDocuments"] = [];
+            for (let item of this.vehicleTemplateDocuments)
+                data["vehicleTemplateDocuments"].push(item);
         }
         if (Array.isArray(this.driverDocuments)) {
             data["driverDocuments"] = [];
@@ -4894,10 +4998,10 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
     }
 }
 
-export interface ICreateVehicleCommand {
+export interface ICreateVehicleTemplateCommand {
     name?: LanguageString | undefined;
     isNeedDriver?: boolean;
-    vehicleDocuments?: number[] | undefined;
+    vehicleTemplateDocuments?: number[] | undefined;
     driverDocuments?: number[] | undefined;
 }
 
@@ -4950,9 +5054,9 @@ export enum LanguageCode {
     En = 2,
 }
 
-export class GetVehicleQuery implements IGetVehicleQuery {
+export class GetVehicleTemplateQuery implements IGetVehicleTemplateQuery {
 
-    constructor(data?: IGetVehicleQuery) {
+    constructor(data?: IGetVehicleTemplateQuery) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4964,9 +5068,9 @@ export class GetVehicleQuery implements IGetVehicleQuery {
     init(_data?: any) {
     }
 
-    static fromJS(data: any): GetVehicleQuery {
+    static fromJS(data: any): GetVehicleTemplateQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new GetVehicleQuery();
+        let result = new GetVehicleTemplateQuery();
         result.init(data);
         return result;
     }
@@ -4977,13 +5081,13 @@ export class GetVehicleQuery implements IGetVehicleQuery {
     }
 }
 
-export interface IGetVehicleQuery {
+export interface IGetVehicleTemplateQuery {
 }
 
-export class EditVehicleCommand extends CreateVehicleCommand implements IEditVehicleCommand {
+export class EditVehicleTemplateCommand extends CreateVehicleTemplateCommand implements IEditVehicleTemplateCommand {
     id?: number;
 
-    constructor(data?: IEditVehicleCommand) {
+    constructor(data?: IEditVehicleTemplateCommand) {
         super(data);
     }
 
@@ -4994,9 +5098,9 @@ export class EditVehicleCommand extends CreateVehicleCommand implements IEditVeh
         }
     }
 
-    static fromJS(data: any): EditVehicleCommand {
+    static fromJS(data: any): EditVehicleTemplateCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new EditVehicleCommand();
+        let result = new EditVehicleTemplateCommand();
         result.init(data);
         return result;
     }
@@ -5009,14 +5113,14 @@ export class EditVehicleCommand extends CreateVehicleCommand implements IEditVeh
     }
 }
 
-export interface IEditVehicleCommand extends ICreateVehicleCommand {
+export interface IEditVehicleTemplateCommand extends ICreateVehicleTemplateCommand {
     id?: number;
 }
 
-export class RemoveVehicleCommand implements IRemoveVehicleCommand {
+export class RemoveVehicleTemplateCommand implements IRemoveVehicleTemplateCommand {
     id?: number;
 
-    constructor(data?: IRemoveVehicleCommand) {
+    constructor(data?: IRemoveVehicleTemplateCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5031,9 +5135,9 @@ export class RemoveVehicleCommand implements IRemoveVehicleCommand {
         }
     }
 
-    static fromJS(data: any): RemoveVehicleCommand {
+    static fromJS(data: any): RemoveVehicleTemplateCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RemoveVehicleCommand();
+        let result = new RemoveVehicleTemplateCommand();
         result.init(data);
         return result;
     }
@@ -5045,7 +5149,7 @@ export class RemoveVehicleCommand implements IRemoveVehicleCommand {
     }
 }
 
-export interface IRemoveVehicleCommand {
+export interface IRemoveVehicleTemplateCommand {
     id?: number;
 }
 
@@ -5169,23 +5273,8 @@ export interface IRemoveUserGroupCommand {
 export class CreateServiceCategoryCommand implements ICreateServiceCategoryCommand {
     name?: LanguageString | undefined;
     description?: LanguageString | undefined;
-    maxServiceDuration?: number;
-    serviceDurationUnit?: TimeUnit;
-    maxPersonnelCount?: number;
-    personnelDocuments?: number[] | undefined;
-    parentServiceCategoryId?: number | undefined;
-    isParallelApprovement?: boolean;
-    serviceCategoryRoles?: CreateCategoryRoleDto | undefined;
-    specialRules?: number[] | undefined;
-    documents?: number[] | undefined;
-    vehicles?: CreateVehicleCategoryDto[] | undefined;
-    serviceCategoryAreas?: number[] | undefined;
-    serviceCategoryBlocks?: string[] | undefined;
-    serviceCategoryBrands?: number[] | undefined;
-    serviceCategoryCompanies?: number[] | undefined;
-    serviceCategorySites?: string[] | undefined;
-    serviceCategoryUnits?: number[] | undefined;
-    serviceCategoryZones?: string[] | undefined;
+    isMainCategory?: boolean;
+    serviceCategoryDetails?: CreateServiceCategoryDetailsDto | undefined;
 
     constructor(data?: ICreateServiceCategoryCommand) {
         if (data) {
@@ -5200,8 +5289,75 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
         if (_data) {
             this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
             this.description = _data["description"] ? LanguageString.fromJS(_data["description"]) : <any>undefined;
+            this.isMainCategory = _data["isMainCategory"];
+            this.serviceCategoryDetails = _data["serviceCategoryDetails"] ? CreateServiceCategoryDetailsDto.fromJS(_data["serviceCategoryDetails"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): CreateServiceCategoryCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateServiceCategoryCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
+        data["description"] = this.description ? this.description.toJSON() : <any>undefined;
+        data["isMainCategory"] = this.isMainCategory;
+        data["serviceCategoryDetails"] = this.serviceCategoryDetails ? this.serviceCategoryDetails.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface ICreateServiceCategoryCommand {
+    name?: LanguageString | undefined;
+    description?: LanguageString | undefined;
+    isMainCategory?: boolean;
+    serviceCategoryDetails?: CreateServiceCategoryDetailsDto | undefined;
+}
+
+export class CreateServiceCategoryDetailsDto implements ICreateServiceCategoryDetailsDto {
+    maxServiceDuration?: number;
+    serviceDurationUnit?: TimeUnit;
+    minOrderDuration?: number;
+    minOrderDurationUnit?: TimeUnit;
+    maxOrderDuration?: number;
+    maxOrderDurationUnit?: TimeUnit;
+    maxPersonnelCount?: number;
+    personnelDocuments?: number[] | undefined;
+    parentServiceCategoryId?: number | undefined;
+    isParallelApprovement?: boolean;
+    serviceCategoryRoles?: CreateCategoryRoleDto[] | undefined;
+    documents?: number[] | undefined;
+    vehicleTemplates?: CreateVehicleTemplateCategoryDto[] | undefined;
+    serviceCategoryAreas?: number[] | undefined;
+    serviceCategoryBlocks?: string[] | undefined;
+    serviceCategoryBrands?: number[] | undefined;
+    serviceCategoryCompanies?: number[] | undefined;
+    serviceCategorySites?: string[] | undefined;
+    serviceCategoryUnits?: number[] | undefined;
+    serviceCategoryZones?: string[] | undefined;
+    serviceCategoryPresenceGroups?: number[] | undefined;
+
+    constructor(data?: ICreateServiceCategoryDetailsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
             this.maxServiceDuration = _data["maxServiceDuration"];
             this.serviceDurationUnit = _data["serviceDurationUnit"];
+            this.minOrderDuration = _data["minOrderDuration"];
+            this.minOrderDurationUnit = _data["minOrderDurationUnit"];
+            this.maxOrderDuration = _data["maxOrderDuration"];
+            this.maxOrderDurationUnit = _data["maxOrderDurationUnit"];
             this.maxPersonnelCount = _data["maxPersonnelCount"];
             if (Array.isArray(_data["personnelDocuments"])) {
                 this.personnelDocuments = [] as any;
@@ -5210,21 +5366,20 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
             }
             this.parentServiceCategoryId = _data["parentServiceCategoryId"];
             this.isParallelApprovement = _data["isParallelApprovement"];
-            this.serviceCategoryRoles = _data["serviceCategoryRoles"] ? CreateCategoryRoleDto.fromJS(_data["serviceCategoryRoles"]) : <any>undefined;
-            if (Array.isArray(_data["specialRules"])) {
-                this.specialRules = [] as any;
-                for (let item of _data["specialRules"])
-                    this.specialRules!.push(item);
+            if (Array.isArray(_data["serviceCategoryRoles"])) {
+                this.serviceCategoryRoles = [] as any;
+                for (let item of _data["serviceCategoryRoles"])
+                    this.serviceCategoryRoles!.push(CreateCategoryRoleDto.fromJS(item));
             }
             if (Array.isArray(_data["documents"])) {
                 this.documents = [] as any;
                 for (let item of _data["documents"])
                     this.documents!.push(item);
             }
-            if (Array.isArray(_data["vehicles"])) {
-                this.vehicles = [] as any;
-                for (let item of _data["vehicles"])
-                    this.vehicles!.push(CreateVehicleCategoryDto.fromJS(item));
+            if (Array.isArray(_data["vehicleTemplates"])) {
+                this.vehicleTemplates = [] as any;
+                for (let item of _data["vehicleTemplates"])
+                    this.vehicleTemplates!.push(CreateVehicleTemplateCategoryDto.fromJS(item));
             }
             if (Array.isArray(_data["serviceCategoryAreas"])) {
                 this.serviceCategoryAreas = [] as any;
@@ -5261,22 +5416,29 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
                 for (let item of _data["serviceCategoryZones"])
                     this.serviceCategoryZones!.push(item);
             }
+            if (Array.isArray(_data["serviceCategoryPresenceGroups"])) {
+                this.serviceCategoryPresenceGroups = [] as any;
+                for (let item of _data["serviceCategoryPresenceGroups"])
+                    this.serviceCategoryPresenceGroups!.push(item);
+            }
         }
     }
 
-    static fromJS(data: any): CreateServiceCategoryCommand {
+    static fromJS(data: any): CreateServiceCategoryDetailsDto {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateServiceCategoryCommand();
+        let result = new CreateServiceCategoryDetailsDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
-        data["description"] = this.description ? this.description.toJSON() : <any>undefined;
         data["maxServiceDuration"] = this.maxServiceDuration;
         data["serviceDurationUnit"] = this.serviceDurationUnit;
+        data["minOrderDuration"] = this.minOrderDuration;
+        data["minOrderDurationUnit"] = this.minOrderDurationUnit;
+        data["maxOrderDuration"] = this.maxOrderDuration;
+        data["maxOrderDurationUnit"] = this.maxOrderDurationUnit;
         data["maxPersonnelCount"] = this.maxPersonnelCount;
         if (Array.isArray(this.personnelDocuments)) {
             data["personnelDocuments"] = [];
@@ -5285,21 +5447,20 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
         }
         data["parentServiceCategoryId"] = this.parentServiceCategoryId;
         data["isParallelApprovement"] = this.isParallelApprovement;
-        data["serviceCategoryRoles"] = this.serviceCategoryRoles ? this.serviceCategoryRoles.toJSON() : <any>undefined;
-        if (Array.isArray(this.specialRules)) {
-            data["specialRules"] = [];
-            for (let item of this.specialRules)
-                data["specialRules"].push(item);
+        if (Array.isArray(this.serviceCategoryRoles)) {
+            data["serviceCategoryRoles"] = [];
+            for (let item of this.serviceCategoryRoles)
+                data["serviceCategoryRoles"].push(item.toJSON());
         }
         if (Array.isArray(this.documents)) {
             data["documents"] = [];
             for (let item of this.documents)
                 data["documents"].push(item);
         }
-        if (Array.isArray(this.vehicles)) {
-            data["vehicles"] = [];
-            for (let item of this.vehicles)
-                data["vehicles"].push(item.toJSON());
+        if (Array.isArray(this.vehicleTemplates)) {
+            data["vehicleTemplates"] = [];
+            for (let item of this.vehicleTemplates)
+                data["vehicleTemplates"].push(item.toJSON());
         }
         if (Array.isArray(this.serviceCategoryAreas)) {
             data["serviceCategoryAreas"] = [];
@@ -5336,23 +5497,29 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
             for (let item of this.serviceCategoryZones)
                 data["serviceCategoryZones"].push(item);
         }
+        if (Array.isArray(this.serviceCategoryPresenceGroups)) {
+            data["serviceCategoryPresenceGroups"] = [];
+            for (let item of this.serviceCategoryPresenceGroups)
+                data["serviceCategoryPresenceGroups"].push(item);
+        }
         return data; 
     }
 }
 
-export interface ICreateServiceCategoryCommand {
-    name?: LanguageString | undefined;
-    description?: LanguageString | undefined;
+export interface ICreateServiceCategoryDetailsDto {
     maxServiceDuration?: number;
     serviceDurationUnit?: TimeUnit;
+    minOrderDuration?: number;
+    minOrderDurationUnit?: TimeUnit;
+    maxOrderDuration?: number;
+    maxOrderDurationUnit?: TimeUnit;
     maxPersonnelCount?: number;
     personnelDocuments?: number[] | undefined;
     parentServiceCategoryId?: number | undefined;
     isParallelApprovement?: boolean;
-    serviceCategoryRoles?: CreateCategoryRoleDto | undefined;
-    specialRules?: number[] | undefined;
+    serviceCategoryRoles?: CreateCategoryRoleDto[] | undefined;
     documents?: number[] | undefined;
-    vehicles?: CreateVehicleCategoryDto[] | undefined;
+    vehicleTemplates?: CreateVehicleTemplateCategoryDto[] | undefined;
     serviceCategoryAreas?: number[] | undefined;
     serviceCategoryBlocks?: string[] | undefined;
     serviceCategoryBrands?: number[] | undefined;
@@ -5360,6 +5527,7 @@ export interface ICreateServiceCategoryCommand {
     serviceCategorySites?: string[] | undefined;
     serviceCategoryUnits?: number[] | undefined;
     serviceCategoryZones?: string[] | undefined;
+    serviceCategoryPresenceGroups?: number[] | undefined;
 }
 
 export enum TimeUnit {
@@ -5372,10 +5540,9 @@ export enum TimeUnit {
 
 export class CreateCategoryRoleDto implements ICreateCategoryRoleDto {
     role?: Role;
-    approverDepartments?: number[] | undefined;
-    approverPersonnels?: number[] | undefined;
-    approverUserGroups?: number[] | undefined;
-    serviceCategoryId?: number;
+    responsibleDepartments?: number[] | undefined;
+    responsiblePersonnels?: number[] | undefined;
+    responsibleUserGroups?: number[] | undefined;
 
     constructor(data?: ICreateCategoryRoleDto) {
         if (data) {
@@ -5389,22 +5556,21 @@ export class CreateCategoryRoleDto implements ICreateCategoryRoleDto {
     init(_data?: any) {
         if (_data) {
             this.role = _data["role"];
-            if (Array.isArray(_data["approverDepartments"])) {
-                this.approverDepartments = [] as any;
-                for (let item of _data["approverDepartments"])
-                    this.approverDepartments!.push(item);
+            if (Array.isArray(_data["responsibleDepartments"])) {
+                this.responsibleDepartments = [] as any;
+                for (let item of _data["responsibleDepartments"])
+                    this.responsibleDepartments!.push(item);
             }
-            if (Array.isArray(_data["approverPersonnels"])) {
-                this.approverPersonnels = [] as any;
-                for (let item of _data["approverPersonnels"])
-                    this.approverPersonnels!.push(item);
+            if (Array.isArray(_data["responsiblePersonnels"])) {
+                this.responsiblePersonnels = [] as any;
+                for (let item of _data["responsiblePersonnels"])
+                    this.responsiblePersonnels!.push(item);
             }
-            if (Array.isArray(_data["approverUserGroups"])) {
-                this.approverUserGroups = [] as any;
-                for (let item of _data["approverUserGroups"])
-                    this.approverUserGroups!.push(item);
+            if (Array.isArray(_data["responsibleUserGroups"])) {
+                this.responsibleUserGroups = [] as any;
+                for (let item of _data["responsibleUserGroups"])
+                    this.responsibleUserGroups!.push(item);
             }
-            this.serviceCategoryId = _data["serviceCategoryId"];
         }
     }
 
@@ -5418,45 +5584,44 @@ export class CreateCategoryRoleDto implements ICreateCategoryRoleDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["role"] = this.role;
-        if (Array.isArray(this.approverDepartments)) {
-            data["approverDepartments"] = [];
-            for (let item of this.approverDepartments)
-                data["approverDepartments"].push(item);
+        if (Array.isArray(this.responsibleDepartments)) {
+            data["responsibleDepartments"] = [];
+            for (let item of this.responsibleDepartments)
+                data["responsibleDepartments"].push(item);
         }
-        if (Array.isArray(this.approverPersonnels)) {
-            data["approverPersonnels"] = [];
-            for (let item of this.approverPersonnels)
-                data["approverPersonnels"].push(item);
+        if (Array.isArray(this.responsiblePersonnels)) {
+            data["responsiblePersonnels"] = [];
+            for (let item of this.responsiblePersonnels)
+                data["responsiblePersonnels"].push(item);
         }
-        if (Array.isArray(this.approverUserGroups)) {
-            data["approverUserGroups"] = [];
-            for (let item of this.approverUserGroups)
-                data["approverUserGroups"].push(item);
+        if (Array.isArray(this.responsibleUserGroups)) {
+            data["responsibleUserGroups"] = [];
+            for (let item of this.responsibleUserGroups)
+                data["responsibleUserGroups"].push(item);
         }
-        data["serviceCategoryId"] = this.serviceCategoryId;
         return data; 
     }
 }
 
 export interface ICreateCategoryRoleDto {
     role?: Role;
-    approverDepartments?: number[] | undefined;
-    approverPersonnels?: number[] | undefined;
-    approverUserGroups?: number[] | undefined;
-    serviceCategoryId?: number;
+    responsibleDepartments?: number[] | undefined;
+    responsiblePersonnels?: number[] | undefined;
+    responsibleUserGroups?: number[] | undefined;
 }
 
 export enum Role {
     Approver = 0,
     Observer = 1,
     Reporter = 2,
+    Canceler = 3,
 }
 
-export class CreateVehicleCategoryDto implements ICreateVehicleCategoryDto {
-    vehicleId?: number;
-    vehicleDocuments?: CreateCategoryVehicleDocuments[] | undefined;
+export class CreateVehicleTemplateCategoryDto implements ICreateVehicleTemplateCategoryDto {
+    vehicleTemplateId?: number;
+    vehicleTemplateDocuments?: CreateCategoryVehicleTemplateDocuments[] | undefined;
 
-    constructor(data?: ICreateVehicleCategoryDto) {
+    constructor(data?: ICreateVehicleTemplateCategoryDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5467,44 +5632,45 @@ export class CreateVehicleCategoryDto implements ICreateVehicleCategoryDto {
 
     init(_data?: any) {
         if (_data) {
-            this.vehicleId = _data["vehicleId"];
-            if (Array.isArray(_data["vehicleDocuments"])) {
-                this.vehicleDocuments = [] as any;
-                for (let item of _data["vehicleDocuments"])
-                    this.vehicleDocuments!.push(CreateCategoryVehicleDocuments.fromJS(item));
+            this.vehicleTemplateId = _data["vehicleTemplateId"];
+            if (Array.isArray(_data["vehicleTemplateDocuments"])) {
+                this.vehicleTemplateDocuments = [] as any;
+                for (let item of _data["vehicleTemplateDocuments"])
+                    this.vehicleTemplateDocuments!.push(CreateCategoryVehicleTemplateDocuments.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): CreateVehicleCategoryDto {
+    static fromJS(data: any): CreateVehicleTemplateCategoryDto {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateVehicleCategoryDto();
+        let result = new CreateVehicleTemplateCategoryDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["vehicleId"] = this.vehicleId;
-        if (Array.isArray(this.vehicleDocuments)) {
-            data["vehicleDocuments"] = [];
-            for (let item of this.vehicleDocuments)
-                data["vehicleDocuments"].push(item.toJSON());
+        data["vehicleTemplateId"] = this.vehicleTemplateId;
+        if (Array.isArray(this.vehicleTemplateDocuments)) {
+            data["vehicleTemplateDocuments"] = [];
+            for (let item of this.vehicleTemplateDocuments)
+                data["vehicleTemplateDocuments"].push(item.toJSON());
         }
         return data; 
     }
 }
 
-export interface ICreateVehicleCategoryDto {
-    vehicleId?: number;
-    vehicleDocuments?: CreateCategoryVehicleDocuments[] | undefined;
+export interface ICreateVehicleTemplateCategoryDto {
+    vehicleTemplateId?: number;
+    vehicleTemplateDocuments?: CreateCategoryVehicleTemplateDocuments[] | undefined;
 }
 
-export class CreateCategoryVehicleDocuments implements ICreateCategoryVehicleDocuments {
+export class CreateCategoryVehicleTemplateDocuments implements ICreateCategoryVehicleTemplateDocuments {
     documentTemplateId?: number;
+    isRequired?: boolean;
     vehicleDocumentType?: VehicleDocumentType;
 
-    constructor(data?: ICreateCategoryVehicleDocuments) {
+    constructor(data?: ICreateCategoryVehicleTemplateDocuments) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5516,13 +5682,14 @@ export class CreateCategoryVehicleDocuments implements ICreateCategoryVehicleDoc
     init(_data?: any) {
         if (_data) {
             this.documentTemplateId = _data["documentTemplateId"];
+            this.isRequired = _data["isRequired"];
             this.vehicleDocumentType = _data["vehicleDocumentType"];
         }
     }
 
-    static fromJS(data: any): CreateCategoryVehicleDocuments {
+    static fromJS(data: any): CreateCategoryVehicleTemplateDocuments {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateCategoryVehicleDocuments();
+        let result = new CreateCategoryVehicleTemplateDocuments();
         result.init(data);
         return result;
     }
@@ -5530,13 +5697,15 @@ export class CreateCategoryVehicleDocuments implements ICreateCategoryVehicleDoc
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["documentTemplateId"] = this.documentTemplateId;
+        data["isRequired"] = this.isRequired;
         data["vehicleDocumentType"] = this.vehicleDocumentType;
         return data; 
     }
 }
 
-export interface ICreateCategoryVehicleDocuments {
+export interface ICreateCategoryVehicleTemplateDocuments {
     documentTemplateId?: number;
+    isRequired?: boolean;
     vehicleDocumentType?: VehicleDocumentType;
 }
 
@@ -5614,40 +5783,10 @@ export interface IRemoveServiceCategoryCommand {
     id?: number;
 }
 
-export class GetAllApproversQuery implements IGetAllApproversQuery {
-
-    constructor(data?: IGetAllApproversQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-    }
-
-    static fromJS(data: any): GetAllApproversQuery {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetAllApproversQuery();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        return data; 
-    }
-}
-
-export interface IGetAllApproversQuery {
-}
-
-export class AreaDocumentsQuery implements IAreaDocumentsQuery {
+export class GetAreaDocumentsQuery implements IGetAreaDocumentsQuery {
     areaId?: number;
 
-    constructor(data?: IAreaDocumentsQuery) {
+    constructor(data?: IGetAreaDocumentsQuery) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5662,9 +5801,9 @@ export class AreaDocumentsQuery implements IAreaDocumentsQuery {
         }
     }
 
-    static fromJS(data: any): AreaDocumentsQuery {
+    static fromJS(data: any): GetAreaDocumentsQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new AreaDocumentsQuery();
+        let result = new GetAreaDocumentsQuery();
         result.init(data);
         return result;
     }
@@ -5676,14 +5815,14 @@ export class AreaDocumentsQuery implements IAreaDocumentsQuery {
     }
 }
 
-export interface IAreaDocumentsQuery {
+export interface IGetAreaDocumentsQuery {
     areaId?: number;
 }
 
-export class BlockDocumentsQuery implements IBlockDocumentsQuery {
+export class GetBlockDocumentsQuery implements IGetBlockDocumentsQuery {
     blockId?: string;
 
-    constructor(data?: IBlockDocumentsQuery) {
+    constructor(data?: IGetBlockDocumentsQuery) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5698,9 +5837,9 @@ export class BlockDocumentsQuery implements IBlockDocumentsQuery {
         }
     }
 
-    static fromJS(data: any): BlockDocumentsQuery {
+    static fromJS(data: any): GetBlockDocumentsQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new BlockDocumentsQuery();
+        let result = new GetBlockDocumentsQuery();
         result.init(data);
         return result;
     }
@@ -5712,14 +5851,14 @@ export class BlockDocumentsQuery implements IBlockDocumentsQuery {
     }
 }
 
-export interface IBlockDocumentsQuery {
+export interface IGetBlockDocumentsQuery {
     blockId?: string;
 }
 
-export class BrandDocumentsQuery implements IBrandDocumentsQuery {
+export class GetBrandDocumentsQuery implements IGetBrandDocumentsQuery {
     brandId?: number;
 
-    constructor(data?: IBrandDocumentsQuery) {
+    constructor(data?: IGetBrandDocumentsQuery) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5734,9 +5873,9 @@ export class BrandDocumentsQuery implements IBrandDocumentsQuery {
         }
     }
 
-    static fromJS(data: any): BrandDocumentsQuery {
+    static fromJS(data: any): GetBrandDocumentsQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new BrandDocumentsQuery();
+        let result = new GetBrandDocumentsQuery();
         result.init(data);
         return result;
     }
@@ -5748,14 +5887,14 @@ export class BrandDocumentsQuery implements IBrandDocumentsQuery {
     }
 }
 
-export interface IBrandDocumentsQuery {
+export interface IGetBrandDocumentsQuery {
     brandId?: number;
 }
 
-export class CompanyDocumentsQuery implements ICompanyDocumentsQuery {
+export class GetCompanyDocumentsQuery implements IGetCompanyDocumentsQuery {
     companyId?: number;
 
-    constructor(data?: ICompanyDocumentsQuery) {
+    constructor(data?: IGetCompanyDocumentsQuery) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5770,9 +5909,9 @@ export class CompanyDocumentsQuery implements ICompanyDocumentsQuery {
         }
     }
 
-    static fromJS(data: any): CompanyDocumentsQuery {
+    static fromJS(data: any): GetCompanyDocumentsQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new CompanyDocumentsQuery();
+        let result = new GetCompanyDocumentsQuery();
         result.init(data);
         return result;
     }
@@ -5784,14 +5923,14 @@ export class CompanyDocumentsQuery implements ICompanyDocumentsQuery {
     }
 }
 
-export interface ICompanyDocumentsQuery {
+export interface IGetCompanyDocumentsQuery {
     companyId?: number;
 }
 
-export class SiteDocumentsQuery implements ISiteDocumentsQuery {
+export class GetSiteDocumentsQuery implements IGetSiteDocumentsQuery {
     siteId?: string;
 
-    constructor(data?: ISiteDocumentsQuery) {
+    constructor(data?: IGetSiteDocumentsQuery) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5806,9 +5945,9 @@ export class SiteDocumentsQuery implements ISiteDocumentsQuery {
         }
     }
 
-    static fromJS(data: any): SiteDocumentsQuery {
+    static fromJS(data: any): GetSiteDocumentsQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new SiteDocumentsQuery();
+        let result = new GetSiteDocumentsQuery();
         result.init(data);
         return result;
     }
@@ -5820,14 +5959,14 @@ export class SiteDocumentsQuery implements ISiteDocumentsQuery {
     }
 }
 
-export interface ISiteDocumentsQuery {
+export interface IGetSiteDocumentsQuery {
     siteId?: string;
 }
 
-export class UnitDocumentsQuery implements IUnitDocumentsQuery {
+export class GetUnitDocumentsQuery implements IGetUnitDocumentsQuery {
     unitId?: number;
 
-    constructor(data?: IUnitDocumentsQuery) {
+    constructor(data?: IGetUnitDocumentsQuery) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5842,9 +5981,9 @@ export class UnitDocumentsQuery implements IUnitDocumentsQuery {
         }
     }
 
-    static fromJS(data: any): UnitDocumentsQuery {
+    static fromJS(data: any): GetUnitDocumentsQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new UnitDocumentsQuery();
+        let result = new GetUnitDocumentsQuery();
         result.init(data);
         return result;
     }
@@ -5856,14 +5995,14 @@ export class UnitDocumentsQuery implements IUnitDocumentsQuery {
     }
 }
 
-export interface IUnitDocumentsQuery {
+export interface IGetUnitDocumentsQuery {
     unitId?: number;
 }
 
-export class ZoneDocumentsQuery implements IZoneDocumentsQuery {
+export class GetZoneDocumentsQuery implements IGetZoneDocumentsQuery {
     zoneId?: string;
 
-    constructor(data?: IZoneDocumentsQuery) {
+    constructor(data?: IGetZoneDocumentsQuery) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5878,9 +6017,9 @@ export class ZoneDocumentsQuery implements IZoneDocumentsQuery {
         }
     }
 
-    static fromJS(data: any): ZoneDocumentsQuery {
+    static fromJS(data: any): GetZoneDocumentsQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new ZoneDocumentsQuery();
+        let result = new GetZoneDocumentsQuery();
         result.init(data);
         return result;
     }
@@ -5892,15 +6031,15 @@ export class ZoneDocumentsQuery implements IZoneDocumentsQuery {
     }
 }
 
-export interface IZoneDocumentsQuery {
+export interface IGetZoneDocumentsQuery {
     zoneId?: string;
 }
 
-export class AddAreaDocuments implements IAddAreaDocuments {
+export class CreateAreaDocumentsCommand implements ICreateAreaDocumentsCommand {
     areaId?: number;
     documentTemplateId?: number;
 
-    constructor(data?: IAddAreaDocuments) {
+    constructor(data?: ICreateAreaDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5916,9 +6055,9 @@ export class AddAreaDocuments implements IAddAreaDocuments {
         }
     }
 
-    static fromJS(data: any): AddAreaDocuments {
+    static fromJS(data: any): CreateAreaDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new AddAreaDocuments();
+        let result = new CreateAreaDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -5931,16 +6070,16 @@ export class AddAreaDocuments implements IAddAreaDocuments {
     }
 }
 
-export interface IAddAreaDocuments {
+export interface ICreateAreaDocumentsCommand {
     areaId?: number;
     documentTemplateId?: number;
 }
 
-export class AddBlockDocuments implements IAddBlockDocuments {
+export class CreateBlockDocumentsCommand implements ICreateBlockDocumentsCommand {
     blockId?: string;
     documentTemplateId?: number;
 
-    constructor(data?: IAddBlockDocuments) {
+    constructor(data?: ICreateBlockDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5956,9 +6095,9 @@ export class AddBlockDocuments implements IAddBlockDocuments {
         }
     }
 
-    static fromJS(data: any): AddBlockDocuments {
+    static fromJS(data: any): CreateBlockDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new AddBlockDocuments();
+        let result = new CreateBlockDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -5971,16 +6110,16 @@ export class AddBlockDocuments implements IAddBlockDocuments {
     }
 }
 
-export interface IAddBlockDocuments {
+export interface ICreateBlockDocumentsCommand {
     blockId?: string;
     documentTemplateId?: number;
 }
 
-export class AddBrandDocuments implements IAddBrandDocuments {
+export class CreateBrandDocumentsCommand implements ICreateBrandDocumentsCommand {
     brandId?: number;
     documentTemplateId?: number;
 
-    constructor(data?: IAddBrandDocuments) {
+    constructor(data?: ICreateBrandDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5996,9 +6135,9 @@ export class AddBrandDocuments implements IAddBrandDocuments {
         }
     }
 
-    static fromJS(data: any): AddBrandDocuments {
+    static fromJS(data: any): CreateBrandDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new AddBrandDocuments();
+        let result = new CreateBrandDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6011,16 +6150,16 @@ export class AddBrandDocuments implements IAddBrandDocuments {
     }
 }
 
-export interface IAddBrandDocuments {
+export interface ICreateBrandDocumentsCommand {
     brandId?: number;
     documentTemplateId?: number;
 }
 
-export class AddCompanyDocuments implements IAddCompanyDocuments {
+export class CreateCompanyDocumentsCommand implements ICreateCompanyDocumentsCommand {
     companyId?: number;
     documentTemplateId?: number;
 
-    constructor(data?: IAddCompanyDocuments) {
+    constructor(data?: ICreateCompanyDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6036,9 +6175,9 @@ export class AddCompanyDocuments implements IAddCompanyDocuments {
         }
     }
 
-    static fromJS(data: any): AddCompanyDocuments {
+    static fromJS(data: any): CreateCompanyDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new AddCompanyDocuments();
+        let result = new CreateCompanyDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6051,16 +6190,16 @@ export class AddCompanyDocuments implements IAddCompanyDocuments {
     }
 }
 
-export interface IAddCompanyDocuments {
+export interface ICreateCompanyDocumentsCommand {
     companyId?: number;
     documentTemplateId?: number;
 }
 
-export class AddSiteDocuments implements IAddSiteDocuments {
+export class CreateSiteDocumentsCommand implements ICreateSiteDocumentsCommand {
     siteId?: string;
     documentTemplateId?: number;
 
-    constructor(data?: IAddSiteDocuments) {
+    constructor(data?: ICreateSiteDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6076,9 +6215,9 @@ export class AddSiteDocuments implements IAddSiteDocuments {
         }
     }
 
-    static fromJS(data: any): AddSiteDocuments {
+    static fromJS(data: any): CreateSiteDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new AddSiteDocuments();
+        let result = new CreateSiteDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6091,16 +6230,16 @@ export class AddSiteDocuments implements IAddSiteDocuments {
     }
 }
 
-export interface IAddSiteDocuments {
+export interface ICreateSiteDocumentsCommand {
     siteId?: string;
     documentTemplateId?: number;
 }
 
-export class AddUnitDocuments implements IAddUnitDocuments {
+export class CreateUnitDocumentsCommand implements ICreateUnitDocumentsCommand {
     unitId?: number;
     documentTemplateId?: number;
 
-    constructor(data?: IAddUnitDocuments) {
+    constructor(data?: ICreateUnitDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6116,9 +6255,9 @@ export class AddUnitDocuments implements IAddUnitDocuments {
         }
     }
 
-    static fromJS(data: any): AddUnitDocuments {
+    static fromJS(data: any): CreateUnitDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new AddUnitDocuments();
+        let result = new CreateUnitDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6131,16 +6270,16 @@ export class AddUnitDocuments implements IAddUnitDocuments {
     }
 }
 
-export interface IAddUnitDocuments {
+export interface ICreateUnitDocumentsCommand {
     unitId?: number;
     documentTemplateId?: number;
 }
 
-export class AddZoneDocuments implements IAddZoneDocuments {
+export class CreateZoneDocumentsCommand implements ICreateZoneDocumentsCommand {
     zoneId?: string;
     documentTemplateId?: number;
 
-    constructor(data?: IAddZoneDocuments) {
+    constructor(data?: ICreateZoneDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6156,9 +6295,9 @@ export class AddZoneDocuments implements IAddZoneDocuments {
         }
     }
 
-    static fromJS(data: any): AddZoneDocuments {
+    static fromJS(data: any): CreateZoneDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new AddZoneDocuments();
+        let result = new CreateZoneDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6171,16 +6310,16 @@ export class AddZoneDocuments implements IAddZoneDocuments {
     }
 }
 
-export interface IAddZoneDocuments {
+export interface ICreateZoneDocumentsCommand {
     zoneId?: string;
     documentTemplateId?: number;
 }
 
-export class RemoveAreaDocuments implements IRemoveAreaDocuments {
+export class RemoveAreaDocumentsCommand implements IRemoveAreaDocumentsCommand {
     areaId?: number;
     documentTemplateId?: number;
 
-    constructor(data?: IRemoveAreaDocuments) {
+    constructor(data?: IRemoveAreaDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6196,9 +6335,9 @@ export class RemoveAreaDocuments implements IRemoveAreaDocuments {
         }
     }
 
-    static fromJS(data: any): RemoveAreaDocuments {
+    static fromJS(data: any): RemoveAreaDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RemoveAreaDocuments();
+        let result = new RemoveAreaDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6211,16 +6350,16 @@ export class RemoveAreaDocuments implements IRemoveAreaDocuments {
     }
 }
 
-export interface IRemoveAreaDocuments {
+export interface IRemoveAreaDocumentsCommand {
     areaId?: number;
     documentTemplateId?: number;
 }
 
-export class RemoveBlockDocuments implements IRemoveBlockDocuments {
+export class RemoveBlockDocumentsCommand implements IRemoveBlockDocumentsCommand {
     blockId?: string;
     documentTemplateId?: number;
 
-    constructor(data?: IRemoveBlockDocuments) {
+    constructor(data?: IRemoveBlockDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6236,9 +6375,9 @@ export class RemoveBlockDocuments implements IRemoveBlockDocuments {
         }
     }
 
-    static fromJS(data: any): RemoveBlockDocuments {
+    static fromJS(data: any): RemoveBlockDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RemoveBlockDocuments();
+        let result = new RemoveBlockDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6251,16 +6390,16 @@ export class RemoveBlockDocuments implements IRemoveBlockDocuments {
     }
 }
 
-export interface IRemoveBlockDocuments {
+export interface IRemoveBlockDocumentsCommand {
     blockId?: string;
     documentTemplateId?: number;
 }
 
-export class RemoveBrandDocuments implements IRemoveBrandDocuments {
+export class RemoveBrandDocumentsCommand implements IRemoveBrandDocumentsCommand {
     brandId?: number;
     documentTemplateId?: number;
 
-    constructor(data?: IRemoveBrandDocuments) {
+    constructor(data?: IRemoveBrandDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6276,9 +6415,9 @@ export class RemoveBrandDocuments implements IRemoveBrandDocuments {
         }
     }
 
-    static fromJS(data: any): RemoveBrandDocuments {
+    static fromJS(data: any): RemoveBrandDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RemoveBrandDocuments();
+        let result = new RemoveBrandDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6291,16 +6430,16 @@ export class RemoveBrandDocuments implements IRemoveBrandDocuments {
     }
 }
 
-export interface IRemoveBrandDocuments {
+export interface IRemoveBrandDocumentsCommand {
     brandId?: number;
     documentTemplateId?: number;
 }
 
-export class RemoveCompanyDocuments implements IRemoveCompanyDocuments {
+export class RemoveCompanyDocumentsCommand implements IRemoveCompanyDocumentsCommand {
     companyId?: number;
     documentTemplateId?: number;
 
-    constructor(data?: IRemoveCompanyDocuments) {
+    constructor(data?: IRemoveCompanyDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6316,9 +6455,9 @@ export class RemoveCompanyDocuments implements IRemoveCompanyDocuments {
         }
     }
 
-    static fromJS(data: any): RemoveCompanyDocuments {
+    static fromJS(data: any): RemoveCompanyDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RemoveCompanyDocuments();
+        let result = new RemoveCompanyDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6331,16 +6470,16 @@ export class RemoveCompanyDocuments implements IRemoveCompanyDocuments {
     }
 }
 
-export interface IRemoveCompanyDocuments {
+export interface IRemoveCompanyDocumentsCommand {
     companyId?: number;
     documentTemplateId?: number;
 }
 
-export class RemoveSiteDocuments implements IRemoveSiteDocuments {
+export class RemoveSiteDocumentsCommand implements IRemoveSiteDocumentsCommand {
     siteId?: string;
     documentTemplateId?: number;
 
-    constructor(data?: IRemoveSiteDocuments) {
+    constructor(data?: IRemoveSiteDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6356,9 +6495,9 @@ export class RemoveSiteDocuments implements IRemoveSiteDocuments {
         }
     }
 
-    static fromJS(data: any): RemoveSiteDocuments {
+    static fromJS(data: any): RemoveSiteDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RemoveSiteDocuments();
+        let result = new RemoveSiteDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6371,16 +6510,16 @@ export class RemoveSiteDocuments implements IRemoveSiteDocuments {
     }
 }
 
-export interface IRemoveSiteDocuments {
+export interface IRemoveSiteDocumentsCommand {
     siteId?: string;
     documentTemplateId?: number;
 }
 
-export class RemoveUnitDocuments implements IRemoveUnitDocuments {
+export class RemoveUnitDocumentsCommand implements IRemoveUnitDocumentsCommand {
     unitId?: number;
     documentTemplateId?: number;
 
-    constructor(data?: IRemoveUnitDocuments) {
+    constructor(data?: IRemoveUnitDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6396,9 +6535,9 @@ export class RemoveUnitDocuments implements IRemoveUnitDocuments {
         }
     }
 
-    static fromJS(data: any): RemoveUnitDocuments {
+    static fromJS(data: any): RemoveUnitDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RemoveUnitDocuments();
+        let result = new RemoveUnitDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6411,16 +6550,16 @@ export class RemoveUnitDocuments implements IRemoveUnitDocuments {
     }
 }
 
-export interface IRemoveUnitDocuments {
+export interface IRemoveUnitDocumentsCommand {
     unitId?: number;
     documentTemplateId?: number;
 }
 
-export class RemoveZoneDocuments implements IRemoveZoneDocuments {
+export class RemoveZoneDocumentsCommand implements IRemoveZoneDocumentsCommand {
     zoneId?: string;
     documentTemplateId?: number;
 
-    constructor(data?: IRemoveZoneDocuments) {
+    constructor(data?: IRemoveZoneDocumentsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6436,9 +6575,9 @@ export class RemoveZoneDocuments implements IRemoveZoneDocuments {
         }
     }
 
-    static fromJS(data: any): RemoveZoneDocuments {
+    static fromJS(data: any): RemoveZoneDocumentsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RemoveZoneDocuments();
+        let result = new RemoveZoneDocumentsCommand();
         result.init(data);
         return result;
     }
@@ -6451,7 +6590,7 @@ export class RemoveZoneDocuments implements IRemoveZoneDocuments {
     }
 }
 
-export interface IRemoveZoneDocuments {
+export interface IRemoveZoneDocumentsCommand {
     zoneId?: string;
     documentTemplateId?: number;
 }
@@ -6681,11 +6820,11 @@ export interface IGetPresenceGroupDocumentsQuery {
     presenceGroupId?: number;
 }
 
-export class RemovePresenceGroupDocument implements IRemovePresenceGroupDocument {
+export class RemovePresenceGroupDocumentCommand implements IRemovePresenceGroupDocumentCommand {
     presenceGroupId?: number;
     documentTemplateId?: number;
 
-    constructor(data?: IRemovePresenceGroupDocument) {
+    constructor(data?: IRemovePresenceGroupDocumentCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6701,9 +6840,9 @@ export class RemovePresenceGroupDocument implements IRemovePresenceGroupDocument
         }
     }
 
-    static fromJS(data: any): RemovePresenceGroupDocument {
+    static fromJS(data: any): RemovePresenceGroupDocumentCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RemovePresenceGroupDocument();
+        let result = new RemovePresenceGroupDocumentCommand();
         result.init(data);
         return result;
     }
@@ -6716,7 +6855,7 @@ export class RemovePresenceGroupDocument implements IRemovePresenceGroupDocument
     }
 }
 
-export interface IRemovePresenceGroupDocument {
+export interface IRemovePresenceGroupDocumentCommand {
     presenceGroupId?: number;
     documentTemplateId?: number;
 }

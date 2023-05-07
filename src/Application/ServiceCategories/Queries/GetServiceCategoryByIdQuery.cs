@@ -12,21 +12,20 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.ServiceCategories.Queries;
-public class GetServiceCategoryByIdQuery : IRequest<ServiceCategoryDetailsDto>
+public class GetServiceCategoryByIdQuery : IRequest<ServiceCategoryDto>
 {
     public int Id { get; set; }
 }
-public class ServiceCategoryByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetServiceCategoryByIdQuery, ServiceCategoryDetailsDto>
+public class ServiceCategoryByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetServiceCategoryByIdQuery, ServiceCategoryDto>
 {
     public ServiceCategoryByIdQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
-    public async Task<ServiceCategoryDetailsDto> Handle(GetServiceCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ServiceCategoryDto> Handle(GetServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {
-        var category = await _applicationDbContext.ServiceCategories
-            .Include(x => x.SubServiceCategories.Where(x => !x.IsDeleted))
-            .Include(x => x.SpecialRules)
-            .Include(x => x.Vehicles)
+        var categoryDetails = await _applicationDbContext.ServiceCategoryDetails
+            .Include(x=>x.ServiceCategory.SubServiceCategories.Where(x => !x.IsDeleted))
+            .Include(x => x.VehicleTemplates)
             .Include(x => x.Documents)
             .Include(x => x.PersonnelDocuments)
             .Include(x => x.ServiceCategoryAreas)
@@ -36,12 +35,13 @@ public class ServiceCategoryByIdQueryHandler : BaseQueryHandler, IRequestHandler
             .Include(x => x.ServiceCategorySites)
             .Include(x => x.ServiceCategoryUnits)
             .Include(x => x.ServiceCategoryZones)
-            .Include(x=> x.ServiceCategoryPresenceGroups)
+            .Include(x => x.ServiceCategoryPresenceGroups)
             .Include(x => x.ServiceCategoryRoles)
-            .FirstOrDefaultAsync(x=>x.Id==request.Id);
-        if (category == null)
+            .FirstOrDefaultAsync(x => x.Id == request.Id);
+
+        if (categoryDetails == null)
             throw new Exception("Service Category was NOT found");
-        var categoryDto = _mapper.Map<ServiceCategoryDetailsDto>(category);
+        var categoryDto = _mapper.Map<ServiceCategoryDto>(categoryDetails.ServiceCategory);
         return categoryDto; 
     }
 }

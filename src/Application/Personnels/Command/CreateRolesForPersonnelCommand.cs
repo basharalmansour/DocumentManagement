@@ -7,7 +7,7 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Personnels.Queries;
-using CleanArchitecture.Domain.Entities.Definitions;
+using CleanArchitecture.Domain.Entities.Definitions.Roles;
 using CleanArchitecture.Domain.Enums;
 using MassTransit;
 using MediatR;

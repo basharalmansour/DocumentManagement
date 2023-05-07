@@ -1,6 +1,5 @@
 ﻿using CleanArchitecture.Domain.Entities; 
 using FluentAssertions;
-using NUnit.Framework;
 
 namespace CleanArchitecture.Application.IntegrationTests.TodoLists.Queries;
 

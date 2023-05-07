@@ -25,7 +25,7 @@ public class GetVehicleTemplateDocumentsQueryHandler : BaseQueryHandler, IReques
     }
     public async Task<List<BasicDocumentTemplateDto>> Handle(GetVehicleTemplateDocumentsQuery request, CancellationToken cancellationToken)
     {
-        var documents=await _applicationDbContext.VehiclesDocuments
+        var documents=await _applicationDbContext.VehicleTemplateDocuments
             .Include(x=>x.DocumentTemplate)
             .Where(x => x.VehicleTemplateId == request.VehicleId)
             .Select(x => x.DocumentTemplate)

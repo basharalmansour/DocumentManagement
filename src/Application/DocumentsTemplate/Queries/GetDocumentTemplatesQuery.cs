@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
@@ -25,10 +20,6 @@ public class GetDocumentsTemplateHandler : BaseQueryHandler, IRequestHandler<Get
     {
         var documents = await  _applicationDbContext.DocumentTemplates.Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText)).ToListAsync();
         var documentsDto = _mapper.Map<List<BasicDocumentTemplateDto>>(documents);
-        
-        //in case that just one lanuage is needed
-        documentsDto.ForEach(x => x.Name.KeepOneLanguage(LanguageCode.tr));
-
         return documentsDto ;
     }
 }

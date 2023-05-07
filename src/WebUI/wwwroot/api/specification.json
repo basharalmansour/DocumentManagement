@@ -617,7 +617,7 @@
         }
       }
     },
-    "/api/Vehicle/AddVehicle": {
+    "/api/Vehicle/CreateVehicle": {
       "post": {
         "tags": [
           "Vehicle"
@@ -628,7 +628,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateVehicleCommand"
+                "$ref": "#/components/schemas/CreateVehicleTemplateCommand"
               }
             }
           },
@@ -649,7 +649,7 @@
         }
       }
     },
-    "/api/Vehicle/ViewVehicles": {
+    "/api/Vehicle/GetVehicles": {
       "get": {
         "tags": [
           "Vehicle"
@@ -663,7 +663,7 @@
               "nullable": true,
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/GetVehicleQuery"
+                  "$ref": "#/components/schemas/GetVehicleTemplateQuery"
                 }
               ]
             },
@@ -726,7 +726,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EditVehicleCommand"
+                "$ref": "#/components/schemas/EditVehicleTemplateCommand"
               }
             }
           },
@@ -747,18 +747,18 @@
         }
       }
     },
-    "/api/Vehicle/DeleteVehicle": {
+    "/api/Vehicle/RemoveVehicle": {
       "delete": {
         "tags": [
           "Vehicle"
         ],
-        "operationId": "Vehicle_DeleteVehicle",
+        "operationId": "Vehicle_RemoveVehicle",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemoveVehicleCommand"
+                "$ref": "#/components/schemas/RemoveVehicleTemplateCommand"
               }
             }
           },
@@ -946,6 +946,37 @@
         "parameters": [
           {
             "name": "Id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/UserGroup/GetPersonnelRoles": {
+      "get": {
+        "tags": [
+          "UserGroup"
+        ],
+        "operationId": "UserGroup_GetPersonnelRoles",
+        "parameters": [
+          {
+            "name": "PersonnelId",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -1188,25 +1219,44 @@
         }
       }
     },
-    "/api/ServiceCategory/GetAllApprovers": {
+    "/api/Personnel/GetAllApprovers": {
       "get": {
         "tags": [
-          "ServiceCategory"
+          "Personnel"
         ],
-        "operationId": "ServiceCategory_GetAllApprovers",
+        "operationId": "Personnel_GetAllApprovers",
         "parameters": [
           {
-            "name": "request",
+            "name": "Roles",
             "in": "query",
+            "style": "form",
+            "explode": true,
             "schema": {
+              "type": "array",
               "nullable": true,
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/GetAllApproversQuery"
-                }
-              ]
+              "items": {
+                "$ref": "#/components/schemas/Role"
+              }
             },
             "x-position": 1
+          },
+          {
+            "name": "SearchText",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "DepartmentId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
           }
         ],
         "responses": {
@@ -1234,7 +1284,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AreaDocumentsQuery"
+                "$ref": "#/components/schemas/GetAreaDocumentsQuery"
               }
             }
           },
@@ -1266,7 +1316,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BlockDocumentsQuery"
+                "$ref": "#/components/schemas/GetBlockDocumentsQuery"
               }
             }
           },
@@ -1298,7 +1348,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BrandDocumentsQuery"
+                "$ref": "#/components/schemas/GetBrandDocumentsQuery"
               }
             }
           },
@@ -1330,7 +1380,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CompanyDocumentsQuery"
+                "$ref": "#/components/schemas/GetCompanyDocumentsQuery"
               }
             }
           },
@@ -1362,7 +1412,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SiteDocumentsQuery"
+                "$ref": "#/components/schemas/GetSiteDocumentsQuery"
               }
             }
           },
@@ -1394,7 +1444,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UnitDocumentsQuery"
+                "$ref": "#/components/schemas/GetUnitDocumentsQuery"
               }
             }
           },
@@ -1426,7 +1476,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZoneDocumentsQuery"
+                "$ref": "#/components/schemas/GetZoneDocumentsQuery"
               }
             }
           },
@@ -1447,18 +1497,18 @@
         }
       }
     },
-    "/api/Presence/AddAreaDocuments": {
+    "/api/Presence/CreateAreaDocuments": {
       "post": {
         "tags": [
           "Presence"
         ],
-        "operationId": "Presence_AddAreaDocuments",
+        "operationId": "Presence_CreateAreaDocuments",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddAreaDocuments"
+                "$ref": "#/components/schemas/CreateAreaDocumentsCommand"
               }
             }
           },
@@ -1469,10 +1519,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1480,18 +1529,18 @@
         }
       }
     },
-    "/api/Presence/AddBlockDocuments": {
+    "/api/Presence/CreateBlockDocuments": {
       "post": {
         "tags": [
           "Presence"
         ],
-        "operationId": "Presence_AddBlockDocuments",
+        "operationId": "Presence_CreateBlockDocuments",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddBlockDocuments"
+                "$ref": "#/components/schemas/CreateBlockDocumentsCommand"
               }
             }
           },
@@ -1502,10 +1551,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1513,18 +1561,18 @@
         }
       }
     },
-    "/api/Presence/AddBrandDocuments": {
+    "/api/Presence/CreateBrandDocuments": {
       "post": {
         "tags": [
           "Presence"
         ],
-        "operationId": "Presence_AddBrandDocuments",
+        "operationId": "Presence_CreateBrandDocuments",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddBrandDocuments"
+                "$ref": "#/components/schemas/CreateBrandDocumentsCommand"
               }
             }
           },
@@ -1535,10 +1583,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1546,18 +1593,18 @@
         }
       }
     },
-    "/api/Presence/AddCompanyDocuments": {
+    "/api/Presence/CreateCompanyDocuments": {
       "post": {
         "tags": [
           "Presence"
         ],
-        "operationId": "Presence_AddCompanyDocuments",
+        "operationId": "Presence_CreateCompanyDocuments",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddCompanyDocuments"
+                "$ref": "#/components/schemas/CreateCompanyDocumentsCommand"
               }
             }
           },
@@ -1568,10 +1615,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1579,18 +1625,18 @@
         }
       }
     },
-    "/api/Presence/AddSiteDocuments": {
+    "/api/Presence/CreateSiteDocuments": {
       "post": {
         "tags": [
           "Presence"
         ],
-        "operationId": "Presence_AddSiteDocuments",
+        "operationId": "Presence_CreateSiteDocuments",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddSiteDocuments"
+                "$ref": "#/components/schemas/CreateSiteDocumentsCommand"
               }
             }
           },
@@ -1601,10 +1647,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1612,18 +1657,18 @@
         }
       }
     },
-    "/api/Presence/AddUnitDocuments": {
+    "/api/Presence/CreateUnitDocuments": {
       "post": {
         "tags": [
           "Presence"
         ],
-        "operationId": "Presence_AddUnitDocuments",
+        "operationId": "Presence_CreateUnitDocuments",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddUnitDocuments"
+                "$ref": "#/components/schemas/CreateUnitDocumentsCommand"
               }
             }
           },
@@ -1634,10 +1679,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1645,18 +1689,18 @@
         }
       }
     },
-    "/api/Presence/AddZoneDocuments": {
+    "/api/Presence/CreateZoneDocuments": {
       "post": {
         "tags": [
           "Presence"
         ],
-        "operationId": "Presence_AddZoneDocuments",
+        "operationId": "Presence_CreateZoneDocuments",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddZoneDocuments"
+                "$ref": "#/components/schemas/CreateZoneDocumentsCommand"
               }
             }
           },
@@ -1667,10 +1711,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1689,7 +1732,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemoveAreaDocuments"
+                "$ref": "#/components/schemas/RemoveAreaDocumentsCommand"
               }
             }
           },
@@ -1700,10 +1743,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1722,7 +1764,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemoveBlockDocuments"
+                "$ref": "#/components/schemas/RemoveBlockDocumentsCommand"
               }
             }
           },
@@ -1733,10 +1775,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1755,7 +1796,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemoveBrandDocuments"
+                "$ref": "#/components/schemas/RemoveBrandDocumentsCommand"
               }
             }
           },
@@ -1766,10 +1807,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1788,7 +1828,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemoveCompanyDocuments"
+                "$ref": "#/components/schemas/RemoveCompanyDocumentsCommand"
               }
             }
           },
@@ -1799,10 +1839,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1821,7 +1860,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemoveSiteDocuments"
+                "$ref": "#/components/schemas/RemoveSiteDocumentsCommand"
               }
             }
           },
@@ -1832,10 +1871,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1854,7 +1892,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemoveUnitDocuments"
+                "$ref": "#/components/schemas/RemoveUnitDocumentsCommand"
               }
             }
           },
@@ -1865,10 +1903,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -1887,7 +1924,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemoveZoneDocuments"
+                "$ref": "#/components/schemas/RemoveZoneDocumentsCommand"
               }
             }
           },
@@ -1898,10 +1935,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/ApplicationResponse"
                 }
               }
             }
@@ -2150,7 +2186,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RemovePresenceGroupDocument"
+                "$ref": "#/components/schemas/RemovePresenceGroupDocumentCommand"
               }
             }
           },
@@ -2884,7 +2920,7 @@
           }
         }
       },
-      "CreateVehicleCommand": {
+      "CreateVehicleTemplateCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2899,7 +2935,7 @@
           "isNeedDriver": {
             "type": "boolean"
           },
-          "vehicleDocuments": {
+          "vehicleTemplateDocuments": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -2938,14 +2974,14 @@
           2
         ]
       },
-      "GetVehicleQuery": {
+      "GetVehicleTemplateQuery": {
         "type": "object",
         "additionalProperties": false
       },
-      "EditVehicleCommand": {
+      "EditVehicleTemplateCommand": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CreateVehicleCommand"
+            "$ref": "#/components/schemas/CreateVehicleTemplateCommand"
           },
           {
             "type": "object",
@@ -2959,7 +2995,7 @@
           }
         ]
       },
-      "RemoveVehicleCommand": {
+      "RemoveVehicleTemplateCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3038,11 +3074,42 @@
               }
             ]
           },
+          "isMainCategory": {
+            "type": "boolean"
+          },
+          "serviceCategoryDetails": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CreateServiceCategoryDetailsDto"
+              }
+            ]
+          }
+        }
+      },
+      "CreateServiceCategoryDetailsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
           "maxServiceDuration": {
             "type": "integer",
             "format": "int32"
           },
           "serviceDurationUnit": {
+            "$ref": "#/components/schemas/TimeUnit"
+          },
+          "minOrderDuration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minOrderDurationUnit": {
+            "$ref": "#/components/schemas/TimeUnit"
+          },
+          "maxOrderDuration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxOrderDurationUnit": {
             "$ref": "#/components/schemas/TimeUnit"
           },
           "maxPersonnelCount": {
@@ -3066,19 +3133,10 @@
             "type": "boolean"
           },
           "serviceCategoryRoles": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/CreateCategoryRoleDto"
-              }
-            ]
-          },
-          "specialRules": {
             "type": "array",
             "nullable": true,
             "items": {
-              "type": "integer",
-              "format": "int32"
+              "$ref": "#/components/schemas/CreateCategoryRoleDto"
             }
           },
           "documents": {
@@ -3089,11 +3147,11 @@
               "format": "int32"
             }
           },
-          "vehicles": {
+          "vehicleTemplates": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/CreateVehicleCategoryDto"
+              "$ref": "#/components/schemas/CreateVehicleTemplateCategoryDto"
             }
           },
           "serviceCategoryAreas": {
@@ -3151,6 +3209,14 @@
               "type": "string",
               "format": "guid"
             }
+          },
+          "serviceCategoryPresenceGroups": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
       },
@@ -3179,7 +3245,7 @@
           "role": {
             "$ref": "#/components/schemas/Role"
           },
-          "approverDepartments": {
+          "responsibleDepartments": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -3187,7 +3253,7 @@
               "format": "int32"
             }
           },
-          "approverPersonnels": {
+          "responsiblePersonnels": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -3195,17 +3261,13 @@
               "format": "int32"
             }
           },
-          "approverUserGroups": {
+          "responsibleUserGroups": {
             "type": "array",
             "nullable": true,
             "items": {
               "type": "integer",
               "format": "int32"
             }
-          },
-          "serviceCategoryId": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
@@ -3215,38 +3277,43 @@
         "x-enumNames": [
           "Approver",
           "Observer",
-          "Reporter"
+          "Reporter",
+          "Canceler"
         ],
         "enum": [
           0,
           1,
-          2
+          2,
+          3
         ]
       },
-      "CreateVehicleCategoryDto": {
+      "CreateVehicleTemplateCategoryDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "vehicleId": {
+          "vehicleTemplateId": {
             "type": "integer",
             "format": "int32"
           },
-          "vehicleDocuments": {
+          "vehicleTemplateDocuments": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/CreateCategoryVehicleDocuments"
+              "$ref": "#/components/schemas/CreateCategoryVehicleTemplateDocuments"
             }
           }
         }
       },
-      "CreateCategoryVehicleDocuments": {
+      "CreateCategoryVehicleTemplateDocuments": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "documentTemplateId": {
             "type": "integer",
             "format": "int32"
+          },
+          "isRequired": {
+            "type": "boolean"
           },
           "vehicleDocumentType": {
             "$ref": "#/components/schemas/VehicleDocumentType"
@@ -3292,11 +3359,7 @@
           }
         }
       },
-      "GetAllApproversQuery": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "AreaDocumentsQuery": {
+      "GetAreaDocumentsQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3306,7 +3369,7 @@
           }
         }
       },
-      "BlockDocumentsQuery": {
+      "GetBlockDocumentsQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3316,7 +3379,7 @@
           }
         }
       },
-      "BrandDocumentsQuery": {
+      "GetBrandDocumentsQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3326,7 +3389,7 @@
           }
         }
       },
-      "CompanyDocumentsQuery": {
+      "GetCompanyDocumentsQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3336,7 +3399,7 @@
           }
         }
       },
-      "SiteDocumentsQuery": {
+      "GetSiteDocumentsQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3346,7 +3409,7 @@
           }
         }
       },
-      "UnitDocumentsQuery": {
+      "GetUnitDocumentsQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3356,7 +3419,7 @@
           }
         }
       },
-      "ZoneDocumentsQuery": {
+      "GetZoneDocumentsQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3366,7 +3429,7 @@
           }
         }
       },
-      "AddAreaDocuments": {
+      "CreateAreaDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3380,7 +3443,7 @@
           }
         }
       },
-      "AddBlockDocuments": {
+      "CreateBlockDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3394,7 +3457,7 @@
           }
         }
       },
-      "AddBrandDocuments": {
+      "CreateBrandDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3408,7 +3471,7 @@
           }
         }
       },
-      "AddCompanyDocuments": {
+      "CreateCompanyDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3422,7 +3485,7 @@
           }
         }
       },
-      "AddSiteDocuments": {
+      "CreateSiteDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3436,7 +3499,7 @@
           }
         }
       },
-      "AddUnitDocuments": {
+      "CreateUnitDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3450,7 +3513,7 @@
           }
         }
       },
-      "AddZoneDocuments": {
+      "CreateZoneDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3464,7 +3527,7 @@
           }
         }
       },
-      "RemoveAreaDocuments": {
+      "RemoveAreaDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3478,7 +3541,7 @@
           }
         }
       },
-      "RemoveBlockDocuments": {
+      "RemoveBlockDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3492,7 +3555,7 @@
           }
         }
       },
-      "RemoveBrandDocuments": {
+      "RemoveBrandDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3506,7 +3569,7 @@
           }
         }
       },
-      "RemoveCompanyDocuments": {
+      "RemoveCompanyDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3520,7 +3583,7 @@
           }
         }
       },
-      "RemoveSiteDocuments": {
+      "RemoveSiteDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3534,7 +3597,7 @@
           }
         }
       },
-      "RemoveUnitDocuments": {
+      "RemoveUnitDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3548,7 +3611,7 @@
           }
         }
       },
-      "RemoveZoneDocuments": {
+      "RemoveZoneDocumentsCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3669,7 +3732,7 @@
           }
         }
       },
-      "RemovePresenceGroupDocument": {
+      "RemovePresenceGroupDocumentCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

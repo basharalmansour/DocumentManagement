@@ -13,6 +13,6 @@ public class VehicleTemplate : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     [StringLength(StringLengths.MediumString)]
     public string Name { get; set; }
     public bool IsNeedDriver { get; set; }
-    public List<VehicleTemplatesDocument> VehicleTemplateDocuments { get; set; }
-    public List<VehicleTemplateDriverDocuments> DriverDocuments { get; set; }
+    public List<VehicleTemplateDocument> VehicleTemplateDocuments { get; set; }
+    public List<VehicleTemplateDriverDocument> DriverDocuments { get; set; }
 }

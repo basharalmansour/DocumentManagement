@@ -10,7 +10,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
-public class VehicleTemplateCategory : LightBaseEntity<int>, IEntity<int>
+public class ServiceCategoryVehicleTemplate : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey("VehicleTemplate")]
     public int VehicleTemplateId { get; set; }
@@ -19,5 +19,5 @@ public class VehicleTemplateCategory : LightBaseEntity<int>, IEntity<int>
     [ForeignKey("ServiceCategory")]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; } 
-    public List<CategoryVehicleTemplateDocuments> VehicleTemplateDocuments { get; set; }
+    public List<ServiceCategoryVehicleTemplateDocument> VehicleTemplateDocuments { get; set; }
 }

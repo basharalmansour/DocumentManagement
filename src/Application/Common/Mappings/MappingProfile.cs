@@ -11,6 +11,7 @@ using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 using CleanArchitecture.Application.Common.Dtos.PresenceGroups;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 using CleanArchitecture.Application.Common.Dtos.VehicleTemplates;
+using CleanArchitecture.Application.VehicleTemplates.Commands;
 using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.UsersGroup.Commands;
@@ -23,14 +24,12 @@ using CleanArchitecture.Application.DocumentsTemplate.Commands;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
-using CleanArchitecture.Domain.Entities.Definitions;
 using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.CreateDtos;
-using CleanArchitecture.Application.VehicleTemplates.Commands;
-
+using CleanArchitecture.Domain.Entities.Definitions.Roles;
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
 {
@@ -84,9 +83,12 @@ public class MappingProfile : Profile
     }
     private void ApplyMappingsOfServiceCategory()
     {
-        CreateMap<ServiceCategory, ServiceCategoryDetailsDto>()
+        CreateMap<ServiceCategory, ServiceCategoryDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)));
+
+        CreateMap<ServiceCategoryDetails, ServiceCategoryDetailsDto>();
+
         CreateMap<ServiceCategory, BasicServiceCategoryDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
         CreateMap<ServiceCategoryArea, ServiceCategoryAreaDto>();
@@ -97,31 +99,38 @@ public class MappingProfile : Profile
         CreateMap<ServiceCategoryUnit, ServiceCategoryUnitDto>();
         CreateMap<ServiceCategoryZone, ServiceCategoryZoneDto>();
         CreateMap<ServiceCategoryPresenceGroup, ServiceCategoryPresenceGroupDto>();
+
+
         CreateMap<CreateServiceCategoryCommand, ServiceCategory>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
-            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)))
-            .ForMember(des => des.ServiceCategoryDetails.ServiceCategoryAreas, opt => opt.MapFrom(src => src.ServiceCategoryDetails.ServiceCategoryAreas.Select(x => new ServiceCategoryArea { AreaId = x })))
-            .ForMember(des => des.ServiceCategoryDetails.ServiceCategoryBlocks, opt => opt.MapFrom(src => src.ServiceCategoryDetails.ServiceCategoryBlocks.Select(x => new ServiceCategoryBlock { BlockId = x })))
-            .ForMember(des => des.ServiceCategoryDetails.ServiceCategoryBrands, opt => opt.MapFrom(src => src.ServiceCategoryDetails.ServiceCategoryBrands.Select(x => new ServiceCategoryBrand { BrandId = x })))
-            .ForMember(des => des.ServiceCategoryDetails.ServiceCategoryCompanies, opt => opt.MapFrom(src => src.ServiceCategoryDetails.ServiceCategoryCompanies.Select(x => new ServiceCategoryCompany { CompanyId = x })))
-            .ForMember(des => des.ServiceCategoryDetails.ServiceCategorySites, opt => opt.MapFrom(src => src.ServiceCategoryDetails.ServiceCategorySites.Select(x => new ServiceCategorySite { SiteId = x })))
-            .ForMember(des => des.ServiceCategoryDetails.ServiceCategoryUnits, opt => opt.MapFrom(src => src.ServiceCategoryDetails.ServiceCategoryUnits.Select(x => new ServiceCategoryUnit { UnitId = x })))
-            .ForMember(des => des.ServiceCategoryDetails.ServiceCategoryZones, opt => opt.MapFrom(src => src.ServiceCategoryDetails.ServiceCategoryZones.Select(x => new ServiceCategoryZone { ZoneId = x })))
-            .ForMember(des => des.ServiceCategoryDetails.ServiceCategoryPresenceGroups, opt => opt.MapFrom(src => src.ServiceCategoryDetails.ServiceCategoryPresenceGroups.Select(x => new ServiceCategoryPresenceGroup { PresenceGroupId = x })))
-            .ForMember(des => des.ServiceCategoryDetails.PersonnelDocuments, opt => opt.MapFrom(src => src.ServiceCategoryDetails.PersonnelDocuments.Select(x => new CategoryPersonnelDocument { DocumentTemplateId = x })))
-            .ForMember(des => des.ServiceCategoryDetails.Documents, opt => opt.MapFrom(src => src.ServiceCategoryDetails.Documents.Select(x => new CategoryDocument { DocumentTemplateId = x })));
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)));
+
+        CreateMap<CreateServiceCategoryDetailsDto, ServiceCategoryDetails>()
+            .ForMember(des => des.ServiceCategoryAreas, opt => opt.MapFrom(src => 
+                src.ServiceCategoryAreas.Select(x => new ServiceCategoryArea { AreaId = x })))
+            .ForMember(des => des.ServiceCategoryBlocks, opt => opt.MapFrom(src => src.ServiceCategoryBlocks.Select(x => new ServiceCategoryBlock { BlockId = x })))
+            .ForMember(des => des.ServiceCategoryBrands, opt => opt.MapFrom(src => src.ServiceCategoryBrands.Select(x => new ServiceCategoryBrand { BrandId = x })))
+            .ForMember(des => des.ServiceCategoryCompanies, opt => opt.MapFrom(src => src.ServiceCategoryCompanies.Select(x => new ServiceCategoryCompany { CompanyId = x })))
+            .ForMember(des => des.ServiceCategorySites, opt => opt.MapFrom(src => src.ServiceCategorySites.Select(x => new ServiceCategorySite { SiteId = x })))
+            .ForMember(des => des.ServiceCategoryUnits, opt => opt.MapFrom(src => src.ServiceCategoryUnits.Select(x => new ServiceCategoryUnit { UnitId = x })))
+            .ForMember(des => des.ServiceCategoryZones, opt => opt.MapFrom(src => src.ServiceCategoryZones.Select(x => new ServiceCategoryZone { ZoneId = x })))
+            .ForMember(des => des.ServiceCategoryPresenceGroups, opt => opt.MapFrom(src => src.ServiceCategoryPresenceGroups.Select(x => new ServiceCategoryPresenceGroup { PresenceGroupId = x })))
+            .ForMember(des => des.PersonnelDocuments, opt => opt.MapFrom(src => src.PersonnelDocuments.Select(x => new ServiceCategoryPersonnelDocument { DocumentTemplateId = x })))
+            .ForMember(des => des.Documents, opt => opt.MapFrom(src => src.Documents.Select(x => new ServiceCategoryDocument { DocumentTemplateId = x })));
 
         CreateMap<EditServiceCategoryCommand, ServiceCategory>();
+
         CreateMap<CreateCategoryRoleDto, ServiceCategoryRole>()
             .ForMember(des => des.ResponsibleDepartments, opt => opt.MapFrom(src => src.ResponsibleDepartments.Select(x => new ResponsibleDepartment { DepartmentId = x })))
             .ForMember(des => des.ResponsiblePersonnels, opt => opt.MapFrom(src => src.ResponsiblePersonnels.Select(x => new ResponsiblePersonnel { PersonnelId = x })))
             .ForMember(des => des.ResponsibleUserGroups, opt => opt.MapFrom(src => src.ResponsibleUserGroups.Select(x => new ResponsibleUserGroup { UserGroupId = x })));
-        CreateMap<VehicleTemplateCategory, VehicleCategoryDto>();
-        CreateMap<CategoryVehicleTemplateDocuments, CategoryVehicleDocumentsDto>();
-        CreateMap<CategoryDocument, CategoryDocumentDto>();
-        CreateMap<CreateVehicleTemplateCategoryDto, VehicleTemplateCategory>();
-        CreateMap<CreateCategoryVehicleTemplateDocuments, CategoryVehicleTemplateDocuments>();
-        CreateMap<CategoryPersonnelDocument, CategoryPersonnelDocumentDto>();
+
+        CreateMap<ServiceCategoryVehicleTemplate, VehicleCategoryDto>();
+        CreateMap<ServiceCategoryVehicleTemplateDocument, CategoryVehicleDocumentsDto>();
+        CreateMap<ServiceCategoryDocument, CategoryDocumentDto>();
+        CreateMap<CreateVehicleTemplateCategoryDto, ServiceCategoryVehicleTemplate>();
+        CreateMap<CreateCategoryVehicleTemplateDocuments, ServiceCategoryVehicleTemplateDocument>();
+        CreateMap<ServiceCategoryPersonnelDocument, CategoryPersonnelDocumentDto>();
         CreateMap<ServiceCategoryRole, ServiceCategoryRoleDto>();
         CreateMap<ResponsibleDepartment, ResponsibleDepartmentDto>();
         CreateMap<ResponsiblePersonnel, ResponsiblePersonnelDto>();
@@ -131,12 +140,12 @@ public class MappingProfile : Profile
     {
         CreateMap<VehicleTemplate, VehicleTemplateDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
-        CreateMap<VehicleTemplateDriverDocuments, VehicleTemplateDriverDocumentsDto>();
-        CreateMap<VehicleTemplatesDocument, VehicleTemplatesDocumentDto>();
+        CreateMap<VehicleTemplateDriverDocument, VehicleTemplateDriverDocumentsDto>();
+        CreateMap<VehicleTemplateDocument, VehicleTemplatesDocumentDto>();
         CreateMap<CreateVehicleTemplateCommand, VehicleTemplate>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
-            .ForMember(des => des.VehicleTemplateDocuments, opt => opt.MapFrom(src => src.VehicleTemplateDocuments.Select(x => new VehicleTemplatesDocument { DocumentTemplateId = x })))
-            .ForMember(des => des.DriverDocuments, opt => opt.MapFrom(src => src.DriverDocuments.Select(x => new VehicleTemplateDriverDocuments { DocumentTemplateId = x })));
+            .ForMember(des => des.VehicleTemplateDocuments, opt => opt.MapFrom(src => src.VehicleTemplateDocuments.Select(x => new VehicleTemplateDocument { DocumentTemplateId = x })))
+            .ForMember(des => des.DriverDocuments, opt => opt.MapFrom(src => src.DriverDocuments.Select(x => new VehicleTemplateDriverDocument { DocumentTemplateId = x })));
         CreateMap<EditVehicleTemplateCommand, VehicleTemplate>();
     }
     private void ApplyMappingsOfPresenceGroup()

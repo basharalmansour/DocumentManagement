@@ -13,8 +13,8 @@ public class EditServiceCategoryCommandValidator : AbstractValidator<EditService
     public EditServiceCategoryCommandValidator()
     {
         RuleFor(x => x.Name).Must((obj, domain) => ValidateMultiLanguage(obj.Name, 64)).WithMessage("Name Must be between 1 and 64 character");
-        RuleFor(x => x.MaxPersonnelCount).GreaterThan(0);
-        RuleFor(x => x.MaxServiceDuration).GreaterThan(0);
+        RuleFor(x => x.ServiceCategoryDetails.MaxPersonnelCount).GreaterThan(0);
+        RuleFor(x => x.ServiceCategoryDetails.MaxServiceDuration).GreaterThan(0);
     }
 
     private bool ValidateMultiLanguage(LanguageString multiLanguageObject, int length)

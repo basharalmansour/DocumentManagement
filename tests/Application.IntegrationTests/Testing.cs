@@ -9,12 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using NUnit.Framework;
 using Respawn;
 
 namespace CleanArchitecture.Application.IntegrationTests;
 
-[SetUpFixture]
 public class Testing
 {
     private static IConfigurationRoot _configuration = null!;
@@ -22,7 +20,6 @@ public class Testing
     private static Checkpoint _checkpoint = null!;
     private static string? _currentUserId;
 
-    [OneTimeSetUp]
     public void RunBeforeAnyTests()
     {
         var builder = new ConfigurationBuilder()
@@ -168,7 +165,6 @@ public class Testing
         return await context.Set<TEntity>().CountAsync();
     }
 
-    [OneTimeTearDown]
     public void RunAfterAnyTests()
     {
     }

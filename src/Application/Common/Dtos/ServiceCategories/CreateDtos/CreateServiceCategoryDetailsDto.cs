@@ -12,12 +12,10 @@ public class CreateServiceCategoryDetailsDto
     public TimeUnit MaxOrderDurationUnit { get; set; }
     public int MaxPersonnelCount { get; set; }
     public List<int> PersonnelDocuments { get; set; }
-    public bool IsPersonnelDocumentRequired { get; set; }
     public int? ParentServiceCategoryId { get; set; }
     public bool IsParallelApprovement { get; set; }
-    public CreateCategoryRoleDto ServiceCategoryRoles { get; set; }
+    public List<CreateCategoryRoleDto> ServiceCategoryRoles { get; set; }
     public List<int> Documents { get; set; }
-    public bool IsDocumentsRequired { get; set; }
     public List<CreateVehicleTemplateCategoryDto> VehicleTemplates { get; set; }
     public List<int> ServiceCategoryAreas { get; set; }
     public List<Guid> ServiceCategoryBlocks { get; set; }

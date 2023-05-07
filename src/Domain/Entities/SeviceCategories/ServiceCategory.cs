@@ -20,9 +20,11 @@ public class ServiceCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnt
     public string Name { get; set; }
     public string Description { get; set; }
     public ServiceCategoryDetails ServiceCategoryDetails { get; set; }
+
+    public bool IsMainCategory { get; set; }
+
     [ForeignKey("ParentServiceCategory")]
     public int? ParentServiceCategoryId { get; set; }
     public ServiceCategory ParentServiceCategory { get; set; }
-    public bool IsMainCategory { get; set; }
     public List<ServiceCategory> SubServiceCategories { get; set; }
 }

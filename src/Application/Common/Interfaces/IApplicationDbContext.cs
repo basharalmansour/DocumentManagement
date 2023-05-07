@@ -11,8 +11,8 @@ using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Entities.UserGroups;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using CleanArchitecture.Domain.Entities.Definitions;
 using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
+using CleanArchitecture.Domain.Entities.Definitions.Roles;
 
 namespace CleanArchitecture.Application.Common.Interfaces;
 
@@ -49,8 +49,8 @@ public interface IApplicationDbContext
     public DbSet<ResponsiblePersonnel> ApproverPersonnels { get; set; }
     public DbSet<ResponsibleUserGroup> ApproverUserGroups { get; set; }
     public DbSet<ServiceCategoryRole> ServiceCategoryApprovments { get; set; }
-    public DbSet<CategoryDocument> CategoryDocuments { get; set; }
-    public DbSet<CategoryPersonnelDocument> CategoryPersonnelDocuments { get; set; }
+    public DbSet<ServiceCategoryDocument> CategoryDocuments { get; set; }
+    public DbSet<ServiceCategoryPersonnelDocument> CategoryPersonnelDocuments { get; set; }
     public DbSet<ServiceCategoryArea> ServiceCategoryAreas { get; set; }
     public DbSet<ServiceCategoryBlock> ServiceCategoryBlocks { get; set; }
     public DbSet<ServiceCategoryBrand> ServiceCategoryBrands { get; set; }
@@ -58,14 +58,16 @@ public interface IApplicationDbContext
     public DbSet<ServiceCategorySite> ServiceCategorySites { get; set; }
     public DbSet<ServiceCategoryUnit> ServiceCategoryUnits { get; set; }
     public DbSet<ServiceCategoryZone> ServiceCategoryZones { get; set; }
-    public DbSet<CategoryVehicleTemplateDocuments> CategoryVehicleTemplateDocuments { get; set; }
-    public DbSet<VehicleTemplateCategory> VehicleTemplateCategories { get; set; }
-    public DbSet<VehicleTemplatesDocument> VehicleTemplatesDocuments { get; set; }
-    public DbSet<VehicleTemplateDriverDocuments> VehicleTemplateDriverDocuments { set; get; }
+
+    public DbSet<ServiceCategoryVehicleTemplateDocument> ServiceCategoryVehicleTemplateDocuments { get; set; }
+    public DbSet<ServiceCategoryVehicleTemplate> ServiceCategoryVehicleTemplates { get; set; }
+    public DbSet<VehicleTemplateDocument> VehicleTemplateDocuments { get; set; }
+    public DbSet<VehicleTemplateDriverDocument> VehicleTemplateDriverDocuments { set; get; }
     public DbSet<PersonnelRole> PersonnelRoles { get; set; }
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
+    public DbSet<ServiceCategoryDetails> ServiceCategoryDetails { get; set; }
 
     public DatabaseFacade Database { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);

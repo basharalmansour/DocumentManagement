@@ -34,9 +34,9 @@ public class ServiceCategoryDetails
     public List<ServiceCategoryUnit> ServiceCategoryUnits { get; set; }
     public List<ServiceCategoryZone> ServiceCategoryZones { get; set; }
     public List<ServiceCategoryPresenceGroup> ServiceCategoryPresenceGroups { get; set; }
-    public List<VehicleTemplateCategory> Vehicles { get; set; }
-    public List<CategoryDocument> Documents { get; set; }
-    public List<CategoryPersonnelDocument> PersonnelDocuments { get; set; }
+    public List<ServiceCategoryVehicleTemplate> VehicleTemplates { get; set; }
+    public List<ServiceCategoryDocument> Documents { get; set; }
+    public List<ServiceCategoryPersonnelDocument> PersonnelDocuments { get; set; }
     public List<ServiceCategoryRole> ServiceCategoryRoles { get; set; }
 
 }
