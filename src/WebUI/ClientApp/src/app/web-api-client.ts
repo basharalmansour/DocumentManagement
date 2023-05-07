@@ -3676,7 +3676,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
 
 export interface IFormClient {
     createForm(request: CreateFormCommand): Observable<ApplicationResponse>;
-    getForms(request: GetFormsQuery | null | undefined): Observable<ApplicationResponse>;
+    getForms(request: GetFormsQuery | null | undefined): Observable<ApplicationResponseOfListOfBasicFormDto>;
     getFormById(id: number | undefined): Observable<ApplicationResponse>;
     editForm(request: EditFormCommand): Observable<ApplicationResponse>;
     deleteForm(request: RemoveFormCommand): Observable<ApplicationResponse>;
@@ -3747,7 +3747,7 @@ export class FormClient implements IFormClient {
         return _observableOf<ApplicationResponse>(<any>null);
     }
 
-    getForms(request: GetFormsQuery | null | undefined) : Observable<ApplicationResponse> {
+    getForms(request: GetFormsQuery | null | undefined) : Observable<ApplicationResponseOfListOfBasicFormDto> {
         let url_ = this.baseUrl + "/api/Form/GetForms?";
         if (request !== undefined && request !== null)
             url_ += "request=" + encodeURIComponent("" + request) + "&";
@@ -3768,14 +3768,14 @@ export class FormClient implements IFormClient {
                 try {
                     return this.processGetForms(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfListOfBasicFormDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfListOfBasicFormDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetForms(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetForms(response: HttpResponseBase): Observable<ApplicationResponseOfListOfBasicFormDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3786,7 +3786,7 @@ export class FormClient implements IFormClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfListOfBasicFormDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3794,7 +3794,7 @@ export class FormClient implements IFormClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfListOfBasicFormDto>(<any>null);
     }
 
     getFormById(id: number | undefined) : Observable<ApplicationResponse> {
@@ -7104,6 +7104,102 @@ export class AddMultiChoicesQuestion implements IAddMultiChoicesQuestion {
 export interface IAddMultiChoicesQuestion {
     choice?: LanguageString | undefined;
     questionId?: number;
+}
+
+export class ApplicationResponseOfListOfBasicFormDto implements IApplicationResponseOfListOfBasicFormDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: BasicFormDto[] | undefined;
+
+    constructor(data?: IApplicationResponseOfListOfBasicFormDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            if (Array.isArray(_data["result"])) {
+                this.result = [] as any;
+                for (let item of _data["result"])
+                    this.result!.push(BasicFormDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfListOfBasicFormDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfListOfBasicFormDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        if (Array.isArray(this.result)) {
+            data["result"] = [];
+            for (let item of this.result)
+                data["result"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfListOfBasicFormDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: BasicFormDto[] | undefined;
+}
+
+export class BasicFormDto implements IBasicFormDto {
+    id?: number;
+    name?: LanguageString | undefined;
+    uniqueCode?: string | undefined;
+
+    constructor(data?: IBasicFormDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
+            this.uniqueCode = _data["uniqueCode"];
+        }
+    }
+
+    static fromJS(data: any): BasicFormDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BasicFormDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
+        data["uniqueCode"] = this.uniqueCode;
+        return data; 
+    }
+}
+
+export interface IBasicFormDto {
+    id?: number;
+    name?: LanguageString | undefined;
+    uniqueCode?: string | undefined;
 }
 
 export class GetFormsQuery implements IGetFormsQuery {

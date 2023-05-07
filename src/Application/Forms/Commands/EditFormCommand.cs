@@ -13,18 +13,18 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Forms.Commands;
 
-public class EditFormCommand :CreateFormCommand, IRequest<bool>
+public class EditFormCommand :CreateFormCommand, IRequest<int>
 {
     public int Id { get; set; }
 }
-public class EditFormCommandHandler : BaseCommandHandler, IRequestHandler<EditFormCommand, bool>
+public class EditFormCommandHandler : BaseCommandHandler, IRequestHandler<EditFormCommand, int>
 {
 
     public EditFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
 
     }
-    public async Task<bool> Handle(EditFormCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(EditFormCommand request, CancellationToken cancellationToken)
     {
         var form = _applicationDbContext.Forms.FirstOrDefault(x => x.Id == request.Id);
         if (form == null)
@@ -32,6 +32,6 @@ public class EditFormCommandHandler : BaseCommandHandler, IRequestHandler<EditFo
         form.Questions.Clear();
         _mapper.Map(request, form);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        return true;
+        return request.Id;
     }
 }

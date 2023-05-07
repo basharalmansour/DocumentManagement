@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CleanArchitecture.Application.Forms.Queries;
 public class GetFormsQuery : IRequest<List<BasicFormDto>>
 {
+
 }
 public class GetFormsQueryHandler : BaseQueryHandler, IRequestHandler<GetFormsQuery, List<BasicFormDto>>
 {

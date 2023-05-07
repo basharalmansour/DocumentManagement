@@ -2266,7 +2266,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfListOfBasicFormDto"
                 }
               }
             }
@@ -3884,6 +3884,48 @@
           "questionId": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "ApplicationResponseOfListOfBasicFormDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BasicFormDto"
+            }
+          }
+        }
+      },
+      "BasicFormDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LanguageString"
+              }
+            ]
+          },
+          "uniqueCode": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

@@ -1,6 +1,8 @@
-﻿using CleanArchitecture.Application.Forms.Commands;
+﻿using CleanArchitecture.Application.Common.Dtos.Forms;
+using CleanArchitecture.Application.Forms.Commands;
 using CleanArchitecture.Application.Forms.Queries;
 using CleanArchitecture.Domain.Common;
+using Elasticsearch.Net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers.Forms;
@@ -8,68 +10,68 @@ namespace CleanArchitecture.WebUI.Controllers.Forms;
 public class FormController : ApiControllerBase
 {
     [HttpPost("CreateForm")]
-    public async Task<ApplicationResponse> CreateForm([FromBody] CreateFormCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<int>> CreateForm([FromBody] CreateFormCommand request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<int>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<int>(e);
         }
     }
     [HttpGet("GetForms")]
-    public async Task<ApplicationResponse> GetForms([FromQuery] GetFormsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<List<BasicFormDto>>> GetForms([FromQuery] GetFormsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<List<BasicFormDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<List<BasicFormDto>>(e);
         }
     }
     [HttpGet("GetFormById")]
-    public async Task<ApplicationResponse> GetFormById([FromQuery] GetFormByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<FormDto>> GetFormById([FromQuery] GetFormByIdQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<FormDto>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<FormDto>(e);
         }
     }
     [HttpPost("EditForm")]
-    public async Task<ApplicationResponse> EditForm([FromBody] EditFormCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<int>> EditForm([FromBody] EditFormCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            int result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse<int>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<int>(e);
         }
     }
     [HttpDelete("DeleteForm")]
-    public async Task<ApplicationResponse> DeleteForm([FromBody] RemoveFormCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<bool>> DeleteForm([FromBody] RemoveFormCommand request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<bool>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<bool>(e);
         }
     }
 }

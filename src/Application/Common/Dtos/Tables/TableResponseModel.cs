@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Common.Dtos.Tables;
 
-public class TableResponseModel
+public class TableResponseModel<T>
 {
-    public object Data { get; set; }
-    public int PageCount { get; set; }
-    public int PageNumber { get; set; }
-    public int PageSize { get; set; }
+    public List<T> Data { get; set; }
+    public int PageCount /*=> Math.Round(TotalRowCount / PageSize)*/; //12
+    public int PageNumber { get; set; }//3
+    public int PageSize { get; set; }//25
     public int TotalRowCount { get; set; }
+
+    public TableResponseModel(List<T> data)
+    {
+        Data = data;
+    }
 }
