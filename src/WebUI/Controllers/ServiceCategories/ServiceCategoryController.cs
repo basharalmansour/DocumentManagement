@@ -1,9 +1,12 @@
 ﻿using AutoWrapper.Wrappers;
+using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
+using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Personnels.Queries;
 using CleanArchitecture.Application.Personnels.Queries;
 using CleanArchitecture.Application.ServiceCategories.Commands;
 using CleanArchitecture.Application.ServiceCategories.Queries;
 using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers.ServiceCategories;
@@ -11,81 +14,81 @@ namespace CleanArchitecture.WebUI.Controllers.ServiceCategories;
 public class ServiceCategoryController : ApiControllerBase
 {
     [HttpPost("CreateServiceCategory")]
-    public async Task<ApplicationResponse> CreateServiceCategory([FromBody] CreateServiceCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<int>> CreateServiceCategory([FromBody] CreateServiceCategoryCommand request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<int>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<int>(e);
         }
     }
     [HttpGet("ViewServiceCategories")]
-    public async Task<ApplicationResponse> GetServiceCategories([FromQuery] GetServiceCategoryQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<List<BasicServiceCategoryDto>>> GetServiceCategories([FromQuery] GetServiceCategoryQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<List<BasicServiceCategoryDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<List<BasicServiceCategoryDto>>(e);
         }
     }
     [HttpGet("ViewServiceCategoryById")]
-    public async Task<ApplicationResponse> GetServiceCategoryById([FromQuery] GetServiceCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<ServiceCategoryDetailsDto>> GetServiceCategoryById([FromQuery] GetServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<ServiceCategoryDetailsDto>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<ServiceCategoryDetailsDto>(e);
         }
     }
     [HttpPost("EditServiceCategory")]
-    public async Task<ApplicationResponse> EditServiceCategory([FromBody] EditServiceCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<int>> EditServiceCategory([FromBody] EditServiceCategoryCommand request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<int>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<int>(e);
         }
     }
     [HttpDelete("DeleteServiceCategory")]
-    public async Task<ApplicationResponse> DeleteServiceCategory([FromBody] RemoveServiceCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<bool>> DeleteServiceCategory([FromBody] RemoveServiceCategoryCommand request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<bool>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<bool>(e);
         }
     }
     [HttpGet("GetPersonnelCategories")]
-    public async Task<ApplicationResponse> GetPersonnelCategories([FromQuery] GetPersonnelCategoriesQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<UserGroupApproversDto>> GetPersonnelCategories([FromQuery] GetPersonnelCategoriesQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<UserGroupApproversDto>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<UserGroupApproversDto>(e);
         }
     }
     //[HttpPost("AddRoles")]
@@ -95,16 +98,16 @@ public class ServiceCategoryController : ApiControllerBase
     //    return Ok(result);
     //}
     [HttpGet("GetPersonnelRoles")]
-    public async Task<ApplicationResponse> GetPersonnelRoles([FromQuery] GetPersonnelRoleQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<List<Role>>> GetPersonnelRoles([FromQuery] GetPersonnelRoleQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<List<Role>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<List<Role>>(e);
         }
     }
 

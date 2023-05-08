@@ -14,7 +14,6 @@ using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Enums;
 using MassTransit;
 using MediatR;
-using MessageBroker.Events.DocumentTemplates;
 using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Application.DocumentsTemplate.Commands;

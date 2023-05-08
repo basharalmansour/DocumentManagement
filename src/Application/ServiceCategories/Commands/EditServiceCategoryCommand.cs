@@ -14,23 +14,23 @@ using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.ServiceCategories.Commands;
-public  class EditServiceCategoryCommand : CreateServiceCategoryCommand, IRequest<bool>
+public  class EditServiceCategoryCommand : CreateServiceCategoryCommand, IRequest<int>
 {
     public int Id { get; set; }
 }
-public class EditServiceCategoryCommandHandler : BaseCommandHandler, IRequestHandler<EditServiceCategoryCommand, bool>
+public class EditServiceCategoryCommandHandler : BaseCommandHandler, IRequestHandler<EditServiceCategoryCommand, int>
 {
 
     public EditServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
-    public async Task<bool> Handle(EditServiceCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(EditServiceCategoryCommand request, CancellationToken cancellationToken)
     {
         var editedCategory = _applicationDbContext.ServiceCategories.FirstOrDefault(x => x.Id == request.Id);
         if (editedCategory == null)
             throw new Exception("Service Category was NOT found");
         _mapper.Map(request, editedCategory);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        return true;
+        return editedCategory.Id;
     }
 }

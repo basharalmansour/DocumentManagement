@@ -21,7 +21,7 @@ public class Question : LightBaseEntity<int>, IEntity<int>//
     public short? AnswersCount { get; set; }
     public DateQuestionOptions DateQuestionOptions { get; set; }
     public FileQuestionOptions FileQuestionOptions { get; set; }
-    public List<MultiChoicesQuestion> MultiChoicesQuestions { get; set; }
+    public List<MultiChoicesOption> MultiChoicesOptions { get; set; }
     [ForeignKey("Form")]
     public int FormId { get; set; }
     public Form Form { get; set; }

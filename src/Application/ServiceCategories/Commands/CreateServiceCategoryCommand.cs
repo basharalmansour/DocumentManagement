@@ -16,7 +16,7 @@ public class CreateServiceCategoryCommand : IRequest<int>
     public LanguageString Name { get; set; }
     public LanguageString Description { get; set; }
     public bool IsMainCategory { get; set; }
-    public CreateServiceCategoryDetailsDto ServiceCategoryDetails { get; set; }
+    public CreateServiceCategoryDetails ServiceCategoryDetails { get; set; }
 }
 public class CreateServiceCategoryCommandHandler : BaseCommandHandler, IRequestHandler<CreateServiceCategoryCommand, int>
 {

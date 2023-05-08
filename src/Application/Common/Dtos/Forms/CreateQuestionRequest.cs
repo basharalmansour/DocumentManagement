@@ -13,7 +13,7 @@ public class CreateQuestionRequest
     public LanguageString Name { get; set; }
     public QuestionType QuestionType { get; set; }
     public short? AnswersCount { get; set; }
-    public AddDateQuestionOptionsRequest DateQuestionOptions { get; set; }
-    public AddFileQuestionOptionsRequest FileQuestionOptions { get; set; }
-    public List<AddMultiChoicesQuestion> MultiChoicesQuestions { get; set; }
+    public CreateDateQuestionOptions DateQuestionOptions { get; set; }
+    public CreateFileQuestionOptions FileQuestionOptions { get; set; }
+    public List<CreateMultiChoicesOption> MultiChoicesQuestions { get; set; }
 }

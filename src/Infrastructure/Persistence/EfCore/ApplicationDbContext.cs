@@ -2,6 +2,7 @@
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Entities.Definitions;
 using CleanArchitecture.Domain.Entities.Definitions.Roles;
 using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
 using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
@@ -46,7 +47,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<Form> Forms { get; set; }
     public DbSet<DateQuestionOptions> DateQuestionOptions { get; set; }
     public DbSet<FileQuestionOptions> FileQuestionOptions { get; set; }
-    public DbSet<MultiChoicesQuestion> MultiChoicesQuestions { get; set; }
+    public DbSet<MultiChoicesOption> MultiChoicesOptions { get; set; }
     public DbSet<Question> Questions { get; set; }
     public DbSet<PresenceGroup> PresenceGroups { get; set; }
     public DbSet<PresenceGroupArea> PresenceGroupAreas { get; set; }
@@ -81,12 +82,12 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<ServiceCategoryVehicleTemplateDocument> ServiceCategoryVehicleTemplateDocuments { get; set; }
     public DbSet<ServiceCategoryVehicleTemplate> ServiceCategoryVehicleTemplates { get; set; }
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
+    public DbSet<ServiceCategoryDetails> ServiceCategoryDetails { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
     public DbSet<VehicleTemplateDocument> VehicleTemplateDocuments { get; set; }
     public DbSet<VehicleTemplateDriverDocument> VehicleTemplateDriverDocuments { set; get; }
     public DbSet<PersonnelRole> PersonnelRoles { get; set; }
-    public DbSet<ServiceCategoryDetails> ServiceCategoryDetails { get; set; }
     private void ConfigureAuditableStates()
     {
         var DateTimeNow = DateTime.Now;

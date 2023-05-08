@@ -12,18 +12,18 @@ using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Application.Presences.PresenceGroups.Commands;
-public class EditPresenceGroupCommand : CreatePresenceGroupCommand, IRequest<bool>
+public class EditPresenceGroupCommand : CreatePresenceGroupCommand, IRequest<int>
 {
     public int Id { get; set; }
 }
-public class EditPresenceGroupCommandHandler : BaseCommandHandler, IRequestHandler<EditPresenceGroupCommand, bool>
+public class EditPresenceGroupCommandHandler : BaseCommandHandler, IRequestHandler<EditPresenceGroupCommand, int>
 {
 
     public EditPresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
 
     }
-    public async Task<bool> Handle(EditPresenceGroupCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(EditPresenceGroupCommand request, CancellationToken cancellationToken)
     {
         var editedPrecenceGroup = _applicationDbContext.PresenceGroups.FirstOrDefault(x => x.Id == request.Id);
         if (editedPrecenceGroup == null)
@@ -38,6 +38,6 @@ public class EditPresenceGroupCommandHandler : BaseCommandHandler, IRequestHandl
         editedPrecenceGroup.PresenceGroupZones.Clear();
         _mapper.Map(request, editedPrecenceGroup);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        return true;
+        return editedPrecenceGroup.Id;
     }
 }
