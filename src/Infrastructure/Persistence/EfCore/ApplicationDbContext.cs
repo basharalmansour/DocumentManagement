@@ -79,13 +79,13 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<ServiceCategoryUnit> ServiceCategoryUnits { get; set; }
     public DbSet<ServiceCategoryZone> ServiceCategoryZones { get; set; }
     public DbSet<ServiceCategoryPresenceGroup> ServiceCategoryPresenceGroups { get; set; }
-    public DbSet<ServiceCategoryVehicleTemplateDocument> CategoryVehicleDocuments { get; set; }
-    public DbSet<ServiceCategoryVehicleTemplate> VehicleCategories { get; set; }
+    public DbSet<ServiceCategoryVehicleTemplateDocument> ServiceCategoryVehicleTemplateDocuments { get; set; }
+    public DbSet<ServiceCategoryVehicleTemplate> ServiceCategoryVehicleTemplates { get; set; }
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
-    public DbSet<VehicleTemplateDocument> VehiclesDocuments { get; set; }
-    public DbSet<VehicleTemplateDriverDocument> VehicleDriverDocuments { set; get; }
+    public DbSet<VehicleTemplateDocument> VehicleTemplateDocuments { get; set; }
+    public DbSet<VehicleTemplateDriverDocument> VehicleTemplateDriverDocuments { set; get; }
     public DbSet<PersonnelRole> PersonnelRoles { get; set; }
     private void ConfigureAuditableStates()
     {

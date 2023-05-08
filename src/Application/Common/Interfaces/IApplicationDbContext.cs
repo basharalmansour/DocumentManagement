@@ -58,11 +58,12 @@ public interface IApplicationDbContext
     public DbSet<ServiceCategorySite> ServiceCategorySites { get; set; }
     public DbSet<ServiceCategoryUnit> ServiceCategoryUnits { get; set; }
     public DbSet<ServiceCategoryZone> ServiceCategoryZones { get; set; }
-    public DbSet<ServiceCategoryVehicleTemplateDocument> CategoryVehicleDocuments { get; set; }
-    public DbSet<ServiceCategoryVehicleTemplate> VehicleCategories { get; set; }
-    public DbSet<VehicleTemplateDocument> VehiclesDocuments { get; set; }
-    public DbSet<VehicleTemplateDriverDocument> VehicleDriverDocuments { set; get; }
+    public DbSet<ServiceCategoryVehicleTemplateDocument> ServiceCategoryVehicleTemplateDocuments { get; set; }
+    public DbSet<ServiceCategoryVehicleTemplate> ServiceCategoryVehicleTemplates { get; set; }
+    public DbSet<VehicleTemplateDocument> VehicleTemplateDocuments { get; set; }
+    public DbSet<VehicleTemplateDriverDocument> VehicleTemplateDriverDocuments { set; get; }
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
+    public DbSet<ServiceCategoryDetails> ServiceCategoryDetails { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
     public DbSet<PersonnelRole> PersonnelRoles { get; set; }
