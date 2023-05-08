@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Application.Common.Helpers;
 
 namespace CleanArchitecture.Application.Common.Dtos.Forms;
-public class AddDateQuestionOptionsRequest
+public class CreateMultiChoicesOption
 {
-    public bool IsMultiDate { get; set; }
+    public LanguageString Choice { get; set; }
     public int QuestionId { get; set; }
 }

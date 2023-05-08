@@ -9,17 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace CleanArchitecture.WebUI.Controllers.Personnels;
 public class PersonnelController : ApiControllerBase
 {
-    [HttpGet("GetAllApprovers")]
-    public async Task<ApplicationResponse> GetAllApprovers([FromQuery] GetPersonnelsQuery request, CancellationToken cancellationToken)
+    [HttpGet("GetPersonnels")]
+    public async Task<ApplicationResponse<List<int>>> GetAllApprovers([FromQuery] GetPersonnelsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse(result);
+            return new ApplicationResponse<List<int>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse(e);
+            return new ApplicationResponse<List<int>>(e);
         }
     }
 }

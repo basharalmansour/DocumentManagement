@@ -26,7 +26,7 @@ public interface IApplicationDbContext
     public DbSet<Form> Forms { get; set; }
     public DbSet<DateQuestionOptions> DateQuestionOptions { get; set; }
     public DbSet<FileQuestionOptions> FileQuestionOptions { get; set; }
-    public DbSet<MultiChoicesQuestion> MultiChoicesQuestions { get; set; }
+    public DbSet<MultiChoicesOption> MultiChoicesQuestions { get; set; }
     public DbSet<Question> Questions { get; set; }
     public DbSet<PresenceGroup> PresenceGroups { get; set; }
     public DbSet<PresenceGroupArea> PresenceGroupAreas { get; set; }
@@ -58,17 +58,14 @@ public interface IApplicationDbContext
     public DbSet<ServiceCategorySite> ServiceCategorySites { get; set; }
     public DbSet<ServiceCategoryUnit> ServiceCategoryUnits { get; set; }
     public DbSet<ServiceCategoryZone> ServiceCategoryZones { get; set; }
-
-    public DbSet<ServiceCategoryVehicleTemplateDocument> ServiceCategoryVehicleTemplateDocuments { get; set; }
-    public DbSet<ServiceCategoryVehicleTemplate> ServiceCategoryVehicleTemplates { get; set; }
-    public DbSet<VehicleTemplateDocument> VehicleTemplateDocuments { get; set; }
-    public DbSet<VehicleTemplateDriverDocument> VehicleTemplateDriverDocuments { set; get; }
-    public DbSet<PersonnelRole> PersonnelRoles { get; set; }
+    public DbSet<ServiceCategoryVehicleTemplateDocument> CategoryVehicleDocuments { get; set; }
+    public DbSet<ServiceCategoryVehicleTemplate> VehicleCategories { get; set; }
+    public DbSet<VehicleTemplateDocument> VehiclesDocuments { get; set; }
+    public DbSet<VehicleTemplateDriverDocument> VehicleDriverDocuments { set; get; }
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
-    public DbSet<ServiceCategoryDetails> ServiceCategoryDetails { get; set; }
-
+    public DbSet<PersonnelRole> PersonnelRoles { get; set; }
     public DatabaseFacade Database { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     int SaveChanges();

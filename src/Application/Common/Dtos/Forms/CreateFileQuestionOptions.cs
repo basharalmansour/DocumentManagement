@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Application.Common.Dtos.Forms;
-public class AddFileQuestionOptionsRequest
+public class CreateFileQuestionOptions
 {
     public DocumentFileType DocumentFileType { get; set; }
     public int QuestionId { get; set; }

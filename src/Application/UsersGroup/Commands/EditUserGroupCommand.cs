@@ -14,18 +14,18 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.UsersGroup.Commands;
-public class EditUserGroupCommand :CreateUserGroupCommand , IRequest<bool>
+public class EditUserGroupCommand :CreateUserGroupCommand , IRequest<int>
 {
     public int Id { get; set; }
 }
 
-public class EditUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<EditUserGroupCommand, bool>
+public class EditUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<EditUserGroupCommand, int>
 {
 
     public EditUserGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
     {
     }
-    public async Task<bool> Handle(EditUserGroupCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(EditUserGroupCommand request, CancellationToken cancellationToken)
     {
         var userGroup = _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.Id);
         if (userGroup == null)
@@ -40,6 +40,6 @@ public class EditUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<E
             }
         _mapper.Map(userGroup , request);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        return true;
+        return userGroup.Id;
     }
 }
