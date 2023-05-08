@@ -190,7 +190,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
         CreateMap<DateQuestionOptions, DateQuestionOptionsDto>();
         CreateMap<FileQuestionOptions, FileQuestionOptionsDto>();
-        CreateMap<MultiChoicesOption, MultiChoicesQuestionDto>()
+        CreateMap<MultiChoicesOption, MultiChoicesOptionsDto>()
             .ForMember(dest => dest.Choice, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Choice)));
 
         CreateMap<CreateFormCommand, Form>()

@@ -47,7 +47,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<Form> Forms { get; set; }
     public DbSet<DateQuestionOptions> DateQuestionOptions { get; set; }
     public DbSet<FileQuestionOptions> FileQuestionOptions { get; set; }
-    public DbSet<MultiChoicesOption> MultiChoicesQuestions { get; set; }
+    public DbSet<MultiChoicesOption> MultiChoicesOptions { get; set; }
     public DbSet<Question> Questions { get; set; }
     public DbSet<PresenceGroup> PresenceGroups { get; set; }
     public DbSet<PresenceGroupArea> PresenceGroupAreas { get; set; }
@@ -82,6 +82,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<ServiceCategoryVehicleTemplateDocument> ServiceCategoryVehicleTemplateDocuments { get; set; }
     public DbSet<ServiceCategoryVehicleTemplate> ServiceCategoryVehicleTemplates { get; set; }
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
+    public DbSet<ServiceCategoryDetails> ServiceCategoryDetails { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
     public DbSet<VehicleTemplateDocument> VehicleTemplateDocuments { get; set; }

@@ -18,7 +18,7 @@ public class QuestionDto
     public short? AnswersCount { get; set; }
     public DateQuestionOptionsDto DateQuestionOptions { get; set; }
     public FileQuestionOptionsDto FileQuestionOptions { get; set; }
-    public List<MultiChoicesQuestionDto> MultiChoicesQuestions { get; set; }
+    public List<MultiChoicesOptionsDto> MultiChoicesOptions { get; set; }
 }
 public class DateQuestionOptionsDto
 {
@@ -28,7 +28,7 @@ public class FileQuestionOptionsDto
 {
     public DocumentFileType DocumentFileType { get; set; }
 }
-public class MultiChoicesQuestionDto
+public class MultiChoicesOptionsDto
 {
     public LanguageString Choice { get; set; }
 }

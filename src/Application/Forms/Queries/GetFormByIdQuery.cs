@@ -28,7 +28,7 @@ public class GetFormByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetForm
     {
         var form =await _applicationDbContext.Forms
             .Include(x=>x.Questions)
-            .ThenInclude(x=>x.MultiChoicesQuestions)
+            .ThenInclude(x=>x.MultiChoicesOptions)
             .Include(x => x.Questions)
             .ThenInclude(x => x.DateQuestionOptions)
             .Include(x => x.Questions)

@@ -26,7 +26,7 @@ public interface IApplicationDbContext
     public DbSet<Form> Forms { get; set; }
     public DbSet<DateQuestionOptions> DateQuestionOptions { get; set; }
     public DbSet<FileQuestionOptions> FileQuestionOptions { get; set; }
-    public DbSet<MultiChoicesOption> MultiChoicesQuestions { get; set; }
+    public DbSet<MultiChoicesOption> MultiChoicesOptions { get; set; }
     public DbSet<Question> Questions { get; set; }
     public DbSet<PresenceGroup> PresenceGroups { get; set; }
     public DbSet<PresenceGroupArea> PresenceGroupAreas { get; set; }
