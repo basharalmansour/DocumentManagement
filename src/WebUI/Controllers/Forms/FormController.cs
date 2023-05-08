@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Dtos.Forms;
+using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Forms.Commands;
 using CleanArchitecture.Application.Forms.Queries;
 using CleanArchitecture.Domain.Common;
@@ -23,16 +24,16 @@ public class FormController : ApiControllerBase
         }
     }
     [HttpGet("GetForms")]
-    public async Task<ApplicationResponse<List<BasicFormDto>>> GetForms([FromQuery] GetFormsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicFormDto>>> GetForms([FromQuery] GetFormsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicFormDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicFormDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicFormDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicFormDto>>(e);
         }
     }
     [HttpGet("GetFormById")]

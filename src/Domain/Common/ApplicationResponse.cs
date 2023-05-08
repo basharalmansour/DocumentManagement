@@ -15,6 +15,7 @@ public class ApplicationResponse<T>
     {
         IsError = true;
         Message = e.Message;
+        Result = default(T);
     }
     public ApplicationResponse(T obj)
     {

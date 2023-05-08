@@ -9,13 +9,17 @@ namespace CleanArchitecture.Application.Common.Dtos.Tables;
 public class TableResponseModel<T>
 {
     public List<T> Data { get; set; }
-    public int PageCount /*=> Math.Round(TotalRowCount / PageSize)*/; //12
-    public int PageNumber { get; set; }//3
-    public int PageSize { get; set; }//25
-    public int TotalRowCount { get; set; }
+    public int PageCount { get; }
+    public int PageNumber { get; }
+    public int PageSize { get; }
+    public int TotalRowCount { get; }
 
-    public TableResponseModel(List<T> data)
+    public TableResponseModel(List<T> data, int pageNumber, int pageSize, int totalRowCount)
     {
         Data = data;
+        PageNumber = pageNumber;
+        PageSize = pageSize;
+        TotalRowCount = totalRowCount;
+        PageCount =(int)Math.Ceiling((double)TotalRowCount / PageSize);
     }
 }

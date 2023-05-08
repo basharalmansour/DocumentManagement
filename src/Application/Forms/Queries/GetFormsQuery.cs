@@ -5,29 +5,33 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.Forms;
+using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Forms.Queries;
-public class GetFormsQuery : IRequest<List<BasicFormDto>>
+public class GetFormsQuery : TableRequestModel, IRequest<TableResponseModel<BasicFormDto>>
 {
 
 }
-public class GetFormsQueryHandler : BaseQueryHandler, IRequestHandler<GetFormsQuery, List<BasicFormDto>>
+public class GetFormsQueryHandler : BaseQueryHandler, IRequestHandler<GetFormsQuery, TableResponseModel<BasicFormDto>>
 {
-
     public GetFormsQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper = null) : base(applicationDbContext, mapper)
     {
     }
-    public async Task<List<BasicFormDto>> Handle(GetFormsQuery request, CancellationToken cancellationToken)
+    public async Task<TableResponseModel<BasicFormDto>> Handle(GetFormsQuery request, CancellationToken cancellationToken)
     {
-        var forms =await  _applicationDbContext.Forms
+        var forms = _applicationDbContext.Forms
             .Include(x => x.Questions)
-            .Where(x=> !x.IsDeleted)
+            .Where(x => !x.IsDeleted);
+
+        var selectedForms = await forms
+            .Skip((request.PageNumber - 1) * request.PageSize)
+            .Take(request.PageSize)
             .ToListAsync();
-        var formsDto = _mapper.Map<List<BasicFormDto>>(forms);
-        return formsDto;
+        var formsDto = _mapper.Map<List<BasicFormDto>>(selectedForms);
+        return new TableResponseModel<BasicFormDto>(formsDto, request.PageNumber, request.PageSize, forms.Count());
     }
 }
