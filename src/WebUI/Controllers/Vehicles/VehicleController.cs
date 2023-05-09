@@ -1,4 +1,5 @@
 ﻿using AutoWrapper.Wrappers;
+using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Common.Dtos.VehicleTemplates;
 using CleanArchitecture.Application.VehicleTemplates.Commands;
 using CleanArchitecture.Application.VehicleTemplates.Queries;
@@ -24,16 +25,16 @@ public class VehicleController : ApiControllerBase
         
     }
     [HttpGet("GetVehicles")]
-    public async Task<ApplicationResponse<List<BasicVehicleTemplateDto>>> GetVehicles([FromQuery] GetVehicleTemplateQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicVehicleTemplateDto>>> GetVehicles([FromQuery] GetVehicleTemplateQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicVehicleTemplateDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicVehicleTemplateDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicVehicleTemplateDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicVehicleTemplateDto>>(e);
         }
         
     }

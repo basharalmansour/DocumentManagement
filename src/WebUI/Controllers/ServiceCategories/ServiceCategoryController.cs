@@ -1,5 +1,6 @@
 ﻿using AutoWrapper.Wrappers;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
+using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Personnels.Queries;
 using CleanArchitecture.Application.Personnels.Queries;
@@ -26,17 +27,17 @@ public class ServiceCategoryController : ApiControllerBase
             return new ApplicationResponse<int>(e);
         }
     }
-    [HttpGet("ViewServiceCategories")]
-    public async Task<ApplicationResponse<List<BasicServiceCategoryDto>>> GetServiceCategories([FromQuery] GetServiceCategoryQuery request, CancellationToken cancellationToken)
+    [HttpGet("GetServiceCategories")]
+    public async Task<ApplicationResponse<TableResponseModel<BasicServiceCategoryDto>>> GetServiceCategories([FromQuery] GetServiceCategoryQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicServiceCategoryDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicServiceCategoryDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicServiceCategoryDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicServiceCategoryDto>>(e);
         }
     }
     [HttpGet("ViewServiceCategoryById")]

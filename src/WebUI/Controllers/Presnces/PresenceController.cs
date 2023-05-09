@@ -1,5 +1,6 @@
 ﻿using AutoWrapper.Wrappers;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
+using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Presences.PresenceGroups.Queries;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Commands;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Queries;
@@ -10,94 +11,94 @@ namespace CleanArchitecture.WebUI.Controllers.Personnels;
 public class PresenceController : ApiControllerBase
 {
     [HttpGet("GetAreaDocuments")]
-    public async Task<ApplicationResponse<List<BasicDocumentTemplateDto>>> GetAreaDocuments([FromBody] GetAreaDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>> GetAreaDocuments([FromBody] GetAreaDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(e);
         }
     }
     [HttpGet("GetBlockDocuments")]
-    public async Task<ApplicationResponse<List<BasicDocumentTemplateDto>>> GetBlockDocuments([FromBody] GetBlockDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>> GetBlockDocuments([FromBody] GetBlockDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(e);
         }
     }
     [HttpGet("GetBrandDocuments")]
-    public async Task<ApplicationResponse<List<BasicDocumentTemplateDto>>> GetBrandDocuments([FromBody] GetBrandDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>> GetBrandDocuments([FromBody] GetBrandDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(e);
         }
     }
     [HttpGet("GetCompanyDocuments")]
-    public async Task<ApplicationResponse<List<BasicDocumentTemplateDto>>> GetCompanyDocuments([FromBody] GetCompanyDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>> GetCompanyDocuments([FromBody] GetCompanyDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(e);
         }
     }
     [HttpGet("GetSiteDocuments")]
-    public async Task<ApplicationResponse<List<BasicDocumentTemplateDto>>> GetSiteDocuments([FromBody] GetSiteDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>> GetSiteDocuments([FromBody] GetSiteDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(e);
         }
     }
     [HttpGet("GetUnitDocuments")]
-    public async Task<ApplicationResponse<List<BasicDocumentTemplateDto>>> GetUnitDocuments([FromBody] GetUnitDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>> GetUnitDocuments([FromBody] GetUnitDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(e);
         }
     }
     [HttpGet("GetZoneDocuments")]
-    public async Task<ApplicationResponse<List<BasicDocumentTemplateDto>>> GetZoneDocuments([FromBody] GetZoneDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>> GetZoneDocuments([FromBody] GetZoneDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(e);
         }
     }
     [HttpPost("CreateAreaDocuments")]

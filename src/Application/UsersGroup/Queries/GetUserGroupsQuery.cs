@@ -27,6 +27,7 @@ public class GetUserGroupQueryHandler : BaseQueryHandler, IRequestHandler<GetUse
     public async Task<List<GetUserGroupDto>> Handle(GetUserGroupsQuery request, CancellationToken cancellationToken)
     {
         var userGroups =await _applicationDbContext.UserGroups.Where(x => x.IsDeleted == false).ToListAsync();
+        
         var userGroupsDto= _mapper.Map<List<GetUserGroupDto>>(userGroups);
         return userGroupsDto;
     }
