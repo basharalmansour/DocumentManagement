@@ -26,9 +26,10 @@ public class GetServiceCategoryHandler : BaseQueryHandler, IRequestHandler<GetSe
     }
     public async Task<TableResponseModel<BasicServiceCategoryDto>> Handle(GetServiceCategoryQuery request, CancellationToken cancellationToken)
     {
-        var categories =  _applicationDbContext.ServiceCategories
-            .Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText))
-            .Include(x => x.SubServiceCategories.Where(x => !x.IsDeleted));
+        var categories = _applicationDbContext.ServiceCategories
+            .Include(x => x.SubServiceCategories.Where(x => !x.IsDeleted))
+            .Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText));
+            
         var selectedCategories=await categories
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)

@@ -30,30 +30,28 @@ public class GetUserGroupApproversQueryHandler : BaseQueryHandler, IRequestHandl
     public async Task<TableResponseModel<UserGroupApproversDto>> Handle(GetUserGroupApproversQuery request, CancellationToken cancellationToken)
     {
         List<UserGroupApproversDto> result = new List<UserGroupApproversDto>();
-        var personnelsIds = _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.Id).Personnels
+        var personnelsIds = _applicationDbContext.UserGroups
+            .FirstOrDefault(x => x.Id == request.Id)
+            .Personnels
             .Select(x=>x.PersonnelId)
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
             .ToList();
-        var approvers =await _applicationDbContext.ApproverPersonnels.ToListAsync();
-        var approversPersonnel = approvers
-            .Select(x => x.PersonnelId)
-            .Skip((request.PageNumber - 1) * request.PageSize)
-            .Take(request.PageSize);
-
-        foreach (int id in personnelsIds)
+        
+        var approvers =await _applicationDbContext.ResponsiblePersonnels
+            .Include(x => x.ServiceCategoryRole.ServiceCategory)
+            .Where(x=> personnelsIds.Contains(x.PersonnelId))
+            .GroupBy(x=>x.PersonnelId)
+            .ToListAsync();
+       
+        foreach (var approver in approvers)
         {
-            if(approversPersonnel.Contains(id))
+            result.Add(new UserGroupApproversDto
             {
-                result.Add(new UserGroupApproversDto
-                {
-                    ServiceCategories =_mapper.Map<List<BasicServiceCategoryDto>>(approvers.Select(x=>x.ServiceCategoryRole.ServiceCategory)
-                    .Skip((request.PageNumber - 1) * request.PageSize)
-                    .Take(request.PageSize).ToList()),
-                    PersonnelId = id
-                });
-            }
+                ServiceCategories =_mapper.Map<List<BasicServiceCategoryDto>>(approver.Select(x=>x.ServiceCategoryRole.ServiceCategory)),
+                PersonnelId = approver.Key
+            });
         }
-        return new TableResponseModel<UserGroupApproversDto>(result, request.PageNumber, request.PageSize, approversPersonnel.Count());
+        return new TableResponseModel<UserGroupApproversDto>(result, request.PageNumber, request.PageSize, approvers.Count());
     }
 }

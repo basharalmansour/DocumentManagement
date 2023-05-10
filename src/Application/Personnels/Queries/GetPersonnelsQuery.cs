@@ -30,15 +30,17 @@ public class GetPersonnelsQueryHandler : BaseQueryHandler, IRequestHandler<GetPe
     {
         if (request.Roles == null)
             request.Roles= new List<Role> { Role.Approver , Role.Observer ,Role.Reporter , Role.Canceler};
+
         var result = _applicationDbContext.PersonnelRoles
              .Where(x => request.Roles.Contains(x.Role));
+
         var selectedPersonnels = await result
             .Select(x => new GetPersonnelDetailsDto { PersonnelId = x.PersonnelId })
             .Distinct()
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
             .ToListAsync();
-        return new TableResponseModel<GetPersonnelDetailsDto>(selectedPersonnels, request.PageNumber, request.PageSize, result.Count());
 
+        return new TableResponseModel<GetPersonnelDetailsDto>(selectedPersonnels, request.PageNumber, request.PageSize, result.Count());
     }
 }

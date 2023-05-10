@@ -976,11 +976,11 @@ export class CustomerClient implements ICustomerClient {
 }
 
 export interface IVehicleClient {
-    createVehicle(request: CreateVehicleTemplateCommand): Observable<ApplicationResponse>;
-    getVehicles(request: GetVehicleTemplateQuery | null | undefined): Observable<ApplicationResponse>;
-    getVehicleById(id: number | undefined): Observable<ApplicationResponse>;
-    editVehicle(request: EditVehicleTemplateCommand): Observable<ApplicationResponse>;
-    removeVehicle(request: RemoveVehicleTemplateCommand): Observable<ApplicationResponse>;
+    createVehicle(request: CreateVehicleTemplateCommand): Observable<ApplicationResponseOfInteger>;
+    getVehicles(pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto>;
+    getVehicleById(id: number | undefined): Observable<ApplicationResponseOfVehicleTemplateDto>;
+    editVehicle(request: EditVehicleTemplateCommand): Observable<ApplicationResponseOfInteger>;
+    removeVehicle(request: RemoveVehicleTemplateCommand): Observable<ApplicationResponseOfBoolean>;
 }
 
 @Injectable({
@@ -996,7 +996,7 @@ export class VehicleClient implements IVehicleClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createVehicle(request: CreateVehicleTemplateCommand) : Observable<ApplicationResponse> {
+    createVehicle(request: CreateVehicleTemplateCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/Vehicle/CreateVehicle";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1019,14 +1019,14 @@ export class VehicleClient implements IVehicleClient {
                 try {
                     return this.processCreateVehicle(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateVehicle(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateVehicle(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1037,7 +1037,7 @@ export class VehicleClient implements IVehicleClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1045,13 +1045,19 @@ export class VehicleClient implements IVehicleClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    getVehicles(request: GetVehicleTemplateQuery | null | undefined) : Observable<ApplicationResponse> {
+    getVehicles(pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto> {
         let url_ = this.baseUrl + "/api/Vehicle/GetVehicles?";
-        if (request !== undefined && request !== null)
-            url_ += "request=" + encodeURIComponent("" + request) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1069,14 +1075,14 @@ export class VehicleClient implements IVehicleClient {
                 try {
                     return this.processGetVehicles(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetVehicles(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetVehicles(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1087,7 +1093,7 @@ export class VehicleClient implements IVehicleClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1095,10 +1101,10 @@ export class VehicleClient implements IVehicleClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto>(<any>null);
     }
 
-    getVehicleById(id: number | undefined) : Observable<ApplicationResponse> {
+    getVehicleById(id: number | undefined) : Observable<ApplicationResponseOfVehicleTemplateDto> {
         let url_ = this.baseUrl + "/api/Vehicle/GetVehicle?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -1121,14 +1127,14 @@ export class VehicleClient implements IVehicleClient {
                 try {
                     return this.processGetVehicleById(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfVehicleTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfVehicleTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetVehicleById(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetVehicleById(response: HttpResponseBase): Observable<ApplicationResponseOfVehicleTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1139,7 +1145,7 @@ export class VehicleClient implements IVehicleClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfVehicleTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1147,10 +1153,10 @@ export class VehicleClient implements IVehicleClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfVehicleTemplateDto>(<any>null);
     }
 
-    editVehicle(request: EditVehicleTemplateCommand) : Observable<ApplicationResponse> {
+    editVehicle(request: EditVehicleTemplateCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/Vehicle/EditVehicle";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1173,14 +1179,14 @@ export class VehicleClient implements IVehicleClient {
                 try {
                     return this.processEditVehicle(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditVehicle(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processEditVehicle(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1191,7 +1197,7 @@ export class VehicleClient implements IVehicleClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1199,10 +1205,10 @@ export class VehicleClient implements IVehicleClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    removeVehicle(request: RemoveVehicleTemplateCommand) : Observable<ApplicationResponse> {
+    removeVehicle(request: RemoveVehicleTemplateCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Vehicle/RemoveVehicle";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1225,14 +1231,14 @@ export class VehicleClient implements IVehicleClient {
                 try {
                     return this.processRemoveVehicle(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveVehicle(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processRemoveVehicle(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1243,7 +1249,7 @@ export class VehicleClient implements IVehicleClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1251,18 +1257,18 @@ export class VehicleClient implements IVehicleClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 }
 
 export interface IUserGroupClient {
-    createUserGroup(request: CreateUserGroupCommand): Observable<ApplicationResponse>;
-    getUserGroups(searchText: string | null | undefined): Observable<ApplicationResponse>;
-    getUserGroupById(id: number | undefined): Observable<ApplicationResponse>;
-    editUserGroup(request: EditUserGroupCommand): Observable<ApplicationResponse>;
-    deleteUserGroup(request: RemoveUserGroupCommand): Observable<ApplicationResponse>;
-    getUserGroupApprovers(id: number | undefined): Observable<ApplicationResponse>;
-    getPersonnelRoles(personnelId: number | undefined): Observable<ApplicationResponse>;
+    createUserGroup(request: CreateUserGroupCommand): Observable<ApplicationResponseOfInteger>;
+    getUserGroups(searchText: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfGetUserGroupDto>;
+    getUserGroupById(id: number | undefined): Observable<ApplicationResponseOfGetUserGroupDto>;
+    editUserGroup(request: EditUserGroupCommand): Observable<ApplicationResponseOfInteger>;
+    deleteUserGroup(request: RemoveUserGroupCommand): Observable<ApplicationResponseOfBoolean>;
+    getUserGroupApprovers(id: number | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfUserGroupApproversDto>;
+    getPersonnelRoles(personnelId: number | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfRole>;
 }
 
 @Injectable({
@@ -1278,7 +1284,7 @@ export class UserGroupClient implements IUserGroupClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createUserGroup(request: CreateUserGroupCommand) : Observable<ApplicationResponse> {
+    createUserGroup(request: CreateUserGroupCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/UserGroup/CreateUserGroup";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1301,14 +1307,14 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processCreateUserGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateUserGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateUserGroup(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1319,7 +1325,7 @@ export class UserGroupClient implements IUserGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1327,13 +1333,21 @@ export class UserGroupClient implements IUserGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    getUserGroups(searchText: string | null | undefined) : Observable<ApplicationResponse> {
+    getUserGroups(searchText: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfGetUserGroupDto> {
         let url_ = this.baseUrl + "/api/UserGroup/GetUserGroups?";
         if (searchText !== undefined && searchText !== null)
             url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1351,14 +1365,14 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processGetUserGroups(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfGetUserGroupDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfGetUserGroupDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetUserGroups(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetUserGroups(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfGetUserGroupDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1369,7 +1383,7 @@ export class UserGroupClient implements IUserGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfGetUserGroupDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1377,10 +1391,10 @@ export class UserGroupClient implements IUserGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfGetUserGroupDto>(<any>null);
     }
 
-    getUserGroupById(id: number | undefined) : Observable<ApplicationResponse> {
+    getUserGroupById(id: number | undefined) : Observable<ApplicationResponseOfGetUserGroupDto> {
         let url_ = this.baseUrl + "/api/UserGroup/GetUserGroupById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -1403,14 +1417,14 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processGetUserGroupById(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfGetUserGroupDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfGetUserGroupDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetUserGroupById(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetUserGroupById(response: HttpResponseBase): Observable<ApplicationResponseOfGetUserGroupDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1421,7 +1435,7 @@ export class UserGroupClient implements IUserGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfGetUserGroupDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1429,10 +1443,10 @@ export class UserGroupClient implements IUserGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfGetUserGroupDto>(<any>null);
     }
 
-    editUserGroup(request: EditUserGroupCommand) : Observable<ApplicationResponse> {
+    editUserGroup(request: EditUserGroupCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/UserGroup/EditUserGroup";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1455,14 +1469,14 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processEditUserGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditUserGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processEditUserGroup(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1473,7 +1487,7 @@ export class UserGroupClient implements IUserGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1481,10 +1495,10 @@ export class UserGroupClient implements IUserGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    deleteUserGroup(request: RemoveUserGroupCommand) : Observable<ApplicationResponse> {
+    deleteUserGroup(request: RemoveUserGroupCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/UserGroup/DeleteUserGroup";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1507,14 +1521,14 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processDeleteUserGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeleteUserGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processDeleteUserGroup(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1525,7 +1539,7 @@ export class UserGroupClient implements IUserGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1533,15 +1547,23 @@ export class UserGroupClient implements IUserGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    getUserGroupApprovers(id: number | undefined) : Observable<ApplicationResponse> {
+    getUserGroupApprovers(id: number | undefined, pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfUserGroupApproversDto> {
         let url_ = this.baseUrl + "/api/UserGroup/GetUserGroupApprovers?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1559,14 +1581,14 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processGetUserGroupApprovers(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfUserGroupApproversDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfUserGroupApproversDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetUserGroupApprovers(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetUserGroupApprovers(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfUserGroupApproversDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1577,7 +1599,7 @@ export class UserGroupClient implements IUserGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfUserGroupApproversDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1585,15 +1607,23 @@ export class UserGroupClient implements IUserGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfUserGroupApproversDto>(<any>null);
     }
 
-    getPersonnelRoles(personnelId: number | undefined) : Observable<ApplicationResponse> {
+    getPersonnelRoles(personnelId: number | undefined, pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfRole> {
         let url_ = this.baseUrl + "/api/UserGroup/GetPersonnelRoles?";
         if (personnelId === null)
             throw new Error("The parameter 'personnelId' cannot be null.");
         else if (personnelId !== undefined)
             url_ += "PersonnelId=" + encodeURIComponent("" + personnelId) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1611,14 +1641,14 @@ export class UserGroupClient implements IUserGroupClient {
                 try {
                     return this.processGetPersonnelRoles(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfRole>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfRole>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetPersonnelRoles(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetPersonnelRoles(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfRole> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1629,7 +1659,7 @@ export class UserGroupClient implements IUserGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfRole.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1637,18 +1667,18 @@ export class UserGroupClient implements IUserGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfRole>(<any>null);
     }
 }
 
 export interface IServiceCategoryClient {
-    createServiceCategory(request: CreateServiceCategoryCommand): Observable<ApplicationResponse>;
-    getServiceCategories(searchText: string | null | undefined): Observable<ApplicationResponse>;
-    getServiceCategoryById(id: number | undefined): Observable<ApplicationResponse>;
-    editServiceCategory(request: EditServiceCategoryCommand): Observable<ApplicationResponse>;
-    deleteServiceCategory(request: RemoveServiceCategoryCommand): Observable<ApplicationResponse>;
-    getPersonnelCategories(presonnelId: number | undefined): Observable<ApplicationResponse>;
-    getPersonnelRoles(personnelId: number | undefined): Observable<ApplicationResponse>;
+    createServiceCategory(request: CreateServiceCategoryCommand): Observable<ApplicationResponseOfInteger>;
+    getServiceCategories(searchText: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto>;
+    getServiceCategoryById(id: number | undefined): Observable<ApplicationResponseOfServiceCategoryDto>;
+    editServiceCategory(request: EditServiceCategoryCommand): Observable<ApplicationResponseOfInteger>;
+    deleteServiceCategory(request: RemoveServiceCategoryCommand): Observable<ApplicationResponseOfBoolean>;
+    getPersonnelCategories(presonnelId: number | undefined): Observable<ApplicationResponseOfUserGroupApproversDto>;
+    getPersonnelRoles(personnelId: number | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfRole>;
 }
 
 @Injectable({
@@ -1664,7 +1694,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createServiceCategory(request: CreateServiceCategoryCommand) : Observable<ApplicationResponse> {
+    createServiceCategory(request: CreateServiceCategoryCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/ServiceCategory/CreateServiceCategory";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1687,14 +1717,14 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processCreateServiceCategory(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateServiceCategory(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateServiceCategory(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1705,7 +1735,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1713,13 +1743,21 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    getServiceCategories(searchText: string | null | undefined) : Observable<ApplicationResponse> {
-        let url_ = this.baseUrl + "/api/ServiceCategory/ViewServiceCategories?";
+    getServiceCategories(searchText: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto> {
+        let url_ = this.baseUrl + "/api/ServiceCategory/GetServiceCategories?";
         if (searchText !== undefined && searchText !== null)
             url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1737,14 +1775,14 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processGetServiceCategories(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetServiceCategories(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetServiceCategories(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1755,7 +1793,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1763,10 +1801,10 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto>(<any>null);
     }
 
-    getServiceCategoryById(id: number | undefined) : Observable<ApplicationResponse> {
+    getServiceCategoryById(id: number | undefined) : Observable<ApplicationResponseOfServiceCategoryDto> {
         let url_ = this.baseUrl + "/api/ServiceCategory/ViewServiceCategoryById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -1789,14 +1827,14 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processGetServiceCategoryById(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfServiceCategoryDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfServiceCategoryDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetServiceCategoryById(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetServiceCategoryById(response: HttpResponseBase): Observable<ApplicationResponseOfServiceCategoryDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1807,7 +1845,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfServiceCategoryDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1815,10 +1853,10 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfServiceCategoryDto>(<any>null);
     }
 
-    editServiceCategory(request: EditServiceCategoryCommand) : Observable<ApplicationResponse> {
+    editServiceCategory(request: EditServiceCategoryCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/ServiceCategory/EditServiceCategory";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1841,14 +1879,14 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processEditServiceCategory(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditServiceCategory(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processEditServiceCategory(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1859,7 +1897,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1867,10 +1905,10 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    deleteServiceCategory(request: RemoveServiceCategoryCommand) : Observable<ApplicationResponse> {
+    deleteServiceCategory(request: RemoveServiceCategoryCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/ServiceCategory/DeleteServiceCategory";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1893,14 +1931,14 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processDeleteServiceCategory(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeleteServiceCategory(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processDeleteServiceCategory(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1911,7 +1949,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1919,10 +1957,10 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    getPersonnelCategories(presonnelId: number | undefined) : Observable<ApplicationResponse> {
+    getPersonnelCategories(presonnelId: number | undefined) : Observable<ApplicationResponseOfUserGroupApproversDto> {
         let url_ = this.baseUrl + "/api/ServiceCategory/GetPersonnelCategories?";
         if (presonnelId === null)
             throw new Error("The parameter 'presonnelId' cannot be null.");
@@ -1945,14 +1983,14 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processGetPersonnelCategories(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfUserGroupApproversDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfUserGroupApproversDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetPersonnelCategories(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetPersonnelCategories(response: HttpResponseBase): Observable<ApplicationResponseOfUserGroupApproversDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1963,7 +2001,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfUserGroupApproversDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1971,15 +2009,23 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfUserGroupApproversDto>(<any>null);
     }
 
-    getPersonnelRoles(personnelId: number | undefined) : Observable<ApplicationResponse> {
+    getPersonnelRoles(personnelId: number | undefined, pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfRole> {
         let url_ = this.baseUrl + "/api/ServiceCategory/GetPersonnelRoles?";
         if (personnelId === null)
             throw new Error("The parameter 'personnelId' cannot be null.");
         else if (personnelId !== undefined)
             url_ += "PersonnelId=" + encodeURIComponent("" + personnelId) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1997,14 +2043,14 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
                 try {
                     return this.processGetPersonnelRoles(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfRole>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfRole>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetPersonnelRoles(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetPersonnelRoles(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfRole> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2015,7 +2061,7 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfRole.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2023,12 +2069,12 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfRole>(<any>null);
     }
 }
 
 export interface IPersonnelClient {
-    getAllApprovers(roles: Role[] | null | undefined, searchText: string | null | undefined, departmentId: number | undefined): Observable<ApplicationResponse>;
+    getPersonnels(roles: Role[] | null | undefined, searchText: string | null | undefined, departmentId: number | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto>;
 }
 
 @Injectable({
@@ -2044,8 +2090,8 @@ export class PersonnelClient implements IPersonnelClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getAllApprovers(roles: Role[] | null | undefined, searchText: string | null | undefined, departmentId: number | undefined) : Observable<ApplicationResponse> {
-        let url_ = this.baseUrl + "/api/Personnel/GetAllApprovers?";
+    getPersonnels(roles: Role[] | null | undefined, searchText: string | null | undefined, departmentId: number | undefined, pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto> {
+        let url_ = this.baseUrl + "/api/Personnel/GetPersonnels?";
         if (roles !== undefined && roles !== null)
             roles && roles.forEach(item => { url_ += "Roles=" + encodeURIComponent("" + item) + "&"; });
         if (searchText !== undefined && searchText !== null)
@@ -2054,6 +2100,14 @@ export class PersonnelClient implements IPersonnelClient {
             throw new Error("The parameter 'departmentId' cannot be null.");
         else if (departmentId !== undefined)
             url_ += "DepartmentId=" + encodeURIComponent("" + departmentId) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2065,20 +2119,20 @@ export class PersonnelClient implements IPersonnelClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAllApprovers(response_);
+            return this.processGetPersonnels(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetAllApprovers(<any>response_);
+                    return this.processGetPersonnels(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAllApprovers(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetPersonnels(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2089,7 +2143,7 @@ export class PersonnelClient implements IPersonnelClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2097,32 +2151,32 @@ export class PersonnelClient implements IPersonnelClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto>(<any>null);
     }
 }
 
 export interface IPresenceClient {
-    getAreaDocuments(request: GetAreaDocumentsQuery): Observable<ApplicationResponse>;
-    getBlockDocuments(request: GetBlockDocumentsQuery): Observable<ApplicationResponse>;
-    getBrandDocuments(request: GetBrandDocumentsQuery): Observable<ApplicationResponse>;
-    getCompanyDocuments(request: GetCompanyDocumentsQuery): Observable<ApplicationResponse>;
-    getSiteDocuments(request: GetSiteDocumentsQuery): Observable<ApplicationResponse>;
-    getUnitDocuments(request: GetUnitDocumentsQuery): Observable<ApplicationResponse>;
-    getZoneDocuments(request: GetZoneDocumentsQuery): Observable<ApplicationResponse>;
-    createAreaDocuments(request: CreateAreaDocumentsCommand): Observable<ApplicationResponse>;
-    createBlockDocuments(request: CreateBlockDocumentsCommand): Observable<ApplicationResponse>;
-    createBrandDocuments(request: CreateBrandDocumentsCommand): Observable<ApplicationResponse>;
-    createCompanyDocuments(request: CreateCompanyDocumentsCommand): Observable<ApplicationResponse>;
-    createSiteDocuments(request: CreateSiteDocumentsCommand): Observable<ApplicationResponse>;
-    createUnitDocuments(request: CreateUnitDocumentsCommand): Observable<ApplicationResponse>;
-    createZoneDocuments(request: CreateZoneDocumentsCommand): Observable<ApplicationResponse>;
-    removeAreaDocuments(request: RemoveAreaDocumentsCommand): Observable<ApplicationResponse>;
-    removeBlockDocuments(request: RemoveBlockDocumentsCommand): Observable<ApplicationResponse>;
-    removeBrandDocuments(request: RemoveBrandDocumentsCommand): Observable<ApplicationResponse>;
-    removeCompanyDocuments(request: RemoveCompanyDocumentsCommand): Observable<ApplicationResponse>;
-    removeSiteDocuments(request: RemoveSiteDocumentsCommand): Observable<ApplicationResponse>;
-    removeUnitDocuments(request: RemoveUnitDocumentsCommand): Observable<ApplicationResponse>;
-    removeZoneDocuments(request: RemoveZoneDocumentsCommand): Observable<ApplicationResponse>;
+    getAreaDocuments(request: GetAreaDocumentsQuery): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>;
+    getBlockDocuments(request: GetBlockDocumentsQuery): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>;
+    getBrandDocuments(request: GetBrandDocumentsQuery): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>;
+    getCompanyDocuments(request: GetCompanyDocumentsQuery): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>;
+    getSiteDocuments(request: GetSiteDocumentsQuery): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>;
+    getUnitDocuments(request: GetUnitDocumentsQuery): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>;
+    getZoneDocuments(request: GetZoneDocumentsQuery): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>;
+    createAreaDocuments(request: CreateAreaDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    createBlockDocuments(request: CreateBlockDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    createBrandDocuments(request: CreateBrandDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    createCompanyDocuments(request: CreateCompanyDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    createSiteDocuments(request: CreateSiteDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    createUnitDocuments(request: CreateUnitDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    createZoneDocuments(request: CreateZoneDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    removeAreaDocuments(request: RemoveAreaDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    removeBlockDocuments(request: RemoveBlockDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    removeBrandDocuments(request: RemoveBrandDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    removeCompanyDocuments(request: RemoveCompanyDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    removeSiteDocuments(request: RemoveSiteDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    removeUnitDocuments(request: RemoveUnitDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
+    removeZoneDocuments(request: RemoveZoneDocumentsCommand): Observable<ApplicationResponseOfBoolean>;
 }
 
 @Injectable({
@@ -2138,7 +2192,7 @@ export class PresenceClient implements IPresenceClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getAreaDocuments(request: GetAreaDocumentsQuery) : Observable<ApplicationResponse> {
+    getAreaDocuments(request: GetAreaDocumentsQuery) : Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         let url_ = this.baseUrl + "/api/Presence/GetAreaDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2161,14 +2215,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetAreaDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAreaDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetAreaDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2179,7 +2233,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2187,10 +2241,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>(<any>null);
     }
 
-    getBlockDocuments(request: GetBlockDocumentsQuery) : Observable<ApplicationResponse> {
+    getBlockDocuments(request: GetBlockDocumentsQuery) : Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         let url_ = this.baseUrl + "/api/Presence/GetBlockDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2213,14 +2267,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetBlockDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetBlockDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetBlockDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2231,7 +2285,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2239,10 +2293,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>(<any>null);
     }
 
-    getBrandDocuments(request: GetBrandDocumentsQuery) : Observable<ApplicationResponse> {
+    getBrandDocuments(request: GetBrandDocumentsQuery) : Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         let url_ = this.baseUrl + "/api/Presence/GetBrandDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2265,14 +2319,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetBrandDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetBrandDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetBrandDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2283,7 +2337,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2291,10 +2345,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>(<any>null);
     }
 
-    getCompanyDocuments(request: GetCompanyDocumentsQuery) : Observable<ApplicationResponse> {
+    getCompanyDocuments(request: GetCompanyDocumentsQuery) : Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         let url_ = this.baseUrl + "/api/Presence/GetCompanyDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2317,14 +2371,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetCompanyDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetCompanyDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetCompanyDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2335,7 +2389,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2343,10 +2397,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>(<any>null);
     }
 
-    getSiteDocuments(request: GetSiteDocumentsQuery) : Observable<ApplicationResponse> {
+    getSiteDocuments(request: GetSiteDocumentsQuery) : Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         let url_ = this.baseUrl + "/api/Presence/GetSiteDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2369,14 +2423,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetSiteDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetSiteDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetSiteDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2387,7 +2441,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2395,10 +2449,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>(<any>null);
     }
 
-    getUnitDocuments(request: GetUnitDocumentsQuery) : Observable<ApplicationResponse> {
+    getUnitDocuments(request: GetUnitDocumentsQuery) : Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         let url_ = this.baseUrl + "/api/Presence/GetUnitDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2421,14 +2475,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetUnitDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetUnitDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetUnitDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2439,7 +2493,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2447,10 +2501,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>(<any>null);
     }
 
-    getZoneDocuments(request: GetZoneDocumentsQuery) : Observable<ApplicationResponse> {
+    getZoneDocuments(request: GetZoneDocumentsQuery) : Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         let url_ = this.baseUrl + "/api/Presence/GetZoneDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2473,14 +2527,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processGetZoneDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetZoneDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetZoneDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2491,7 +2545,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2499,10 +2553,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>(<any>null);
     }
 
-    createAreaDocuments(request: CreateAreaDocumentsCommand) : Observable<ApplicationResponse> {
+    createAreaDocuments(request: CreateAreaDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/CreateAreaDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2525,14 +2579,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processCreateAreaDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateAreaDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateAreaDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2543,7 +2597,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2551,10 +2605,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    createBlockDocuments(request: CreateBlockDocumentsCommand) : Observable<ApplicationResponse> {
+    createBlockDocuments(request: CreateBlockDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/CreateBlockDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2577,14 +2631,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processCreateBlockDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateBlockDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateBlockDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2595,7 +2649,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2603,10 +2657,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    createBrandDocuments(request: CreateBrandDocumentsCommand) : Observable<ApplicationResponse> {
+    createBrandDocuments(request: CreateBrandDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/CreateBrandDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2629,14 +2683,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processCreateBrandDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateBrandDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateBrandDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2647,7 +2701,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2655,10 +2709,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    createCompanyDocuments(request: CreateCompanyDocumentsCommand) : Observable<ApplicationResponse> {
+    createCompanyDocuments(request: CreateCompanyDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/CreateCompanyDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2681,14 +2735,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processCreateCompanyDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateCompanyDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateCompanyDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2699,7 +2753,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2707,10 +2761,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    createSiteDocuments(request: CreateSiteDocumentsCommand) : Observable<ApplicationResponse> {
+    createSiteDocuments(request: CreateSiteDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/CreateSiteDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2733,14 +2787,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processCreateSiteDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateSiteDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateSiteDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2751,7 +2805,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2759,10 +2813,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    createUnitDocuments(request: CreateUnitDocumentsCommand) : Observable<ApplicationResponse> {
+    createUnitDocuments(request: CreateUnitDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/CreateUnitDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2785,14 +2839,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processCreateUnitDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateUnitDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateUnitDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2803,7 +2857,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2811,10 +2865,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    createZoneDocuments(request: CreateZoneDocumentsCommand) : Observable<ApplicationResponse> {
+    createZoneDocuments(request: CreateZoneDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/CreateZoneDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2837,14 +2891,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processCreateZoneDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateZoneDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateZoneDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2855,7 +2909,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2863,10 +2917,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    removeAreaDocuments(request: RemoveAreaDocumentsCommand) : Observable<ApplicationResponse> {
+    removeAreaDocuments(request: RemoveAreaDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/RemoveAreaDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2889,14 +2943,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveAreaDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveAreaDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processRemoveAreaDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2907,7 +2961,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2915,10 +2969,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    removeBlockDocuments(request: RemoveBlockDocumentsCommand) : Observable<ApplicationResponse> {
+    removeBlockDocuments(request: RemoveBlockDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/RemoveBlockDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2941,14 +2995,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveBlockDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveBlockDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processRemoveBlockDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2959,7 +3013,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2967,10 +3021,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    removeBrandDocuments(request: RemoveBrandDocumentsCommand) : Observable<ApplicationResponse> {
+    removeBrandDocuments(request: RemoveBrandDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/RemoveBrandDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2993,14 +3047,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveBrandDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveBrandDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processRemoveBrandDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3011,7 +3065,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3019,10 +3073,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    removeCompanyDocuments(request: RemoveCompanyDocumentsCommand) : Observable<ApplicationResponse> {
+    removeCompanyDocuments(request: RemoveCompanyDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/RemoveCompanyDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3045,14 +3099,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveCompanyDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveCompanyDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processRemoveCompanyDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3063,7 +3117,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3071,10 +3125,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    removeSiteDocuments(request: RemoveSiteDocumentsCommand) : Observable<ApplicationResponse> {
+    removeSiteDocuments(request: RemoveSiteDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/RemoveSiteDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3097,14 +3151,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveSiteDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveSiteDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processRemoveSiteDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3115,7 +3169,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3123,10 +3177,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    removeUnitDocuments(request: RemoveUnitDocumentsCommand) : Observable<ApplicationResponse> {
+    removeUnitDocuments(request: RemoveUnitDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/RemoveUnitDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3149,14 +3203,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveUnitDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveUnitDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processRemoveUnitDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3167,7 +3221,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3175,10 +3229,10 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    removeZoneDocuments(request: RemoveZoneDocumentsCommand) : Observable<ApplicationResponse> {
+    removeZoneDocuments(request: RemoveZoneDocumentsCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Presence/RemoveZoneDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3201,14 +3255,14 @@ export class PresenceClient implements IPresenceClient {
                 try {
                     return this.processRemoveZoneDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemoveZoneDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processRemoveZoneDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3219,7 +3273,7 @@ export class PresenceClient implements IPresenceClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3227,19 +3281,19 @@ export class PresenceClient implements IPresenceClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 }
 
 export interface IPresenceGroupClient {
-    createPresenceGroup(request: CreatePresenceGroupCommand): Observable<ApplicationResponse>;
-    getPresenceGroups(searchText: string | null | undefined): Observable<ApplicationResponse>;
-    getPresenceGroupById(id: number | undefined): Observable<ApplicationResponse>;
-    editPresenceGroup(request: EditPresenceGroupCommand): Observable<ApplicationResponse>;
-    removePresenceGroup(request: RemovePresenceGroupCommand): Observable<ApplicationResponse>;
-    getPresenceGroupDocuments(request: GetPresenceGroupDocumentsQuery): Observable<ApplicationResponse>;
-    addPresenceGroupDocument(presenceGroupId: number | undefined, documentTemplateId: number | undefined): Observable<ApplicationResponse>;
-    removePresenceGroupDocument(request: RemovePresenceGroupDocumentCommand): Observable<ApplicationResponse>;
+    createPresenceGroup(request: CreatePresenceGroupCommand): Observable<ApplicationResponseOfInteger>;
+    getPresenceGroups(searchText: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto>;
+    getPresenceGroupById(id: number | undefined): Observable<ApplicationResponseOfPresenceGroupDto>;
+    editPresenceGroup(request: EditPresenceGroupCommand): Observable<ApplicationResponseOfInteger>;
+    removePresenceGroup(request: RemovePresenceGroupCommand): Observable<ApplicationResponseOfBoolean>;
+    getPresenceGroupDocuments(request: GetPresenceGroupDocumentsQuery): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>;
+    addPresenceGroupDocument(presenceGroupId: number | undefined, documentTemplateId: number | undefined): Observable<ApplicationResponseOfBoolean>;
+    removePresenceGroupDocument(request: RemovePresenceGroupDocumentCommand): Observable<ApplicationResponseOfBoolean>;
 }
 
 @Injectable({
@@ -3255,7 +3309,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createPresenceGroup(request: CreatePresenceGroupCommand) : Observable<ApplicationResponse> {
+    createPresenceGroup(request: CreatePresenceGroupCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/PresenceGroup/CreatePresenceGroup";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3278,14 +3332,14 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processCreatePresenceGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreatePresenceGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreatePresenceGroup(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3296,7 +3350,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3304,13 +3358,21 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    getPresenceGroups(searchText: string | null | undefined) : Observable<ApplicationResponse> {
+    getPresenceGroups(searchText: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto> {
         let url_ = this.baseUrl + "/api/PresenceGroup/GetPresenceGroups?";
         if (searchText !== undefined && searchText !== null)
             url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3328,14 +3390,14 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processGetPresenceGroups(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetPresenceGroups(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetPresenceGroups(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3346,7 +3408,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3354,10 +3416,10 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto>(<any>null);
     }
 
-    getPresenceGroupById(id: number | undefined) : Observable<ApplicationResponse> {
+    getPresenceGroupById(id: number | undefined) : Observable<ApplicationResponseOfPresenceGroupDto> {
         let url_ = this.baseUrl + "/api/PresenceGroup/GetPresenceGroupById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -3380,14 +3442,14 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processGetPresenceGroupById(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfPresenceGroupDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfPresenceGroupDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetPresenceGroupById(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetPresenceGroupById(response: HttpResponseBase): Observable<ApplicationResponseOfPresenceGroupDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3398,7 +3460,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfPresenceGroupDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3406,10 +3468,10 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfPresenceGroupDto>(<any>null);
     }
 
-    editPresenceGroup(request: EditPresenceGroupCommand) : Observable<ApplicationResponse> {
+    editPresenceGroup(request: EditPresenceGroupCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/PresenceGroup/EditPresenceGroup";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3432,14 +3494,14 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processEditPresenceGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditPresenceGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processEditPresenceGroup(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3450,7 +3512,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3458,10 +3520,10 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    removePresenceGroup(request: RemovePresenceGroupCommand) : Observable<ApplicationResponse> {
+    removePresenceGroup(request: RemovePresenceGroupCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/PresenceGroup/RemovePresenceGroup";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3484,14 +3546,14 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processRemovePresenceGroup(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemovePresenceGroup(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processRemovePresenceGroup(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3502,7 +3564,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3510,10 +3572,10 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    getPresenceGroupDocuments(request: GetPresenceGroupDocumentsQuery) : Observable<ApplicationResponse> {
+    getPresenceGroupDocuments(request: GetPresenceGroupDocumentsQuery) : Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         let url_ = this.baseUrl + "/api/PresenceGroup/GetPresenceGroupDocuments";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3536,14 +3598,14 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processGetPresenceGroupDocuments(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetPresenceGroupDocuments(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetPresenceGroupDocuments(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3554,7 +3616,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3562,10 +3624,10 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>(<any>null);
     }
 
-    addPresenceGroupDocument(presenceGroupId: number | undefined, documentTemplateId: number | undefined) : Observable<ApplicationResponse> {
+    addPresenceGroupDocument(presenceGroupId: number | undefined, documentTemplateId: number | undefined) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/PresenceGroup/AddPresenceGroupDocument?";
         if (presenceGroupId === null)
             throw new Error("The parameter 'presenceGroupId' cannot be null.");
@@ -3592,14 +3654,14 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processAddPresenceGroupDocument(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processAddPresenceGroupDocument(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processAddPresenceGroupDocument(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3610,7 +3672,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3618,10 +3680,10 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 
-    removePresenceGroupDocument(request: RemovePresenceGroupDocumentCommand) : Observable<ApplicationResponse> {
+    removePresenceGroupDocument(request: RemovePresenceGroupDocumentCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/PresenceGroup/RemovePresenceGroupDocument";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3644,14 +3706,14 @@ export class PresenceGroupClient implements IPresenceGroupClient {
                 try {
                     return this.processRemovePresenceGroupDocument(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRemovePresenceGroupDocument(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processRemovePresenceGroupDocument(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3662,7 +3724,7 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3670,16 +3732,16 @@ export class PresenceGroupClient implements IPresenceGroupClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 }
 
 export interface IFormClient {
-    createForm(request: CreateFormCommand): Observable<ApplicationResponse>;
-    getForms(request: GetFormsQuery | null | undefined): Observable<ApplicationResponseOfListOfBasicFormDto>;
-    getFormById(id: number | undefined): Observable<ApplicationResponse>;
-    editForm(request: EditFormCommand): Observable<ApplicationResponse>;
-    deleteForm(request: RemoveFormCommand): Observable<ApplicationResponse>;
+    createForm(request: CreateFormCommand): Observable<ApplicationResponseOfInteger>;
+    getForms(pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfBasicFormDto>;
+    getFormById(id: number | undefined): Observable<ApplicationResponseOfFormDto>;
+    editForm(request: EditFormCommand): Observable<ApplicationResponseOfInteger>;
+    deleteForm(request: RemoveFormCommand): Observable<ApplicationResponseOfBoolean>;
 }
 
 @Injectable({
@@ -3695,7 +3757,7 @@ export class FormClient implements IFormClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createForm(request: CreateFormCommand) : Observable<ApplicationResponse> {
+    createForm(request: CreateFormCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/Form/CreateForm";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3718,14 +3780,14 @@ export class FormClient implements IFormClient {
                 try {
                     return this.processCreateForm(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateForm(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateForm(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3736,7 +3798,7 @@ export class FormClient implements IFormClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3744,13 +3806,19 @@ export class FormClient implements IFormClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    getForms(request: GetFormsQuery | null | undefined) : Observable<ApplicationResponseOfListOfBasicFormDto> {
+    getForms(pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfBasicFormDto> {
         let url_ = this.baseUrl + "/api/Form/GetForms?";
-        if (request !== undefined && request !== null)
-            url_ += "request=" + encodeURIComponent("" + request) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3768,14 +3836,14 @@ export class FormClient implements IFormClient {
                 try {
                     return this.processGetForms(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponseOfListOfBasicFormDto>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicFormDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponseOfListOfBasicFormDto>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicFormDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetForms(response: HttpResponseBase): Observable<ApplicationResponseOfListOfBasicFormDto> {
+    protected processGetForms(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicFormDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3786,7 +3854,7 @@ export class FormClient implements IFormClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponseOfListOfBasicFormDto.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicFormDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3794,10 +3862,10 @@ export class FormClient implements IFormClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponseOfListOfBasicFormDto>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicFormDto>(<any>null);
     }
 
-    getFormById(id: number | undefined) : Observable<ApplicationResponse> {
+    getFormById(id: number | undefined) : Observable<ApplicationResponseOfFormDto> {
         let url_ = this.baseUrl + "/api/Form/GetFormById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -3820,14 +3888,14 @@ export class FormClient implements IFormClient {
                 try {
                     return this.processGetFormById(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfFormDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfFormDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetFormById(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetFormById(response: HttpResponseBase): Observable<ApplicationResponseOfFormDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3838,7 +3906,7 @@ export class FormClient implements IFormClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfFormDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3846,10 +3914,10 @@ export class FormClient implements IFormClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfFormDto>(<any>null);
     }
 
-    editForm(request: EditFormCommand) : Observable<ApplicationResponse> {
+    editForm(request: EditFormCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/Form/EditForm";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3872,14 +3940,14 @@ export class FormClient implements IFormClient {
                 try {
                     return this.processEditForm(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditForm(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processEditForm(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3890,7 +3958,7 @@ export class FormClient implements IFormClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3898,10 +3966,10 @@ export class FormClient implements IFormClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    deleteForm(request: RemoveFormCommand) : Observable<ApplicationResponse> {
+    deleteForm(request: RemoveFormCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Form/DeleteForm";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3924,14 +3992,14 @@ export class FormClient implements IFormClient {
                 try {
                     return this.processDeleteForm(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeleteForm(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processDeleteForm(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3942,7 +4010,7 @@ export class FormClient implements IFormClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3950,17 +4018,17 @@ export class FormClient implements IFormClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 }
 
 export interface IDocumentTemplateClient {
-    createDocumentTemplate(request: CreateDocumentTemplateCommand): Observable<ApplicationResponse>;
-    getDocumentTemplates(searchText: string | null | undefined): Observable<ApplicationResponse>;
-    getDocumentTemplateById(id: number | undefined): Observable<ApplicationResponse>;
-    getDocumentTemplateTypes(request: GetDocumentTemplateTypesQuery | null | undefined): Observable<ApplicationResponse>;
-    editDocumentTemplate(request: EditDocumentTemplateCommand): Observable<ApplicationResponse>;
-    deleteDocumentTemplate(request: RemoveDocumentTemplateCommand): Observable<ApplicationResponse>;
+    createDocumentTemplate(request: CreateDocumentTemplateCommand): Observable<ApplicationResponseOfInteger>;
+    getDocumentTemplates(searchText: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>;
+    getDocumentTemplateById(id: number | undefined): Observable<ApplicationResponseOfGetDocumentTemplateDto>;
+    getDocumentTemplateTypes(pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString>;
+    editDocumentTemplate(request: EditDocumentTemplateCommand): Observable<ApplicationResponseOfInteger>;
+    deleteDocumentTemplate(request: RemoveDocumentTemplateCommand): Observable<ApplicationResponseOfBoolean>;
 }
 
 @Injectable({
@@ -3976,7 +4044,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createDocumentTemplate(request: CreateDocumentTemplateCommand) : Observable<ApplicationResponse> {
+    createDocumentTemplate(request: CreateDocumentTemplateCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/CreateDocumentTemplate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3999,14 +4067,14 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processCreateDocumentTemplate(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateDocumentTemplate(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processCreateDocumentTemplate(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4017,7 +4085,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4025,13 +4093,21 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    getDocumentTemplates(searchText: string | null | undefined) : Observable<ApplicationResponse> {
+    getDocumentTemplates(searchText: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/GetDocumentTemplates?";
         if (searchText !== undefined && searchText !== null)
             url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -4049,14 +4125,14 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processGetDocumentTemplates(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetDocumentTemplates(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetDocumentTemplates(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4067,7 +4143,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4075,10 +4151,10 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto>(<any>null);
     }
 
-    getDocumentTemplateById(id: number | undefined) : Observable<ApplicationResponse> {
+    getDocumentTemplateById(id: number | undefined) : Observable<ApplicationResponseOfGetDocumentTemplateDto> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/GetDocumentTemplateById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -4101,14 +4177,14 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processGetDocumentTemplateById(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfGetDocumentTemplateDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfGetDocumentTemplateDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetDocumentTemplateById(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetDocumentTemplateById(response: HttpResponseBase): Observable<ApplicationResponseOfGetDocumentTemplateDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4119,7 +4195,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfGetDocumentTemplateDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4127,13 +4203,19 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfGetDocumentTemplateDto>(<any>null);
     }
 
-    getDocumentTemplateTypes(request: GetDocumentTemplateTypesQuery | null | undefined) : Observable<ApplicationResponse> {
+    getDocumentTemplateTypes(pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/GetDocumentTemplateTypes?";
-        if (request !== undefined && request !== null)
-            url_ += "request=" + encodeURIComponent("" + request) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -4151,14 +4233,14 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processGetDocumentTemplateTypes(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetDocumentTemplateTypes(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processGetDocumentTemplateTypes(response: HttpResponseBase): Observable<ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4169,7 +4251,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4177,10 +4259,10 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString>(<any>null);
     }
 
-    editDocumentTemplate(request: EditDocumentTemplateCommand) : Observable<ApplicationResponse> {
+    editDocumentTemplate(request: EditDocumentTemplateCommand) : Observable<ApplicationResponseOfInteger> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/EditDocumentTemplate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -4203,14 +4285,14 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processEditDocumentTemplate(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfInteger>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEditDocumentTemplate(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processEditDocumentTemplate(response: HttpResponseBase): Observable<ApplicationResponseOfInteger> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4221,7 +4303,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfInteger.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4229,10 +4311,10 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    deleteDocumentTemplate(request: RemoveDocumentTemplateCommand) : Observable<ApplicationResponse> {
+    deleteDocumentTemplate(request: RemoveDocumentTemplateCommand) : Observable<ApplicationResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/DocumentTemplate/DeleteDocumentTemplate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -4255,14 +4337,14 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
                 try {
                     return this.processDeleteDocumentTemplate(<any>response_);
                 } catch (e) {
-                    return <Observable<ApplicationResponse>><any>_observableThrow(e);
+                    return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ApplicationResponse>><any>_observableThrow(response_);
+                return <Observable<ApplicationResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeleteDocumentTemplate(response: HttpResponseBase): Observable<ApplicationResponse> {
+    protected processDeleteDocumentTemplate(response: HttpResponseBase): Observable<ApplicationResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4273,7 +4355,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationResponse.fromJS(resultData200);
+            result200 = ApplicationResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4281,7 +4363,7 @@ export class DocumentTemplateClient implements IDocumentTemplateClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ApplicationResponse>(<any>null);
+        return _observableOf<ApplicationResponseOfBoolean>(<any>null);
     }
 }
 
@@ -4897,12 +4979,12 @@ export interface ISendOtpToCustomerCommand {
     phoneNumber?: string | undefined;
 }
 
-export class ApplicationResponse implements IApplicationResponse {
+export class ApplicationResponseOfInteger implements IApplicationResponseOfInteger {
     isError?: boolean;
     message?: string | undefined;
-    result?: any | undefined;
+    result?: number;
 
-    constructor(data?: IApplicationResponse) {
+    constructor(data?: IApplicationResponseOfInteger) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4919,9 +5001,9 @@ export class ApplicationResponse implements IApplicationResponse {
         }
     }
 
-    static fromJS(data: any): ApplicationResponse {
+    static fromJS(data: any): ApplicationResponseOfInteger {
         data = typeof data === 'object' ? data : {};
-        let result = new ApplicationResponse();
+        let result = new ApplicationResponseOfInteger();
         result.init(data);
         return result;
     }
@@ -4935,10 +5017,10 @@ export class ApplicationResponse implements IApplicationResponse {
     }
 }
 
-export interface IApplicationResponse {
+export interface IApplicationResponseOfInteger {
     isError?: boolean;
     message?: string | undefined;
-    result?: any | undefined;
+    result?: number;
 }
 
 export class CreateVehicleTemplateCommand implements ICreateVehicleTemplateCommand {
@@ -5054,9 +5136,12 @@ export enum LanguageCode {
     En = 2,
 }
 
-export class GetVehicleTemplateQuery implements IGetVehicleTemplateQuery {
+export class ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto implements IApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfBasicVehicleTemplateDto | undefined;
 
-    constructor(data?: IGetVehicleTemplateQuery) {
+    constructor(data?: IApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5066,22 +5151,310 @@ export class GetVehicleTemplateQuery implements IGetVehicleTemplateQuery {
     }
 
     init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? TableResponseModelOfBasicVehicleTemplateDto.fromJS(_data["result"]) : <any>undefined;
+        }
     }
 
-    static fromJS(data: any): GetVehicleTemplateQuery {
+    static fromJS(data: any): ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetVehicleTemplateQuery();
+        let result = new ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
         return data; 
     }
 }
 
-export interface IGetVehicleTemplateQuery {
+export interface IApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfBasicVehicleTemplateDto | undefined;
+}
+
+export class TableResponseModelOfBasicVehicleTemplateDto implements ITableResponseModelOfBasicVehicleTemplateDto {
+    data?: BasicVehicleTemplateDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+
+    constructor(data?: ITableResponseModelOfBasicVehicleTemplateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(BasicVehicleTemplateDto.fromJS(item));
+            }
+            this.pageCount = _data["pageCount"];
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalRowCount = _data["totalRowCount"];
+        }
+    }
+
+    static fromJS(data: any): TableResponseModelOfBasicVehicleTemplateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TableResponseModelOfBasicVehicleTemplateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount;
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalRowCount"] = this.totalRowCount;
+        return data; 
+    }
+}
+
+export interface ITableResponseModelOfBasicVehicleTemplateDto {
+    data?: BasicVehicleTemplateDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+}
+
+export class BasicVehicleTemplateDto implements IBasicVehicleTemplateDto {
+    id?: string | undefined;
+    name?: LanguageString | undefined;
+
+    constructor(data?: IBasicVehicleTemplateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): BasicVehicleTemplateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BasicVehicleTemplateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IBasicVehicleTemplateDto {
+    id?: string | undefined;
+    name?: LanguageString | undefined;
+}
+
+export class ApplicationResponseOfVehicleTemplateDto implements IApplicationResponseOfVehicleTemplateDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: VehicleTemplateDto | undefined;
+
+    constructor(data?: IApplicationResponseOfVehicleTemplateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? VehicleTemplateDto.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfVehicleTemplateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfVehicleTemplateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfVehicleTemplateDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: VehicleTemplateDto | undefined;
+}
+
+export class VehicleTemplateDto extends BasicVehicleTemplateDto implements IVehicleTemplateDto {
+    vehicleDocuments?: VehicleTemplatesDocumentDto[] | undefined;
+    driverDocuments?: VehicleTemplateDriverDocumentsDto[] | undefined;
+
+    constructor(data?: IVehicleTemplateDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            if (Array.isArray(_data["vehicleDocuments"])) {
+                this.vehicleDocuments = [] as any;
+                for (let item of _data["vehicleDocuments"])
+                    this.vehicleDocuments!.push(VehicleTemplatesDocumentDto.fromJS(item));
+            }
+            if (Array.isArray(_data["driverDocuments"])) {
+                this.driverDocuments = [] as any;
+                for (let item of _data["driverDocuments"])
+                    this.driverDocuments!.push(VehicleTemplateDriverDocumentsDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): VehicleTemplateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new VehicleTemplateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.vehicleDocuments)) {
+            data["vehicleDocuments"] = [];
+            for (let item of this.vehicleDocuments)
+                data["vehicleDocuments"].push(item.toJSON());
+        }
+        if (Array.isArray(this.driverDocuments)) {
+            data["driverDocuments"] = [];
+            for (let item of this.driverDocuments)
+                data["driverDocuments"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IVehicleTemplateDto extends IBasicVehicleTemplateDto {
+    vehicleDocuments?: VehicleTemplatesDocumentDto[] | undefined;
+    driverDocuments?: VehicleTemplateDriverDocumentsDto[] | undefined;
+}
+
+export class VehicleTemplatesDocumentDto implements IVehicleTemplatesDocumentDto {
+    documentTemplateId?: number;
+    vehicleTemplateId?: number;
+
+    constructor(data?: IVehicleTemplatesDocumentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.vehicleTemplateId = _data["vehicleTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): VehicleTemplatesDocumentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new VehicleTemplatesDocumentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["vehicleTemplateId"] = this.vehicleTemplateId;
+        return data; 
+    }
+}
+
+export interface IVehicleTemplatesDocumentDto {
+    documentTemplateId?: number;
+    vehicleTemplateId?: number;
+}
+
+export class VehicleTemplateDriverDocumentsDto implements IVehicleTemplateDriverDocumentsDto {
+    documentTemplateId?: number;
+    vehicleTemplateId?: number;
+
+    constructor(data?: IVehicleTemplateDriverDocumentsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.vehicleTemplateId = _data["vehicleTemplateId"];
+        }
+    }
+
+    static fromJS(data: any): VehicleTemplateDriverDocumentsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new VehicleTemplateDriverDocumentsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["vehicleTemplateId"] = this.vehicleTemplateId;
+        return data; 
+    }
+}
+
+export interface IVehicleTemplateDriverDocumentsDto {
+    documentTemplateId?: number;
+    vehicleTemplateId?: number;
 }
 
 export class EditVehicleTemplateCommand extends CreateVehicleTemplateCommand implements IEditVehicleTemplateCommand {
@@ -5115,6 +5488,50 @@ export class EditVehicleTemplateCommand extends CreateVehicleTemplateCommand imp
 
 export interface IEditVehicleTemplateCommand extends ICreateVehicleTemplateCommand {
     id?: number;
+}
+
+export class ApplicationResponseOfBoolean implements IApplicationResponseOfBoolean {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: boolean;
+
+    constructor(data?: IApplicationResponseOfBoolean) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"];
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfBoolean {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfBoolean();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfBoolean {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: boolean;
 }
 
 export class RemoveVehicleTemplateCommand implements IRemoveVehicleTemplateCommand {
@@ -5201,6 +5618,242 @@ export interface ICreateUserGroupCommand {
     personnelIds?: number[] | undefined;
 }
 
+export class ApplicationResponseOfTableResponseModelOfGetUserGroupDto implements IApplicationResponseOfTableResponseModelOfGetUserGroupDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfGetUserGroupDto | undefined;
+
+    constructor(data?: IApplicationResponseOfTableResponseModelOfGetUserGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? TableResponseModelOfGetUserGroupDto.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfTableResponseModelOfGetUserGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfTableResponseModelOfGetUserGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfTableResponseModelOfGetUserGroupDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfGetUserGroupDto | undefined;
+}
+
+export class TableResponseModelOfGetUserGroupDto implements ITableResponseModelOfGetUserGroupDto {
+    data?: GetUserGroupDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+
+    constructor(data?: ITableResponseModelOfGetUserGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(GetUserGroupDto.fromJS(item));
+            }
+            this.pageCount = _data["pageCount"];
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalRowCount = _data["totalRowCount"];
+        }
+    }
+
+    static fromJS(data: any): TableResponseModelOfGetUserGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TableResponseModelOfGetUserGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount;
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalRowCount"] = this.totalRowCount;
+        return data; 
+    }
+}
+
+export interface ITableResponseModelOfGetUserGroupDto {
+    data?: GetUserGroupDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+}
+
+export class GetUserGroupDto implements IGetUserGroupDto {
+    name?: LanguageString | undefined;
+    personnels?: UserGroupPersonnelDto[] | undefined;
+    uniqueCode?: string | undefined;
+
+    constructor(data?: IGetUserGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
+            if (Array.isArray(_data["personnels"])) {
+                this.personnels = [] as any;
+                for (let item of _data["personnels"])
+                    this.personnels!.push(UserGroupPersonnelDto.fromJS(item));
+            }
+            this.uniqueCode = _data["uniqueCode"];
+        }
+    }
+
+    static fromJS(data: any): GetUserGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetUserGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
+        if (Array.isArray(this.personnels)) {
+            data["personnels"] = [];
+            for (let item of this.personnels)
+                data["personnels"].push(item.toJSON());
+        }
+        data["uniqueCode"] = this.uniqueCode;
+        return data; 
+    }
+}
+
+export interface IGetUserGroupDto {
+    name?: LanguageString | undefined;
+    personnels?: UserGroupPersonnelDto[] | undefined;
+    uniqueCode?: string | undefined;
+}
+
+export class UserGroupPersonnelDto implements IUserGroupPersonnelDto {
+    personnelId?: number;
+
+    constructor(data?: IUserGroupPersonnelDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.personnelId = _data["personnelId"];
+        }
+    }
+
+    static fromJS(data: any): UserGroupPersonnelDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserGroupPersonnelDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["personnelId"] = this.personnelId;
+        return data; 
+    }
+}
+
+export interface IUserGroupPersonnelDto {
+    personnelId?: number;
+}
+
+export class ApplicationResponseOfGetUserGroupDto implements IApplicationResponseOfGetUserGroupDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: GetUserGroupDto | undefined;
+
+    constructor(data?: IApplicationResponseOfGetUserGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? GetUserGroupDto.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfGetUserGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfGetUserGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfGetUserGroupDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: GetUserGroupDto | undefined;
+}
+
 export class EditUserGroupCommand extends CreateUserGroupCommand implements IEditUserGroupCommand {
     id?: number;
 
@@ -5270,11 +5923,338 @@ export interface IRemoveUserGroupCommand {
     id?: number;
 }
 
+export class ApplicationResponseOfTableResponseModelOfUserGroupApproversDto implements IApplicationResponseOfTableResponseModelOfUserGroupApproversDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfUserGroupApproversDto | undefined;
+
+    constructor(data?: IApplicationResponseOfTableResponseModelOfUserGroupApproversDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? TableResponseModelOfUserGroupApproversDto.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfTableResponseModelOfUserGroupApproversDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfTableResponseModelOfUserGroupApproversDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfTableResponseModelOfUserGroupApproversDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfUserGroupApproversDto | undefined;
+}
+
+export class TableResponseModelOfUserGroupApproversDto implements ITableResponseModelOfUserGroupApproversDto {
+    data?: UserGroupApproversDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+
+    constructor(data?: ITableResponseModelOfUserGroupApproversDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(UserGroupApproversDto.fromJS(item));
+            }
+            this.pageCount = _data["pageCount"];
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalRowCount = _data["totalRowCount"];
+        }
+    }
+
+    static fromJS(data: any): TableResponseModelOfUserGroupApproversDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TableResponseModelOfUserGroupApproversDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount;
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalRowCount"] = this.totalRowCount;
+        return data; 
+    }
+}
+
+export interface ITableResponseModelOfUserGroupApproversDto {
+    data?: UserGroupApproversDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+}
+
+export class UserGroupApproversDto implements IUserGroupApproversDto {
+    personnelId?: number;
+    personnelName?: string | undefined;
+    serviceCategories?: BasicServiceCategoryDto[] | undefined;
+
+    constructor(data?: IUserGroupApproversDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.personnelId = _data["personnelId"];
+            this.personnelName = _data["personnelName"];
+            if (Array.isArray(_data["serviceCategories"])) {
+                this.serviceCategories = [] as any;
+                for (let item of _data["serviceCategories"])
+                    this.serviceCategories!.push(BasicServiceCategoryDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UserGroupApproversDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserGroupApproversDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["personnelId"] = this.personnelId;
+        data["personnelName"] = this.personnelName;
+        if (Array.isArray(this.serviceCategories)) {
+            data["serviceCategories"] = [];
+            for (let item of this.serviceCategories)
+                data["serviceCategories"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IUserGroupApproversDto {
+    personnelId?: number;
+    personnelName?: string | undefined;
+    serviceCategories?: BasicServiceCategoryDto[] | undefined;
+}
+
+export class BasicServiceCategoryDto implements IBasicServiceCategoryDto {
+    id?: number;
+    uniqueCode?: string | undefined;
+    name?: LanguageString | undefined;
+    isMainCategory?: boolean;
+    subServiceCategories?: BasicServiceCategoryDto[] | undefined;
+
+    constructor(data?: IBasicServiceCategoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.uniqueCode = _data["uniqueCode"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
+            this.isMainCategory = _data["isMainCategory"];
+            if (Array.isArray(_data["subServiceCategories"])) {
+                this.subServiceCategories = [] as any;
+                for (let item of _data["subServiceCategories"])
+                    this.subServiceCategories!.push(BasicServiceCategoryDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): BasicServiceCategoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BasicServiceCategoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["uniqueCode"] = this.uniqueCode;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
+        data["isMainCategory"] = this.isMainCategory;
+        if (Array.isArray(this.subServiceCategories)) {
+            data["subServiceCategories"] = [];
+            for (let item of this.subServiceCategories)
+                data["subServiceCategories"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IBasicServiceCategoryDto {
+    id?: number;
+    uniqueCode?: string | undefined;
+    name?: LanguageString | undefined;
+    isMainCategory?: boolean;
+    subServiceCategories?: BasicServiceCategoryDto[] | undefined;
+}
+
+export class ApplicationResponseOfTableResponseModelOfRole implements IApplicationResponseOfTableResponseModelOfRole {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfRole | undefined;
+
+    constructor(data?: IApplicationResponseOfTableResponseModelOfRole) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? TableResponseModelOfRole.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfTableResponseModelOfRole {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfTableResponseModelOfRole();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfTableResponseModelOfRole {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfRole | undefined;
+}
+
+export class TableResponseModelOfRole implements ITableResponseModelOfRole {
+    data?: Role[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+
+    constructor(data?: ITableResponseModelOfRole) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(item);
+            }
+            this.pageCount = _data["pageCount"];
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalRowCount = _data["totalRowCount"];
+        }
+    }
+
+    static fromJS(data: any): TableResponseModelOfRole {
+        data = typeof data === 'object' ? data : {};
+        let result = new TableResponseModelOfRole();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item);
+        }
+        data["pageCount"] = this.pageCount;
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalRowCount"] = this.totalRowCount;
+        return data; 
+    }
+}
+
+export interface ITableResponseModelOfRole {
+    data?: Role[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+}
+
+export enum Role {
+    Approver = 0,
+    Observer = 1,
+    Reporter = 2,
+    Canceler = 3,
+}
+
 export class CreateServiceCategoryCommand implements ICreateServiceCategoryCommand {
     name?: LanguageString | undefined;
     description?: LanguageString | undefined;
     isMainCategory?: boolean;
-    serviceCategoryDetails?: CreateServiceCategoryDetailsDto | undefined;
+    serviceCategoryDetails?: CreateServiceCategoryDetails | undefined;
 
     constructor(data?: ICreateServiceCategoryCommand) {
         if (data) {
@@ -5290,7 +6270,7 @@ export class CreateServiceCategoryCommand implements ICreateServiceCategoryComma
             this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
             this.description = _data["description"] ? LanguageString.fromJS(_data["description"]) : <any>undefined;
             this.isMainCategory = _data["isMainCategory"];
-            this.serviceCategoryDetails = _data["serviceCategoryDetails"] ? CreateServiceCategoryDetailsDto.fromJS(_data["serviceCategoryDetails"]) : <any>undefined;
+            this.serviceCategoryDetails = _data["serviceCategoryDetails"] ? CreateServiceCategoryDetails.fromJS(_data["serviceCategoryDetails"]) : <any>undefined;
         }
     }
 
@@ -5315,10 +6295,10 @@ export interface ICreateServiceCategoryCommand {
     name?: LanguageString | undefined;
     description?: LanguageString | undefined;
     isMainCategory?: boolean;
-    serviceCategoryDetails?: CreateServiceCategoryDetailsDto | undefined;
+    serviceCategoryDetails?: CreateServiceCategoryDetails | undefined;
 }
 
-export class CreateServiceCategoryDetailsDto implements ICreateServiceCategoryDetailsDto {
+export class CreateServiceCategoryDetails implements ICreateServiceCategoryDetails {
     maxServiceDuration?: number;
     serviceDurationUnit?: TimeUnit;
     minOrderDuration?: number;
@@ -5326,11 +6306,11 @@ export class CreateServiceCategoryDetailsDto implements ICreateServiceCategoryDe
     maxOrderDuration?: number;
     maxOrderDurationUnit?: TimeUnit;
     maxPersonnelCount?: number;
-    personnelDocuments?: number[] | undefined;
+    personnelDocuments?: CreateServiceCategoryPersonnelDocument[] | undefined;
     parentServiceCategoryId?: number | undefined;
     isParallelApprovement?: boolean;
     serviceCategoryRoles?: CreateCategoryRoleDto[] | undefined;
-    documents?: number[] | undefined;
+    documents?: CreateServiceCategoryDocument[] | undefined;
     vehicleTemplates?: CreateVehicleTemplateCategoryDto[] | undefined;
     serviceCategoryAreas?: number[] | undefined;
     serviceCategoryBlocks?: string[] | undefined;
@@ -5341,7 +6321,7 @@ export class CreateServiceCategoryDetailsDto implements ICreateServiceCategoryDe
     serviceCategoryZones?: string[] | undefined;
     serviceCategoryPresenceGroups?: number[] | undefined;
 
-    constructor(data?: ICreateServiceCategoryDetailsDto) {
+    constructor(data?: ICreateServiceCategoryDetails) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5362,7 +6342,7 @@ export class CreateServiceCategoryDetailsDto implements ICreateServiceCategoryDe
             if (Array.isArray(_data["personnelDocuments"])) {
                 this.personnelDocuments = [] as any;
                 for (let item of _data["personnelDocuments"])
-                    this.personnelDocuments!.push(item);
+                    this.personnelDocuments!.push(CreateServiceCategoryPersonnelDocument.fromJS(item));
             }
             this.parentServiceCategoryId = _data["parentServiceCategoryId"];
             this.isParallelApprovement = _data["isParallelApprovement"];
@@ -5374,7 +6354,7 @@ export class CreateServiceCategoryDetailsDto implements ICreateServiceCategoryDe
             if (Array.isArray(_data["documents"])) {
                 this.documents = [] as any;
                 for (let item of _data["documents"])
-                    this.documents!.push(item);
+                    this.documents!.push(CreateServiceCategoryDocument.fromJS(item));
             }
             if (Array.isArray(_data["vehicleTemplates"])) {
                 this.vehicleTemplates = [] as any;
@@ -5424,9 +6404,9 @@ export class CreateServiceCategoryDetailsDto implements ICreateServiceCategoryDe
         }
     }
 
-    static fromJS(data: any): CreateServiceCategoryDetailsDto {
+    static fromJS(data: any): CreateServiceCategoryDetails {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateServiceCategoryDetailsDto();
+        let result = new CreateServiceCategoryDetails();
         result.init(data);
         return result;
     }
@@ -5443,7 +6423,7 @@ export class CreateServiceCategoryDetailsDto implements ICreateServiceCategoryDe
         if (Array.isArray(this.personnelDocuments)) {
             data["personnelDocuments"] = [];
             for (let item of this.personnelDocuments)
-                data["personnelDocuments"].push(item);
+                data["personnelDocuments"].push(item.toJSON());
         }
         data["parentServiceCategoryId"] = this.parentServiceCategoryId;
         data["isParallelApprovement"] = this.isParallelApprovement;
@@ -5455,7 +6435,7 @@ export class CreateServiceCategoryDetailsDto implements ICreateServiceCategoryDe
         if (Array.isArray(this.documents)) {
             data["documents"] = [];
             for (let item of this.documents)
-                data["documents"].push(item);
+                data["documents"].push(item.toJSON());
         }
         if (Array.isArray(this.vehicleTemplates)) {
             data["vehicleTemplates"] = [];
@@ -5506,7 +6486,7 @@ export class CreateServiceCategoryDetailsDto implements ICreateServiceCategoryDe
     }
 }
 
-export interface ICreateServiceCategoryDetailsDto {
+export interface ICreateServiceCategoryDetails {
     maxServiceDuration?: number;
     serviceDurationUnit?: TimeUnit;
     minOrderDuration?: number;
@@ -5514,11 +6494,11 @@ export interface ICreateServiceCategoryDetailsDto {
     maxOrderDuration?: number;
     maxOrderDurationUnit?: TimeUnit;
     maxPersonnelCount?: number;
-    personnelDocuments?: number[] | undefined;
+    personnelDocuments?: CreateServiceCategoryPersonnelDocument[] | undefined;
     parentServiceCategoryId?: number | undefined;
     isParallelApprovement?: boolean;
     serviceCategoryRoles?: CreateCategoryRoleDto[] | undefined;
-    documents?: number[] | undefined;
+    documents?: CreateServiceCategoryDocument[] | undefined;
     vehicleTemplates?: CreateVehicleTemplateCategoryDto[] | undefined;
     serviceCategoryAreas?: number[] | undefined;
     serviceCategoryBlocks?: string[] | undefined;
@@ -5536,6 +6516,46 @@ export enum TimeUnit {
     Weeks = 2,
     Months = 3,
     Years = 4,
+}
+
+export class CreateServiceCategoryPersonnelDocument implements ICreateServiceCategoryPersonnelDocument {
+    documentTemplateId?: number;
+    isRequired?: boolean;
+
+    constructor(data?: ICreateServiceCategoryPersonnelDocument) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.isRequired = _data["isRequired"];
+        }
+    }
+
+    static fromJS(data: any): CreateServiceCategoryPersonnelDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateServiceCategoryPersonnelDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["isRequired"] = this.isRequired;
+        return data; 
+    }
+}
+
+export interface ICreateServiceCategoryPersonnelDocument {
+    documentTemplateId?: number;
+    isRequired?: boolean;
 }
 
 export class CreateCategoryRoleDto implements ICreateCategoryRoleDto {
@@ -5610,11 +6630,44 @@ export interface ICreateCategoryRoleDto {
     responsibleUserGroups?: number[] | undefined;
 }
 
-export enum Role {
-    Approver = 0,
-    Observer = 1,
-    Reporter = 2,
-    Canceler = 3,
+export class CreateServiceCategoryDocument implements ICreateServiceCategoryDocument {
+    documentTemplateId?: number;
+    isRequired?: boolean;
+
+    constructor(data?: ICreateServiceCategoryDocument) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.isRequired = _data["isRequired"];
+        }
+    }
+
+    static fromJS(data: any): CreateServiceCategoryDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateServiceCategoryDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["isRequired"] = this.isRequired;
+        return data; 
+    }
+}
+
+export interface ICreateServiceCategoryDocument {
+    documentTemplateId?: number;
+    isRequired?: boolean;
 }
 
 export class CreateVehicleTemplateCategoryDto implements ICreateVehicleTemplateCategoryDto {
@@ -5714,6 +6767,3121 @@ export enum VehicleDocumentType {
     Driver = 1,
 }
 
+export class ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto implements IApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfBasicServiceCategoryDto | undefined;
+
+    constructor(data?: IApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? TableResponseModelOfBasicServiceCategoryDto.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfBasicServiceCategoryDto | undefined;
+}
+
+export class TableResponseModelOfBasicServiceCategoryDto implements ITableResponseModelOfBasicServiceCategoryDto {
+    data?: BasicServiceCategoryDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+
+    constructor(data?: ITableResponseModelOfBasicServiceCategoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(BasicServiceCategoryDto.fromJS(item));
+            }
+            this.pageCount = _data["pageCount"];
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalRowCount = _data["totalRowCount"];
+        }
+    }
+
+    static fromJS(data: any): TableResponseModelOfBasicServiceCategoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TableResponseModelOfBasicServiceCategoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount;
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalRowCount"] = this.totalRowCount;
+        return data; 
+    }
+}
+
+export interface ITableResponseModelOfBasicServiceCategoryDto {
+    data?: BasicServiceCategoryDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+}
+
+export class ApplicationResponseOfServiceCategoryDto implements IApplicationResponseOfServiceCategoryDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: ServiceCategoryDto | undefined;
+
+    constructor(data?: IApplicationResponseOfServiceCategoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? ServiceCategoryDto.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfServiceCategoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfServiceCategoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfServiceCategoryDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: ServiceCategoryDto | undefined;
+}
+
+export class ServiceCategoryDto extends BasicServiceCategoryDto implements IServiceCategoryDto {
+    description?: LanguageString | undefined;
+    parentServiceCategoryId?: number | undefined;
+    serviceCategoryDetails?: ServiceCategoryDetailsDto | undefined;
+
+    constructor(data?: IServiceCategoryDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.description = _data["description"] ? LanguageString.fromJS(_data["description"]) : <any>undefined;
+            this.parentServiceCategoryId = _data["parentServiceCategoryId"];
+            this.serviceCategoryDetails = _data["serviceCategoryDetails"] ? ServiceCategoryDetailsDto.fromJS(_data["serviceCategoryDetails"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["description"] = this.description ? this.description.toJSON() : <any>undefined;
+        data["parentServiceCategoryId"] = this.parentServiceCategoryId;
+        data["serviceCategoryDetails"] = this.serviceCategoryDetails ? this.serviceCategoryDetails.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryDto extends IBasicServiceCategoryDto {
+    description?: LanguageString | undefined;
+    parentServiceCategoryId?: number | undefined;
+    serviceCategoryDetails?: ServiceCategoryDetailsDto | undefined;
+}
+
+export class ServiceCategoryDetailsDto implements IServiceCategoryDetailsDto {
+    maxServiceDuration?: number;
+    serviceDurationUnit?: TimeUnit;
+    minOrderDuration?: number;
+    minOrderDurationUnit?: TimeUnit;
+    maxOrderDuration?: number;
+    maxOrderDurationUnit?: TimeUnit;
+    maxPersonnelCount?: number;
+    isParallelApprovement?: boolean;
+    vehicleTemplates?: VehicleCategoryDto[] | undefined;
+    documents?: CategoryDocumentDto[] | undefined;
+    personnelDocuments?: CategoryPersonnelDocumentDto[] | undefined;
+    serviceCategoryRoles?: ServiceCategoryRole[] | undefined;
+    serviceCategoryAreas?: ServiceCategoryAreaDto[] | undefined;
+    serviceCategoryBlocks?: ServiceCategoryBlockDto[] | undefined;
+    serviceCategoryBrands?: ServiceCategoryBrandDto[] | undefined;
+    serviceCategoryCompanies?: ServiceCategoryCompanyDto[] | undefined;
+    serviceCategorySites?: ServiceCategorySiteDto[] | undefined;
+    serviceCategoryUnits?: ServiceCategoryUnitDto[] | undefined;
+    serviceCategoryZones?: ServiceCategoryZoneDto[] | undefined;
+    serviceCategoryPresenceGroups?: ServiceCategoryPresenceGroupDto[] | undefined;
+
+    constructor(data?: IServiceCategoryDetailsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxServiceDuration = _data["maxServiceDuration"];
+            this.serviceDurationUnit = _data["serviceDurationUnit"];
+            this.minOrderDuration = _data["minOrderDuration"];
+            this.minOrderDurationUnit = _data["minOrderDurationUnit"];
+            this.maxOrderDuration = _data["maxOrderDuration"];
+            this.maxOrderDurationUnit = _data["maxOrderDurationUnit"];
+            this.maxPersonnelCount = _data["maxPersonnelCount"];
+            this.isParallelApprovement = _data["isParallelApprovement"];
+            if (Array.isArray(_data["vehicleTemplates"])) {
+                this.vehicleTemplates = [] as any;
+                for (let item of _data["vehicleTemplates"])
+                    this.vehicleTemplates!.push(VehicleCategoryDto.fromJS(item));
+            }
+            if (Array.isArray(_data["documents"])) {
+                this.documents = [] as any;
+                for (let item of _data["documents"])
+                    this.documents!.push(CategoryDocumentDto.fromJS(item));
+            }
+            if (Array.isArray(_data["personnelDocuments"])) {
+                this.personnelDocuments = [] as any;
+                for (let item of _data["personnelDocuments"])
+                    this.personnelDocuments!.push(CategoryPersonnelDocumentDto.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryRoles"])) {
+                this.serviceCategoryRoles = [] as any;
+                for (let item of _data["serviceCategoryRoles"])
+                    this.serviceCategoryRoles!.push(ServiceCategoryRole.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryAreas"])) {
+                this.serviceCategoryAreas = [] as any;
+                for (let item of _data["serviceCategoryAreas"])
+                    this.serviceCategoryAreas!.push(ServiceCategoryAreaDto.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryBlocks"])) {
+                this.serviceCategoryBlocks = [] as any;
+                for (let item of _data["serviceCategoryBlocks"])
+                    this.serviceCategoryBlocks!.push(ServiceCategoryBlockDto.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryBrands"])) {
+                this.serviceCategoryBrands = [] as any;
+                for (let item of _data["serviceCategoryBrands"])
+                    this.serviceCategoryBrands!.push(ServiceCategoryBrandDto.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryCompanies"])) {
+                this.serviceCategoryCompanies = [] as any;
+                for (let item of _data["serviceCategoryCompanies"])
+                    this.serviceCategoryCompanies!.push(ServiceCategoryCompanyDto.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategorySites"])) {
+                this.serviceCategorySites = [] as any;
+                for (let item of _data["serviceCategorySites"])
+                    this.serviceCategorySites!.push(ServiceCategorySiteDto.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryUnits"])) {
+                this.serviceCategoryUnits = [] as any;
+                for (let item of _data["serviceCategoryUnits"])
+                    this.serviceCategoryUnits!.push(ServiceCategoryUnitDto.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryZones"])) {
+                this.serviceCategoryZones = [] as any;
+                for (let item of _data["serviceCategoryZones"])
+                    this.serviceCategoryZones!.push(ServiceCategoryZoneDto.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryPresenceGroups"])) {
+                this.serviceCategoryPresenceGroups = [] as any;
+                for (let item of _data["serviceCategoryPresenceGroups"])
+                    this.serviceCategoryPresenceGroups!.push(ServiceCategoryPresenceGroupDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryDetailsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryDetailsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxServiceDuration"] = this.maxServiceDuration;
+        data["serviceDurationUnit"] = this.serviceDurationUnit;
+        data["minOrderDuration"] = this.minOrderDuration;
+        data["minOrderDurationUnit"] = this.minOrderDurationUnit;
+        data["maxOrderDuration"] = this.maxOrderDuration;
+        data["maxOrderDurationUnit"] = this.maxOrderDurationUnit;
+        data["maxPersonnelCount"] = this.maxPersonnelCount;
+        data["isParallelApprovement"] = this.isParallelApprovement;
+        if (Array.isArray(this.vehicleTemplates)) {
+            data["vehicleTemplates"] = [];
+            for (let item of this.vehicleTemplates)
+                data["vehicleTemplates"].push(item.toJSON());
+        }
+        if (Array.isArray(this.documents)) {
+            data["documents"] = [];
+            for (let item of this.documents)
+                data["documents"].push(item.toJSON());
+        }
+        if (Array.isArray(this.personnelDocuments)) {
+            data["personnelDocuments"] = [];
+            for (let item of this.personnelDocuments)
+                data["personnelDocuments"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryRoles)) {
+            data["serviceCategoryRoles"] = [];
+            for (let item of this.serviceCategoryRoles)
+                data["serviceCategoryRoles"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryAreas)) {
+            data["serviceCategoryAreas"] = [];
+            for (let item of this.serviceCategoryAreas)
+                data["serviceCategoryAreas"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryBlocks)) {
+            data["serviceCategoryBlocks"] = [];
+            for (let item of this.serviceCategoryBlocks)
+                data["serviceCategoryBlocks"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryBrands)) {
+            data["serviceCategoryBrands"] = [];
+            for (let item of this.serviceCategoryBrands)
+                data["serviceCategoryBrands"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryCompanies)) {
+            data["serviceCategoryCompanies"] = [];
+            for (let item of this.serviceCategoryCompanies)
+                data["serviceCategoryCompanies"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategorySites)) {
+            data["serviceCategorySites"] = [];
+            for (let item of this.serviceCategorySites)
+                data["serviceCategorySites"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryUnits)) {
+            data["serviceCategoryUnits"] = [];
+            for (let item of this.serviceCategoryUnits)
+                data["serviceCategoryUnits"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryZones)) {
+            data["serviceCategoryZones"] = [];
+            for (let item of this.serviceCategoryZones)
+                data["serviceCategoryZones"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryPresenceGroups)) {
+            data["serviceCategoryPresenceGroups"] = [];
+            for (let item of this.serviceCategoryPresenceGroups)
+                data["serviceCategoryPresenceGroups"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IServiceCategoryDetailsDto {
+    maxServiceDuration?: number;
+    serviceDurationUnit?: TimeUnit;
+    minOrderDuration?: number;
+    minOrderDurationUnit?: TimeUnit;
+    maxOrderDuration?: number;
+    maxOrderDurationUnit?: TimeUnit;
+    maxPersonnelCount?: number;
+    isParallelApprovement?: boolean;
+    vehicleTemplates?: VehicleCategoryDto[] | undefined;
+    documents?: CategoryDocumentDto[] | undefined;
+    personnelDocuments?: CategoryPersonnelDocumentDto[] | undefined;
+    serviceCategoryRoles?: ServiceCategoryRole[] | undefined;
+    serviceCategoryAreas?: ServiceCategoryAreaDto[] | undefined;
+    serviceCategoryBlocks?: ServiceCategoryBlockDto[] | undefined;
+    serviceCategoryBrands?: ServiceCategoryBrandDto[] | undefined;
+    serviceCategoryCompanies?: ServiceCategoryCompanyDto[] | undefined;
+    serviceCategorySites?: ServiceCategorySiteDto[] | undefined;
+    serviceCategoryUnits?: ServiceCategoryUnitDto[] | undefined;
+    serviceCategoryZones?: ServiceCategoryZoneDto[] | undefined;
+    serviceCategoryPresenceGroups?: ServiceCategoryPresenceGroupDto[] | undefined;
+}
+
+export class VehicleCategoryDto implements IVehicleCategoryDto {
+    vehicleTemplateId?: number;
+    vehicleTemplateDocuments?: CategoryVehicleDocumentsDto[] | undefined;
+
+    constructor(data?: IVehicleCategoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.vehicleTemplateId = _data["vehicleTemplateId"];
+            if (Array.isArray(_data["vehicleTemplateDocuments"])) {
+                this.vehicleTemplateDocuments = [] as any;
+                for (let item of _data["vehicleTemplateDocuments"])
+                    this.vehicleTemplateDocuments!.push(CategoryVehicleDocumentsDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): VehicleCategoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new VehicleCategoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vehicleTemplateId"] = this.vehicleTemplateId;
+        if (Array.isArray(this.vehicleTemplateDocuments)) {
+            data["vehicleTemplateDocuments"] = [];
+            for (let item of this.vehicleTemplateDocuments)
+                data["vehicleTemplateDocuments"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IVehicleCategoryDto {
+    vehicleTemplateId?: number;
+    vehicleTemplateDocuments?: CategoryVehicleDocumentsDto[] | undefined;
+}
+
+export class CategoryVehicleDocumentsDto implements ICategoryVehicleDocumentsDto {
+    vehicleTemplateCategoryId?: number;
+    documentTemplateId?: number;
+    isRequired?: boolean;
+    vehicleDocumentType?: VehicleDocumentType;
+
+    constructor(data?: ICategoryVehicleDocumentsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.vehicleTemplateCategoryId = _data["vehicleTemplateCategoryId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.isRequired = _data["isRequired"];
+            this.vehicleDocumentType = _data["vehicleDocumentType"];
+        }
+    }
+
+    static fromJS(data: any): CategoryVehicleDocumentsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CategoryVehicleDocumentsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vehicleTemplateCategoryId"] = this.vehicleTemplateCategoryId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["isRequired"] = this.isRequired;
+        data["vehicleDocumentType"] = this.vehicleDocumentType;
+        return data; 
+    }
+}
+
+export interface ICategoryVehicleDocumentsDto {
+    vehicleTemplateCategoryId?: number;
+    documentTemplateId?: number;
+    isRequired?: boolean;
+    vehicleDocumentType?: VehicleDocumentType;
+}
+
+export class CategoryDocumentDto implements ICategoryDocumentDto {
+    documentTemplateId?: number;
+    serviceCategoryId?: number;
+    isRequired?: boolean;
+
+    constructor(data?: ICategoryDocumentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.isRequired = _data["isRequired"];
+        }
+    }
+
+    static fromJS(data: any): CategoryDocumentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CategoryDocumentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["isRequired"] = this.isRequired;
+        return data; 
+    }
+}
+
+export interface ICategoryDocumentDto {
+    documentTemplateId?: number;
+    serviceCategoryId?: number;
+    isRequired?: boolean;
+}
+
+export class CategoryPersonnelDocumentDto implements ICategoryPersonnelDocumentDto {
+    serviceCategoryId?: number;
+    documentTemplateId?: number;
+    isRequired?: boolean;
+
+    constructor(data?: ICategoryPersonnelDocumentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.isRequired = _data["isRequired"];
+        }
+    }
+
+    static fromJS(data: any): CategoryPersonnelDocumentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CategoryPersonnelDocumentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["isRequired"] = this.isRequired;
+        return data; 
+    }
+}
+
+export interface ICategoryPersonnelDocumentDto {
+    serviceCategoryId?: number;
+    documentTemplateId?: number;
+    isRequired?: boolean;
+}
+
+export class LightBaseEntityOfInteger implements ILightBaseEntityOfInteger {
+    id?: number;
+
+    constructor(data?: ILightBaseEntityOfInteger) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): LightBaseEntityOfInteger {
+        data = typeof data === 'object' ? data : {};
+        let result = new LightBaseEntityOfInteger();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ILightBaseEntityOfInteger {
+    id?: number;
+}
+
+export class ServiceCategoryRole extends LightBaseEntityOfInteger implements IServiceCategoryRole {
+    role?: Role;
+    responsibleDepartments?: ResponsibleDepartment[] | undefined;
+    responsiblePersonnels?: ResponsiblePersonnel[] | undefined;
+    responsibleUserGroups?: ResponsibleUserGroup[] | undefined;
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+
+    constructor(data?: IServiceCategoryRole) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.role = _data["role"];
+            if (Array.isArray(_data["responsibleDepartments"])) {
+                this.responsibleDepartments = [] as any;
+                for (let item of _data["responsibleDepartments"])
+                    this.responsibleDepartments!.push(ResponsibleDepartment.fromJS(item));
+            }
+            if (Array.isArray(_data["responsiblePersonnels"])) {
+                this.responsiblePersonnels = [] as any;
+                for (let item of _data["responsiblePersonnels"])
+                    this.responsiblePersonnels!.push(ResponsiblePersonnel.fromJS(item));
+            }
+            if (Array.isArray(_data["responsibleUserGroups"])) {
+                this.responsibleUserGroups = [] as any;
+                for (let item of _data["responsibleUserGroups"])
+                    this.responsibleUserGroups!.push(ResponsibleUserGroup.fromJS(item));
+            }
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryRole {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryRole();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["role"] = this.role;
+        if (Array.isArray(this.responsibleDepartments)) {
+            data["responsibleDepartments"] = [];
+            for (let item of this.responsibleDepartments)
+                data["responsibleDepartments"].push(item.toJSON());
+        }
+        if (Array.isArray(this.responsiblePersonnels)) {
+            data["responsiblePersonnels"] = [];
+            for (let item of this.responsiblePersonnels)
+                data["responsiblePersonnels"].push(item.toJSON());
+        }
+        if (Array.isArray(this.responsibleUserGroups)) {
+            data["responsibleUserGroups"] = [];
+            for (let item of this.responsibleUserGroups)
+                data["responsibleUserGroups"].push(item.toJSON());
+        }
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryRole extends ILightBaseEntityOfInteger {
+    role?: Role;
+    responsibleDepartments?: ResponsibleDepartment[] | undefined;
+    responsiblePersonnels?: ResponsiblePersonnel[] | undefined;
+    responsibleUserGroups?: ResponsibleUserGroup[] | undefined;
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+}
+
+export class ResponsibleDepartment extends LightBaseEntityOfInteger implements IResponsibleDepartment {
+    serviceCategoryRoleId?: number;
+    serviceCategoryRole?: ServiceCategoryRole | undefined;
+    departmentId?: number;
+
+    constructor(data?: IResponsibleDepartment) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryRoleId = _data["serviceCategoryRoleId"];
+            this.serviceCategoryRole = _data["serviceCategoryRole"] ? ServiceCategoryRole.fromJS(_data["serviceCategoryRole"]) : <any>undefined;
+            this.departmentId = _data["departmentId"];
+        }
+    }
+
+    static fromJS(data: any): ResponsibleDepartment {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResponsibleDepartment();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryRoleId"] = this.serviceCategoryRoleId;
+        data["serviceCategoryRole"] = this.serviceCategoryRole ? this.serviceCategoryRole.toJSON() : <any>undefined;
+        data["departmentId"] = this.departmentId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IResponsibleDepartment extends ILightBaseEntityOfInteger {
+    serviceCategoryRoleId?: number;
+    serviceCategoryRole?: ServiceCategoryRole | undefined;
+    departmentId?: number;
+}
+
+export class ResponsiblePersonnel extends LightBaseEntityOfInteger implements IResponsiblePersonnel {
+    serviceCategoryRoleId?: number;
+    serviceCategoryRole?: ServiceCategoryRole | undefined;
+    personnelId?: number;
+
+    constructor(data?: IResponsiblePersonnel) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryRoleId = _data["serviceCategoryRoleId"];
+            this.serviceCategoryRole = _data["serviceCategoryRole"] ? ServiceCategoryRole.fromJS(_data["serviceCategoryRole"]) : <any>undefined;
+            this.personnelId = _data["personnelId"];
+        }
+    }
+
+    static fromJS(data: any): ResponsiblePersonnel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResponsiblePersonnel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryRoleId"] = this.serviceCategoryRoleId;
+        data["serviceCategoryRole"] = this.serviceCategoryRole ? this.serviceCategoryRole.toJSON() : <any>undefined;
+        data["personnelId"] = this.personnelId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IResponsiblePersonnel extends ILightBaseEntityOfInteger {
+    serviceCategoryRoleId?: number;
+    serviceCategoryRole?: ServiceCategoryRole | undefined;
+    personnelId?: number;
+}
+
+export class ResponsibleUserGroup extends LightBaseEntityOfInteger implements IResponsibleUserGroup {
+    serviceCategoryRoleId?: number;
+    serviceCategoryRole?: ServiceCategoryRole | undefined;
+    userGroupId?: number;
+    userGroup?: UserGroup | undefined;
+
+    constructor(data?: IResponsibleUserGroup) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryRoleId = _data["serviceCategoryRoleId"];
+            this.serviceCategoryRole = _data["serviceCategoryRole"] ? ServiceCategoryRole.fromJS(_data["serviceCategoryRole"]) : <any>undefined;
+            this.userGroupId = _data["userGroupId"];
+            this.userGroup = _data["userGroup"] ? UserGroup.fromJS(_data["userGroup"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ResponsibleUserGroup {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResponsibleUserGroup();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryRoleId"] = this.serviceCategoryRoleId;
+        data["serviceCategoryRole"] = this.serviceCategoryRole ? this.serviceCategoryRole.toJSON() : <any>undefined;
+        data["userGroupId"] = this.userGroupId;
+        data["userGroup"] = this.userGroup ? this.userGroup.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IResponsibleUserGroup extends ILightBaseEntityOfInteger {
+    serviceCategoryRoleId?: number;
+    serviceCategoryRole?: ServiceCategoryRole | undefined;
+    userGroupId?: number;
+    userGroup?: UserGroup | undefined;
+}
+
+export class BaseEntityOfInteger extends LightBaseEntityOfInteger implements IBaseEntityOfInteger {
+    isDeleted?: boolean;
+    deletedDate?: Date | undefined;
+    deletedBy?: string | undefined;
+    createdBy?: string | undefined;
+    modifiedBy?: string | undefined;
+    createdDate?: Date;
+    lastModifiedDate?: Date | undefined;
+    uniqueCode?: string | undefined;
+
+    constructor(data?: IBaseEntityOfInteger) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.isDeleted = _data["isDeleted"];
+            this.deletedDate = _data["deletedDate"] ? new Date(_data["deletedDate"].toString()) : <any>undefined;
+            this.deletedBy = _data["deletedBy"];
+            this.createdBy = _data["createdBy"];
+            this.modifiedBy = _data["modifiedBy"];
+            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
+            this.lastModifiedDate = _data["lastModifiedDate"] ? new Date(_data["lastModifiedDate"].toString()) : <any>undefined;
+            this.uniqueCode = _data["uniqueCode"];
+        }
+    }
+
+    static fromJS(data: any): BaseEntityOfInteger {
+        data = typeof data === 'object' ? data : {};
+        let result = new BaseEntityOfInteger();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isDeleted"] = this.isDeleted;
+        data["deletedDate"] = this.deletedDate ? this.deletedDate.toISOString() : <any>undefined;
+        data["deletedBy"] = this.deletedBy;
+        data["createdBy"] = this.createdBy;
+        data["modifiedBy"] = this.modifiedBy;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["lastModifiedDate"] = this.lastModifiedDate ? this.lastModifiedDate.toISOString() : <any>undefined;
+        data["uniqueCode"] = this.uniqueCode;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IBaseEntityOfInteger extends ILightBaseEntityOfInteger {
+    isDeleted?: boolean;
+    deletedDate?: Date | undefined;
+    deletedBy?: string | undefined;
+    createdBy?: string | undefined;
+    modifiedBy?: string | undefined;
+    createdDate?: Date;
+    lastModifiedDate?: Date | undefined;
+    uniqueCode?: string | undefined;
+}
+
+export class UserGroup extends BaseEntityOfInteger implements IUserGroup {
+    name?: string | undefined;
+    personnels?: UserGroupPersonnel[] | undefined;
+
+    constructor(data?: IUserGroup) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.name = _data["name"];
+            if (Array.isArray(_data["personnels"])) {
+                this.personnels = [] as any;
+                for (let item of _data["personnels"])
+                    this.personnels!.push(UserGroupPersonnel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UserGroup {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserGroup();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        if (Array.isArray(this.personnels)) {
+            data["personnels"] = [];
+            for (let item of this.personnels)
+                data["personnels"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IUserGroup extends IBaseEntityOfInteger {
+    name?: string | undefined;
+    personnels?: UserGroupPersonnel[] | undefined;
+}
+
+export class UserGroupPersonnel extends LightBaseEntityOfInteger implements IUserGroupPersonnel {
+    personnelId?: number;
+    userGroupId?: number;
+    userGroup?: UserGroup | undefined;
+
+    constructor(data?: IUserGroupPersonnel) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.personnelId = _data["personnelId"];
+            this.userGroupId = _data["userGroupId"];
+            this.userGroup = _data["userGroup"] ? UserGroup.fromJS(_data["userGroup"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): UserGroupPersonnel {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserGroupPersonnel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["personnelId"] = this.personnelId;
+        data["userGroupId"] = this.userGroupId;
+        data["userGroup"] = this.userGroup ? this.userGroup.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IUserGroupPersonnel extends ILightBaseEntityOfInteger {
+    personnelId?: number;
+    userGroupId?: number;
+    userGroup?: UserGroup | undefined;
+}
+
+export class ServiceCategory extends BaseEntityOfInteger implements IServiceCategory {
+    name?: string | undefined;
+    description?: string | undefined;
+    serviceCategoryDetails?: ServiceCategoryDetails | undefined;
+    isMainCategory?: boolean;
+    parentServiceCategoryId?: number | undefined;
+    parentServiceCategory?: ServiceCategory | undefined;
+    subServiceCategories?: ServiceCategory[] | undefined;
+
+    constructor(data?: IServiceCategory) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.serviceCategoryDetails = _data["serviceCategoryDetails"] ? ServiceCategoryDetails.fromJS(_data["serviceCategoryDetails"]) : <any>undefined;
+            this.isMainCategory = _data["isMainCategory"];
+            this.parentServiceCategoryId = _data["parentServiceCategoryId"];
+            this.parentServiceCategory = _data["parentServiceCategory"] ? ServiceCategory.fromJS(_data["parentServiceCategory"]) : <any>undefined;
+            if (Array.isArray(_data["subServiceCategories"])) {
+                this.subServiceCategories = [] as any;
+                for (let item of _data["subServiceCategories"])
+                    this.subServiceCategories!.push(ServiceCategory.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceCategory {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategory();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["serviceCategoryDetails"] = this.serviceCategoryDetails ? this.serviceCategoryDetails.toJSON() : <any>undefined;
+        data["isMainCategory"] = this.isMainCategory;
+        data["parentServiceCategoryId"] = this.parentServiceCategoryId;
+        data["parentServiceCategory"] = this.parentServiceCategory ? this.parentServiceCategory.toJSON() : <any>undefined;
+        if (Array.isArray(this.subServiceCategories)) {
+            data["subServiceCategories"] = [];
+            for (let item of this.subServiceCategories)
+                data["subServiceCategories"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategory extends IBaseEntityOfInteger {
+    name?: string | undefined;
+    description?: string | undefined;
+    serviceCategoryDetails?: ServiceCategoryDetails | undefined;
+    isMainCategory?: boolean;
+    parentServiceCategoryId?: number | undefined;
+    parentServiceCategory?: ServiceCategory | undefined;
+    subServiceCategories?: ServiceCategory[] | undefined;
+}
+
+export class ServiceCategoryDetails implements IServiceCategoryDetails {
+    id?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    maxServiceDuration?: number;
+    serviceDurationUnit?: TimeUnit;
+    minOrderDuration?: number;
+    minOrderDurationUnit?: TimeUnit;
+    maxOrderDuration?: number;
+    maxOrderDurationUnit?: TimeUnit;
+    maxPersonnelCount?: number;
+    isParallelApprovement?: boolean;
+    serviceCategoryAreas?: ServiceCategoryArea[] | undefined;
+    serviceCategoryBlocks?: ServiceCategoryBlock[] | undefined;
+    serviceCategoryBrands?: ServiceCategoryBrand[] | undefined;
+    serviceCategoryCompanies?: ServiceCategoryCompany[] | undefined;
+    serviceCategorySites?: ServiceCategorySite[] | undefined;
+    serviceCategoryUnits?: ServiceCategoryUnit[] | undefined;
+    serviceCategoryZones?: ServiceCategoryZone[] | undefined;
+    serviceCategoryPresenceGroups?: ServiceCategoryPresenceGroup[] | undefined;
+    vehicleTemplates?: ServiceCategoryVehicleTemplate[] | undefined;
+    documents?: ServiceCategoryDocument[] | undefined;
+    personnelDocuments?: ServiceCategoryPersonnelDocument[] | undefined;
+    serviceCategoryRoles?: ServiceCategoryRole[] | undefined;
+
+    constructor(data?: IServiceCategoryDetails) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            this.maxServiceDuration = _data["maxServiceDuration"];
+            this.serviceDurationUnit = _data["serviceDurationUnit"];
+            this.minOrderDuration = _data["minOrderDuration"];
+            this.minOrderDurationUnit = _data["minOrderDurationUnit"];
+            this.maxOrderDuration = _data["maxOrderDuration"];
+            this.maxOrderDurationUnit = _data["maxOrderDurationUnit"];
+            this.maxPersonnelCount = _data["maxPersonnelCount"];
+            this.isParallelApprovement = _data["isParallelApprovement"];
+            if (Array.isArray(_data["serviceCategoryAreas"])) {
+                this.serviceCategoryAreas = [] as any;
+                for (let item of _data["serviceCategoryAreas"])
+                    this.serviceCategoryAreas!.push(ServiceCategoryArea.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryBlocks"])) {
+                this.serviceCategoryBlocks = [] as any;
+                for (let item of _data["serviceCategoryBlocks"])
+                    this.serviceCategoryBlocks!.push(ServiceCategoryBlock.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryBrands"])) {
+                this.serviceCategoryBrands = [] as any;
+                for (let item of _data["serviceCategoryBrands"])
+                    this.serviceCategoryBrands!.push(ServiceCategoryBrand.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryCompanies"])) {
+                this.serviceCategoryCompanies = [] as any;
+                for (let item of _data["serviceCategoryCompanies"])
+                    this.serviceCategoryCompanies!.push(ServiceCategoryCompany.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategorySites"])) {
+                this.serviceCategorySites = [] as any;
+                for (let item of _data["serviceCategorySites"])
+                    this.serviceCategorySites!.push(ServiceCategorySite.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryUnits"])) {
+                this.serviceCategoryUnits = [] as any;
+                for (let item of _data["serviceCategoryUnits"])
+                    this.serviceCategoryUnits!.push(ServiceCategoryUnit.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryZones"])) {
+                this.serviceCategoryZones = [] as any;
+                for (let item of _data["serviceCategoryZones"])
+                    this.serviceCategoryZones!.push(ServiceCategoryZone.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryPresenceGroups"])) {
+                this.serviceCategoryPresenceGroups = [] as any;
+                for (let item of _data["serviceCategoryPresenceGroups"])
+                    this.serviceCategoryPresenceGroups!.push(ServiceCategoryPresenceGroup.fromJS(item));
+            }
+            if (Array.isArray(_data["vehicleTemplates"])) {
+                this.vehicleTemplates = [] as any;
+                for (let item of _data["vehicleTemplates"])
+                    this.vehicleTemplates!.push(ServiceCategoryVehicleTemplate.fromJS(item));
+            }
+            if (Array.isArray(_data["documents"])) {
+                this.documents = [] as any;
+                for (let item of _data["documents"])
+                    this.documents!.push(ServiceCategoryDocument.fromJS(item));
+            }
+            if (Array.isArray(_data["personnelDocuments"])) {
+                this.personnelDocuments = [] as any;
+                for (let item of _data["personnelDocuments"])
+                    this.personnelDocuments!.push(ServiceCategoryPersonnelDocument.fromJS(item));
+            }
+            if (Array.isArray(_data["serviceCategoryRoles"])) {
+                this.serviceCategoryRoles = [] as any;
+                for (let item of _data["serviceCategoryRoles"])
+                    this.serviceCategoryRoles!.push(ServiceCategoryRole.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryDetails {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryDetails();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        data["maxServiceDuration"] = this.maxServiceDuration;
+        data["serviceDurationUnit"] = this.serviceDurationUnit;
+        data["minOrderDuration"] = this.minOrderDuration;
+        data["minOrderDurationUnit"] = this.minOrderDurationUnit;
+        data["maxOrderDuration"] = this.maxOrderDuration;
+        data["maxOrderDurationUnit"] = this.maxOrderDurationUnit;
+        data["maxPersonnelCount"] = this.maxPersonnelCount;
+        data["isParallelApprovement"] = this.isParallelApprovement;
+        if (Array.isArray(this.serviceCategoryAreas)) {
+            data["serviceCategoryAreas"] = [];
+            for (let item of this.serviceCategoryAreas)
+                data["serviceCategoryAreas"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryBlocks)) {
+            data["serviceCategoryBlocks"] = [];
+            for (let item of this.serviceCategoryBlocks)
+                data["serviceCategoryBlocks"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryBrands)) {
+            data["serviceCategoryBrands"] = [];
+            for (let item of this.serviceCategoryBrands)
+                data["serviceCategoryBrands"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryCompanies)) {
+            data["serviceCategoryCompanies"] = [];
+            for (let item of this.serviceCategoryCompanies)
+                data["serviceCategoryCompanies"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategorySites)) {
+            data["serviceCategorySites"] = [];
+            for (let item of this.serviceCategorySites)
+                data["serviceCategorySites"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryUnits)) {
+            data["serviceCategoryUnits"] = [];
+            for (let item of this.serviceCategoryUnits)
+                data["serviceCategoryUnits"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryZones)) {
+            data["serviceCategoryZones"] = [];
+            for (let item of this.serviceCategoryZones)
+                data["serviceCategoryZones"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryPresenceGroups)) {
+            data["serviceCategoryPresenceGroups"] = [];
+            for (let item of this.serviceCategoryPresenceGroups)
+                data["serviceCategoryPresenceGroups"].push(item.toJSON());
+        }
+        if (Array.isArray(this.vehicleTemplates)) {
+            data["vehicleTemplates"] = [];
+            for (let item of this.vehicleTemplates)
+                data["vehicleTemplates"].push(item.toJSON());
+        }
+        if (Array.isArray(this.documents)) {
+            data["documents"] = [];
+            for (let item of this.documents)
+                data["documents"].push(item.toJSON());
+        }
+        if (Array.isArray(this.personnelDocuments)) {
+            data["personnelDocuments"] = [];
+            for (let item of this.personnelDocuments)
+                data["personnelDocuments"].push(item.toJSON());
+        }
+        if (Array.isArray(this.serviceCategoryRoles)) {
+            data["serviceCategoryRoles"] = [];
+            for (let item of this.serviceCategoryRoles)
+                data["serviceCategoryRoles"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IServiceCategoryDetails {
+    id?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    maxServiceDuration?: number;
+    serviceDurationUnit?: TimeUnit;
+    minOrderDuration?: number;
+    minOrderDurationUnit?: TimeUnit;
+    maxOrderDuration?: number;
+    maxOrderDurationUnit?: TimeUnit;
+    maxPersonnelCount?: number;
+    isParallelApprovement?: boolean;
+    serviceCategoryAreas?: ServiceCategoryArea[] | undefined;
+    serviceCategoryBlocks?: ServiceCategoryBlock[] | undefined;
+    serviceCategoryBrands?: ServiceCategoryBrand[] | undefined;
+    serviceCategoryCompanies?: ServiceCategoryCompany[] | undefined;
+    serviceCategorySites?: ServiceCategorySite[] | undefined;
+    serviceCategoryUnits?: ServiceCategoryUnit[] | undefined;
+    serviceCategoryZones?: ServiceCategoryZone[] | undefined;
+    serviceCategoryPresenceGroups?: ServiceCategoryPresenceGroup[] | undefined;
+    vehicleTemplates?: ServiceCategoryVehicleTemplate[] | undefined;
+    documents?: ServiceCategoryDocument[] | undefined;
+    personnelDocuments?: ServiceCategoryPersonnelDocument[] | undefined;
+    serviceCategoryRoles?: ServiceCategoryRole[] | undefined;
+}
+
+export class ServiceCategoryArea extends LightBaseEntityOfInteger implements IServiceCategoryArea {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    areaId?: number;
+
+    constructor(data?: IServiceCategoryArea) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            this.areaId = _data["areaId"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryArea {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryArea();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        data["areaId"] = this.areaId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryArea extends ILightBaseEntityOfInteger {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    areaId?: number;
+}
+
+export class ServiceCategoryBlock extends LightBaseEntityOfInteger implements IServiceCategoryBlock {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    blockId?: string;
+
+    constructor(data?: IServiceCategoryBlock) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            this.blockId = _data["blockId"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryBlock {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryBlock();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        data["blockId"] = this.blockId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryBlock extends ILightBaseEntityOfInteger {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    blockId?: string;
+}
+
+export class ServiceCategoryBrand extends LightBaseEntityOfInteger implements IServiceCategoryBrand {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    brandId?: number;
+
+    constructor(data?: IServiceCategoryBrand) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            this.brandId = _data["brandId"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryBrand {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryBrand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        data["brandId"] = this.brandId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryBrand extends ILightBaseEntityOfInteger {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    brandId?: number;
+}
+
+export class ServiceCategoryCompany extends LightBaseEntityOfInteger implements IServiceCategoryCompany {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    companyId?: number;
+
+    constructor(data?: IServiceCategoryCompany) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            this.companyId = _data["companyId"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryCompany {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryCompany();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        data["companyId"] = this.companyId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryCompany extends ILightBaseEntityOfInteger {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    companyId?: number;
+}
+
+export class ServiceCategorySite extends LightBaseEntityOfInteger implements IServiceCategorySite {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    siteId?: string;
+
+    constructor(data?: IServiceCategorySite) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            this.siteId = _data["siteId"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategorySite {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategorySite();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        data["siteId"] = this.siteId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategorySite extends ILightBaseEntityOfInteger {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    siteId?: string;
+}
+
+export class ServiceCategoryUnit extends LightBaseEntityOfInteger implements IServiceCategoryUnit {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    unitId?: number;
+
+    constructor(data?: IServiceCategoryUnit) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            this.unitId = _data["unitId"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryUnit {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryUnit();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        data["unitId"] = this.unitId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryUnit extends ILightBaseEntityOfInteger {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    unitId?: number;
+}
+
+export class ServiceCategoryZone extends LightBaseEntityOfInteger implements IServiceCategoryZone {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    zoneId?: string;
+
+    constructor(data?: IServiceCategoryZone) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            this.zoneId = _data["zoneId"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryZone {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryZone();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        data["zoneId"] = this.zoneId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryZone extends ILightBaseEntityOfInteger {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    zoneId?: string;
+}
+
+export class ServiceCategoryPresenceGroup extends LightBaseEntityOfInteger implements IServiceCategoryPresenceGroup {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+
+    constructor(data?: IServiceCategoryPresenceGroup) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            this.presenceGroupId = _data["presenceGroupId"];
+            this.presenceGroup = _data["presenceGroup"] ? PresenceGroup.fromJS(_data["presenceGroup"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryPresenceGroup {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryPresenceGroup();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        data["presenceGroupId"] = this.presenceGroupId;
+        data["presenceGroup"] = this.presenceGroup ? this.presenceGroup.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryPresenceGroup extends ILightBaseEntityOfInteger {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+}
+
+export class PresenceGroup extends BaseEntityOfInteger implements IPresenceGroup {
+    name?: string | undefined;
+    presenceGroupAreas?: PresenceGroupArea[] | undefined;
+    presenceGroupBlocks?: PresenceGroupBlock[] | undefined;
+    presenceGroupCompanies?: PresenceGroupCompany[] | undefined;
+    presenceGroupBrands?: PresenceGroupBrand[] | undefined;
+    presenceGroupSites?: PresenceGroupSite[] | undefined;
+    presenceGroupUnits?: PresenceGroupUnit[] | undefined;
+    presenceGroupZones?: PresenceGroupZone[] | undefined;
+
+    constructor(data?: IPresenceGroup) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.name = _data["name"];
+            if (Array.isArray(_data["presenceGroupAreas"])) {
+                this.presenceGroupAreas = [] as any;
+                for (let item of _data["presenceGroupAreas"])
+                    this.presenceGroupAreas!.push(PresenceGroupArea.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupBlocks"])) {
+                this.presenceGroupBlocks = [] as any;
+                for (let item of _data["presenceGroupBlocks"])
+                    this.presenceGroupBlocks!.push(PresenceGroupBlock.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupCompanies"])) {
+                this.presenceGroupCompanies = [] as any;
+                for (let item of _data["presenceGroupCompanies"])
+                    this.presenceGroupCompanies!.push(PresenceGroupCompany.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupBrands"])) {
+                this.presenceGroupBrands = [] as any;
+                for (let item of _data["presenceGroupBrands"])
+                    this.presenceGroupBrands!.push(PresenceGroupBrand.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupSites"])) {
+                this.presenceGroupSites = [] as any;
+                for (let item of _data["presenceGroupSites"])
+                    this.presenceGroupSites!.push(PresenceGroupSite.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupUnits"])) {
+                this.presenceGroupUnits = [] as any;
+                for (let item of _data["presenceGroupUnits"])
+                    this.presenceGroupUnits!.push(PresenceGroupUnit.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupZones"])) {
+                this.presenceGroupZones = [] as any;
+                for (let item of _data["presenceGroupZones"])
+                    this.presenceGroupZones!.push(PresenceGroupZone.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PresenceGroup {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroup();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        if (Array.isArray(this.presenceGroupAreas)) {
+            data["presenceGroupAreas"] = [];
+            for (let item of this.presenceGroupAreas)
+                data["presenceGroupAreas"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupBlocks)) {
+            data["presenceGroupBlocks"] = [];
+            for (let item of this.presenceGroupBlocks)
+                data["presenceGroupBlocks"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupCompanies)) {
+            data["presenceGroupCompanies"] = [];
+            for (let item of this.presenceGroupCompanies)
+                data["presenceGroupCompanies"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupBrands)) {
+            data["presenceGroupBrands"] = [];
+            for (let item of this.presenceGroupBrands)
+                data["presenceGroupBrands"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupSites)) {
+            data["presenceGroupSites"] = [];
+            for (let item of this.presenceGroupSites)
+                data["presenceGroupSites"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupUnits)) {
+            data["presenceGroupUnits"] = [];
+            for (let item of this.presenceGroupUnits)
+                data["presenceGroupUnits"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupZones)) {
+            data["presenceGroupZones"] = [];
+            for (let item of this.presenceGroupZones)
+                data["presenceGroupZones"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IPresenceGroup extends IBaseEntityOfInteger {
+    name?: string | undefined;
+    presenceGroupAreas?: PresenceGroupArea[] | undefined;
+    presenceGroupBlocks?: PresenceGroupBlock[] | undefined;
+    presenceGroupCompanies?: PresenceGroupCompany[] | undefined;
+    presenceGroupBrands?: PresenceGroupBrand[] | undefined;
+    presenceGroupSites?: PresenceGroupSite[] | undefined;
+    presenceGroupUnits?: PresenceGroupUnit[] | undefined;
+    presenceGroupZones?: PresenceGroupZone[] | undefined;
+}
+
+export class PresenceGroupArea extends LightBaseEntityOfInteger implements IPresenceGroupArea {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    areaId?: number;
+
+    constructor(data?: IPresenceGroupArea) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.presenceGroupId = _data["presenceGroupId"];
+            this.presenceGroup = _data["presenceGroup"] ? PresenceGroup.fromJS(_data["presenceGroup"]) : <any>undefined;
+            this.areaId = _data["areaId"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupArea {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupArea();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["presenceGroupId"] = this.presenceGroupId;
+        data["presenceGroup"] = this.presenceGroup ? this.presenceGroup.toJSON() : <any>undefined;
+        data["areaId"] = this.areaId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IPresenceGroupArea extends ILightBaseEntityOfInteger {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    areaId?: number;
+}
+
+export class PresenceGroupBlock extends LightBaseEntityOfInteger implements IPresenceGroupBlock {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    blockId?: string;
+
+    constructor(data?: IPresenceGroupBlock) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.presenceGroupId = _data["presenceGroupId"];
+            this.presenceGroup = _data["presenceGroup"] ? PresenceGroup.fromJS(_data["presenceGroup"]) : <any>undefined;
+            this.blockId = _data["blockId"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupBlock {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupBlock();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["presenceGroupId"] = this.presenceGroupId;
+        data["presenceGroup"] = this.presenceGroup ? this.presenceGroup.toJSON() : <any>undefined;
+        data["blockId"] = this.blockId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IPresenceGroupBlock extends ILightBaseEntityOfInteger {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    blockId?: string;
+}
+
+export class PresenceGroupCompany extends LightBaseEntityOfInteger implements IPresenceGroupCompany {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    companyId?: number;
+
+    constructor(data?: IPresenceGroupCompany) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.presenceGroupId = _data["presenceGroupId"];
+            this.presenceGroup = _data["presenceGroup"] ? PresenceGroup.fromJS(_data["presenceGroup"]) : <any>undefined;
+            this.companyId = _data["companyId"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupCompany {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupCompany();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["presenceGroupId"] = this.presenceGroupId;
+        data["presenceGroup"] = this.presenceGroup ? this.presenceGroup.toJSON() : <any>undefined;
+        data["companyId"] = this.companyId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IPresenceGroupCompany extends ILightBaseEntityOfInteger {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    companyId?: number;
+}
+
+export class PresenceGroupBrand extends LightBaseEntityOfInteger implements IPresenceGroupBrand {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    brandId?: number;
+
+    constructor(data?: IPresenceGroupBrand) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.presenceGroupId = _data["presenceGroupId"];
+            this.presenceGroup = _data["presenceGroup"] ? PresenceGroup.fromJS(_data["presenceGroup"]) : <any>undefined;
+            this.brandId = _data["brandId"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupBrand {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupBrand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["presenceGroupId"] = this.presenceGroupId;
+        data["presenceGroup"] = this.presenceGroup ? this.presenceGroup.toJSON() : <any>undefined;
+        data["brandId"] = this.brandId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IPresenceGroupBrand extends ILightBaseEntityOfInteger {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    brandId?: number;
+}
+
+export class PresenceGroupSite extends LightBaseEntityOfInteger implements IPresenceGroupSite {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    siteId?: string;
+
+    constructor(data?: IPresenceGroupSite) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.presenceGroupId = _data["presenceGroupId"];
+            this.presenceGroup = _data["presenceGroup"] ? PresenceGroup.fromJS(_data["presenceGroup"]) : <any>undefined;
+            this.siteId = _data["siteId"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupSite {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupSite();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["presenceGroupId"] = this.presenceGroupId;
+        data["presenceGroup"] = this.presenceGroup ? this.presenceGroup.toJSON() : <any>undefined;
+        data["siteId"] = this.siteId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IPresenceGroupSite extends ILightBaseEntityOfInteger {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    siteId?: string;
+}
+
+export class PresenceGroupUnit extends LightBaseEntityOfInteger implements IPresenceGroupUnit {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    unitId?: number;
+
+    constructor(data?: IPresenceGroupUnit) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.presenceGroupId = _data["presenceGroupId"];
+            this.presenceGroup = _data["presenceGroup"] ? PresenceGroup.fromJS(_data["presenceGroup"]) : <any>undefined;
+            this.unitId = _data["unitId"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupUnit {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupUnit();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["presenceGroupId"] = this.presenceGroupId;
+        data["presenceGroup"] = this.presenceGroup ? this.presenceGroup.toJSON() : <any>undefined;
+        data["unitId"] = this.unitId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IPresenceGroupUnit extends ILightBaseEntityOfInteger {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    unitId?: number;
+}
+
+export class PresenceGroupZone extends LightBaseEntityOfInteger implements IPresenceGroupZone {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    zoneId?: string;
+
+    constructor(data?: IPresenceGroupZone) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.presenceGroupId = _data["presenceGroupId"];
+            this.presenceGroup = _data["presenceGroup"] ? PresenceGroup.fromJS(_data["presenceGroup"]) : <any>undefined;
+            this.zoneId = _data["zoneId"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupZone {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupZone();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["presenceGroupId"] = this.presenceGroupId;
+        data["presenceGroup"] = this.presenceGroup ? this.presenceGroup.toJSON() : <any>undefined;
+        data["zoneId"] = this.zoneId;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IPresenceGroupZone extends ILightBaseEntityOfInteger {
+    presenceGroupId?: number;
+    presenceGroup?: PresenceGroup | undefined;
+    zoneId?: string;
+}
+
+export class ServiceCategoryVehicleTemplate extends LightBaseEntityOfInteger implements IServiceCategoryVehicleTemplate {
+    vehicleTemplateId?: number;
+    vehicleTemplate?: VehicleTemplate | undefined;
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    vehicleTemplateDocuments?: ServiceCategoryVehicleTemplateDocument[] | undefined;
+
+    constructor(data?: IServiceCategoryVehicleTemplate) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.vehicleTemplateId = _data["vehicleTemplateId"];
+            this.vehicleTemplate = _data["vehicleTemplate"] ? VehicleTemplate.fromJS(_data["vehicleTemplate"]) : <any>undefined;
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            if (Array.isArray(_data["vehicleTemplateDocuments"])) {
+                this.vehicleTemplateDocuments = [] as any;
+                for (let item of _data["vehicleTemplateDocuments"])
+                    this.vehicleTemplateDocuments!.push(ServiceCategoryVehicleTemplateDocument.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryVehicleTemplate {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryVehicleTemplate();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vehicleTemplateId"] = this.vehicleTemplateId;
+        data["vehicleTemplate"] = this.vehicleTemplate ? this.vehicleTemplate.toJSON() : <any>undefined;
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        if (Array.isArray(this.vehicleTemplateDocuments)) {
+            data["vehicleTemplateDocuments"] = [];
+            for (let item of this.vehicleTemplateDocuments)
+                data["vehicleTemplateDocuments"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryVehicleTemplate extends ILightBaseEntityOfInteger {
+    vehicleTemplateId?: number;
+    vehicleTemplate?: VehicleTemplate | undefined;
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    vehicleTemplateDocuments?: ServiceCategoryVehicleTemplateDocument[] | undefined;
+}
+
+export class VehicleTemplate extends BaseEntityOfInteger implements IVehicleTemplate {
+    name?: string | undefined;
+    isNeedDriver?: boolean;
+    vehicleTemplateDocuments?: VehicleTemplateDocument[] | undefined;
+    driverDocuments?: VehicleTemplateDriverDocument[] | undefined;
+
+    constructor(data?: IVehicleTemplate) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.name = _data["name"];
+            this.isNeedDriver = _data["isNeedDriver"];
+            if (Array.isArray(_data["vehicleTemplateDocuments"])) {
+                this.vehicleTemplateDocuments = [] as any;
+                for (let item of _data["vehicleTemplateDocuments"])
+                    this.vehicleTemplateDocuments!.push(VehicleTemplateDocument.fromJS(item));
+            }
+            if (Array.isArray(_data["driverDocuments"])) {
+                this.driverDocuments = [] as any;
+                for (let item of _data["driverDocuments"])
+                    this.driverDocuments!.push(VehicleTemplateDriverDocument.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): VehicleTemplate {
+        data = typeof data === 'object' ? data : {};
+        let result = new VehicleTemplate();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["isNeedDriver"] = this.isNeedDriver;
+        if (Array.isArray(this.vehicleTemplateDocuments)) {
+            data["vehicleTemplateDocuments"] = [];
+            for (let item of this.vehicleTemplateDocuments)
+                data["vehicleTemplateDocuments"].push(item.toJSON());
+        }
+        if (Array.isArray(this.driverDocuments)) {
+            data["driverDocuments"] = [];
+            for (let item of this.driverDocuments)
+                data["driverDocuments"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IVehicleTemplate extends IBaseEntityOfInteger {
+    name?: string | undefined;
+    isNeedDriver?: boolean;
+    vehicleTemplateDocuments?: VehicleTemplateDocument[] | undefined;
+    driverDocuments?: VehicleTemplateDriverDocument[] | undefined;
+}
+
+export class VehicleTemplateDocument extends LightBaseEntityOfInteger implements IVehicleTemplateDocument {
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    vehicleTemplateId?: number;
+    vehicleTemplate?: VehicleTemplate | undefined;
+
+    constructor(data?: IVehicleTemplateDocument) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.documentTemplate = _data["documentTemplate"] ? DocumentTemplate.fromJS(_data["documentTemplate"]) : <any>undefined;
+            this.vehicleTemplateId = _data["vehicleTemplateId"];
+            this.vehicleTemplate = _data["vehicleTemplate"] ? VehicleTemplate.fromJS(_data["vehicleTemplate"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): VehicleTemplateDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new VehicleTemplateDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["documentTemplate"] = this.documentTemplate ? this.documentTemplate.toJSON() : <any>undefined;
+        data["vehicleTemplateId"] = this.vehicleTemplateId;
+        data["vehicleTemplate"] = this.vehicleTemplate ? this.vehicleTemplate.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IVehicleTemplateDocument extends ILightBaseEntityOfInteger {
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    vehicleTemplateId?: number;
+    vehicleTemplate?: VehicleTemplate | undefined;
+}
+
+export class DocumentTemplate extends BaseEntityOfInteger implements IDocumentTemplate {
+    name?: string | undefined;
+    hasValidationDate?: boolean;
+    documentTemplateFileTypes?: DocumentTemplateFileType[] | undefined;
+    documentTemplateTypeId?: number;
+    documentTemplateType?: DocumentTemplateType | undefined;
+    forms?: DocumentTemplateForm[] | undefined;
+
+    constructor(data?: IDocumentTemplate) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.name = _data["name"];
+            this.hasValidationDate = _data["hasValidationDate"];
+            if (Array.isArray(_data["documentTemplateFileTypes"])) {
+                this.documentTemplateFileTypes = [] as any;
+                for (let item of _data["documentTemplateFileTypes"])
+                    this.documentTemplateFileTypes!.push(DocumentTemplateFileType.fromJS(item));
+            }
+            this.documentTemplateTypeId = _data["documentTemplateTypeId"];
+            this.documentTemplateType = _data["documentTemplateType"] ? DocumentTemplateType.fromJS(_data["documentTemplateType"]) : <any>undefined;
+            if (Array.isArray(_data["forms"])) {
+                this.forms = [] as any;
+                for (let item of _data["forms"])
+                    this.forms!.push(DocumentTemplateForm.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): DocumentTemplate {
+        data = typeof data === 'object' ? data : {};
+        let result = new DocumentTemplate();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["hasValidationDate"] = this.hasValidationDate;
+        if (Array.isArray(this.documentTemplateFileTypes)) {
+            data["documentTemplateFileTypes"] = [];
+            for (let item of this.documentTemplateFileTypes)
+                data["documentTemplateFileTypes"].push(item.toJSON());
+        }
+        data["documentTemplateTypeId"] = this.documentTemplateTypeId;
+        data["documentTemplateType"] = this.documentTemplateType ? this.documentTemplateType.toJSON() : <any>undefined;
+        if (Array.isArray(this.forms)) {
+            data["forms"] = [];
+            for (let item of this.forms)
+                data["forms"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IDocumentTemplate extends IBaseEntityOfInteger {
+    name?: string | undefined;
+    hasValidationDate?: boolean;
+    documentTemplateFileTypes?: DocumentTemplateFileType[] | undefined;
+    documentTemplateTypeId?: number;
+    documentTemplateType?: DocumentTemplateType | undefined;
+    forms?: DocumentTemplateForm[] | undefined;
+}
+
+export class DocumentTemplateFileType extends LightBaseEntityOfInteger implements IDocumentTemplateFileType {
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    fileType?: DocumentFileType;
+
+    constructor(data?: IDocumentTemplateFileType) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.documentTemplate = _data["documentTemplate"] ? DocumentTemplate.fromJS(_data["documentTemplate"]) : <any>undefined;
+            this.fileType = _data["fileType"];
+        }
+    }
+
+    static fromJS(data: any): DocumentTemplateFileType {
+        data = typeof data === 'object' ? data : {};
+        let result = new DocumentTemplateFileType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["documentTemplate"] = this.documentTemplate ? this.documentTemplate.toJSON() : <any>undefined;
+        data["fileType"] = this.fileType;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IDocumentTemplateFileType extends ILightBaseEntityOfInteger {
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    fileType?: DocumentFileType;
+}
+
+export enum DocumentFileType {
+    PDF = 0,
+    Word = 1,
+    TxtFile = 2,
+}
+
+export class DocumentTemplateType extends LightBaseEntityOfInteger implements IDocumentTemplateType {
+    name?: string | undefined;
+
+    constructor(data?: IDocumentTemplateType) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): DocumentTemplateType {
+        data = typeof data === 'object' ? data : {};
+        let result = new DocumentTemplateType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IDocumentTemplateType extends ILightBaseEntityOfInteger {
+    name?: string | undefined;
+}
+
+export class DocumentTemplateForm extends LightBaseEntityOfInteger implements IDocumentTemplateForm {
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    formId?: number;
+    form?: Form | undefined;
+
+    constructor(data?: IDocumentTemplateForm) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.documentTemplate = _data["documentTemplate"] ? DocumentTemplate.fromJS(_data["documentTemplate"]) : <any>undefined;
+            this.formId = _data["formId"];
+            this.form = _data["form"] ? Form.fromJS(_data["form"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): DocumentTemplateForm {
+        data = typeof data === 'object' ? data : {};
+        let result = new DocumentTemplateForm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["documentTemplate"] = this.documentTemplate ? this.documentTemplate.toJSON() : <any>undefined;
+        data["formId"] = this.formId;
+        data["form"] = this.form ? this.form.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IDocumentTemplateForm extends ILightBaseEntityOfInteger {
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    formId?: number;
+    form?: Form | undefined;
+}
+
+export class Form extends BaseEntityOfInteger implements IForm {
+    name?: string | undefined;
+    questions?: Question[] | undefined;
+    documentTemplates?: DocumentTemplateForm[] | undefined;
+
+    constructor(data?: IForm) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.name = _data["name"];
+            if (Array.isArray(_data["questions"])) {
+                this.questions = [] as any;
+                for (let item of _data["questions"])
+                    this.questions!.push(Question.fromJS(item));
+            }
+            if (Array.isArray(_data["documentTemplates"])) {
+                this.documentTemplates = [] as any;
+                for (let item of _data["documentTemplates"])
+                    this.documentTemplates!.push(DocumentTemplateForm.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Form {
+        data = typeof data === 'object' ? data : {};
+        let result = new Form();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        if (Array.isArray(this.questions)) {
+            data["questions"] = [];
+            for (let item of this.questions)
+                data["questions"].push(item.toJSON());
+        }
+        if (Array.isArray(this.documentTemplates)) {
+            data["documentTemplates"] = [];
+            for (let item of this.documentTemplates)
+                data["documentTemplates"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IForm extends IBaseEntityOfInteger {
+    name?: string | undefined;
+    questions?: Question[] | undefined;
+    documentTemplates?: DocumentTemplateForm[] | undefined;
+}
+
+export class Question extends LightBaseEntityOfInteger implements IQuestion {
+    name?: string | undefined;
+    questionType?: QuestionType;
+    answersCount?: number | undefined;
+    dateQuestionOptions?: DateQuestionOptions | undefined;
+    fileQuestionOptions?: FileQuestionOptions | undefined;
+    multiChoicesOptions?: MultiChoicesOption[] | undefined;
+    formId?: number;
+    form?: Form | undefined;
+
+    constructor(data?: IQuestion) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.name = _data["name"];
+            this.questionType = _data["questionType"];
+            this.answersCount = _data["answersCount"];
+            this.dateQuestionOptions = _data["dateQuestionOptions"] ? DateQuestionOptions.fromJS(_data["dateQuestionOptions"]) : <any>undefined;
+            this.fileQuestionOptions = _data["fileQuestionOptions"] ? FileQuestionOptions.fromJS(_data["fileQuestionOptions"]) : <any>undefined;
+            if (Array.isArray(_data["multiChoicesOptions"])) {
+                this.multiChoicesOptions = [] as any;
+                for (let item of _data["multiChoicesOptions"])
+                    this.multiChoicesOptions!.push(MultiChoicesOption.fromJS(item));
+            }
+            this.formId = _data["formId"];
+            this.form = _data["form"] ? Form.fromJS(_data["form"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Question {
+        data = typeof data === 'object' ? data : {};
+        let result = new Question();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["questionType"] = this.questionType;
+        data["answersCount"] = this.answersCount;
+        data["dateQuestionOptions"] = this.dateQuestionOptions ? this.dateQuestionOptions.toJSON() : <any>undefined;
+        data["fileQuestionOptions"] = this.fileQuestionOptions ? this.fileQuestionOptions.toJSON() : <any>undefined;
+        if (Array.isArray(this.multiChoicesOptions)) {
+            data["multiChoicesOptions"] = [];
+            for (let item of this.multiChoicesOptions)
+                data["multiChoicesOptions"].push(item.toJSON());
+        }
+        data["formId"] = this.formId;
+        data["form"] = this.form ? this.form.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IQuestion extends ILightBaseEntityOfInteger {
+    name?: string | undefined;
+    questionType?: QuestionType;
+    answersCount?: number | undefined;
+    dateQuestionOptions?: DateQuestionOptions | undefined;
+    fileQuestionOptions?: FileQuestionOptions | undefined;
+    multiChoicesOptions?: MultiChoicesOption[] | undefined;
+    formId?: number;
+    form?: Form | undefined;
+}
+
+export enum QuestionType {
+    MultiAnswers = 0,
+    OneOfMany = 1,
+    DateAnswer = 2,
+    FileAnswer = 3,
+    TextAnswer = 4,
+}
+
+export class DateQuestionOptions extends LightBaseEntityOfInteger implements IDateQuestionOptions {
+    isMultiDate?: boolean;
+    questionId?: number;
+    question?: Question | undefined;
+
+    constructor(data?: IDateQuestionOptions) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.isMultiDate = _data["isMultiDate"];
+            this.questionId = _data["questionId"];
+            this.question = _data["question"] ? Question.fromJS(_data["question"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): DateQuestionOptions {
+        data = typeof data === 'object' ? data : {};
+        let result = new DateQuestionOptions();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isMultiDate"] = this.isMultiDate;
+        data["questionId"] = this.questionId;
+        data["question"] = this.question ? this.question.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IDateQuestionOptions extends ILightBaseEntityOfInteger {
+    isMultiDate?: boolean;
+    questionId?: number;
+    question?: Question | undefined;
+}
+
+export class FileQuestionOptions extends LightBaseEntityOfInteger implements IFileQuestionOptions {
+    documentFileType?: DocumentFileType;
+    questionId?: number;
+    question?: Question | undefined;
+
+    constructor(data?: IFileQuestionOptions) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.documentFileType = _data["documentFileType"];
+            this.questionId = _data["questionId"];
+            this.question = _data["question"] ? Question.fromJS(_data["question"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): FileQuestionOptions {
+        data = typeof data === 'object' ? data : {};
+        let result = new FileQuestionOptions();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentFileType"] = this.documentFileType;
+        data["questionId"] = this.questionId;
+        data["question"] = this.question ? this.question.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IFileQuestionOptions extends ILightBaseEntityOfInteger {
+    documentFileType?: DocumentFileType;
+    questionId?: number;
+    question?: Question | undefined;
+}
+
+export class MultiChoicesOption extends LightBaseEntityOfInteger implements IMultiChoicesOption {
+    choice?: string | undefined;
+    questionId?: number;
+    question?: Question | undefined;
+
+    constructor(data?: IMultiChoicesOption) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.choice = _data["choice"];
+            this.questionId = _data["questionId"];
+            this.question = _data["question"] ? Question.fromJS(_data["question"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): MultiChoicesOption {
+        data = typeof data === 'object' ? data : {};
+        let result = new MultiChoicesOption();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["choice"] = this.choice;
+        data["questionId"] = this.questionId;
+        data["question"] = this.question ? this.question.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IMultiChoicesOption extends ILightBaseEntityOfInteger {
+    choice?: string | undefined;
+    questionId?: number;
+    question?: Question | undefined;
+}
+
+export class VehicleTemplateDriverDocument extends LightBaseEntityOfInteger implements IVehicleTemplateDriverDocument {
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    vehicleTemplateId?: number;
+    vehicleTemplate?: VehicleTemplate | undefined;
+
+    constructor(data?: IVehicleTemplateDriverDocument) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.documentTemplate = _data["documentTemplate"] ? DocumentTemplate.fromJS(_data["documentTemplate"]) : <any>undefined;
+            this.vehicleTemplateId = _data["vehicleTemplateId"];
+            this.vehicleTemplate = _data["vehicleTemplate"] ? VehicleTemplate.fromJS(_data["vehicleTemplate"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): VehicleTemplateDriverDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new VehicleTemplateDriverDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["documentTemplate"] = this.documentTemplate ? this.documentTemplate.toJSON() : <any>undefined;
+        data["vehicleTemplateId"] = this.vehicleTemplateId;
+        data["vehicleTemplate"] = this.vehicleTemplate ? this.vehicleTemplate.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IVehicleTemplateDriverDocument extends ILightBaseEntityOfInteger {
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    vehicleTemplateId?: number;
+    vehicleTemplate?: VehicleTemplate | undefined;
+}
+
+export class ServiceCategoryVehicleTemplateDocument extends LightBaseEntityOfInteger implements IServiceCategoryVehicleTemplateDocument {
+    vehicleTemplateCategoryId?: number;
+    serviceCategoryVehicleTemplate?: ServiceCategoryVehicleTemplate | undefined;
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    isRequired?: boolean;
+    vehicleDocumentType?: VehicleDocumentType;
+
+    constructor(data?: IServiceCategoryVehicleTemplateDocument) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.vehicleTemplateCategoryId = _data["vehicleTemplateCategoryId"];
+            this.serviceCategoryVehicleTemplate = _data["serviceCategoryVehicleTemplate"] ? ServiceCategoryVehicleTemplate.fromJS(_data["serviceCategoryVehicleTemplate"]) : <any>undefined;
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.documentTemplate = _data["documentTemplate"] ? DocumentTemplate.fromJS(_data["documentTemplate"]) : <any>undefined;
+            this.isRequired = _data["isRequired"];
+            this.vehicleDocumentType = _data["vehicleDocumentType"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryVehicleTemplateDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryVehicleTemplateDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vehicleTemplateCategoryId"] = this.vehicleTemplateCategoryId;
+        data["serviceCategoryVehicleTemplate"] = this.serviceCategoryVehicleTemplate ? this.serviceCategoryVehicleTemplate.toJSON() : <any>undefined;
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["documentTemplate"] = this.documentTemplate ? this.documentTemplate.toJSON() : <any>undefined;
+        data["isRequired"] = this.isRequired;
+        data["vehicleDocumentType"] = this.vehicleDocumentType;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryVehicleTemplateDocument extends ILightBaseEntityOfInteger {
+    vehicleTemplateCategoryId?: number;
+    serviceCategoryVehicleTemplate?: ServiceCategoryVehicleTemplate | undefined;
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    isRequired?: boolean;
+    vehicleDocumentType?: VehicleDocumentType;
+}
+
+export class ServiceCategoryDocument extends LightBaseEntityOfInteger implements IServiceCategoryDocument {
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    isRequired?: boolean;
+
+    constructor(data?: IServiceCategoryDocument) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.documentTemplate = _data["documentTemplate"] ? DocumentTemplate.fromJS(_data["documentTemplate"]) : <any>undefined;
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            this.isRequired = _data["isRequired"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["documentTemplate"] = this.documentTemplate ? this.documentTemplate.toJSON() : <any>undefined;
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        data["isRequired"] = this.isRequired;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryDocument extends ILightBaseEntityOfInteger {
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    isRequired?: boolean;
+}
+
+export class ServiceCategoryPersonnelDocument extends LightBaseEntityOfInteger implements IServiceCategoryPersonnelDocument {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    isRequired?: boolean;
+
+    constructor(data?: IServiceCategoryPersonnelDocument) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.serviceCategoryId = _data["serviceCategoryId"];
+            this.serviceCategory = _data["serviceCategory"] ? ServiceCategory.fromJS(_data["serviceCategory"]) : <any>undefined;
+            this.documentTemplateId = _data["documentTemplateId"];
+            this.documentTemplate = _data["documentTemplate"] ? DocumentTemplate.fromJS(_data["documentTemplate"]) : <any>undefined;
+            this.isRequired = _data["isRequired"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryPersonnelDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryPersonnelDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["serviceCategoryId"] = this.serviceCategoryId;
+        data["serviceCategory"] = this.serviceCategory ? this.serviceCategory.toJSON() : <any>undefined;
+        data["documentTemplateId"] = this.documentTemplateId;
+        data["documentTemplate"] = this.documentTemplate ? this.documentTemplate.toJSON() : <any>undefined;
+        data["isRequired"] = this.isRequired;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceCategoryPersonnelDocument extends ILightBaseEntityOfInteger {
+    serviceCategoryId?: number;
+    serviceCategory?: ServiceCategory | undefined;
+    documentTemplateId?: number;
+    documentTemplate?: DocumentTemplate | undefined;
+    isRequired?: boolean;
+}
+
+export class ServiceCategoryAreaDto implements IServiceCategoryAreaDto {
+    areaId?: number;
+    name?: string | undefined;
+
+    constructor(data?: IServiceCategoryAreaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.areaId = _data["areaId"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryAreaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryAreaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["areaId"] = this.areaId;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IServiceCategoryAreaDto {
+    areaId?: number;
+    name?: string | undefined;
+}
+
+export class ServiceCategoryBlockDto implements IServiceCategoryBlockDto {
+    blockId?: string;
+    name?: string | undefined;
+
+    constructor(data?: IServiceCategoryBlockDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.blockId = _data["blockId"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryBlockDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryBlockDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["blockId"] = this.blockId;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IServiceCategoryBlockDto {
+    blockId?: string;
+    name?: string | undefined;
+}
+
+export class ServiceCategoryBrandDto implements IServiceCategoryBrandDto {
+    brandId?: number;
+    name?: string | undefined;
+
+    constructor(data?: IServiceCategoryBrandDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.brandId = _data["brandId"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryBrandDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryBrandDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["brandId"] = this.brandId;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IServiceCategoryBrandDto {
+    brandId?: number;
+    name?: string | undefined;
+}
+
+export class ServiceCategoryCompanyDto implements IServiceCategoryCompanyDto {
+    companyId?: number;
+    name?: string | undefined;
+
+    constructor(data?: IServiceCategoryCompanyDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.companyId = _data["companyId"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryCompanyDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryCompanyDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyId"] = this.companyId;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IServiceCategoryCompanyDto {
+    companyId?: number;
+    name?: string | undefined;
+}
+
+export class ServiceCategorySiteDto implements IServiceCategorySiteDto {
+    siteId?: string;
+    name?: string | undefined;
+
+    constructor(data?: IServiceCategorySiteDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.siteId = _data["siteId"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategorySiteDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategorySiteDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["siteId"] = this.siteId;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IServiceCategorySiteDto {
+    siteId?: string;
+    name?: string | undefined;
+}
+
+export class ServiceCategoryUnitDto implements IServiceCategoryUnitDto {
+    unitId?: number;
+    name?: string | undefined;
+
+    constructor(data?: IServiceCategoryUnitDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.unitId = _data["unitId"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryUnitDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryUnitDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["unitId"] = this.unitId;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IServiceCategoryUnitDto {
+    unitId?: number;
+    name?: string | undefined;
+}
+
+export class ServiceCategoryZoneDto implements IServiceCategoryZoneDto {
+    zoneId?: string;
+    name?: string | undefined;
+
+    constructor(data?: IServiceCategoryZoneDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.zoneId = _data["zoneId"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryZoneDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryZoneDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["zoneId"] = this.zoneId;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IServiceCategoryZoneDto {
+    zoneId?: string;
+    name?: string | undefined;
+}
+
+export class ServiceCategoryPresenceGroupDto implements IServiceCategoryPresenceGroupDto {
+    presenceGroupId?: number;
+    presenceGroupName?: string | undefined;
+
+    constructor(data?: IServiceCategoryPresenceGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.presenceGroupId = _data["presenceGroupId"];
+            this.presenceGroupName = _data["presenceGroupName"];
+        }
+    }
+
+    static fromJS(data: any): ServiceCategoryPresenceGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceCategoryPresenceGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["presenceGroupId"] = this.presenceGroupId;
+        data["presenceGroupName"] = this.presenceGroupName;
+        return data; 
+    }
+}
+
+export interface IServiceCategoryPresenceGroupDto {
+    presenceGroupId?: number;
+    presenceGroupName?: string | undefined;
+}
+
 export class EditServiceCategoryCommand extends CreateServiceCategoryCommand implements IEditServiceCategoryCommand {
     id?: number;
 
@@ -5783,10 +9951,12 @@ export interface IRemoveServiceCategoryCommand {
     id?: number;
 }
 
-export class GetAreaDocumentsQuery implements IGetAreaDocumentsQuery {
-    areaId?: number;
+export class ApplicationResponseOfUserGroupApproversDto implements IApplicationResponseOfUserGroupApproversDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: UserGroupApproversDto | undefined;
 
-    constructor(data?: IGetAreaDocumentsQuery) {
+    constructor(data?: IApplicationResponseOfUserGroupApproversDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5796,6 +9966,376 @@ export class GetAreaDocumentsQuery implements IGetAreaDocumentsQuery {
     }
 
     init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? UserGroupApproversDto.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfUserGroupApproversDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfUserGroupApproversDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfUserGroupApproversDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: UserGroupApproversDto | undefined;
+}
+
+export class ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto implements IApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfGetPersonnelDetailsDto | undefined;
+
+    constructor(data?: IApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? TableResponseModelOfGetPersonnelDetailsDto.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfGetPersonnelDetailsDto | undefined;
+}
+
+export class TableResponseModelOfGetPersonnelDetailsDto implements ITableResponseModelOfGetPersonnelDetailsDto {
+    data?: GetPersonnelDetailsDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+
+    constructor(data?: ITableResponseModelOfGetPersonnelDetailsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(GetPersonnelDetailsDto.fromJS(item));
+            }
+            this.pageCount = _data["pageCount"];
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalRowCount = _data["totalRowCount"];
+        }
+    }
+
+    static fromJS(data: any): TableResponseModelOfGetPersonnelDetailsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TableResponseModelOfGetPersonnelDetailsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount;
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalRowCount"] = this.totalRowCount;
+        return data; 
+    }
+}
+
+export interface ITableResponseModelOfGetPersonnelDetailsDto {
+    data?: GetPersonnelDetailsDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+}
+
+export class GetPersonnelDetailsDto implements IGetPersonnelDetailsDto {
+    personnelId?: number;
+    personnelName?: string | undefined;
+
+    constructor(data?: IGetPersonnelDetailsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.personnelId = _data["personnelId"];
+            this.personnelName = _data["personnelName"];
+        }
+    }
+
+    static fromJS(data: any): GetPersonnelDetailsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPersonnelDetailsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["personnelId"] = this.personnelId;
+        data["personnelName"] = this.personnelName;
+        return data; 
+    }
+}
+
+export interface IGetPersonnelDetailsDto {
+    personnelId?: number;
+    personnelName?: string | undefined;
+}
+
+export class ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto implements IApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfBasicDocumentTemplateDto | undefined;
+
+    constructor(data?: IApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? TableResponseModelOfBasicDocumentTemplateDto.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfBasicDocumentTemplateDto | undefined;
+}
+
+export class TableResponseModelOfBasicDocumentTemplateDto implements ITableResponseModelOfBasicDocumentTemplateDto {
+    data?: BasicDocumentTemplateDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+
+    constructor(data?: ITableResponseModelOfBasicDocumentTemplateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(BasicDocumentTemplateDto.fromJS(item));
+            }
+            this.pageCount = _data["pageCount"];
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalRowCount = _data["totalRowCount"];
+        }
+    }
+
+    static fromJS(data: any): TableResponseModelOfBasicDocumentTemplateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TableResponseModelOfBasicDocumentTemplateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount;
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalRowCount"] = this.totalRowCount;
+        return data; 
+    }
+}
+
+export interface ITableResponseModelOfBasicDocumentTemplateDto {
+    data?: BasicDocumentTemplateDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+}
+
+export class BasicDocumentTemplateDto implements IBasicDocumentTemplateDto {
+    id?: number;
+    uniqueCode?: string | undefined;
+    name?: LanguageString | undefined;
+
+    constructor(data?: IBasicDocumentTemplateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.uniqueCode = _data["uniqueCode"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): BasicDocumentTemplateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BasicDocumentTemplateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["uniqueCode"] = this.uniqueCode;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IBasicDocumentTemplateDto {
+    id?: number;
+    uniqueCode?: string | undefined;
+    name?: LanguageString | undefined;
+}
+
+export class TableRequestModel implements ITableRequestModel {
+    pageNumber?: number;
+    pageSize?: number;
+
+    constructor(data?: ITableRequestModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+        }
+    }
+
+    static fromJS(data: any): TableRequestModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new TableRequestModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        return data; 
+    }
+}
+
+export interface ITableRequestModel {
+    pageNumber?: number;
+    pageSize?: number;
+}
+
+export class GetAreaDocumentsQuery extends TableRequestModel implements IGetAreaDocumentsQuery {
+    areaId?: number;
+
+    constructor(data?: IGetAreaDocumentsQuery) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
         if (_data) {
             this.areaId = _data["areaId"];
         }
@@ -5811,27 +10351,24 @@ export class GetAreaDocumentsQuery implements IGetAreaDocumentsQuery {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["areaId"] = this.areaId;
+        super.toJSON(data);
         return data; 
     }
 }
 
-export interface IGetAreaDocumentsQuery {
+export interface IGetAreaDocumentsQuery extends ITableRequestModel {
     areaId?: number;
 }
 
-export class GetBlockDocumentsQuery implements IGetBlockDocumentsQuery {
+export class GetBlockDocumentsQuery extends TableRequestModel implements IGetBlockDocumentsQuery {
     blockId?: string;
 
     constructor(data?: IGetBlockDocumentsQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+        super(data);
     }
 
     init(_data?: any) {
+        super.init(_data);
         if (_data) {
             this.blockId = _data["blockId"];
         }
@@ -5847,27 +10384,24 @@ export class GetBlockDocumentsQuery implements IGetBlockDocumentsQuery {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["blockId"] = this.blockId;
+        super.toJSON(data);
         return data; 
     }
 }
 
-export interface IGetBlockDocumentsQuery {
+export interface IGetBlockDocumentsQuery extends ITableRequestModel {
     blockId?: string;
 }
 
-export class GetBrandDocumentsQuery implements IGetBrandDocumentsQuery {
+export class GetBrandDocumentsQuery extends TableRequestModel implements IGetBrandDocumentsQuery {
     brandId?: number;
 
     constructor(data?: IGetBrandDocumentsQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+        super(data);
     }
 
     init(_data?: any) {
+        super.init(_data);
         if (_data) {
             this.brandId = _data["brandId"];
         }
@@ -5883,27 +10417,24 @@ export class GetBrandDocumentsQuery implements IGetBrandDocumentsQuery {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["brandId"] = this.brandId;
+        super.toJSON(data);
         return data; 
     }
 }
 
-export interface IGetBrandDocumentsQuery {
+export interface IGetBrandDocumentsQuery extends ITableRequestModel {
     brandId?: number;
 }
 
-export class GetCompanyDocumentsQuery implements IGetCompanyDocumentsQuery {
+export class GetCompanyDocumentsQuery extends TableRequestModel implements IGetCompanyDocumentsQuery {
     companyId?: number;
 
     constructor(data?: IGetCompanyDocumentsQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+        super(data);
     }
 
     init(_data?: any) {
+        super.init(_data);
         if (_data) {
             this.companyId = _data["companyId"];
         }
@@ -5919,27 +10450,24 @@ export class GetCompanyDocumentsQuery implements IGetCompanyDocumentsQuery {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["companyId"] = this.companyId;
+        super.toJSON(data);
         return data; 
     }
 }
 
-export interface IGetCompanyDocumentsQuery {
+export interface IGetCompanyDocumentsQuery extends ITableRequestModel {
     companyId?: number;
 }
 
-export class GetSiteDocumentsQuery implements IGetSiteDocumentsQuery {
+export class GetSiteDocumentsQuery extends TableRequestModel implements IGetSiteDocumentsQuery {
     siteId?: string;
 
     constructor(data?: IGetSiteDocumentsQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+        super(data);
     }
 
     init(_data?: any) {
+        super.init(_data);
         if (_data) {
             this.siteId = _data["siteId"];
         }
@@ -5955,27 +10483,24 @@ export class GetSiteDocumentsQuery implements IGetSiteDocumentsQuery {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["siteId"] = this.siteId;
+        super.toJSON(data);
         return data; 
     }
 }
 
-export interface IGetSiteDocumentsQuery {
+export interface IGetSiteDocumentsQuery extends ITableRequestModel {
     siteId?: string;
 }
 
-export class GetUnitDocumentsQuery implements IGetUnitDocumentsQuery {
+export class GetUnitDocumentsQuery extends TableRequestModel implements IGetUnitDocumentsQuery {
     unitId?: number;
 
     constructor(data?: IGetUnitDocumentsQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+        super(data);
     }
 
     init(_data?: any) {
+        super.init(_data);
         if (_data) {
             this.unitId = _data["unitId"];
         }
@@ -5991,27 +10516,24 @@ export class GetUnitDocumentsQuery implements IGetUnitDocumentsQuery {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["unitId"] = this.unitId;
+        super.toJSON(data);
         return data; 
     }
 }
 
-export interface IGetUnitDocumentsQuery {
+export interface IGetUnitDocumentsQuery extends ITableRequestModel {
     unitId?: number;
 }
 
-export class GetZoneDocumentsQuery implements IGetZoneDocumentsQuery {
+export class GetZoneDocumentsQuery extends TableRequestModel implements IGetZoneDocumentsQuery {
     zoneId?: string;
 
     constructor(data?: IGetZoneDocumentsQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+        super(data);
     }
 
     init(_data?: any) {
+        super.init(_data);
         if (_data) {
             this.zoneId = _data["zoneId"];
         }
@@ -6027,11 +10549,12 @@ export class GetZoneDocumentsQuery implements IGetZoneDocumentsQuery {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["zoneId"] = this.zoneId;
+        super.toJSON(data);
         return data; 
     }
 }
 
-export interface IGetZoneDocumentsQuery {
+export interface IGetZoneDocumentsQuery extends ITableRequestModel {
     zoneId?: string;
 }
 
@@ -6715,6 +11238,587 @@ export interface ICreatePresenceGroupCommand {
     presenceGroupZones?: string[] | undefined;
 }
 
+export class ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto implements IApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfBasicPresenceGroupDto | undefined;
+
+    constructor(data?: IApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? TableResponseModelOfBasicPresenceGroupDto.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfBasicPresenceGroupDto | undefined;
+}
+
+export class TableResponseModelOfBasicPresenceGroupDto implements ITableResponseModelOfBasicPresenceGroupDto {
+    data?: BasicPresenceGroupDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+
+    constructor(data?: ITableResponseModelOfBasicPresenceGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(BasicPresenceGroupDto.fromJS(item));
+            }
+            this.pageCount = _data["pageCount"];
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalRowCount = _data["totalRowCount"];
+        }
+    }
+
+    static fromJS(data: any): TableResponseModelOfBasicPresenceGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TableResponseModelOfBasicPresenceGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount;
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalRowCount"] = this.totalRowCount;
+        return data; 
+    }
+}
+
+export interface ITableResponseModelOfBasicPresenceGroupDto {
+    data?: BasicPresenceGroupDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+}
+
+export class BasicPresenceGroupDto implements IBasicPresenceGroupDto {
+    name?: LanguageString | undefined;
+    uniqueCode?: string | undefined;
+
+    constructor(data?: IBasicPresenceGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
+            this.uniqueCode = _data["uniqueCode"];
+        }
+    }
+
+    static fromJS(data: any): BasicPresenceGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BasicPresenceGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
+        data["uniqueCode"] = this.uniqueCode;
+        return data; 
+    }
+}
+
+export interface IBasicPresenceGroupDto {
+    name?: LanguageString | undefined;
+    uniqueCode?: string | undefined;
+}
+
+export class ApplicationResponseOfPresenceGroupDto implements IApplicationResponseOfPresenceGroupDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: PresenceGroupDto | undefined;
+
+    constructor(data?: IApplicationResponseOfPresenceGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? PresenceGroupDto.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfPresenceGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfPresenceGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfPresenceGroupDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: PresenceGroupDto | undefined;
+}
+
+export class PresenceGroupDto extends BasicPresenceGroupDto implements IPresenceGroupDto {
+    presenceGroupAreas?: PresenceGroupAreaDto[] | undefined;
+    presenceGroupBlocks?: PresenceGroupBlockDto[] | undefined;
+    presenceGroupCompanies?: PresenceGroupCompanyDto[] | undefined;
+    presenceGroupBrands?: PresenceGroupBrandDto[] | undefined;
+    presenceGroupSites?: PresenceGroupSiteDto[] | undefined;
+    presenceGroupUnits?: PresenceGroupUnitDto[] | undefined;
+    presenceGroupZones?: PresenceGroupZoneDto[] | undefined;
+
+    constructor(data?: IPresenceGroupDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            if (Array.isArray(_data["presenceGroupAreas"])) {
+                this.presenceGroupAreas = [] as any;
+                for (let item of _data["presenceGroupAreas"])
+                    this.presenceGroupAreas!.push(PresenceGroupAreaDto.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupBlocks"])) {
+                this.presenceGroupBlocks = [] as any;
+                for (let item of _data["presenceGroupBlocks"])
+                    this.presenceGroupBlocks!.push(PresenceGroupBlockDto.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupCompanies"])) {
+                this.presenceGroupCompanies = [] as any;
+                for (let item of _data["presenceGroupCompanies"])
+                    this.presenceGroupCompanies!.push(PresenceGroupCompanyDto.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupBrands"])) {
+                this.presenceGroupBrands = [] as any;
+                for (let item of _data["presenceGroupBrands"])
+                    this.presenceGroupBrands!.push(PresenceGroupBrandDto.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupSites"])) {
+                this.presenceGroupSites = [] as any;
+                for (let item of _data["presenceGroupSites"])
+                    this.presenceGroupSites!.push(PresenceGroupSiteDto.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupUnits"])) {
+                this.presenceGroupUnits = [] as any;
+                for (let item of _data["presenceGroupUnits"])
+                    this.presenceGroupUnits!.push(PresenceGroupUnitDto.fromJS(item));
+            }
+            if (Array.isArray(_data["presenceGroupZones"])) {
+                this.presenceGroupZones = [] as any;
+                for (let item of _data["presenceGroupZones"])
+                    this.presenceGroupZones!.push(PresenceGroupZoneDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.presenceGroupAreas)) {
+            data["presenceGroupAreas"] = [];
+            for (let item of this.presenceGroupAreas)
+                data["presenceGroupAreas"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupBlocks)) {
+            data["presenceGroupBlocks"] = [];
+            for (let item of this.presenceGroupBlocks)
+                data["presenceGroupBlocks"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupCompanies)) {
+            data["presenceGroupCompanies"] = [];
+            for (let item of this.presenceGroupCompanies)
+                data["presenceGroupCompanies"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupBrands)) {
+            data["presenceGroupBrands"] = [];
+            for (let item of this.presenceGroupBrands)
+                data["presenceGroupBrands"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupSites)) {
+            data["presenceGroupSites"] = [];
+            for (let item of this.presenceGroupSites)
+                data["presenceGroupSites"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupUnits)) {
+            data["presenceGroupUnits"] = [];
+            for (let item of this.presenceGroupUnits)
+                data["presenceGroupUnits"].push(item.toJSON());
+        }
+        if (Array.isArray(this.presenceGroupZones)) {
+            data["presenceGroupZones"] = [];
+            for (let item of this.presenceGroupZones)
+                data["presenceGroupZones"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IPresenceGroupDto extends IBasicPresenceGroupDto {
+    presenceGroupAreas?: PresenceGroupAreaDto[] | undefined;
+    presenceGroupBlocks?: PresenceGroupBlockDto[] | undefined;
+    presenceGroupCompanies?: PresenceGroupCompanyDto[] | undefined;
+    presenceGroupBrands?: PresenceGroupBrandDto[] | undefined;
+    presenceGroupSites?: PresenceGroupSiteDto[] | undefined;
+    presenceGroupUnits?: PresenceGroupUnitDto[] | undefined;
+    presenceGroupZones?: PresenceGroupZoneDto[] | undefined;
+}
+
+export class PresenceGroupAreaDto implements IPresenceGroupAreaDto {
+    areaId?: number;
+    areaName?: string | undefined;
+
+    constructor(data?: IPresenceGroupAreaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.areaId = _data["areaId"];
+            this.areaName = _data["areaName"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupAreaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupAreaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["areaId"] = this.areaId;
+        data["areaName"] = this.areaName;
+        return data; 
+    }
+}
+
+export interface IPresenceGroupAreaDto {
+    areaId?: number;
+    areaName?: string | undefined;
+}
+
+export class PresenceGroupBlockDto implements IPresenceGroupBlockDto {
+    blockId?: string;
+    blockName?: string | undefined;
+
+    constructor(data?: IPresenceGroupBlockDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.blockId = _data["blockId"];
+            this.blockName = _data["blockName"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupBlockDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupBlockDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["blockId"] = this.blockId;
+        data["blockName"] = this.blockName;
+        return data; 
+    }
+}
+
+export interface IPresenceGroupBlockDto {
+    blockId?: string;
+    blockName?: string | undefined;
+}
+
+export class PresenceGroupCompanyDto implements IPresenceGroupCompanyDto {
+    companyId?: number;
+    companyName?: string | undefined;
+
+    constructor(data?: IPresenceGroupCompanyDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.companyId = _data["companyId"];
+            this.companyName = _data["companyName"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupCompanyDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupCompanyDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyId"] = this.companyId;
+        data["companyName"] = this.companyName;
+        return data; 
+    }
+}
+
+export interface IPresenceGroupCompanyDto {
+    companyId?: number;
+    companyName?: string | undefined;
+}
+
+export class PresenceGroupBrandDto implements IPresenceGroupBrandDto {
+    brandId?: number;
+    brandName?: string | undefined;
+
+    constructor(data?: IPresenceGroupBrandDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.brandId = _data["brandId"];
+            this.brandName = _data["brandName"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupBrandDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupBrandDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["brandId"] = this.brandId;
+        data["brandName"] = this.brandName;
+        return data; 
+    }
+}
+
+export interface IPresenceGroupBrandDto {
+    brandId?: number;
+    brandName?: string | undefined;
+}
+
+export class PresenceGroupSiteDto implements IPresenceGroupSiteDto {
+    siteId?: string;
+    siteName?: string | undefined;
+
+    constructor(data?: IPresenceGroupSiteDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.siteId = _data["siteId"];
+            this.siteName = _data["siteName"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupSiteDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupSiteDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["siteId"] = this.siteId;
+        data["siteName"] = this.siteName;
+        return data; 
+    }
+}
+
+export interface IPresenceGroupSiteDto {
+    siteId?: string;
+    siteName?: string | undefined;
+}
+
+export class PresenceGroupUnitDto implements IPresenceGroupUnitDto {
+    unitId?: number;
+    unitName?: string | undefined;
+
+    constructor(data?: IPresenceGroupUnitDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.unitId = _data["unitId"];
+            this.unitName = _data["unitName"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupUnitDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupUnitDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["unitId"] = this.unitId;
+        data["unitName"] = this.unitName;
+        return data; 
+    }
+}
+
+export interface IPresenceGroupUnitDto {
+    unitId?: number;
+    unitName?: string | undefined;
+}
+
+export class PresenceGroupZoneDto implements IPresenceGroupZoneDto {
+    zoneId?: string;
+    zoneName?: string | undefined;
+
+    constructor(data?: IPresenceGroupZoneDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.zoneId = _data["zoneId"];
+            this.zoneName = _data["zoneName"];
+        }
+    }
+
+    static fromJS(data: any): PresenceGroupZoneDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PresenceGroupZoneDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["zoneId"] = this.zoneId;
+        data["zoneName"] = this.zoneName;
+        return data; 
+    }
+}
+
+export interface IPresenceGroupZoneDto {
+    zoneId?: string;
+    zoneName?: string | undefined;
+}
+
 export class EditPresenceGroupCommand extends CreatePresenceGroupCommand implements IEditPresenceGroupCommand {
     id?: number;
 
@@ -6784,19 +11888,15 @@ export interface IRemovePresenceGroupCommand {
     id?: number;
 }
 
-export class GetPresenceGroupDocumentsQuery implements IGetPresenceGroupDocumentsQuery {
+export class GetPresenceGroupDocumentsQuery extends TableRequestModel implements IGetPresenceGroupDocumentsQuery {
     presenceGroupId?: number;
 
     constructor(data?: IGetPresenceGroupDocumentsQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+        super(data);
     }
 
     init(_data?: any) {
+        super.init(_data);
         if (_data) {
             this.presenceGroupId = _data["presenceGroupId"];
         }
@@ -6812,11 +11912,12 @@ export class GetPresenceGroupDocumentsQuery implements IGetPresenceGroupDocument
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["presenceGroupId"] = this.presenceGroupId;
+        super.toJSON(data);
         return data; 
     }
 }
 
-export interface IGetPresenceGroupDocumentsQuery {
+export interface IGetPresenceGroupDocumentsQuery extends ITableRequestModel {
     presenceGroupId?: number;
 }
 
@@ -6912,9 +12013,9 @@ export class CreateQuestionRequest implements ICreateQuestionRequest {
     name?: LanguageString | undefined;
     questionType?: QuestionType;
     answersCount?: number | undefined;
-    dateQuestionOptions?: AddDateQuestionOptionsRequest | undefined;
-    fileQuestionOptions?: AddFileQuestionOptionsRequest | undefined;
-    multiChoicesQuestions?: AddMultiChoicesQuestion[] | undefined;
+    dateQuestionOptions?: CreateDateQuestionOptions | undefined;
+    fileQuestionOptions?: CreateFileQuestionOptions | undefined;
+    multiChoicesQuestions?: CreateMultiChoicesOption[] | undefined;
 
     constructor(data?: ICreateQuestionRequest) {
         if (data) {
@@ -6930,12 +12031,12 @@ export class CreateQuestionRequest implements ICreateQuestionRequest {
             this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
             this.questionType = _data["questionType"];
             this.answersCount = _data["answersCount"];
-            this.dateQuestionOptions = _data["dateQuestionOptions"] ? AddDateQuestionOptionsRequest.fromJS(_data["dateQuestionOptions"]) : <any>undefined;
-            this.fileQuestionOptions = _data["fileQuestionOptions"] ? AddFileQuestionOptionsRequest.fromJS(_data["fileQuestionOptions"]) : <any>undefined;
+            this.dateQuestionOptions = _data["dateQuestionOptions"] ? CreateDateQuestionOptions.fromJS(_data["dateQuestionOptions"]) : <any>undefined;
+            this.fileQuestionOptions = _data["fileQuestionOptions"] ? CreateFileQuestionOptions.fromJS(_data["fileQuestionOptions"]) : <any>undefined;
             if (Array.isArray(_data["multiChoicesQuestions"])) {
                 this.multiChoicesQuestions = [] as any;
                 for (let item of _data["multiChoicesQuestions"])
-                    this.multiChoicesQuestions!.push(AddMultiChoicesQuestion.fromJS(item));
+                    this.multiChoicesQuestions!.push(CreateMultiChoicesOption.fromJS(item));
             }
         }
     }
@@ -6967,24 +12068,16 @@ export interface ICreateQuestionRequest {
     name?: LanguageString | undefined;
     questionType?: QuestionType;
     answersCount?: number | undefined;
-    dateQuestionOptions?: AddDateQuestionOptionsRequest | undefined;
-    fileQuestionOptions?: AddFileQuestionOptionsRequest | undefined;
-    multiChoicesQuestions?: AddMultiChoicesQuestion[] | undefined;
+    dateQuestionOptions?: CreateDateQuestionOptions | undefined;
+    fileQuestionOptions?: CreateFileQuestionOptions | undefined;
+    multiChoicesQuestions?: CreateMultiChoicesOption[] | undefined;
 }
 
-export enum QuestionType {
-    MultiAnswers = 0,
-    OneOfMany = 1,
-    DateAnswer = 2,
-    FileAnswer = 3,
-    TextAnswer = 4,
-}
-
-export class AddDateQuestionOptionsRequest implements IAddDateQuestionOptionsRequest {
+export class CreateDateQuestionOptions implements ICreateDateQuestionOptions {
     isMultiDate?: boolean;
     questionId?: number;
 
-    constructor(data?: IAddDateQuestionOptionsRequest) {
+    constructor(data?: ICreateDateQuestionOptions) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7000,9 +12093,9 @@ export class AddDateQuestionOptionsRequest implements IAddDateQuestionOptionsReq
         }
     }
 
-    static fromJS(data: any): AddDateQuestionOptionsRequest {
+    static fromJS(data: any): CreateDateQuestionOptions {
         data = typeof data === 'object' ? data : {};
-        let result = new AddDateQuestionOptionsRequest();
+        let result = new CreateDateQuestionOptions();
         result.init(data);
         return result;
     }
@@ -7015,16 +12108,16 @@ export class AddDateQuestionOptionsRequest implements IAddDateQuestionOptionsReq
     }
 }
 
-export interface IAddDateQuestionOptionsRequest {
+export interface ICreateDateQuestionOptions {
     isMultiDate?: boolean;
     questionId?: number;
 }
 
-export class AddFileQuestionOptionsRequest implements IAddFileQuestionOptionsRequest {
+export class CreateFileQuestionOptions implements ICreateFileQuestionOptions {
     documentFileType?: DocumentFileType;
     questionId?: number;
 
-    constructor(data?: IAddFileQuestionOptionsRequest) {
+    constructor(data?: ICreateFileQuestionOptions) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7040,9 +12133,9 @@ export class AddFileQuestionOptionsRequest implements IAddFileQuestionOptionsReq
         }
     }
 
-    static fromJS(data: any): AddFileQuestionOptionsRequest {
+    static fromJS(data: any): CreateFileQuestionOptions {
         data = typeof data === 'object' ? data : {};
-        let result = new AddFileQuestionOptionsRequest();
+        let result = new CreateFileQuestionOptions();
         result.init(data);
         return result;
     }
@@ -7055,22 +12148,16 @@ export class AddFileQuestionOptionsRequest implements IAddFileQuestionOptionsReq
     }
 }
 
-export interface IAddFileQuestionOptionsRequest {
+export interface ICreateFileQuestionOptions {
     documentFileType?: DocumentFileType;
     questionId?: number;
 }
 
-export enum DocumentFileType {
-    PDF = 0,
-    Word = 1,
-    TxtFile = 2,
-}
-
-export class AddMultiChoicesQuestion implements IAddMultiChoicesQuestion {
+export class CreateMultiChoicesOption implements ICreateMultiChoicesOption {
     choice?: LanguageString | undefined;
     questionId?: number;
 
-    constructor(data?: IAddMultiChoicesQuestion) {
+    constructor(data?: ICreateMultiChoicesOption) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7086,9 +12173,9 @@ export class AddMultiChoicesQuestion implements IAddMultiChoicesQuestion {
         }
     }
 
-    static fromJS(data: any): AddMultiChoicesQuestion {
+    static fromJS(data: any): CreateMultiChoicesOption {
         data = typeof data === 'object' ? data : {};
-        let result = new AddMultiChoicesQuestion();
+        let result = new CreateMultiChoicesOption();
         result.init(data);
         return result;
     }
@@ -7101,17 +12188,17 @@ export class AddMultiChoicesQuestion implements IAddMultiChoicesQuestion {
     }
 }
 
-export interface IAddMultiChoicesQuestion {
+export interface ICreateMultiChoicesOption {
     choice?: LanguageString | undefined;
     questionId?: number;
 }
 
-export class ApplicationResponseOfListOfBasicFormDto implements IApplicationResponseOfListOfBasicFormDto {
+export class ApplicationResponseOfTableResponseModelOfBasicFormDto implements IApplicationResponseOfTableResponseModelOfBasicFormDto {
     isError?: boolean;
     message?: string | undefined;
-    result?: BasicFormDto[] | undefined;
+    result?: TableResponseModelOfBasicFormDto | undefined;
 
-    constructor(data?: IApplicationResponseOfListOfBasicFormDto) {
+    constructor(data?: IApplicationResponseOfTableResponseModelOfBasicFormDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7124,17 +12211,13 @@ export class ApplicationResponseOfListOfBasicFormDto implements IApplicationResp
         if (_data) {
             this.isError = _data["isError"];
             this.message = _data["message"];
-            if (Array.isArray(_data["result"])) {
-                this.result = [] as any;
-                for (let item of _data["result"])
-                    this.result!.push(BasicFormDto.fromJS(item));
-            }
+            this.result = _data["result"] ? TableResponseModelOfBasicFormDto.fromJS(_data["result"]) : <any>undefined;
         }
     }
 
-    static fromJS(data: any): ApplicationResponseOfListOfBasicFormDto {
+    static fromJS(data: any): ApplicationResponseOfTableResponseModelOfBasicFormDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ApplicationResponseOfListOfBasicFormDto();
+        let result = new ApplicationResponseOfTableResponseModelOfBasicFormDto();
         result.init(data);
         return result;
     }
@@ -7143,19 +12226,75 @@ export class ApplicationResponseOfListOfBasicFormDto implements IApplicationResp
         data = typeof data === 'object' ? data : {};
         data["isError"] = this.isError;
         data["message"] = this.message;
-        if (Array.isArray(this.result)) {
-            data["result"] = [];
-            for (let item of this.result)
-                data["result"].push(item.toJSON());
-        }
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
         return data; 
     }
 }
 
-export interface IApplicationResponseOfListOfBasicFormDto {
+export interface IApplicationResponseOfTableResponseModelOfBasicFormDto {
     isError?: boolean;
     message?: string | undefined;
-    result?: BasicFormDto[] | undefined;
+    result?: TableResponseModelOfBasicFormDto | undefined;
+}
+
+export class TableResponseModelOfBasicFormDto implements ITableResponseModelOfBasicFormDto {
+    data?: BasicFormDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+
+    constructor(data?: ITableResponseModelOfBasicFormDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(BasicFormDto.fromJS(item));
+            }
+            this.pageCount = _data["pageCount"];
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalRowCount = _data["totalRowCount"];
+        }
+    }
+
+    static fromJS(data: any): TableResponseModelOfBasicFormDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TableResponseModelOfBasicFormDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount;
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalRowCount"] = this.totalRowCount;
+        return data; 
+    }
+}
+
+export interface ITableResponseModelOfBasicFormDto {
+    data?: BasicFormDto[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
 }
 
 export class BasicFormDto implements IBasicFormDto {
@@ -7202,9 +12341,12 @@ export interface IBasicFormDto {
     uniqueCode?: string | undefined;
 }
 
-export class GetFormsQuery implements IGetFormsQuery {
+export class ApplicationResponseOfFormDto implements IApplicationResponseOfFormDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: FormDto | undefined;
 
-    constructor(data?: IGetFormsQuery) {
+    constructor(data?: IApplicationResponseOfFormDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7214,22 +12356,254 @@ export class GetFormsQuery implements IGetFormsQuery {
     }
 
     init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? FormDto.fromJS(_data["result"]) : <any>undefined;
+        }
     }
 
-    static fromJS(data: any): GetFormsQuery {
+    static fromJS(data: any): ApplicationResponseOfFormDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetFormsQuery();
+        let result = new ApplicationResponseOfFormDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
         return data; 
     }
 }
 
-export interface IGetFormsQuery {
+export interface IApplicationResponseOfFormDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: FormDto | undefined;
+}
+
+export class FormDto extends BasicFormDto implements IFormDto {
+    questions?: QuestionDto[] | undefined;
+
+    constructor(data?: IFormDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            if (Array.isArray(_data["questions"])) {
+                this.questions = [] as any;
+                for (let item of _data["questions"])
+                    this.questions!.push(QuestionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): FormDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FormDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.questions)) {
+            data["questions"] = [];
+            for (let item of this.questions)
+                data["questions"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IFormDto extends IBasicFormDto {
+    questions?: QuestionDto[] | undefined;
+}
+
+export class QuestionDto implements IQuestionDto {
+    id?: number;
+    formId?: number;
+    name?: LanguageString | undefined;
+    questionType?: QuestionType;
+    answersCount?: number | undefined;
+    dateQuestionOptions?: DateQuestionOptionsDto | undefined;
+    fileQuestionOptions?: FileQuestionOptionsDto | undefined;
+    multiChoicesOptions?: MultiChoicesOptionsDto[] | undefined;
+
+    constructor(data?: IQuestionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.formId = _data["formId"];
+            this.name = _data["name"] ? LanguageString.fromJS(_data["name"]) : <any>undefined;
+            this.questionType = _data["questionType"];
+            this.answersCount = _data["answersCount"];
+            this.dateQuestionOptions = _data["dateQuestionOptions"] ? DateQuestionOptionsDto.fromJS(_data["dateQuestionOptions"]) : <any>undefined;
+            this.fileQuestionOptions = _data["fileQuestionOptions"] ? FileQuestionOptionsDto.fromJS(_data["fileQuestionOptions"]) : <any>undefined;
+            if (Array.isArray(_data["multiChoicesOptions"])) {
+                this.multiChoicesOptions = [] as any;
+                for (let item of _data["multiChoicesOptions"])
+                    this.multiChoicesOptions!.push(MultiChoicesOptionsDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): QuestionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new QuestionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["formId"] = this.formId;
+        data["name"] = this.name ? this.name.toJSON() : <any>undefined;
+        data["questionType"] = this.questionType;
+        data["answersCount"] = this.answersCount;
+        data["dateQuestionOptions"] = this.dateQuestionOptions ? this.dateQuestionOptions.toJSON() : <any>undefined;
+        data["fileQuestionOptions"] = this.fileQuestionOptions ? this.fileQuestionOptions.toJSON() : <any>undefined;
+        if (Array.isArray(this.multiChoicesOptions)) {
+            data["multiChoicesOptions"] = [];
+            for (let item of this.multiChoicesOptions)
+                data["multiChoicesOptions"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IQuestionDto {
+    id?: number;
+    formId?: number;
+    name?: LanguageString | undefined;
+    questionType?: QuestionType;
+    answersCount?: number | undefined;
+    dateQuestionOptions?: DateQuestionOptionsDto | undefined;
+    fileQuestionOptions?: FileQuestionOptionsDto | undefined;
+    multiChoicesOptions?: MultiChoicesOptionsDto[] | undefined;
+}
+
+export class DateQuestionOptionsDto implements IDateQuestionOptionsDto {
+    isMultiDate?: boolean;
+
+    constructor(data?: IDateQuestionOptionsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isMultiDate = _data["isMultiDate"];
+        }
+    }
+
+    static fromJS(data: any): DateQuestionOptionsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DateQuestionOptionsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isMultiDate"] = this.isMultiDate;
+        return data; 
+    }
+}
+
+export interface IDateQuestionOptionsDto {
+    isMultiDate?: boolean;
+}
+
+export class FileQuestionOptionsDto implements IFileQuestionOptionsDto {
+    documentFileType?: DocumentFileType;
+
+    constructor(data?: IFileQuestionOptionsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.documentFileType = _data["documentFileType"];
+        }
+    }
+
+    static fromJS(data: any): FileQuestionOptionsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FileQuestionOptionsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentFileType"] = this.documentFileType;
+        return data; 
+    }
+}
+
+export interface IFileQuestionOptionsDto {
+    documentFileType?: DocumentFileType;
+}
+
+export class MultiChoicesOptionsDto implements IMultiChoicesOptionsDto {
+    choice?: LanguageString | undefined;
+
+    constructor(data?: IMultiChoicesOptionsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.choice = _data["choice"] ? LanguageString.fromJS(_data["choice"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): MultiChoicesOptionsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MultiChoicesOptionsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["choice"] = this.choice ? this.choice.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IMultiChoicesOptionsDto {
+    choice?: LanguageString | undefined;
 }
 
 export class EditFormCommand extends CreateFormCommand implements IEditFormCommand {
@@ -7369,9 +12743,12 @@ export interface ICreateDocumentTemplateCommand {
     forms?: number[] | undefined;
 }
 
-export class GetDocumentTemplateTypesQuery implements IGetDocumentTemplateTypesQuery {
+export class ApplicationResponseOfGetDocumentTemplateDto implements IApplicationResponseOfGetDocumentTemplateDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: GetDocumentTemplateDto | undefined;
 
-    constructor(data?: IGetDocumentTemplateTypesQuery) {
+    constructor(data?: IApplicationResponseOfGetDocumentTemplateDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7381,22 +12758,238 @@ export class GetDocumentTemplateTypesQuery implements IGetDocumentTemplateTypesQ
     }
 
     init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? GetDocumentTemplateDto.fromJS(_data["result"]) : <any>undefined;
+        }
     }
 
-    static fromJS(data: any): GetDocumentTemplateTypesQuery {
+    static fromJS(data: any): ApplicationResponseOfGetDocumentTemplateDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetDocumentTemplateTypesQuery();
+        let result = new ApplicationResponseOfGetDocumentTemplateDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
         return data; 
     }
 }
 
-export interface IGetDocumentTemplateTypesQuery {
+export interface IApplicationResponseOfGetDocumentTemplateDto {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: GetDocumentTemplateDto | undefined;
+}
+
+export class GetDocumentTemplateDto extends BasicDocumentTemplateDto implements IGetDocumentTemplateDto {
+    hasValidationDate?: boolean;
+    documentTemplateTypeId?: number;
+    documentTemplateFileTypes?: DocumentFileType[] | undefined;
+    forms?: number[] | undefined;
+
+    constructor(data?: IGetDocumentTemplateDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.hasValidationDate = _data["hasValidationDate"];
+            this.documentTemplateTypeId = _data["documentTemplateTypeId"];
+            if (Array.isArray(_data["documentTemplateFileTypes"])) {
+                this.documentTemplateFileTypes = [] as any;
+                for (let item of _data["documentTemplateFileTypes"])
+                    this.documentTemplateFileTypes!.push(item);
+            }
+            if (Array.isArray(_data["forms"])) {
+                this.forms = [] as any;
+                for (let item of _data["forms"])
+                    this.forms!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): GetDocumentTemplateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDocumentTemplateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["hasValidationDate"] = this.hasValidationDate;
+        data["documentTemplateTypeId"] = this.documentTemplateTypeId;
+        if (Array.isArray(this.documentTemplateFileTypes)) {
+            data["documentTemplateFileTypes"] = [];
+            for (let item of this.documentTemplateFileTypes)
+                data["documentTemplateFileTypes"].push(item);
+        }
+        if (Array.isArray(this.forms)) {
+            data["forms"] = [];
+            for (let item of this.forms)
+                data["forms"].push(item);
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IGetDocumentTemplateDto extends IBasicDocumentTemplateDto {
+    hasValidationDate?: boolean;
+    documentTemplateTypeId?: number;
+    documentTemplateFileTypes?: DocumentFileType[] | undefined;
+    forms?: number[] | undefined;
+}
+
+export class ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString implements IApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfKeyValuePairOfIntegerAndString | undefined;
+
+    constructor(data?: IApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isError = _data["isError"];
+            this.message = _data["message"];
+            this.result = _data["result"] ? TableResponseModelOfKeyValuePairOfIntegerAndString.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isError"] = this.isError;
+        data["message"] = this.message;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString {
+    isError?: boolean;
+    message?: string | undefined;
+    result?: TableResponseModelOfKeyValuePairOfIntegerAndString | undefined;
+}
+
+export class TableResponseModelOfKeyValuePairOfIntegerAndString implements ITableResponseModelOfKeyValuePairOfIntegerAndString {
+    data?: KeyValuePairOfIntegerAndString[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+
+    constructor(data?: ITableResponseModelOfKeyValuePairOfIntegerAndString) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(KeyValuePairOfIntegerAndString.fromJS(item));
+            }
+            this.pageCount = _data["pageCount"];
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalRowCount = _data["totalRowCount"];
+        }
+    }
+
+    static fromJS(data: any): TableResponseModelOfKeyValuePairOfIntegerAndString {
+        data = typeof data === 'object' ? data : {};
+        let result = new TableResponseModelOfKeyValuePairOfIntegerAndString();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount;
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalRowCount"] = this.totalRowCount;
+        return data; 
+    }
+}
+
+export interface ITableResponseModelOfKeyValuePairOfIntegerAndString {
+    data?: KeyValuePairOfIntegerAndString[] | undefined;
+    pageCount?: number;
+    pageNumber?: number;
+    pageSize?: number;
+    totalRowCount?: number;
+}
+
+export class KeyValuePairOfIntegerAndString implements IKeyValuePairOfIntegerAndString {
+    key?: number;
+    value?: string;
+
+    constructor(data?: IKeyValuePairOfIntegerAndString) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.key = _data["key"];
+            this.value = _data["value"];
+        }
+    }
+
+    static fromJS(data: any): KeyValuePairOfIntegerAndString {
+        data = typeof data === 'object' ? data : {};
+        let result = new KeyValuePairOfIntegerAndString();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["key"] = this.key;
+        data["value"] = this.value;
+        return data; 
+    }
+}
+
+export interface IKeyValuePairOfIntegerAndString {
+    key?: number;
+    value?: string;
 }
 
 export class EditDocumentTemplateCommand extends CreateDocumentTemplateCommand implements IEditDocumentTemplateCommand {

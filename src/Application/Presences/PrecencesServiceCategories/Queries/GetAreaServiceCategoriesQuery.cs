@@ -30,11 +30,13 @@ public class GetAreaServiceCategoriesHandler : BaseQueryHandler, IRequestHandler
         var serviceCategories = _applicationDbContext.ServiceCategoryAreas
             .Include(x => x.ServiceCategory)
             .Where(x => x.AreaId == request.AreaId);
+
         var selectedCategories=await serviceCategories
-            .Select(x => x.ServiceCategory)
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
+            .Select(x => x.ServiceCategory)
             .ToListAsync();
+
         var result= _mapper.Map<List<BasicServiceCategoryDto>>(selectedCategories);
         return new TableResponseModel<BasicServiceCategoryDto>(result, request.PageNumber, request.PageSize, serviceCategories.Count()); 
     }

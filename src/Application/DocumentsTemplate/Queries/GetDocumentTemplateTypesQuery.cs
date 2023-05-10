@@ -24,11 +24,12 @@ public class GetDocumentTemplateTypesHandler : BaseQueryHandler, IRequestHandler
     }
     public async Task<TableResponseModel<KeyValuePair<int, string>>> Handle(GetDocumentTemplateTypesQuery request, CancellationToken cancellationToken)
     {
-        var documentTypes = await _applicationDbContext.DocumentTemplateTypes
-            .ToListAsync();
+        var documentTypes = _applicationDbContext.DocumentTemplateTypes;
+
         var selectedDocumentTypes = documentTypes
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
+            .Select(x => new KeyValuePair<int, string>(x.Id, x.Name))
             .ToList();
         return new TableResponseModel<KeyValuePair<int, string>> (selectedDocumentTypes, request.PageNumber, request.PageSize, documentTypes.Count());
     }

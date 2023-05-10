@@ -33,11 +33,11 @@ public class GetPersonnelRoleQueryHandler : BaseQueryHandler, IRequestHandler<Ge
     {
         var result = _applicationDbContext.PersonnelRoles
             .Where(x => x.Id == request.PersonnelId);
-        var selectedRoles=await  result
+        
+        var selectedRoles = await result
             .Select(x => x.Role)
             .ToListAsync();
-        if (result == null)
-            throw new Exception("Role or Personnel was NOT found");
+        
         return new TableResponseModel<Role>(selectedRoles, request.PageNumber, request.PageSize, result.Count());
     }
 }

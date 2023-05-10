@@ -65,9 +65,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<DocumentTemplateUnit> DocumentTemplateUnits { get; set; }
     public DbSet<DocumentTemplateZone> DocumentTemplateZones { get; set; }
     public DbSet<DocumentTemplatePresenceGroup> DocumentTemplatePresenceGroups { get; set; }
-    public DbSet<ResponsibleDepartment> ApproverDepartments { get; set; }
-    public DbSet<ResponsiblePersonnel> ApproverPersonnels { get; set; }
-    public DbSet<ResponsibleUserGroup> ApproverUserGroups { get; set; }
+    public DbSet<ResponsibleDepartment> ResponsibleDepartments { get; set; }
+    public DbSet<ResponsiblePersonnel> ResponsiblePersonnels { get; set; }
+    public DbSet<ResponsibleUserGroup> ResponsibleUserGroups { get; set; }
     public DbSet<ServiceCategoryRole> ServiceCategoryApprovments { get; set; }
     public DbSet<ServiceCategoryDocument> CategoryDocuments { get; set; }
     public DbSet<ServiceCategoryPersonnelDocument> CategoryPersonnelDocuments { get; set; }

@@ -41,16 +41,16 @@ public class ServiceCategoryController : ApiControllerBase
         }
     }
     [HttpGet("ViewServiceCategoryById")]
-    public async Task<ApplicationResponse<ServiceCategoryDetailsDto>> GetServiceCategoryById([FromQuery] GetServiceCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<ServiceCategoryDto>> GetServiceCategoryById([FromQuery] GetServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<ServiceCategoryDetailsDto>(result);
+            return new ApplicationResponse<ServiceCategoryDto>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<ServiceCategoryDetailsDto>(e);
+            return new ApplicationResponse<ServiceCategoryDto>(e);
         }
     }
     [HttpPost("EditServiceCategory")]
@@ -99,16 +99,16 @@ public class ServiceCategoryController : ApiControllerBase
     //    return Ok(result);
     //}
     [HttpGet("GetPersonnelRoles")]
-    public async Task<ApplicationResponse<List<Role>>> GetPersonnelRoles([FromQuery] GetPersonnelRoleQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<Role>>> GetPersonnelRoles([FromQuery] GetPersonnelRoleQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<Role>>(result);
+            return new ApplicationResponse<TableResponseModel<Role>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<Role>>(e);
+            return new ApplicationResponse<TableResponseModel<Role>>(e);
         }
     }
 

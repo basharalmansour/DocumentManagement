@@ -24,7 +24,7 @@ public class GetPersonnelCategoriesQueryHandler : BaseQueryHandler, IRequestHand
     public async Task<UserGroupApproversDto> Handle(GetPersonnelCategoriesQuery request, CancellationToken cancellationToken)
     {
         UserGroupApproversDto result = new UserGroupApproversDto();
-        var categories = await _applicationDbContext.ApproverPersonnels
+        var categories = await _applicationDbContext.ResponsiblePersonnels
             .Where(x => x.PersonnelId == request.PresonnelId)
             .Select(x => x.ServiceCategoryRole.ServiceCategory)
             .ToListAsync();
