@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
+using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.DocumentsTemplate.Commands;
 using CleanArchitecture.Application.DocumentsTemplate.Queries;
 using CleanArchitecture.Domain.Common;
@@ -23,16 +24,16 @@ public class DocumentTemplateController : ApiControllerBase
     }
 
     [HttpGet("GetDocumentTemplates")]
-    public async Task<ApplicationResponse<List<BasicDocumentTemplateDto>>> GetDocumentTemplates([FromQuery] GetDocumentTemplatesQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>> GetDocumentTemplates([FromQuery] GetDocumentTemplatesQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(e);
         }
     }
 
@@ -51,16 +52,16 @@ public class DocumentTemplateController : ApiControllerBase
     }
 
     [HttpGet("GetDocumentTemplateTypes")]
-    public async Task<ApplicationResponse<List<KeyValuePair<int , string>>>> GetDocumentTemplateTypes([FromQuery] GetDocumentTemplateTypesQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<KeyValuePair<int , string>>>> GetDocumentTemplateTypes([FromQuery] GetDocumentTemplateTypesQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<KeyValuePair<int, string>>> (result);
+            return new ApplicationResponse<TableResponseModel<KeyValuePair<int, string>>> (result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<KeyValuePair<int, string>>>(e);
+            return new ApplicationResponse<TableResponseModel<KeyValuePair<int, string>>>(e);
         }
     }
 

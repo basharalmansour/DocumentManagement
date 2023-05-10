@@ -1,4 +1,5 @@
 ﻿using AutoWrapper.Wrappers;
+using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Personnels.Queries;
 using CleanArchitecture.Application.UsersGroup.Commands;
@@ -25,16 +26,16 @@ public class UserGroupController : ApiControllerBase
         }
     }
     [HttpGet("GetUserGroups")]
-    public async Task<ApplicationResponse<List<GetUserGroupDto>>> GetUserGroups([FromQuery] GetUserGroupsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<GetUserGroupDto>>> GetUserGroups([FromQuery] GetUserGroupsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<GetUserGroupDto>>(result);
+            return new ApplicationResponse<TableResponseModel<GetUserGroupDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<GetUserGroupDto>>(e);
+            return new ApplicationResponse<TableResponseModel<GetUserGroupDto>>(e);
         }
     }
     [HttpGet("GetUserGroupById")]
@@ -77,29 +78,29 @@ public class UserGroupController : ApiControllerBase
         }
     }
     [HttpGet("GetUserGroupApprovers")]
-    public async Task<ApplicationResponse<List<UserGroupApproversDto>>> GetUserGroupApprovers([FromQuery] GetUserGroupApproversQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<UserGroupApproversDto>>> GetUserGroupApprovers([FromQuery] GetUserGroupApproversQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<UserGroupApproversDto>>(result);
+            return new ApplicationResponse<TableResponseModel<UserGroupApproversDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<UserGroupApproversDto>>(e);
+            return new ApplicationResponse<TableResponseModel<UserGroupApproversDto>>(e);
         }
     }
     [HttpGet("GetPersonnelRoles")]
-    public async Task<ApplicationResponse<List<Role>>> GetPersonnelRoles([FromQuery] GetPersonnelRoleQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<Role>>> GetPersonnelRoles([FromQuery] GetPersonnelRoleQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<Role>>(result);
+            return new ApplicationResponse<TableResponseModel<Role>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<Role>>(e);
+            return new ApplicationResponse<TableResponseModel<Role>>(e);
         }
     }
 }

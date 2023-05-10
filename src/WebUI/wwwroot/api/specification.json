@@ -641,7 +641,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -657,17 +657,22 @@
         "operationId": "Vehicle_GetVehicles",
         "parameters": [
           {
-            "name": "request",
+            "name": "PageNumber",
             "in": "query",
             "schema": {
-              "nullable": true,
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/GetVehicleTemplateQuery"
-                }
-              ]
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
           }
         ],
         "responses": {
@@ -676,7 +681,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto"
                 }
               }
             }
@@ -707,7 +712,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfVehicleTemplateDto"
                 }
               }
             }
@@ -739,7 +744,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -771,7 +776,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -803,7 +808,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -826,6 +831,24 @@
               "nullable": true
             },
             "x-position": 1
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
           }
         ],
         "responses": {
@@ -834,7 +857,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfGetUserGroupDto"
                 }
               }
             }
@@ -865,7 +888,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfGetUserGroupDto"
                 }
               }
             }
@@ -897,7 +920,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -929,7 +952,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -952,6 +975,24 @@
               "format": "int32"
             },
             "x-position": 1
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
           }
         ],
         "responses": {
@@ -960,7 +1001,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfUserGroupApproversDto"
                 }
               }
             }
@@ -983,6 +1024,24 @@
               "format": "int32"
             },
             "x-position": 1
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
           }
         ],
         "responses": {
@@ -991,7 +1050,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfRole"
                 }
               }
             }
@@ -1023,7 +1082,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -1031,7 +1090,7 @@
         }
       }
     },
-    "/api/ServiceCategory/ViewServiceCategories": {
+    "/api/ServiceCategory/GetServiceCategories": {
       "get": {
         "tags": [
           "ServiceCategory"
@@ -1046,6 +1105,24 @@
               "nullable": true
             },
             "x-position": 1
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
           }
         ],
         "responses": {
@@ -1054,7 +1131,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto"
                 }
               }
             }
@@ -1085,7 +1162,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfServiceCategoryDto"
                 }
               }
             }
@@ -1117,7 +1194,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -1149,7 +1226,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1180,7 +1257,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfUserGroupApproversDto"
                 }
               }
             }
@@ -1203,6 +1280,24 @@
               "format": "int32"
             },
             "x-position": 1
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
           }
         ],
         "responses": {
@@ -1211,7 +1306,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfRole"
                 }
               }
             }
@@ -1219,12 +1314,12 @@
         }
       }
     },
-    "/api/Personnel/GetAllApprovers": {
+    "/api/Personnel/GetPersonnels": {
       "get": {
         "tags": [
           "Personnel"
         ],
-        "operationId": "Personnel_GetAllApprovers",
+        "operationId": "Personnel_GetPersonnels",
         "parameters": [
           {
             "name": "Roles",
@@ -1257,6 +1352,24 @@
               "format": "int32"
             },
             "x-position": 3
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 5
           }
         ],
         "responses": {
@@ -1265,7 +1378,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto"
                 }
               }
             }
@@ -1297,7 +1410,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto"
                 }
               }
             }
@@ -1329,7 +1442,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto"
                 }
               }
             }
@@ -1361,7 +1474,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto"
                 }
               }
             }
@@ -1393,7 +1506,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto"
                 }
               }
             }
@@ -1425,7 +1538,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto"
                 }
               }
             }
@@ -1457,7 +1570,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto"
                 }
               }
             }
@@ -1489,7 +1602,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto"
                 }
               }
             }
@@ -1521,7 +1634,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1553,7 +1666,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1585,7 +1698,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1617,7 +1730,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1649,7 +1762,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1681,7 +1794,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1713,7 +1826,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1745,7 +1858,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1777,7 +1890,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1809,7 +1922,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1841,7 +1954,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1873,7 +1986,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1905,7 +2018,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1937,7 +2050,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -1969,7 +2082,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -1992,6 +2105,24 @@
               "nullable": true
             },
             "x-position": 1
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
           }
         ],
         "responses": {
@@ -2000,7 +2131,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto"
                 }
               }
             }
@@ -2031,7 +2162,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfPresenceGroupDto"
                 }
               }
             }
@@ -2063,7 +2194,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -2095,7 +2226,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -2127,7 +2258,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto"
                 }
               }
             }
@@ -2167,7 +2298,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -2199,7 +2330,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -2231,7 +2362,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -2247,17 +2378,22 @@
         "operationId": "Form_GetForms",
         "parameters": [
           {
-            "name": "request",
+            "name": "PageNumber",
             "in": "query",
             "schema": {
-              "nullable": true,
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/GetFormsQuery"
-                }
-              ]
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
           }
         ],
         "responses": {
@@ -2266,7 +2402,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponseOfListOfBasicFormDto"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicFormDto"
                 }
               }
             }
@@ -2297,7 +2433,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfFormDto"
                 }
               }
             }
@@ -2329,7 +2465,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -2361,7 +2497,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -2393,7 +2529,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -2416,6 +2552,24 @@
               "nullable": true
             },
             "x-position": 1
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
           }
         ],
         "responses": {
@@ -2424,7 +2578,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto"
                 }
               }
             }
@@ -2455,7 +2609,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfGetDocumentTemplateDto"
                 }
               }
             }
@@ -2471,17 +2625,22 @@
         "operationId": "DocumentTemplate_GetDocumentTemplateTypes",
         "parameters": [
           {
-            "name": "request",
+            "name": "PageNumber",
             "in": "query",
             "schema": {
-              "nullable": true,
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/GetDocumentTemplateTypesQuery"
-                }
-              ]
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
           }
         ],
         "responses": {
@@ -2490,7 +2649,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString"
                 }
               }
             }
@@ -2522,7 +2681,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfInteger"
                 }
               }
             }
@@ -2554,7 +2713,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApplicationResponse"
+                  "$ref": "#/components/schemas/ApplicationResponseOfBoolean"
                 }
               }
             }
@@ -2904,7 +3063,7 @@
           }
         }
       },
-      "ApplicationResponse": {
+      "ApplicationResponseOfInteger": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2916,7 +3075,8 @@
             "nullable": true
           },
           "result": {
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -2974,9 +3134,149 @@
           2
         ]
       },
-      "GetVehicleTemplateQuery": {
+      "ApplicationResponseOfTableResponseModelOfBasicVehicleTemplateDto": {
         "type": "object",
-        "additionalProperties": false
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TableResponseModelOfBasicVehicleTemplateDto"
+              }
+            ]
+          }
+        }
+      },
+      "TableResponseModelOfBasicVehicleTemplateDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BasicVehicleTemplateDto"
+            }
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalRowCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "BasicVehicleTemplateDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LanguageString"
+              }
+            ]
+          }
+        }
+      },
+      "ApplicationResponseOfVehicleTemplateDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VehicleTemplateDto"
+              }
+            ]
+          }
+        }
+      },
+      "VehicleTemplateDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicVehicleTemplateDto"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "vehicleDocuments": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/VehicleTemplatesDocumentDto"
+                }
+              },
+              "driverDocuments": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/VehicleTemplateDriverDocumentsDto"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "VehicleTemplatesDocumentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "documentTemplateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vehicleTemplateId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "VehicleTemplateDriverDocumentsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "documentTemplateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vehicleTemplateId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
       },
       "EditVehicleTemplateCommand": {
         "allOf": [
@@ -2994,6 +3294,22 @@
             }
           }
         ]
+      },
+      "ApplicationResponseOfBoolean": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "type": "boolean"
+          }
+        }
       },
       "RemoveVehicleTemplateCommand": {
         "type": "object",
@@ -3027,6 +3343,112 @@
           }
         }
       },
+      "ApplicationResponseOfTableResponseModelOfGetUserGroupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TableResponseModelOfGetUserGroupDto"
+              }
+            ]
+          }
+        }
+      },
+      "TableResponseModelOfGetUserGroupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GetUserGroupDto"
+            }
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalRowCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "GetUserGroupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LanguageString"
+              }
+            ]
+          },
+          "personnels": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/UserGroupPersonnelDto"
+            }
+          },
+          "uniqueCode": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UserGroupPersonnelDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "personnelId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ApplicationResponseOfGetUserGroupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GetUserGroupDto"
+              }
+            ]
+          }
+        }
+      },
       "EditUserGroupCommand": {
         "allOf": [
           {
@@ -3053,6 +3475,175 @@
             "format": "int32"
           }
         }
+      },
+      "ApplicationResponseOfTableResponseModelOfUserGroupApproversDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TableResponseModelOfUserGroupApproversDto"
+              }
+            ]
+          }
+        }
+      },
+      "TableResponseModelOfUserGroupApproversDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/UserGroupApproversDto"
+            }
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalRowCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "UserGroupApproversDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "personnelId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personnelName": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceCategories": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BasicServiceCategoryDto"
+            }
+          }
+        }
+      },
+      "BasicServiceCategoryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "uniqueCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LanguageString"
+              }
+            ]
+          },
+          "isMainCategory": {
+            "type": "boolean"
+          },
+          "subServiceCategories": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BasicServiceCategoryDto"
+            }
+          }
+        }
+      },
+      "ApplicationResponseOfTableResponseModelOfRole": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TableResponseModelOfRole"
+              }
+            ]
+          }
+        }
+      },
+      "TableResponseModelOfRole": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Role"
+            }
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalRowCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Role": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Approver",
+          "Observer",
+          "Reporter",
+          "Canceler"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ]
       },
       "CreateServiceCategoryCommand": {
         "type": "object",
@@ -3081,13 +3672,13 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/CreateServiceCategoryDetailsDto"
+                "$ref": "#/components/schemas/CreateServiceCategoryDetails"
               }
             ]
           }
         }
       },
-      "CreateServiceCategoryDetailsDto": {
+      "CreateServiceCategoryDetails": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3120,8 +3711,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "type": "integer",
-              "format": "int32"
+              "$ref": "#/components/schemas/CreateServiceCategoryPersonnelDocument"
             }
           },
           "parentServiceCategoryId": {
@@ -3143,8 +3733,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "type": "integer",
-              "format": "int32"
+              "$ref": "#/components/schemas/CreateServiceCategoryDocument"
             }
           },
           "vehicleTemplates": {
@@ -3238,6 +3827,19 @@
           4
         ]
       },
+      "CreateServiceCategoryPersonnelDocument": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "documentTemplateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isRequired": {
+            "type": "boolean"
+          }
+        }
+      },
       "CreateCategoryRoleDto": {
         "type": "object",
         "additionalProperties": false,
@@ -3271,21 +3873,18 @@
           }
         }
       },
-      "Role": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "Approver",
-          "Observer",
-          "Reporter",
-          "Canceler"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3
-        ]
+      "CreateServiceCategoryDocument": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "documentTemplateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isRequired": {
+            "type": "boolean"
+          }
+        }
       },
       "CreateVehicleTemplateCategoryDto": {
         "type": "object",
@@ -3332,6 +3931,1988 @@
           1
         ]
       },
+      "ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TableResponseModelOfBasicServiceCategoryDto"
+              }
+            ]
+          }
+        }
+      },
+      "TableResponseModelOfBasicServiceCategoryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BasicServiceCategoryDto"
+            }
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalRowCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ApplicationResponseOfServiceCategoryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ServiceCategoryDto"
+              }
+            ]
+          }
+        }
+      },
+      "ServiceCategoryDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicServiceCategoryDto"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/LanguageString"
+                  }
+                ]
+              },
+              "parentServiceCategoryId": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "serviceCategoryDetails": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategoryDetailsDto"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryDetailsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "maxServiceDuration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serviceDurationUnit": {
+            "$ref": "#/components/schemas/TimeUnit"
+          },
+          "minOrderDuration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minOrderDurationUnit": {
+            "$ref": "#/components/schemas/TimeUnit"
+          },
+          "maxOrderDuration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxOrderDurationUnit": {
+            "$ref": "#/components/schemas/TimeUnit"
+          },
+          "maxPersonnelCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isParallelApprovement": {
+            "type": "boolean"
+          },
+          "vehicleTemplates": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VehicleCategoryDto"
+            }
+          },
+          "documents": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/CategoryDocumentDto"
+            }
+          },
+          "personnelDocuments": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/CategoryPersonnelDocumentDto"
+            }
+          },
+          "serviceCategoryRoles": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryRole"
+            }
+          },
+          "serviceCategoryAreas": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryAreaDto"
+            }
+          },
+          "serviceCategoryBlocks": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryBlockDto"
+            }
+          },
+          "serviceCategoryBrands": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryBrandDto"
+            }
+          },
+          "serviceCategoryCompanies": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryCompanyDto"
+            }
+          },
+          "serviceCategorySites": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategorySiteDto"
+            }
+          },
+          "serviceCategoryUnits": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryUnitDto"
+            }
+          },
+          "serviceCategoryZones": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryZoneDto"
+            }
+          },
+          "serviceCategoryPresenceGroups": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryPresenceGroupDto"
+            }
+          }
+        }
+      },
+      "VehicleCategoryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "vehicleTemplateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vehicleTemplateDocuments": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/CategoryVehicleDocumentsDto"
+            }
+          }
+        }
+      },
+      "CategoryVehicleDocumentsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "vehicleTemplateCategoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "documentTemplateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isRequired": {
+            "type": "boolean"
+          },
+          "vehicleDocumentType": {
+            "$ref": "#/components/schemas/VehicleDocumentType"
+          }
+        }
+      },
+      "CategoryDocumentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "documentTemplateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serviceCategoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isRequired": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CategoryPersonnelDocumentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "serviceCategoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "documentTemplateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isRequired": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ServiceCategoryRole": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "role": {
+                "$ref": "#/components/schemas/Role"
+              },
+              "responsibleDepartments": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/ResponsibleDepartment"
+                }
+              },
+              "responsiblePersonnels": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/ResponsiblePersonnel"
+                }
+              },
+              "responsibleUserGroups": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/ResponsibleUserGroup"
+                }
+              },
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "ResponsibleDepartment": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryRoleId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategoryRole": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategoryRole"
+                  }
+                ]
+              },
+              "departmentId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "LightBaseEntityOfInteger": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ResponsiblePersonnel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryRoleId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategoryRole": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategoryRole"
+                  }
+                ]
+              },
+              "personnelId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "ResponsibleUserGroup": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryRoleId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategoryRole": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategoryRole"
+                  }
+                ]
+              },
+              "userGroupId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "userGroup": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/UserGroup"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "UserGroup": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 0,
+                "nullable": true
+              },
+              "personnels": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/UserGroupPersonnel"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "UserGroupPersonnel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "personnelId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "userGroupId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "userGroup": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/UserGroup"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "BaseEntityOfInteger": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "isDeleted": {
+                "type": "boolean"
+              },
+              "deletedDate": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "deletedBy": {
+                "type": "string",
+                "maxLength": 36,
+                "minLength": 0,
+                "nullable": true
+              },
+              "createdBy": {
+                "type": "string",
+                "maxLength": 36,
+                "minLength": 0,
+                "nullable": true
+              },
+              "modifiedBy": {
+                "type": "string",
+                "maxLength": 36,
+                "minLength": 0,
+                "nullable": true
+              },
+              "createdDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "lastModifiedDate": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "uniqueCode": {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 0,
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategory": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 0,
+                "nullable": true
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "serviceCategoryDetails": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategoryDetails"
+                  }
+                ]
+              },
+              "isMainCategory": {
+                "type": "boolean"
+              },
+              "parentServiceCategoryId": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "parentServiceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "subServiceCategories": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/ServiceCategory"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryDetails": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serviceCategory": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ServiceCategory"
+              }
+            ]
+          },
+          "maxServiceDuration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serviceDurationUnit": {
+            "$ref": "#/components/schemas/TimeUnit"
+          },
+          "minOrderDuration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minOrderDurationUnit": {
+            "$ref": "#/components/schemas/TimeUnit"
+          },
+          "maxOrderDuration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxOrderDurationUnit": {
+            "$ref": "#/components/schemas/TimeUnit"
+          },
+          "maxPersonnelCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isParallelApprovement": {
+            "type": "boolean"
+          },
+          "serviceCategoryAreas": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryArea"
+            }
+          },
+          "serviceCategoryBlocks": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryBlock"
+            }
+          },
+          "serviceCategoryBrands": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryBrand"
+            }
+          },
+          "serviceCategoryCompanies": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryCompany"
+            }
+          },
+          "serviceCategorySites": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategorySite"
+            }
+          },
+          "serviceCategoryUnits": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryUnit"
+            }
+          },
+          "serviceCategoryZones": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryZone"
+            }
+          },
+          "serviceCategoryPresenceGroups": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryPresenceGroup"
+            }
+          },
+          "vehicleTemplates": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryVehicleTemplate"
+            }
+          },
+          "documents": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryDocument"
+            }
+          },
+          "personnelDocuments": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryPersonnelDocument"
+            }
+          },
+          "serviceCategoryRoles": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ServiceCategoryRole"
+            }
+          }
+        }
+      },
+      "ServiceCategoryArea": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "areaId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryBlock": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "blockId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryBrand": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "brandId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryCompany": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "companyId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategorySite": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "siteId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryUnit": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "unitId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryZone": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "zoneId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryPresenceGroup": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "presenceGroupId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "presenceGroup": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PresenceGroup"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "PresenceGroup": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 0,
+                "nullable": true
+              },
+              "presenceGroupAreas": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupArea"
+                }
+              },
+              "presenceGroupBlocks": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupBlock"
+                }
+              },
+              "presenceGroupCompanies": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupCompany"
+                }
+              },
+              "presenceGroupBrands": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupBrand"
+                }
+              },
+              "presenceGroupSites": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupSite"
+                }
+              },
+              "presenceGroupUnits": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupUnit"
+                }
+              },
+              "presenceGroupZones": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupZone"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PresenceGroupArea": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "presenceGroupId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "presenceGroup": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PresenceGroup"
+                  }
+                ]
+              },
+              "areaId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "PresenceGroupBlock": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "presenceGroupId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "presenceGroup": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PresenceGroup"
+                  }
+                ]
+              },
+              "blockId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "PresenceGroupCompany": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "presenceGroupId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "presenceGroup": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PresenceGroup"
+                  }
+                ]
+              },
+              "companyId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "PresenceGroupBrand": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "presenceGroupId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "presenceGroup": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PresenceGroup"
+                  }
+                ]
+              },
+              "brandId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "PresenceGroupSite": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "presenceGroupId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "presenceGroup": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PresenceGroup"
+                  }
+                ]
+              },
+              "siteId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "PresenceGroupUnit": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "presenceGroupId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "presenceGroup": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PresenceGroup"
+                  }
+                ]
+              },
+              "unitId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "PresenceGroupZone": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "presenceGroupId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "presenceGroup": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PresenceGroup"
+                  }
+                ]
+              },
+              "zoneId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryVehicleTemplate": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "vehicleTemplateId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "vehicleTemplate": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/VehicleTemplate"
+                  }
+                ]
+              },
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "vehicleTemplateDocuments": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/ServiceCategoryVehicleTemplateDocument"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "VehicleTemplate": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 0,
+                "nullable": true
+              },
+              "isNeedDriver": {
+                "type": "boolean"
+              },
+              "vehicleTemplateDocuments": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/VehicleTemplateDocument"
+                }
+              },
+              "driverDocuments": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/VehicleTemplateDriverDocument"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "VehicleTemplateDocument": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "documentTemplateId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "documentTemplate": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentTemplate"
+                  }
+                ]
+              },
+              "vehicleTemplateId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "vehicleTemplate": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/VehicleTemplate"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "DocumentTemplate": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 0,
+                "nullable": true
+              },
+              "hasValidationDate": {
+                "type": "boolean"
+              },
+              "documentTemplateFileTypes": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/DocumentTemplateFileType"
+                }
+              },
+              "documentTemplateTypeId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "documentTemplateType": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentTemplateType"
+                  }
+                ]
+              },
+              "forms": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/DocumentTemplateForm"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "DocumentTemplateFileType": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "documentTemplateId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "documentTemplate": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentTemplate"
+                  }
+                ]
+              },
+              "fileType": {
+                "$ref": "#/components/schemas/DocumentFileType"
+              }
+            }
+          }
+        ]
+      },
+      "DocumentFileType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "PDF",
+          "Word",
+          "TxtFile"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "DocumentTemplateType": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 0,
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "DocumentTemplateForm": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "documentTemplateId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "documentTemplate": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentTemplate"
+                  }
+                ]
+              },
+              "formId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "form": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Form"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Form": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 0,
+                "nullable": true
+              },
+              "questions": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Question"
+                }
+              },
+              "documentTemplates": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/DocumentTemplateForm"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Question": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "questionType": {
+                "$ref": "#/components/schemas/QuestionType"
+              },
+              "answersCount": {
+                "type": "integer",
+                "nullable": true
+              },
+              "dateQuestionOptions": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DateQuestionOptions"
+                  }
+                ]
+              },
+              "fileQuestionOptions": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/FileQuestionOptions"
+                  }
+                ]
+              },
+              "multiChoicesOptions": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/MultiChoicesOption"
+                }
+              },
+              "formId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "form": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Form"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "QuestionType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "MultiAnswers",
+          "OneOfMany",
+          "DateAnswer",
+          "FileAnswer",
+          "TextAnswer"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "DateQuestionOptions": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "isMultiDate": {
+                "type": "boolean"
+              },
+              "questionId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "question": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Question"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "FileQuestionOptions": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "documentFileType": {
+                "$ref": "#/components/schemas/DocumentFileType"
+              },
+              "questionId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "question": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Question"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "MultiChoicesOption": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "choice": {
+                "type": "string",
+                "nullable": true
+              },
+              "questionId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "question": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Question"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "VehicleTemplateDriverDocument": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "documentTemplateId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "documentTemplate": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentTemplate"
+                  }
+                ]
+              },
+              "vehicleTemplateId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "vehicleTemplate": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/VehicleTemplate"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryVehicleTemplateDocument": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "vehicleTemplateCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategoryVehicleTemplate": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategoryVehicleTemplate"
+                  }
+                ]
+              },
+              "documentTemplateId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "documentTemplate": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentTemplate"
+                  }
+                ]
+              },
+              "isRequired": {
+                "type": "boolean"
+              },
+              "vehicleDocumentType": {
+                "$ref": "#/components/schemas/VehicleDocumentType"
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryDocument": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "documentTemplateId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "documentTemplate": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentTemplate"
+                  }
+                ]
+              },
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "isRequired": {
+                "type": "boolean"
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryPersonnelDocument": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceCategoryId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "serviceCategory": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ServiceCategory"
+                  }
+                ]
+              },
+              "documentTemplateId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "documentTemplate": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentTemplate"
+                  }
+                ]
+              },
+              "isRequired": {
+                "type": "boolean"
+              }
+            }
+          }
+        ]
+      },
+      "ServiceCategoryAreaDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "areaId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ServiceCategoryBlockDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "blockId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ServiceCategoryBrandDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "brandId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ServiceCategoryCompanyDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "companyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ServiceCategorySiteDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "siteId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ServiceCategoryUnitDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "unitId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ServiceCategoryZoneDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "zoneId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ServiceCategoryPresenceGroupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "presenceGroupId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "presenceGroupName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "EditServiceCategoryCommand": {
         "allOf": [
           {
@@ -3359,75 +5940,295 @@
           }
         }
       },
-      "GetAreaDocumentsQuery": {
+      "ApplicationResponseOfUserGroupApproversDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "areaId": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserGroupApproversDto"
+              }
+            ]
+          }
+        }
+      },
+      "ApplicationResponseOfTableResponseModelOfGetPersonnelDetailsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TableResponseModelOfGetPersonnelDetailsDto"
+              }
+            ]
+          }
+        }
+      },
+      "TableResponseModelOfGetPersonnelDetailsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GetPersonnelDetailsDto"
+            }
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalRowCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "GetPersonnelDetailsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "personnelId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personnelName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ApplicationResponseOfTableResponseModelOfBasicDocumentTemplateDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TableResponseModelOfBasicDocumentTemplateDto"
+              }
+            ]
+          }
+        }
+      },
+      "TableResponseModelOfBasicDocumentTemplateDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BasicDocumentTemplateDto"
+            }
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalRowCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "BasicDocumentTemplateDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "uniqueCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LanguageString"
+              }
+            ]
+          }
+        }
+      },
+      "GetAreaDocumentsQuery": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TableRequestModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "areaId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "TableRequestModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
             "type": "integer",
             "format": "int32"
           }
         }
       },
       "GetBlockDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "blockId": {
-            "type": "string",
-            "format": "guid"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TableRequestModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "blockId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
           }
-        }
+        ]
       },
       "GetBrandDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "brandId": {
-            "type": "integer",
-            "format": "int32"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TableRequestModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "brandId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
           }
-        }
+        ]
       },
       "GetCompanyDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "companyId": {
-            "type": "integer",
-            "format": "int32"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TableRequestModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "companyId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
           }
-        }
+        ]
       },
       "GetSiteDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "siteId": {
-            "type": "string",
-            "format": "guid"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TableRequestModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "siteId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
           }
-        }
+        ]
       },
       "GetUnitDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "unitId": {
-            "type": "integer",
-            "format": "int32"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TableRequestModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "unitId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
           }
-        }
+        ]
       },
       "GetZoneDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "zoneId": {
-            "type": "string",
-            "format": "guid"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TableRequestModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "zoneId": {
+                "type": "string",
+                "format": "guid"
+              }
+            }
           }
-        }
+        ]
       },
       "CreateAreaDocumentsCommand": {
         "type": "object",
@@ -3695,6 +6496,255 @@
           }
         }
       },
+      "ApplicationResponseOfTableResponseModelOfBasicPresenceGroupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TableResponseModelOfBasicPresenceGroupDto"
+              }
+            ]
+          }
+        }
+      },
+      "TableResponseModelOfBasicPresenceGroupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BasicPresenceGroupDto"
+            }
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalRowCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "BasicPresenceGroupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LanguageString"
+              }
+            ]
+          },
+          "uniqueCode": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ApplicationResponseOfPresenceGroupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PresenceGroupDto"
+              }
+            ]
+          }
+        }
+      },
+      "PresenceGroupDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicPresenceGroupDto"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "presenceGroupAreas": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupAreaDto"
+                }
+              },
+              "presenceGroupBlocks": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupBlockDto"
+                }
+              },
+              "presenceGroupCompanies": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupCompanyDto"
+                }
+              },
+              "presenceGroupBrands": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupBrandDto"
+                }
+              },
+              "presenceGroupSites": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupSiteDto"
+                }
+              },
+              "presenceGroupUnits": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupUnitDto"
+                }
+              },
+              "presenceGroupZones": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PresenceGroupZoneDto"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PresenceGroupAreaDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "areaId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "areaName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PresenceGroupBlockDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "blockId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "blockName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PresenceGroupCompanyDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "companyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "companyName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PresenceGroupBrandDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "brandId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "brandName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PresenceGroupSiteDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "siteId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "siteName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PresenceGroupUnitDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "unitId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unitName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PresenceGroupZoneDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "zoneId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "zoneName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "EditPresenceGroupCommand": {
         "allOf": [
           {
@@ -3723,14 +6773,21 @@
         }
       },
       "GetPresenceGroupDocumentsQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "presenceGroupId": {
-            "type": "integer",
-            "format": "int32"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TableRequestModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "presenceGroupId": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
           }
-        }
+        ]
       },
       "RemovePresenceGroupDocumentCommand": {
         "type": "object",
@@ -3790,7 +6847,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/AddDateQuestionOptionsRequest"
+                "$ref": "#/components/schemas/CreateDateQuestionOptions"
               }
             ]
           },
@@ -3798,7 +6855,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/AddFileQuestionOptionsRequest"
+                "$ref": "#/components/schemas/CreateFileQuestionOptions"
               }
             ]
           },
@@ -3806,30 +6863,12 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/AddMultiChoicesQuestion"
+              "$ref": "#/components/schemas/CreateMultiChoicesOption"
             }
           }
         }
       },
-      "QuestionType": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "MultiAnswers",
-          "OneOfMany",
-          "DateAnswer",
-          "FileAnswer",
-          "TextAnswer"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ]
-      },
-      "AddDateQuestionOptionsRequest": {
+      "CreateDateQuestionOptions": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3842,7 +6881,7 @@
           }
         }
       },
-      "AddFileQuestionOptionsRequest": {
+      "CreateFileQuestionOptions": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3855,21 +6894,7 @@
           }
         }
       },
-      "DocumentFileType": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "PDF",
-          "Word",
-          "TxtFile"
-        ],
-        "enum": [
-          0,
-          1,
-          2
-        ]
-      },
-      "AddMultiChoicesQuestion": {
+      "CreateMultiChoicesOption": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3887,7 +6912,7 @@
           }
         }
       },
-      "ApplicationResponseOfListOfBasicFormDto": {
+      "ApplicationResponseOfTableResponseModelOfBasicFormDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3899,11 +6924,41 @@
             "nullable": true
           },
           "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TableResponseModelOfBasicFormDto"
+              }
+            ]
+          }
+        }
+      },
+      "TableResponseModelOfBasicFormDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
             "type": "array",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/BasicFormDto"
             }
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalRowCount": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -3929,9 +6984,130 @@
           }
         }
       },
-      "GetFormsQuery": {
+      "ApplicationResponseOfFormDto": {
         "type": "object",
-        "additionalProperties": false
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FormDto"
+              }
+            ]
+          }
+        }
+      },
+      "FormDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicFormDto"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "questions": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/QuestionDto"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "QuestionDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "formId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LanguageString"
+              }
+            ]
+          },
+          "questionType": {
+            "$ref": "#/components/schemas/QuestionType"
+          },
+          "answersCount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "dateQuestionOptions": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DateQuestionOptionsDto"
+              }
+            ]
+          },
+          "fileQuestionOptions": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FileQuestionOptionsDto"
+              }
+            ]
+          },
+          "multiChoicesOptions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/MultiChoicesOptionsDto"
+            }
+          }
+        }
+      },
+      "DateQuestionOptionsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isMultiDate": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FileQuestionOptionsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "documentFileType": {
+            "$ref": "#/components/schemas/DocumentFileType"
+          }
+        }
+      },
+      "MultiChoicesOptionsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "choice": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LanguageString"
+              }
+            ]
+          }
+        }
       },
       "EditFormCommand": {
         "allOf": [
@@ -3996,9 +7172,124 @@
           }
         }
       },
-      "GetDocumentTemplateTypesQuery": {
+      "ApplicationResponseOfGetDocumentTemplateDto": {
         "type": "object",
-        "additionalProperties": false
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GetDocumentTemplateDto"
+              }
+            ]
+          }
+        }
+      },
+      "GetDocumentTemplateDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicDocumentTemplateDto"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "hasValidationDate": {
+                "type": "boolean"
+              },
+              "documentTemplateTypeId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "documentTemplateFileTypes": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/DocumentFileType"
+                }
+              },
+              "forms": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ApplicationResponseOfTableResponseModelOfKeyValuePairOfIntegerAndString": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TableResponseModelOfKeyValuePairOfIntegerAndString"
+              }
+            ]
+          }
+        }
+      },
+      "TableResponseModelOfKeyValuePairOfIntegerAndString": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePairOfIntegerAndString"
+            }
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalRowCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "KeyValuePairOfIntegerAndString": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
       },
       "EditDocumentTemplateCommand": {
         "allOf": [

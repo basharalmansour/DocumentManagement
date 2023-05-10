@@ -1,6 +1,7 @@
 ﻿using AutoWrapper.Wrappers;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Dtos.PresenceGroups;
+using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Presences.PresenceGroups.Commands;
 using CleanArchitecture.Application.Presences.PresenceGroups.Queries;
 using CleanArchitecture.Domain.Common;
@@ -24,16 +25,16 @@ public class PresenceGroupController : ApiControllerBase
         }
     }
     [HttpGet("GetPresenceGroups")]
-    public async Task<ApplicationResponse<List<BasicPresenceGroupDto>>> GetPresenceGroups([FromQuery] GetPresencesGroupsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicPresenceGroupDto>>> GetPresenceGroups([FromQuery] GetPresencesGroupsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicPresenceGroupDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicPresenceGroupDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicPresenceGroupDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicPresenceGroupDto>>(e);
         }
     }
     [HttpGet("GetPresenceGroupById")]
@@ -77,16 +78,16 @@ public class PresenceGroupController : ApiControllerBase
         }
     }
     [HttpGet("GetPresenceGroupDocuments")]
-    public async Task<ApplicationResponse<List<BasicDocumentTemplateDto>>> GetPresenceGroupDocuments([FromBody] GetPresenceGroupDocumentsQuery request, CancellationToken cancellationToken)
+    public async Task<ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>> GetPresenceGroupDocuments([FromBody] GetPresenceGroupDocumentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(result);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<List<BasicDocumentTemplateDto>>(e);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(e);
         }
     }
     [HttpPost("AddPresenceGroupDocument")]
