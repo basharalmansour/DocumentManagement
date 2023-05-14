@@ -10,5 +10,4 @@ namespace CleanArchitecture.Application.Common.Dtos.Forms;
 public class CreateFileQuestionOptions
 {
     public DocumentFileType DocumentFileType { get; set; }
-    public int QuestionId { get; set; }
 }

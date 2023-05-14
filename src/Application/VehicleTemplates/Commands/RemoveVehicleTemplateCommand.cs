@@ -28,7 +28,7 @@ public class RemoveVehicleTemplateCommandHandler : BaseCommandHandler, IRequestH
         var deletedVehicle = _applicationDbContext.VehicleTemplates.FirstOrDefault(x => x.Id == request.Id);
         if (deletedVehicle == null)
             throw new Exception("VehicleTemplate was NOT found");
-        deletedVehicle.IsDeleted = true;
+        deletedVehicle.DeleteByUser();
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
     }

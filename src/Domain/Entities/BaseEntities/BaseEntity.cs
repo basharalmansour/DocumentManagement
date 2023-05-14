@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Entities.BaseEntities;
 public class BaseEntity<T> : LightBaseEntity<T> where T : IEquatable<T>
 {
     public bool IsDeleted { get; set; }
     public DateTime? DeletedDate { get; set; }
+    public DeletionSource? DeletionSource { get; set; }
 
     [StringLength(StringLengths.GuidLengthString)]
     public string DeletedBy { get; set; }
@@ -21,4 +22,22 @@ public class BaseEntity<T> : LightBaseEntity<T> where T : IEquatable<T>
 
     [StringLength(StringLengths.ShortString)]
     public string UniqueCode { get; set; } 
+
+    public void DeleteByUser()
+    {
+        DeletionSource = Enums.DeletionSource.DeletedByUser;
+        SetDeleteSettings();
+    }
+
+    public virtual void DeleteByEdit()
+    {
+        DeletionSource = Enums.DeletionSource.DeletedByEdit;
+        SetDeleteSettings();
+    }
+
+    private void SetDeleteSettings()
+    {
+        DeletedDate = DateTime.Now;
+        IsDeleted = true;
+    }
 }

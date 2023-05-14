@@ -1107,13 +1107,54 @@
             "x-position": 1
           },
           {
+            "name": "GetOnlyProducts",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PresencesType",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/PresencesType"
+                }
+              ]
+            },
+            "x-position": 3
+          },
+          {
+            "name": "PrsenceIntegerId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 4
+          },
+          {
+            "name": "PrsenceGuidId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid",
+              "nullable": true
+            },
+            "x-position": 5
+          },
+          {
             "name": "PageNumber",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 2
+            "x-position": 6
           },
           {
             "name": "PageSize",
@@ -1122,7 +1163,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 3
+            "x-position": 7
           }
         ],
         "responses": {
@@ -3981,6 +4022,30 @@
           }
         }
       },
+      "PresencesType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Area",
+          "Block",
+          "Brand",
+          "Company",
+          "Site",
+          "Unit",
+          "Zone",
+          "PresenceGroup"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
       "ApplicationResponseOfServiceCategoryDto": {
         "type": "object",
         "additionalProperties": false,
@@ -4451,6 +4516,14 @@
                 "format": "date-time",
                 "nullable": true
               },
+              "deletionSource": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DeletionSource"
+                  }
+                ]
+              },
               "deletedBy": {
                 "type": "string",
                 "maxLength": 36,
@@ -4486,6 +4559,20 @@
               }
             }
           }
+        ]
+      },
+      "DeletionSource": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "DeletedByUser",
+          "DeletedByEdit",
+          "DeletedBySystemAdmin"
+        ],
+        "enum": [
+          0,
+          1,
+          2
         ]
       },
       "ServiceCategory": {
@@ -5457,7 +5544,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "maxLength": 64,
+                "maxLength": 512,
                 "minLength": 0,
                 "nullable": true
               },
@@ -5482,7 +5569,7 @@
       "Question": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+            "$ref": "#/components/schemas/BaseEntityOfInteger"
           },
           {
             "type": "object",
@@ -5557,65 +5644,51 @@
         ]
       },
       "DateQuestionOptions": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isMultiDate": {
+            "type": "boolean"
           },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "isMultiDate": {
-                "type": "boolean"
-              },
-              "questionId": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "question": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Question"
-                  }
-                ]
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "question": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Question"
               }
-            }
+            ]
           }
-        ]
+        }
       },
       "FileQuestionOptions": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "documentFileType": {
+            "$ref": "#/components/schemas/DocumentFileType"
           },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "documentFileType": {
-                "$ref": "#/components/schemas/DocumentFileType"
-              },
-              "questionId": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "question": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Question"
-                  }
-                ]
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "question": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Question"
               }
-            }
+            ]
           }
-        ]
+        }
       },
       "MultiChoicesOption": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/LightBaseEntityOfInteger"
+            "$ref": "#/components/schemas/BaseEntityOfInteger"
           },
           {
             "type": "object",
@@ -6874,10 +6947,6 @@
         "properties": {
           "isMultiDate": {
             "type": "boolean"
-          },
-          "questionId": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
@@ -6887,10 +6956,6 @@
         "properties": {
           "documentFileType": {
             "$ref": "#/components/schemas/DocumentFileType"
-          },
-          "questionId": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
@@ -6905,10 +6970,6 @@
                 "$ref": "#/components/schemas/LanguageString"
               }
             ]
-          },
-          "questionId": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },

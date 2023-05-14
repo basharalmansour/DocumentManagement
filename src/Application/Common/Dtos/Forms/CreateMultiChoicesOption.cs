@@ -10,5 +10,4 @@ namespace CleanArchitecture.Application.Common.Dtos.Forms;
 public class CreateMultiChoicesOption
 {
     public LanguageString Choice { get; set; }
-    public int QuestionId { get; set; }
 }

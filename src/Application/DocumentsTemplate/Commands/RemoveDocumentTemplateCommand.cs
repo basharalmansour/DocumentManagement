@@ -29,7 +29,7 @@ public class RemoveDocumentTemplateHandler : BaseCommandHandler, IRequestHandler
         var deletedDocumentTemplate= _applicationDbContext.DocumentTemplates.FirstOrDefault(x => x.Id == request.Id);
         if (deletedDocumentTemplate == null)
             throw new Exception("Document Template was NOT found");
-        deletedDocumentTemplate.IsDeleted = true;
+        deletedDocumentTemplate.DeleteByUser();
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
         //await _publishEndpoint.Publish(new DocumentTemplateRemoved

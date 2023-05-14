@@ -11,8 +11,14 @@ using CleanArchitecture.Domain.Entities.Documents;
 namespace CleanArchitecture.Domain.Entities.Forms;
 public class Form : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>//
 {
-    [StringLength(StringLengths.MediumString)]
+    [StringLength(StringLengths.VeryLongString)]
     public string Name { get; set; }
     public List<Question> Questions { get; set; }
     public List<DocumentTemplateForm> DocumentTemplates { get; set; }
+
+    public override void DeleteByEdit()
+    {
+        Questions.ForEach(x => x.DeleteByEdit());
+        base.DeleteByEdit();
+    }
 }

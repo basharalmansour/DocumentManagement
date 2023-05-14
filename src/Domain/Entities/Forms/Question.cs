@@ -10,7 +10,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Entities.Forms;
-public class Question : LightBaseEntity<int>, IEntity<int>//
+public class Question : BaseEntity<int>, IEntity<int>//
 {
     public string Name { get; set; }
     public QuestionType QuestionType { get; set; }
@@ -26,4 +26,9 @@ public class Question : LightBaseEntity<int>, IEntity<int>//
     public int FormId { get; set; }
     public Form Form { get; set; }
 
+    public override void DeleteByEdit()
+    {
+        MultiChoicesOptions.ForEach(x => x.DeleteByEdit());
+        base.DeleteByEdit();
+    }
 }

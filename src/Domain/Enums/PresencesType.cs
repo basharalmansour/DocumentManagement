@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Domain.Enums;
-public  enum PresencesType
+public enum PresencesType
 {
     Area,
     Block,
@@ -13,5 +13,6 @@ public  enum PresencesType
     Company,
     Site,
     Unit,
-    Zone
+    Zone,
+    PresenceGroup
 }

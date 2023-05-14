@@ -9,10 +9,12 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.Forms;
-public class DateQuestionOptions : LightBaseEntity<int>, IEntity<int>//
+public class DateQuestionOptions : IEntity<int>//
 {
     public bool IsMultiDate { get; set; }
+
+    [Key]
     [ForeignKey("Question")]
-    public int QuestionId { get; set; }
+    public int Id { get; set; }
     public Question Question { get; set; }
 }

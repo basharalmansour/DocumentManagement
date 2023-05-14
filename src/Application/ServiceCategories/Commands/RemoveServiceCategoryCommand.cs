@@ -27,7 +27,7 @@ public class RemoveServiceCategoryCommandHandler : BaseCommandHandler, IRequestH
         var deletedCategory = _applicationDbContext.ServiceCategories.FirstOrDefault(x => x.Id == request.Id);
         if (deletedCategory == null)
             throw new Exception("Service Category was NOT found");
-        deletedCategory.IsDeleted = true;
+        deletedCategory.DeleteByUser();
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
     }

@@ -30,7 +30,7 @@ public class RemoveUserGroupCommandHandler : BaseCommandHandler, IRequestHandler
         var userGroup =  _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.Id);
         if (userGroup == null)
             throw new Exception("UserGroup was NOT found");
-        userGroup.IsDeleted = true;
+        userGroup.DeleteByUser();
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
 

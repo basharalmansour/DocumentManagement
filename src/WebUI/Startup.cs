@@ -104,10 +104,6 @@ public class Startup
         app.UseHealthChecks("/health");
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-        if (!env.IsDevelopment())
-        {
-  
-        }
 
         app.UseHangfireDashboard("/hangfire", new DashboardOptions
         {
@@ -118,8 +114,6 @@ public class Startup
 
         GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 7 });
 
-
-        app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions { IsDebug = true });
         app.UseRouting();
 
         app.UseAuthentication();

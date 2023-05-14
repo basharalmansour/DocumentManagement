@@ -29,7 +29,7 @@ public class RemoveFormCommandHandler : BaseCommandHandler,  IRequestHandler<Rem
         var deletedForm = _applicationDbContext.Forms.FirstOrDefault(x => x.Id == request.Id);
         if (deletedForm == null)
             throw new Exception("Form was NOT found");
-        deletedForm.IsDeleted = true;
+        deletedForm.DeleteByUser();
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
     }

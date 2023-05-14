@@ -10,10 +10,12 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.Forms;
-public class FileQuestionOptions : LightBaseEntity<int>, IEntity<int>//
+public class FileQuestionOptions : IEntity<int>//
 {
     public DocumentFileType DocumentFileType { get; set; }
+
+    [Key]
     [ForeignKey("Question")]
-    public int QuestionId { get; set; }
+    public int Id { get; set; }
     public Question Question { get; set; }
 }

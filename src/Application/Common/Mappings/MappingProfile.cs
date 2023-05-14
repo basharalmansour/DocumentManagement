@@ -202,7 +202,9 @@ public class MappingProfile : Profile
         CreateMap<CreateMultiChoicesOption, MultiChoicesOption>()
             .ForMember(dest => dest.Choice, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Choice)));
 
-        CreateMap<EditFormCommand, Form>();
+        //CreateMap<EditFormCommand, Form>()
+        //    .ForMember(dest=> dest.Id, opt=>opt.Ignore())
+        //    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)));
     }
     private void ApplyMappingsOfDocumentTemplate()
     {

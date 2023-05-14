@@ -1673,7 +1673,7 @@ export class UserGroupClient implements IUserGroupClient {
 
 export interface IServiceCategoryClient {
     createServiceCategory(request: CreateServiceCategoryCommand): Observable<ApplicationResponseOfInteger>;
-    getServiceCategories(searchText: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto>;
+    getServiceCategories(searchText: string | null | undefined, getOnlyProducts: boolean | undefined, presencesType: PresencesType | null | undefined, prsenceIntegerId: number | null | undefined, prsenceGuidId: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto>;
     getServiceCategoryById(id: number | undefined): Observable<ApplicationResponseOfServiceCategoryDto>;
     editServiceCategory(request: EditServiceCategoryCommand): Observable<ApplicationResponseOfInteger>;
     deleteServiceCategory(request: RemoveServiceCategoryCommand): Observable<ApplicationResponseOfBoolean>;
@@ -1746,10 +1746,20 @@ export class ServiceCategoryClient implements IServiceCategoryClient {
         return _observableOf<ApplicationResponseOfInteger>(<any>null);
     }
 
-    getServiceCategories(searchText: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto> {
+    getServiceCategories(searchText: string | null | undefined, getOnlyProducts: boolean | undefined, presencesType: PresencesType | null | undefined, prsenceIntegerId: number | null | undefined, prsenceGuidId: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined) : Observable<ApplicationResponseOfTableResponseModelOfBasicServiceCategoryDto> {
         let url_ = this.baseUrl + "/api/ServiceCategory/GetServiceCategories?";
         if (searchText !== undefined && searchText !== null)
             url_ += "SearchText=" + encodeURIComponent("" + searchText) + "&";
+        if (getOnlyProducts === null)
+            throw new Error("The parameter 'getOnlyProducts' cannot be null.");
+        else if (getOnlyProducts !== undefined)
+            url_ += "GetOnlyProducts=" + encodeURIComponent("" + getOnlyProducts) + "&";
+        if (presencesType !== undefined && presencesType !== null)
+            url_ += "PresencesType=" + encodeURIComponent("" + presencesType) + "&";
+        if (prsenceIntegerId !== undefined && prsenceIntegerId !== null)
+            url_ += "PrsenceIntegerId=" + encodeURIComponent("" + prsenceIntegerId) + "&";
+        if (prsenceGuidId !== undefined && prsenceGuidId !== null)
+            url_ += "PrsenceGuidId=" + encodeURIComponent("" + prsenceGuidId) + "&";
         if (pageNumber === null)
             throw new Error("The parameter 'pageNumber' cannot be null.");
         else if (pageNumber !== undefined)
@@ -6871,6 +6881,17 @@ export interface ITableResponseModelOfBasicServiceCategoryDto {
     totalRowCount?: number;
 }
 
+export enum PresencesType {
+    Area = 0,
+    Block = 1,
+    Brand = 2,
+    Company = 3,
+    Site = 4,
+    Unit = 5,
+    Zone = 6,
+    PresenceGroup = 7,
+}
+
 export class ApplicationResponseOfServiceCategoryDto implements IApplicationResponseOfServiceCategoryDto {
     isError?: boolean;
     message?: string | undefined;
@@ -7591,6 +7612,7 @@ export interface IResponsibleUserGroup extends ILightBaseEntityOfInteger {
 export class BaseEntityOfInteger extends LightBaseEntityOfInteger implements IBaseEntityOfInteger {
     isDeleted?: boolean;
     deletedDate?: Date | undefined;
+    deletionSource?: DeletionSource | undefined;
     deletedBy?: string | undefined;
     createdBy?: string | undefined;
     modifiedBy?: string | undefined;
@@ -7607,6 +7629,7 @@ export class BaseEntityOfInteger extends LightBaseEntityOfInteger implements IBa
         if (_data) {
             this.isDeleted = _data["isDeleted"];
             this.deletedDate = _data["deletedDate"] ? new Date(_data["deletedDate"].toString()) : <any>undefined;
+            this.deletionSource = _data["deletionSource"];
             this.deletedBy = _data["deletedBy"];
             this.createdBy = _data["createdBy"];
             this.modifiedBy = _data["modifiedBy"];
@@ -7627,6 +7650,7 @@ export class BaseEntityOfInteger extends LightBaseEntityOfInteger implements IBa
         data = typeof data === 'object' ? data : {};
         data["isDeleted"] = this.isDeleted;
         data["deletedDate"] = this.deletedDate ? this.deletedDate.toISOString() : <any>undefined;
+        data["deletionSource"] = this.deletionSource;
         data["deletedBy"] = this.deletedBy;
         data["createdBy"] = this.createdBy;
         data["modifiedBy"] = this.modifiedBy;
@@ -7641,6 +7665,7 @@ export class BaseEntityOfInteger extends LightBaseEntityOfInteger implements IBa
 export interface IBaseEntityOfInteger extends ILightBaseEntityOfInteger {
     isDeleted?: boolean;
     deletedDate?: Date | undefined;
+    deletionSource?: DeletionSource | undefined;
     deletedBy?: string | undefined;
     createdBy?: string | undefined;
     modifiedBy?: string | undefined;
@@ -7733,6 +7758,12 @@ export interface IUserGroupPersonnel extends ILightBaseEntityOfInteger {
     personnelId?: number;
     userGroupId?: number;
     userGroup?: UserGroup | undefined;
+}
+
+export enum DeletionSource {
+    DeletedByUser = 0,
+    DeletedByEdit = 1,
+    DeletedBySystemAdmin = 2,
 }
 
 export class ServiceCategory extends BaseEntityOfInteger implements IServiceCategory {
@@ -9166,7 +9197,7 @@ export interface IForm extends IBaseEntityOfInteger {
     documentTemplates?: DocumentTemplateForm[] | undefined;
 }
 
-export class Question extends LightBaseEntityOfInteger implements IQuestion {
+export class Question extends BaseEntityOfInteger implements IQuestion {
     name?: string | undefined;
     questionType?: QuestionType;
     answersCount?: number | undefined;
@@ -9224,7 +9255,7 @@ export class Question extends LightBaseEntityOfInteger implements IQuestion {
     }
 }
 
-export interface IQuestion extends ILightBaseEntityOfInteger {
+export interface IQuestion extends IBaseEntityOfInteger {
     name?: string | undefined;
     questionType?: QuestionType;
     answersCount?: number | undefined;
@@ -9243,20 +9274,24 @@ export enum QuestionType {
     TextAnswer = 4,
 }
 
-export class DateQuestionOptions extends LightBaseEntityOfInteger implements IDateQuestionOptions {
+export class DateQuestionOptions implements IDateQuestionOptions {
     isMultiDate?: boolean;
-    questionId?: number;
+    id?: number;
     question?: Question | undefined;
 
     constructor(data?: IDateQuestionOptions) {
-        super(data);
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
 
     init(_data?: any) {
-        super.init(_data);
         if (_data) {
             this.isMultiDate = _data["isMultiDate"];
-            this.questionId = _data["questionId"];
+            this.id = _data["id"];
             this.question = _data["question"] ? Question.fromJS(_data["question"]) : <any>undefined;
         }
     }
@@ -9271,33 +9306,36 @@ export class DateQuestionOptions extends LightBaseEntityOfInteger implements IDa
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["isMultiDate"] = this.isMultiDate;
-        data["questionId"] = this.questionId;
+        data["id"] = this.id;
         data["question"] = this.question ? this.question.toJSON() : <any>undefined;
-        super.toJSON(data);
         return data; 
     }
 }
 
-export interface IDateQuestionOptions extends ILightBaseEntityOfInteger {
+export interface IDateQuestionOptions {
     isMultiDate?: boolean;
-    questionId?: number;
+    id?: number;
     question?: Question | undefined;
 }
 
-export class FileQuestionOptions extends LightBaseEntityOfInteger implements IFileQuestionOptions {
+export class FileQuestionOptions implements IFileQuestionOptions {
     documentFileType?: DocumentFileType;
-    questionId?: number;
+    id?: number;
     question?: Question | undefined;
 
     constructor(data?: IFileQuestionOptions) {
-        super(data);
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
 
     init(_data?: any) {
-        super.init(_data);
         if (_data) {
             this.documentFileType = _data["documentFileType"];
-            this.questionId = _data["questionId"];
+            this.id = _data["id"];
             this.question = _data["question"] ? Question.fromJS(_data["question"]) : <any>undefined;
         }
     }
@@ -9312,20 +9350,19 @@ export class FileQuestionOptions extends LightBaseEntityOfInteger implements IFi
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["documentFileType"] = this.documentFileType;
-        data["questionId"] = this.questionId;
+        data["id"] = this.id;
         data["question"] = this.question ? this.question.toJSON() : <any>undefined;
-        super.toJSON(data);
         return data; 
     }
 }
 
-export interface IFileQuestionOptions extends ILightBaseEntityOfInteger {
+export interface IFileQuestionOptions {
     documentFileType?: DocumentFileType;
-    questionId?: number;
+    id?: number;
     question?: Question | undefined;
 }
 
-export class MultiChoicesOption extends LightBaseEntityOfInteger implements IMultiChoicesOption {
+export class MultiChoicesOption extends BaseEntityOfInteger implements IMultiChoicesOption {
     choice?: string | undefined;
     questionId?: number;
     question?: Question | undefined;
@@ -9360,7 +9397,7 @@ export class MultiChoicesOption extends LightBaseEntityOfInteger implements IMul
     }
 }
 
-export interface IMultiChoicesOption extends ILightBaseEntityOfInteger {
+export interface IMultiChoicesOption extends IBaseEntityOfInteger {
     choice?: string | undefined;
     questionId?: number;
     question?: Question | undefined;
@@ -12075,7 +12112,6 @@ export interface ICreateQuestionRequest {
 
 export class CreateDateQuestionOptions implements ICreateDateQuestionOptions {
     isMultiDate?: boolean;
-    questionId?: number;
 
     constructor(data?: ICreateDateQuestionOptions) {
         if (data) {
@@ -12089,7 +12125,6 @@ export class CreateDateQuestionOptions implements ICreateDateQuestionOptions {
     init(_data?: any) {
         if (_data) {
             this.isMultiDate = _data["isMultiDate"];
-            this.questionId = _data["questionId"];
         }
     }
 
@@ -12103,19 +12138,16 @@ export class CreateDateQuestionOptions implements ICreateDateQuestionOptions {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["isMultiDate"] = this.isMultiDate;
-        data["questionId"] = this.questionId;
         return data; 
     }
 }
 
 export interface ICreateDateQuestionOptions {
     isMultiDate?: boolean;
-    questionId?: number;
 }
 
 export class CreateFileQuestionOptions implements ICreateFileQuestionOptions {
     documentFileType?: DocumentFileType;
-    questionId?: number;
 
     constructor(data?: ICreateFileQuestionOptions) {
         if (data) {
@@ -12129,7 +12161,6 @@ export class CreateFileQuestionOptions implements ICreateFileQuestionOptions {
     init(_data?: any) {
         if (_data) {
             this.documentFileType = _data["documentFileType"];
-            this.questionId = _data["questionId"];
         }
     }
 
@@ -12143,19 +12174,16 @@ export class CreateFileQuestionOptions implements ICreateFileQuestionOptions {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["documentFileType"] = this.documentFileType;
-        data["questionId"] = this.questionId;
         return data; 
     }
 }
 
 export interface ICreateFileQuestionOptions {
     documentFileType?: DocumentFileType;
-    questionId?: number;
 }
 
 export class CreateMultiChoicesOption implements ICreateMultiChoicesOption {
     choice?: LanguageString | undefined;
-    questionId?: number;
 
     constructor(data?: ICreateMultiChoicesOption) {
         if (data) {
@@ -12169,7 +12197,6 @@ export class CreateMultiChoicesOption implements ICreateMultiChoicesOption {
     init(_data?: any) {
         if (_data) {
             this.choice = _data["choice"] ? LanguageString.fromJS(_data["choice"]) : <any>undefined;
-            this.questionId = _data["questionId"];
         }
     }
 
@@ -12183,14 +12210,12 @@ export class CreateMultiChoicesOption implements ICreateMultiChoicesOption {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["choice"] = this.choice ? this.choice.toJSON() : <any>undefined;
-        data["questionId"] = this.questionId;
         return data; 
     }
 }
 
 export interface ICreateMultiChoicesOption {
     choice?: LanguageString | undefined;
-    questionId?: number;
 }
 
 export class ApplicationResponseOfTableResponseModelOfBasicFormDto implements IApplicationResponseOfTableResponseModelOfBasicFormDto {
