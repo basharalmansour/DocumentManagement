@@ -30,6 +30,12 @@ using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Command
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.CreateDtos;
 using CleanArchitecture.Domain.Entities.Definitions.Roles;
+using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
+using CleanArchitecture.Application.Common.Dtos.Equipments;
+using CleanArchitecture.Application.Venders.Commands;
+using CleanArchitecture.Domain.Entities.Definitions.Venders;
+using CleanArchitecture.Application.Common.Dtos.Personnels;
+
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
 {
@@ -44,6 +50,18 @@ public class MappingProfile : Profile
         ApplyMappingsOfDocumentTemplate();
         ApplyMappingsOfPresences();
         ApplyMappingsOfRoles();
+        ApplyMappingsOfSpecialRules();
+        ApplyMappingsOfVender();
+    }
+
+    private void ApplyMappingsOfVender()
+    {
+        CreateMap<CreateVenderPersonnelCommand, VenderPersonnel>();
+    }
+
+    private void ApplyMappingsOfSpecialRules()
+    {
+        CreateMap<Equipment, EquipmentDto>();
     }
 
     private void ApplyMappingsOfRoles()
@@ -78,7 +96,6 @@ public class MappingProfile : Profile
                 ?? type.GetInterface("IMapFrom`1")!.GetMethod("Mapping");
 
             methodInfo?.Invoke(instance, new object[] { this });
-
         }
     }
     private void ApplyMappingsOfServiceCategory()

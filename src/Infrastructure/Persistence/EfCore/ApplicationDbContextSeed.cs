@@ -51,13 +51,13 @@ public static class ApplicationDbContextSeed
     }
     public static async Task SeedSpecialRulsDataAsync(ApplicationDbContext context)
     {
-        if (!context.SpecialRules.Any())
+        if (!context.Equipments.Any())
         {
-            context.SpecialRules.Add(new SpecialRule
+            context.Equipments.Add(new Equipment
             {
                 Name = "FireWorks"
             });
-            context.SpecialRules.Add(new SpecialRule
+            context.Equipments.Add(new Equipment
             {
                 Name = "SoundWorks"
             });
