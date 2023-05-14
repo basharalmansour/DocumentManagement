@@ -1,8 +1,7 @@
-﻿using AutoWrapper.Wrappers;
+﻿using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
-using CleanArchitecture.Application.Personnels.Queries;
 using CleanArchitecture.Application.Personnels.Queries;
 using CleanArchitecture.Application.ServiceCategories.Commands;
 using CleanArchitecture.Application.ServiceCategories.Queries;
@@ -40,7 +39,7 @@ public class ServiceCategoryController : ApiControllerBase
             return new ApplicationResponse<TableResponseModel<BasicServiceCategoryDto>>(e);
         }
     }
-    [HttpGet("ViewServiceCategoryById")]
+    [HttpGet("GetServiceCategoryById")]
     public async Task<ApplicationResponse<ServiceCategoryDto>> GetServiceCategoryById([FromQuery] GetServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         try
@@ -111,5 +110,55 @@ public class ServiceCategoryController : ApiControllerBase
             return new ApplicationResponse<TableResponseModel<Role>>(e);
         }
     }
-
+    public async Task<ApplicationResponse<OrderTimesDto>> GetOrderTimesQuery([FromQuery] GetOrderTimesQuery request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse<OrderTimesDto>(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse<OrderTimesDto>(e);
+        }
+    }
+    [HttpGet("GetServiceCategoryDocuments")]
+    public async Task<ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>> GetServiceCategoryDocuments([FromQuery] GetServiceCategoryDocumentsQuery request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(e);
+        }
+    }
+    [HttpGet("GetServiceCategoryPersonnelDocuments")]
+    public async Task<ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>> GetServiceCategoryPersonnelDocuments([FromQuery] GetServiceCategoryPersonnelDocumentsQuery request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse<TableResponseModel<BasicDocumentTemplateDto>>(e);
+        }
+    }
+    [HttpGet("GetMaxPersonnelCount")]
+    public async Task<ApplicationResponse<int>> GetMaxPersonnelCount([FromQuery] GetMaxPersonnelCountQuery request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await Sender.Send(request, cancellationToken);
+            return new ApplicationResponse<int>(result);
+        }
+        catch (Exception e)
+        {
+            return new ApplicationResponse<int>(e);
+        }
+    }
 }
