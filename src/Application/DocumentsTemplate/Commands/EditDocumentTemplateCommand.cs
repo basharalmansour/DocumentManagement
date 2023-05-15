@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
-using CleanArchitecture.Application.Common.Helpers;
+﻿using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.Forms.Commands;
 using CleanArchitecture.Domain.Entities.Documents;
-using CleanArchitecture.Domain.Enums;
+using CleanArchitecture.Domain.Entities.Forms;
 using MassTransit;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver.Core.Authentication;
 
 namespace CleanArchitecture.Application.DocumentsTemplate.Commands;
 public class EditDocumentTemplateCommand : CreateDocumentTemplateCommand, IRequest<int>
@@ -35,8 +27,12 @@ public class EditDocumentTemplateCommandHandler : BaseCommandHandler, IRequestHa
             .FirstOrDefault(x => x.Id == request.Id & x.IsDeleted == false);
         if (documentTemplate == null)
             throw new Exception ("Document Template was NOT found");
-        _mapper.Map(request, documentTemplate);
+
+        documentTemplate.DeleteByEdit();
+        var newDocumentTemplate = _mapper.Map<DocumentTemplate>((CreateDocumentTemplateCommand)request);
+        newDocumentTemplate.UniqueCode = documentTemplate.UniqueCode;
+        _applicationDbContext.DocumentTemplates.Add(newDocumentTemplate);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        return documentTemplate.Id;
+        return newDocumentTemplate.Id;
     }
 }

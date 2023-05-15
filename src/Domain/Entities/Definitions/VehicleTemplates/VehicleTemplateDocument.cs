@@ -11,10 +11,10 @@ using CleanArchitecture.Domain.Entities.Documents;
 namespace CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
 public class VehicleTemplateDocument : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("DocumentTemplate")]
+    [ForeignKey(nameof(DocumentTemplate))]
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
-    [ForeignKey("VehicleTemplate")]
+    [ForeignKey(nameof(VehicleTemplate))]
     public int VehicleTemplateId { get; set; }
     public VehicleTemplate VehicleTemplate  { get; set; }
 }

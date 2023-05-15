@@ -11,7 +11,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 public class ServiceCategoryCompany : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("ServiceCategory")]
+    [ForeignKey(nameof(ServiceCategory))]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; }
     public int CompanyId { get; set; }

@@ -22,13 +22,14 @@ public class Question : BaseEntity<int>, IEntity<int>//
     public DateQuestionOptions DateQuestionOptions { get; set; }
     public FileQuestionOptions FileQuestionOptions { get; set; }
     public List<MultiChoicesOption> MultiChoicesOptions { get; set; }
-    [ForeignKey("Form")]
+    [ForeignKey(nameof(Form))]
     public int FormId { get; set; }
     public Form Form { get; set; }
 
     public override void DeleteByEdit()
     {
-        MultiChoicesOptions.ForEach(x => x.DeleteByEdit());
+        if (MultiChoicesOptions != null)
+            MultiChoicesOptions.ForEach(x => x.DeleteByEdit());
         base.DeleteByEdit();
     }
 }

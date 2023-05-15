@@ -12,7 +12,7 @@ namespace CleanArchitecture.Domain.Entities.UserGroups;
 public class UserGroupPersonnel : LightBaseEntity<int>, IEntity<int>
 {
     public int PersonnelId { get; set; }
-    [ForeignKey("UserGroup")] 
+    [ForeignKey(nameof(UserGroup))] 
     public int UserGroupId { get; set; }  
     public UserGroup UserGroup { get; set; } 
 } 

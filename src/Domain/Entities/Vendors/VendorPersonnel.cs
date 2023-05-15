@@ -12,7 +12,7 @@ public class VendorPersonnel : BaseEntity<int>, IEntity<int>
     public string IdentityNo { get; set; }
     public string Email { get; set; }
 
-    [ForeignKey("Vendor")]
+    [ForeignKey(nameof(Vendor))]
     public int VenderId { get; set; }
     public Vendor Vendor { get; set; }
     

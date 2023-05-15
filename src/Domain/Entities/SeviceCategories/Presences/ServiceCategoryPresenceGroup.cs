@@ -7,10 +7,10 @@ namespace CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 
 public class ServiceCategoryPresenceGroup : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("ServiceCategory")]
+    [ForeignKey(nameof(ServiceCategory))]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; }
-    [ForeignKey("PresenceGroup")]
+    [ForeignKey(nameof(PresenceGroup))]
     public int PresenceGroupId { get; set; }
     public PresenceGroup PresenceGroup { get; set; }
 }

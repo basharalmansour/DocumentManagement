@@ -15,7 +15,7 @@ public class DocumentTemplateForm : LightBaseEntity<int>, IEntity<int>//
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
 
-    [ForeignKey("Form")]
+    [ForeignKey(nameof(Form))]
     public int FormId { get; set; }
     public Form Form { get; set; }
 }

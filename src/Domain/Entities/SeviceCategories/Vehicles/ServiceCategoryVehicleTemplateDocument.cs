@@ -13,11 +13,11 @@ using CleanArchitecture.Domain.Enums;
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 public class ServiceCategoryVehicleTemplateDocument : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("VehicleTemplateCategory")]
-    public int VehicleTemplateCategoryId { get; set; }
+    [ForeignKey(nameof(ServiceCategoryVehicleTemplate))]
+    public int ServiceCategoryVehicleTemplateId { get; set; }
     public ServiceCategoryVehicleTemplate ServiceCategoryVehicleTemplate { get; set; }
 
-    [ForeignKey ("DocumentTemplate")]
+    [ForeignKey (nameof(DocumentTemplate))]
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
     public bool IsRequired { get; set; }

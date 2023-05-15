@@ -11,7 +11,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 namespace CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 public class PresenceGroupCompany : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("PresenceGroup")]
+    [ForeignKey(nameof(PresenceGroup))]
     public int PresenceGroupId { get; set; }
     public PresenceGroup PresenceGroup { get; set; }
     public int CompanyId { get; set; }

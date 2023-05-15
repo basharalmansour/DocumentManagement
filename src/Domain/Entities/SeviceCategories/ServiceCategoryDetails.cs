@@ -15,7 +15,7 @@ namespace CleanArchitecture.Domain.Entities.SeviceCategories;
 public class ServiceCategoryDetails
 {
     [Key]
-    [ForeignKey("ServiceCategory")]
+    [ForeignKey(nameof(ServiceCategory))]
     public int Id { get; set; }
     public ServiceCategory ServiceCategory { get; set; }
     public int MaxServiceDuration { get; set; }
