@@ -12,7 +12,7 @@ namespace CleanArchitecture.Domain.Entities.Forms;
 public class MultiChoicesOption : BaseEntity<int>, IEntity<int>//
 {
     public string Choice { get; set; } 
-    [ForeignKey("Question")]
+    [ForeignKey(nameof(Question))]
     public int QuestionId { get; set; }
     public Question Question { get; set; }
 } 

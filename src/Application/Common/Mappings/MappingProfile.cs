@@ -117,8 +117,7 @@ public class MappingProfile : Profile
             .ForMember(des => des.ServiceCategoryZones, opt => opt.MapFrom(src => src.ServiceCategoryZones.Select(x => new ServiceCategoryZone { ZoneId = x })))
             .ForMember(des => des.ServiceCategoryPresenceGroups, opt => opt.MapFrom(src => src.ServiceCategoryPresenceGroups.Select(x => new ServiceCategoryPresenceGroup { PresenceGroupId = x })));
 
-        CreateMap<EditServiceCategoryCommand, ServiceCategory>();
-
+        
         CreateMap<CreateCategoryRoleDto, ServiceCategoryRole>()
             .ForMember(des => des.ResponsibleDepartments, opt => opt.MapFrom(src => src.ResponsibleDepartments.Select(x => new ResponsibleDepartment { DepartmentId = x })))
             .ForMember(des => des.ResponsiblePersonnels, opt => opt.MapFrom(src => src.ResponsiblePersonnels.Select(x => new ResponsiblePersonnel { PersonnelId = x })))
@@ -214,9 +213,6 @@ public class MappingProfile : Profile
         CreateMap<DocumentTemplate, BasicDocumentTemplateDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
         CreateMap<CreateDocumentTemplateCommand, DocumentTemplate>()
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
-            .ForMember(dest => dest.Forms, opt => opt.MapFrom(src => src.Forms.Select(j => new DocumentTemplateForm() { FormId = j }).ToList()));
-        CreateMap<EditDocumentTemplateCommand, DocumentTemplate>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
             .ForMember(dest => dest.Forms, opt => opt.MapFrom(src => src.Forms.Select(j => new DocumentTemplateForm() { FormId = j }).ToList()));
         CreateMap<DocumentFileType, DocumentTemplateFileType>()

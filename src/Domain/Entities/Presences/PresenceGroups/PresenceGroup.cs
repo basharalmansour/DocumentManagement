@@ -10,7 +10,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 namespace CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 public class PresenceGroup : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
-    [StringLength(StringLengths.MediumString)]
+    [StringLength(StringLengths.VeryLongString)]
     public string Name { get; set; }
     public List<PresenceGroupArea> PresenceGroupAreas { get; set; }
     public List<PresenceGroupBlock> PresenceGroupBlocks { get; set; }

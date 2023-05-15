@@ -15,7 +15,7 @@ public class FileQuestionOptions : IEntity<int>//
     public DocumentFileType DocumentFileType { get; set; }
 
     [Key]
-    [ForeignKey("Question")]
+    [ForeignKey(nameof(Question))]
     public int Id { get; set; }
     public Question Question { get; set; }
 }

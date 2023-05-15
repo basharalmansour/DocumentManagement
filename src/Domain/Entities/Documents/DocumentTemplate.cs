@@ -11,14 +11,15 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 namespace CleanArchitecture.Domain.Entities.Documents;
 public class DocumentTemplate : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>//
 {
-    [StringLength(StringLengths.MediumString)]
+    [StringLength(StringLengths.VeryLongString)]
     public string Name { get; set; }
     public bool HasValidationDate { get; set; }
     public List<DocumentTemplateFileType> DocumentTemplateFileTypes { get; set; }
 
-    [ForeignKey("DocumentTemplateType")]
+    [ForeignKey(nameof(DocumentTemplateType))]
     public int DocumentTemplateTypeId { get; set; }
     public DocumentTemplateType DocumentTemplateType { get; set; }
 
     public List<DocumentTemplateForm> Forms { get; set; }
+
 }

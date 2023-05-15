@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using CleanArchitecture.Application.Common.Dtos.UserGroup;
-using CleanArchitecture.Application.Common.Helpers;
+﻿using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.Forms.Commands;
+using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Domain.Entities.UserGroups;
 using MassTransit;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.UsersGroup.Commands;
 public class EditUserGroupCommand :CreateUserGroupCommand , IRequest<int>
@@ -30,16 +24,12 @@ public class EditUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<E
         var userGroup = _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.Id);
         if (userGroup == null)
             throw new Exception("UserGroup was NOT found");
-        var newPresonnels = request.PersonnelIds.ToList();
+        userGroup.DeleteByEdit();
+        var newUserGroup = _mapper.Map<UserGroup>((CreateUserGroupCommand)request);
+        newUserGroup.UniqueCode = userGroup.UniqueCode;
+        _applicationDbContext.UserGroups.Add(newUserGroup);
 
-        foreach (var id in userGroup.Personnels.Select(x => x.PersonnelId))
-            if (newPresonnels.Any(x => x == id) == false)
-            {
-                var deletedPersonnelUserGroup = _applicationDbContext.UserGroupPersonnels.FirstOrDefault(x => x.PersonnelId == id);
-                _applicationDbContext.UserGroupPersonnels.Remove(deletedPersonnelUserGroup);
-            }
-        _mapper.Map(userGroup , request);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        return userGroup.Id;
+        return newUserGroup.Id;
     }
 }

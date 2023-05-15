@@ -18,7 +18,8 @@ public class Form : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>//
 
     public override void DeleteByEdit()
     {
-        Questions.ForEach(x => x.DeleteByEdit());
+        if(Questions!= null)
+            Questions.ForEach(x => x.DeleteByEdit());
         base.DeleteByEdit();
     }
 }

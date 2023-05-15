@@ -12,7 +12,7 @@ using CleanArchitecture.Domain.Enums;
 namespace CleanArchitecture.Domain.Entities.Documents;
 public class DocumentTemplateFileType : LightBaseEntity<int>, IEntity<int>//
 {
-    [ForeignKey("DocumentTemplate")]
+    [ForeignKey(nameof(DocumentTemplate))]
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
     public DocumentFileType FileType { get; set; } 

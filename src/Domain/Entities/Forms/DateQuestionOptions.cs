@@ -14,7 +14,7 @@ public class DateQuestionOptions : IEntity<int>//
     public bool IsMultiDate { get; set; }
 
     [Key]
-    [ForeignKey("Question")]
+    [ForeignKey(nameof(Question))]
     public int Id { get; set; }
     public Question Question { get; set; }
 }

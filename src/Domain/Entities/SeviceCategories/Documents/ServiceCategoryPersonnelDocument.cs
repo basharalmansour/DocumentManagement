@@ -12,10 +12,10 @@ using CleanArchitecture.Domain.Entities.Documents;
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 public  class ServiceCategoryPersonnelDocument : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("ServiceCategory")]
+    [ForeignKey(nameof(ServiceCategory))]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; }
-    [ForeignKey("DocumentTemplate")] 
+    [ForeignKey(nameof(DocumentTemplate))] 
     public int DocumentTemplateId { get; set; } 
     public DocumentTemplate DocumentTemplate { get; set; }
     public bool IsRequired { get; set; }

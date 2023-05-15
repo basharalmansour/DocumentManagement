@@ -15,7 +15,7 @@ public class ServiceCategoryRole : LightBaseEntity<int>, IEntity<int>
     public List<ResponsibleDepartment> ResponsibleDepartments { get; set; }
     public List<ResponsiblePersonnel> ResponsiblePersonnels { get; set; }
     public List<ResponsibleUserGroup> ResponsibleUserGroups { get; set; }
-    [ForeignKey("ServiceCategory")]
+    [ForeignKey(nameof(ServiceCategory))]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; }
 }

@@ -12,11 +12,11 @@ using CleanArchitecture.Domain.Entities.VehicleTemplates;
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 public class ServiceCategoryVehicleTemplate : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("VehicleTemplate")]
+    [ForeignKey(nameof(VehicleTemplate))]
     public int VehicleTemplateId { get; set; }
     public VehicleTemplate VehicleTemplate { get; set; }
 
-    [ForeignKey("ServiceCategory")]
+    [ForeignKey(nameof(ServiceCategory))]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; } 
     public List<ServiceCategoryVehicleTemplateDocument> VehicleTemplateDocuments { get; set; }

@@ -7,6 +7,9 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.Forms.Commands;
+using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
+using CleanArchitecture.Domain.Entities.Forms;
 using MassTransit;
 using MediatR;
 
@@ -25,11 +28,15 @@ public class EditVehicleTemplateCommandHandler : BaseCommandHandler, IRequestHan
 
     public async Task<int> Handle(EditVehicleTemplateCommand request, CancellationToken cancellationToken)
     {
-        var editedVehicle = _applicationDbContext.VehicleTemplates.FirstOrDefault(x => x.Id == request.Id);
-        if (editedVehicle == null)
-            throw new Exception("VehicleTemplate was NOT found");
-        _mapper.Map(request, editedVehicle);
+        var vehicleTemplate = _applicationDbContext.VehicleTemplates.FirstOrDefault(x => x.Id == request.Id);
+        if (vehicleTemplate == null)
+            throw new Exception("Vehicle Template was NOT found");
+        vehicleTemplate.DeleteByEdit();
+        var newVehicleTemplate = _mapper.Map<VehicleTemplate>((CreateVehicleTemplateCommand)request);
+        newVehicleTemplate.UniqueCode = vehicleTemplate.UniqueCode;
+        _applicationDbContext.VehicleTemplates.Add(newVehicleTemplate);
+
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        return editedVehicle.Id; 
+        return newVehicleTemplate.Id;
     }
 }

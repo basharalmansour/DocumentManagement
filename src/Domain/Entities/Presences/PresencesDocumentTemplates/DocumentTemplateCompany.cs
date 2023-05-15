@@ -12,7 +12,7 @@ using CleanArchitecture.Domain.Entities.Documents;
 namespace CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 public class DocumentTemplateCompany : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("DocumentTemplate")]
+    [ForeignKey(nameof(DocumentTemplate))]
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
     public int CompanyId { get; set; }

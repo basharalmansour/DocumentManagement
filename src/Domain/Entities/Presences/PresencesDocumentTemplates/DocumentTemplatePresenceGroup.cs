@@ -13,11 +13,11 @@ using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 namespace CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 public class DocumentTemplatePresenceGroup : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("DocumentTemplate")]
+    [ForeignKey(nameof(DocumentTemplate))]
     public int DocumentTemplateId { get; set; }
     public DocumentTemplate DocumentTemplate { get; set; }
 
-    [ForeignKey("PresenceGroup")]
+    [ForeignKey(nameof(PresenceGroup))]
     public int PresenceGroupId { get; set; }
     public PresenceGroup PresenceGroup { get; set; }
 }

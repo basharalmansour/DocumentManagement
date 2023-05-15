@@ -10,7 +10,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 namespace CleanArchitecture.Domain.Entities.UserGroups;
 public class UserGroup : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
-    [StringLength(StringLengths.MediumString)]
+    [StringLength(StringLengths.VeryLongString)]
     public string Name { get; set; }
     public List<UserGroupPersonnel> Personnels { get; set; } 
 }

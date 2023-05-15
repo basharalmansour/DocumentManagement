@@ -11,7 +11,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
 public class ResponsibleDepartment : LightBaseEntity<int>, IEntity<int>
 {
-    [ForeignKey("ServiceCategoryRole")]
+    [ForeignKey(nameof(ServiceCategoryRole))]
     public int ServiceCategoryRoleId { get; set; }
     public ServiceCategoryRole ServiceCategoryRole { get; set; }
     public int DepartmentId { get; set; } 

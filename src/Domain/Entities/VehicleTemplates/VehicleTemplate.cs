@@ -10,7 +10,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 namespace CleanArchitecture.Domain.Entities.VehicleTemplates;
 public class VehicleTemplate : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
-    [StringLength(StringLengths.MediumString)]
+    [StringLength(StringLengths.VeryLongString)]
     public string Name { get; set; }
     public bool IsNeedDriver { get; set; }
     public List<VehicleTemplateDocument> VehicleTemplateDocuments { get; set; }
