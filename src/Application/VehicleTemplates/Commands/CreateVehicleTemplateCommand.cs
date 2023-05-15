@@ -9,7 +9,7 @@ using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.VehicleTemplates.Queries;
-using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
+using CleanArchitecture.Domain.Entities.VehicleTemplates;
 using MassTransit;
 using MediatR;
 

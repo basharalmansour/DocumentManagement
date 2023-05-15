@@ -7,17 +7,17 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
-using CleanArchitecture.Domain.Entities.VehicleTemplates;
+using CleanArchitecture.Domain.Entities.Vendors;
 
-namespace CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
-public class ServiceCategoryVehicleTemplate : LightBaseEntity<int>, IEntity<int>
+namespace CleanArchitecture.Domain.Entities.VehicleTemplates;
+public class Vehicle : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
+    [StringLength(StringLengths.VeryLongString)]
+    public string PlateNumber { get; set; }
+    [ForeignKey("Vendor")]
+    public int VendorId { get; set; }
+    public Vendor Vendor { get; set; }
     [ForeignKey("VehicleTemplate")]
     public int VehicleTemplateId { get; set; }
     public VehicleTemplate VehicleTemplate { get; set; }
-
-    [ForeignKey("ServiceCategory")]
-    public int ServiceCategoryId { get; set; }
-    public ServiceCategory ServiceCategory { get; set; } 
-    public List<ServiceCategoryVehicleTemplateDocument> VehicleTemplateDocuments { get; set; }
 }

@@ -12,7 +12,6 @@ using CleanArchitecture.Application.Common.Dtos.PresenceGroups;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 using CleanArchitecture.Application.Common.Dtos.VehicleTemplates;
 using CleanArchitecture.Application.VehicleTemplates.Commands;
-using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.UsersGroup.Commands;
 using CleanArchitecture.Domain.Entities.UserGroups;
@@ -30,11 +29,7 @@ using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Command
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.CreateDtos;
 using CleanArchitecture.Domain.Entities.Definitions.Roles;
-using CleanArchitecture.Application.Common.Dtos.Equipments;
-using CleanArchitecture.Domain.Entities.Definitions.Equipments;
-using CleanArchitecture.Domain.Entities.Venders;
-using CleanArchitecture.Application.Common.Dtos.Vendors;
-using CleanArchitecture.Domain.Entities.Vendors;
+using CleanArchitecture.Domain.Entities.VehicleTemplates;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -50,19 +45,6 @@ public class MappingProfile : Profile
         ApplyMappingsOfDocumentTemplate();
         ApplyMappingsOfPresences();
         ApplyMappingsOfRoles();
-        ApplyMappingsOfEquipments();
-        ApplyMappingsOfVender();
-    }
-
-    private void ApplyMappingsOfVender()
-    {
-        CreateMap<Vendor, BasicVendorDto>();
-    }
-
-    private void ApplyMappingsOfEquipments()
-    {
-        CreateMap<Equipment, EquipmentDto>()
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
     }
 
     private void ApplyMappingsOfRoles()
@@ -97,6 +79,7 @@ public class MappingProfile : Profile
                 ?? type.GetInterface("IMapFrom`1")!.GetMethod("Mapping");
 
             methodInfo?.Invoke(instance, new object[] { this });
+
         }
     }
     private void ApplyMappingsOfServiceCategory()
@@ -220,9 +203,7 @@ public class MappingProfile : Profile
         CreateMap<CreateMultiChoicesOption, MultiChoicesOption>()
             .ForMember(dest => dest.Choice, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Choice)));
 
-        //CreateMap<EditFormCommand, Form>()
-        //    .ForMember(dest=> dest.Id, opt=>opt.Ignore())
-        //    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)));
+        CreateMap<EditFormCommand, Form>();
     }
     private void ApplyMappingsOfDocumentTemplate()
     {

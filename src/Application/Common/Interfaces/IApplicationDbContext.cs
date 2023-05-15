@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Domain.Entities.Documents;
+﻿using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
+using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
@@ -10,17 +11,14 @@ using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Entities.UserGroups;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
 using CleanArchitecture.Domain.Entities.Definitions.Roles;
-using CleanArchitecture.Domain.Entities.Definitions.Equipments;
-using CleanArchitecture.Domain.Entities.Venders;
-using CleanArchitecture.Domain.Entities.Vendors;
+using CleanArchitecture.Domain.Entities.VehicleTemplates;
 
 namespace CleanArchitecture.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    public DbSet<Equipment> Equipments { get; set; }
+    public DbSet<SpecialRule> SpecialRules { get; set; }
     public DbSet<VehicleTemplate> VehicleTemplates { get; set; }
     public DbSet<DocumentTemplate> DocumentTemplates { get; set; }
     public DbSet<DocumentTemplateFileType> DocumentTemplateFileTypes { get; set; }
@@ -69,8 +67,6 @@ public interface IApplicationDbContext
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
     public DbSet<PersonnelRole> PersonnelRoles { get; set; }
-    public DbSet<Vendor> Vendors { get; set; }
-    public DbSet<VendorPersonnel> VenderPersonnels { get; set; }
     public DatabaseFacade Database { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     int SaveChanges();

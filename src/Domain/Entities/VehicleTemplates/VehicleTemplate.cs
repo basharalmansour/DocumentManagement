@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
-namespace CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
+namespace CleanArchitecture.Domain.Entities.VehicleTemplates;
 public class VehicleTemplate : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
     [StringLength(StringLengths.MediumString)]

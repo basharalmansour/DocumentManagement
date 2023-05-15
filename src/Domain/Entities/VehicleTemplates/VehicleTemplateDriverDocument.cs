@@ -8,7 +8,7 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Documents;
 
-namespace CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
+namespace CleanArchitecture.Domain.Entities.VehicleTemplates;
 public class VehicleTemplateDriverDocument : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey("DocumentTemplate")]
