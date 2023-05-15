@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Application.Common.Dtos.ServiceCategories;
 
-public class OrderTimesDto
+public class OrderAvailableTimesDto
 {
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }

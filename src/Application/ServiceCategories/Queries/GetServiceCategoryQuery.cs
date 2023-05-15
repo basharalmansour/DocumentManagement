@@ -22,7 +22,7 @@ public class GetServiceCategoryQuery : TableRequestModel, IRequest<TableResponse
     public string SearchText { get; set; }
     public bool GetOnlyProducts { get; set; }
     public PresencesType? PresencesType { get; set; }
-    public int? PrsenceIntegerId { get; set;}
+    public int? PresenceIntegerId { get; set;}
     public Guid? PrsenceGuidId { get; set;}
 }
 public class GetServiceCategoryHandler : BaseQueryHandler, IRequestHandler<GetServiceCategoryQuery, TableResponseModel<BasicServiceCategoryDto>>
@@ -45,13 +45,13 @@ public class GetServiceCategoryHandler : BaseQueryHandler, IRequestHandler<GetSe
             .Include(x => x.SubServiceCategories.Where(x => !x.IsDeleted))
             .Where(x=> true);
         
-        if (request.PresencesType != null && (request.PrsenceIntegerId != null || request.PrsenceGuidId != null))
+        if (request.PresencesType != null && (request.PresenceIntegerId != null || request.PrsenceGuidId != null))
         {
             switch (request.PresencesType)
             {
                 case PresencesType.Area:
                     categoriesInstall = categoriesInstall.Include(x => x.ServiceCategoryDetails.ServiceCategoryAreas);
-                    predicate = predicate.And(x => x.ServiceCategoryDetails.ServiceCategoryAreas.Any(x => x.AreaId == request.PrsenceIntegerId));
+                    predicate = predicate.And(x => x.ServiceCategoryDetails.ServiceCategoryAreas.Any(x => x.AreaId == request.PresenceIntegerId));
                     break;
 
                 case PresencesType.Block:
@@ -61,12 +61,12 @@ public class GetServiceCategoryHandler : BaseQueryHandler, IRequestHandler<GetSe
 
                 case PresencesType.Brand:
                     categoriesInstall = categoriesInstall.Include(x => x.ServiceCategoryDetails.ServiceCategoryBrands);
-                    predicate = predicate.And(x => x.ServiceCategoryDetails.ServiceCategoryBrands.Any(x => x.BrandId == request.PrsenceIntegerId));
+                    predicate = predicate.And(x => x.ServiceCategoryDetails.ServiceCategoryBrands.Any(x => x.BrandId == request.PresenceIntegerId));
                     break;
 
                 case PresencesType.Company:
                     categoriesInstall = categoriesInstall.Include(x => x.ServiceCategoryDetails.ServiceCategoryCompanies);
-                    predicate = predicate.And(x => x.ServiceCategoryDetails.ServiceCategoryCompanies.Any(x => x.CompanyId == request.PrsenceIntegerId));
+                    predicate = predicate.And(x => x.ServiceCategoryDetails.ServiceCategoryCompanies.Any(x => x.CompanyId == request.PresenceIntegerId));
                     break;
 
                 case PresencesType.Site:
@@ -76,7 +76,7 @@ public class GetServiceCategoryHandler : BaseQueryHandler, IRequestHandler<GetSe
 
                 case PresencesType.Unit:
                     categoriesInstall = categoriesInstall.Include(x => x.ServiceCategoryDetails.ServiceCategoryUnits);
-                    predicate = predicate.And(x => x.ServiceCategoryDetails.ServiceCategoryUnits.Any(x => x.UnitId == request.PrsenceIntegerId));
+                    predicate = predicate.And(x => x.ServiceCategoryDetails.ServiceCategoryUnits.Any(x => x.UnitId == request.PresenceIntegerId));
                     break;
 
                 case PresencesType.Zone:
@@ -86,7 +86,7 @@ public class GetServiceCategoryHandler : BaseQueryHandler, IRequestHandler<GetSe
 
                 case PresencesType.PresenceGroup:
                     categoriesInstall = categoriesInstall.Include(x => x.ServiceCategoryDetails.ServiceCategoryPresenceGroups);
-                    predicate = predicate.And(x => x.ServiceCategoryDetails.ServiceCategoryPresenceGroups.Any(x => x.PresenceGroupId == request.PrsenceIntegerId));
+                    predicate = predicate.And(x => x.ServiceCategoryDetails.ServiceCategoryPresenceGroups.Any(x => x.PresenceGroupId == request.PresenceIntegerId));
                     break;
 
                 default: break;

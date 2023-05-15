@@ -8,12 +8,12 @@ using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 using MongoDB.Bson;
 
-namespace CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
+namespace CleanArchitecture.Domain.Entities.Definitions.Equipments;
 public class Equipment : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
-    [StringLength(StringLengths.MediumString)]
+    [StringLength(StringLengths.VeryLongString)]
     public string Name { get; set; }
     public bool IsNoise { get; set; }
     public bool IsHeat { get; set; }
-    public bool IsTemp { get; set; }
+    public bool IsHidden { get; set; }
 }

@@ -30,11 +30,11 @@ using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Command
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.CreateDtos;
 using CleanArchitecture.Domain.Entities.Definitions.Roles;
-using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
 using CleanArchitecture.Application.Common.Dtos.Equipments;
-using CleanArchitecture.Application.Venders.Commands;
-using CleanArchitecture.Domain.Entities.Definitions.Venders;
-using CleanArchitecture.Application.Common.Dtos.Personnels;
+using CleanArchitecture.Domain.Entities.Definitions.Equipments;
+using CleanArchitecture.Domain.Entities.Venders;
+using CleanArchitecture.Application.Common.Dtos.Vendors;
+using CleanArchitecture.Domain.Entities.Vendors;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -50,18 +50,19 @@ public class MappingProfile : Profile
         ApplyMappingsOfDocumentTemplate();
         ApplyMappingsOfPresences();
         ApplyMappingsOfRoles();
-        ApplyMappingsOfSpecialRules();
+        ApplyMappingsOfEquipments();
         ApplyMappingsOfVender();
     }
 
     private void ApplyMappingsOfVender()
     {
-        CreateMap<CreateVenderPersonnelCommand, VenderPersonnel>();
+        CreateMap<Vendor, BasicVendorDto>();
     }
 
-    private void ApplyMappingsOfSpecialRules()
+    private void ApplyMappingsOfEquipments()
     {
-        CreateMap<Equipment, EquipmentDto>();
+        CreateMap<Equipment, EquipmentDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
     }
 
     private void ApplyMappingsOfRoles()

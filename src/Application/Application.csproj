@@ -39,6 +39,8 @@
 
     <ItemGroup>
       <Folder Include="CondoLife\Commands\" />
+      <Folder Include="Orders\Commands\" />
+      <Folder Include="Vendors\Commands\" />
     </ItemGroup>
 
     <ItemGroup>

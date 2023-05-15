@@ -7,31 +7,32 @@ using AutoMapper;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Dtos.Personnels;
 using CleanArchitecture.Application.Common.Dtos.Tables;
+using CleanArchitecture.Application.Common.Dtos.VendorPersonnels;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Application.Venders.Queries;
-public class GetVenderPersonnelsQuery : TableRequestModel, IRequest<TableResponseModel<GetPersonnelDetailsDto>>
+namespace CleanArchitecture.Application.Vendors.Queries;
+public class GetVendorPersonnelsQuery : TableRequestModel, IRequest<TableResponseModel<GetVendorPersonnelDto>>
 {
     public int VenderId { get; set; }
 }
-public class GetVenderPersonnelsHandler : BaseQueryHandler, IRequestHandler<GetVenderPersonnelsQuery, TableResponseModel<GetPersonnelDetailsDto>>
+public class GetVenderPersonnelsHandler : BaseQueryHandler, IRequestHandler<GetVendorPersonnelsQuery, TableResponseModel<GetVendorPersonnelDto>>
 {
     public GetVenderPersonnelsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
-    public async Task<TableResponseModel<GetPersonnelDetailsDto>> Handle(GetVenderPersonnelsQuery request, CancellationToken cancellationToken)
+    public async Task<TableResponseModel<GetVendorPersonnelDto>> Handle(GetVendorPersonnelsQuery request, CancellationToken cancellationToken)
     {
         var personnels = _applicationDbContext.VenderPersonnels
             .Where(x => x.VenderId == request.VenderId);
         var selectedPersonnels = await personnels
-            .Select(x => new GetPersonnelDetailsDto { PersonnelId = x.PersonnelId })
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
             .ToListAsync();
-        return new TableResponseModel<GetPersonnelDetailsDto>(selectedPersonnels, request.PageNumber, request.PageSize, personnels.Count());
+        var result = _mapper.Map<List<GetVendorPersonnelDto>>(selectedPersonnels);
+        return new TableResponseModel<GetVendorPersonnelDto>(result, request.PageNumber, request.PageSize, personnels.Count());
     }
 }

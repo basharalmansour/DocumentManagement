@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
+﻿using CleanArchitecture.Application.Common.Helpers;
+using CleanArchitecture.Domain.Entities.Definitions.Equipments;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -49,17 +50,35 @@ public static class ApplicationDbContextSeed
             await context.SaveChangesAsync();
         }
     }
-    public static async Task SeedSpecialRulsDataAsync(ApplicationDbContext context)
+    public static async Task SeedEquipmentsDataAsync(ApplicationDbContext context)
     {
         if (!context.Equipments.Any())
         {
+            var kesici = new LanguageString
+            {
+                { LanguageCode.tr, "Kesici" },
+                { LanguageCode.en, "Cutter" }
+            };
+
+            var taslama = new LanguageString
+            {
+                { LanguageCode.tr, "Taşlama" },
+                { LanguageCode.en, "Taşlama" }
+            };
+
             context.Equipments.Add(new Equipment
             {
-                Name = "FireWorks"
+                Name = LanguageJsonFormatter.SerializObject(kesici),
+                IsHeat= false,
+                IsNoise= true,
+                IsHidden= false,
             });
             context.Equipments.Add(new Equipment
             {
-                Name = "SoundWorks"
+                Name = LanguageJsonFormatter.SerializObject(taslama),
+                IsHeat= false,
+                IsNoise= true,
+                IsHidden= false,
             });
             await context.SaveChangesAsync();
         }

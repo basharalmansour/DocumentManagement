@@ -12,17 +12,17 @@ namespace CleanArchitecture.WebUI.Controllers.Equipments;
 
 public class EquipmentController : ApiControllerBase
 {
-    [HttpPost("GetEquipmentSpecialRules")]
-    public async Task<ApplicationResponse<EquipmentDto>> GetEquipmentSpecialRules([FromQuery] GetEquipmentSpecialRulesQuery request, CancellationToken cancellationToken)
+    [HttpPost("GetEquipments")]
+    public async Task<ApplicationResponse<List<EquipmentDto>>> GetEquipments([FromQuery] GetEquipmentsQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await Sender.Send(request, cancellationToken);
-            return new ApplicationResponse<EquipmentDto>(result);
+            return new ApplicationResponse<List<EquipmentDto>>(result);
         }
         catch (Exception e)
         {
-            return new ApplicationResponse<EquipmentDto>(e);
+            return new ApplicationResponse<List<EquipmentDto>>(e);
         }
     }
 }

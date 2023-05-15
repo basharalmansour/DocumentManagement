@@ -62,7 +62,7 @@ public class Program
 
                     await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
                     await ApplicationDbContextSeed.SeedDocumentTypeDataAsync(context);
-                    await ApplicationDbContextSeed.SeedSpecialRulsDataAsync(context);
+                    await ApplicationDbContextSeed.SeedEquipmentsDataAsync(context);
                     await host.RunAsync();
 
                 }
