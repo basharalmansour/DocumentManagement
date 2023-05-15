@@ -11,7 +11,6 @@ using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Documents;
 using MassTransit;
 using MediatR;
-using MessageBroker.Events.DocumentTemplates;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.DocumentsTemplate.Commands;
