@@ -10,8 +10,10 @@ using CleanArchitecture.Application.Common.Dtos.VehicleTemplates;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.VehicleTemplates.Queries;
+using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Entities.Vehicles;
 using CleanArchitecture.Domain.Entities.Vendors;
+using LinqKit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,11 +34,15 @@ public class GetVehiclesQueryHandler : BaseQueryHandler, IRequestHandler<GetVehi
 
     public async Task<TableResponseModel<VehicleDto>> Handle(GetVehiclesQuery request, CancellationToken cancellationToken)
     {
-            var vehicles = _applicationDbContext.Vehicles
-            .Where(x => x.IsDeleted == false && x.VendorId== request.VendorId && x.PlateNumber.Contains(request.SearchText));
+        var predicate = PredicateBuilder.New<Vehicle>();
+        predicate = predicate.And(x => !x.IsDeleted).And(x => x.PlateNumber.Contains(request.SearchText));
         if (request.VehicleTemplateId != null)
-            vehicles = vehicles
-            .Where(x => x.VehicleTemplateId == request.VehicleTemplateId );
+        {
+            predicate = predicate.And(x => x.VehicleTemplateId == request.VehicleTemplateId);
+        }
+
+        var vehicles = _applicationDbContext.Vehicles
+            .Where(predicate);
         var selectedVehicles = await vehicles
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)

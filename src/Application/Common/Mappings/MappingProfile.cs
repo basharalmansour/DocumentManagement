@@ -30,6 +30,8 @@ using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.CreateDtos;
 using CleanArchitecture.Domain.Entities.Definitions.Roles;
 using CleanArchitecture.Domain.Entities.VehicleTemplates;
+using CleanArchitecture.Domain.Entities.Vehicles;
+using CleanArchitecture.Application.Common.Dtos.Vehicles;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -39,12 +41,18 @@ public class MappingProfile : Profile
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         ApplyMappingsOfServiceCategory();
         ApplyMappingsOfVehicleTemplate();
+        ApplyMappingsOfVehicle();
         ApplyMappingsOfPresenceGroup();
         ApplyMappingsOfUserGroup();
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
         ApplyMappingsOfPresences();
         ApplyMappingsOfRoles();
+    }
+
+    private void ApplyMappingsOfVehicle()
+    {
+        CreateMap<Vehicle, VehicleDto>();
     }
 
     private void ApplyMappingsOfRoles()
