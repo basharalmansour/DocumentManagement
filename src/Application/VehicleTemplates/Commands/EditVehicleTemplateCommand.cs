@@ -8,8 +8,8 @@ using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Forms.Commands;
-using CleanArchitecture.Domain.Entities.Definitions.VehicleTemplates;
 using CleanArchitecture.Domain.Entities.Forms;
+using CleanArchitecture.Domain.Entities.VehicleTemplates;
 using MassTransit;
 using MediatR;
 

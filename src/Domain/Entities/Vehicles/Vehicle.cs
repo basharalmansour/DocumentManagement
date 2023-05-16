@@ -7,9 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
+using CleanArchitecture.Domain.Entities.VehicleTemplates;
 using CleanArchitecture.Domain.Entities.Vendors;
 
-namespace CleanArchitecture.Domain.Entities.VehicleTemplates;
+namespace CleanArchitecture.Domain.Entities.Vehicles;
 public class Vehicle : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
     [StringLength(StringLengths.VeryLongString)]

@@ -1,10 +1,7 @@
 ﻿using System.Reflection;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Common;
-using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Domain.Entities.Definitions;
 using CleanArchitecture.Domain.Entities.Definitions.Roles;
-using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
@@ -15,6 +12,7 @@ using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 using CleanArchitecture.Domain.Entities.UserGroups;
+using CleanArchitecture.Domain.Entities.Vehicles;
 using CleanArchitecture.Domain.Entities.VehicleTemplates;
 using CleanArchitecture.Infrastructure.Identity;
 using Duende.IdentityServer.EntityFramework.Options;
@@ -39,7 +37,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
         _currentUserService = currentUserService;
         _dateTime = dateTime;
     }
-    public DbSet<SpecialRule> SpecialRules { get; set; }
+    public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<VehicleTemplate> VehicleTemplates { get; set; }
     public DbSet<DocumentTemplate> DocumentTemplates { get; set; }
     public DbSet<DocumentTemplateFileType> DocumentTemplateFileTypes { get; set; }

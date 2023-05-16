@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.Domain.Entities.Definitions.SpecialRules;
-using CleanArchitecture.Domain.Entities.Documents;
+﻿using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
@@ -13,12 +12,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using CleanArchitecture.Domain.Entities.Definitions.Roles;
 using CleanArchitecture.Domain.Entities.VehicleTemplates;
+using CleanArchitecture.Domain.Entities.Vehicles;
 
 namespace CleanArchitecture.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    public DbSet<SpecialRule> SpecialRules { get; set; }
+    public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<VehicleTemplate> VehicleTemplates { get; set; }
     public DbSet<DocumentTemplate> DocumentTemplates { get; set; }
     public DbSet<DocumentTemplateFileType> DocumentTemplateFileTypes { get; set; }
