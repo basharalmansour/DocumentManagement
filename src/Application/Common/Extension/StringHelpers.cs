@@ -9,7 +9,6 @@ namespace CleanArchitecture.Application.Common.Extension;
 
 public static class StringHelpers
 {
-
     public static string ToSha1(this string str){
         using (SHA1 sha1Hash = SHA1.Create())
         {

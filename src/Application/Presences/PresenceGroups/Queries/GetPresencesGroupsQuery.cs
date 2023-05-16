@@ -29,7 +29,7 @@ public class GetPresencesGroupsQueryHandler : BaseQueryHandler, IRequestHandler<
     public async Task<TableResponseModel<BasicPresenceGroupDto>> Handle(GetPresencesGroupsQuery request, CancellationToken cancellationToken)
     {
         var presenceGroups =  _applicationDbContext.PresenceGroups
-             .Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText));
+             .Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase));
         var selectedPresenceGroups = await presenceGroups
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)

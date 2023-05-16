@@ -22,7 +22,7 @@ public class GetDocumentsTemplateHandler : BaseQueryHandler, IRequestHandler<Get
     public async Task<TableResponseModel<BasicDocumentTemplateDto>> Handle(GetDocumentTemplatesQuery request, CancellationToken cancellationToken)
     {
         var documents =   _applicationDbContext.DocumentTemplates
-            .Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText));
+            .Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase));
         var selectedDocument = documents
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
