@@ -32,6 +32,10 @@ using CleanArchitecture.Domain.Entities.Definitions.Roles;
 using CleanArchitecture.Domain.Entities.VehicleTemplates;
 using CleanArchitecture.Domain.Entities.Vehicles;
 using CleanArchitecture.Application.Common.Dtos.Vehicles;
+using CleanArchitecture.Application.Common.Dtos.Vendors;
+using CleanArchitecture.Domain.Entities.Vendors;
+using CleanArchitecture.Application.Common.Dtos.Equipments;
+using CleanArchitecture.Domain.Entities.Definitions.Equipments;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -47,9 +51,19 @@ public class MappingProfile : Profile
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
         ApplyMappingsOfPresences();
-        ApplyMappingsOfRoles();
+        ApplyMappingsOfRoles(); 
+        ApplyMappingsOfEquipments();
+        ApplyMappingsOfVender();
     }
-
+    private void ApplyMappingsOfVender()
+    {
+        CreateMap<Vendor, BasicVendorDto>();
+    }
+    private void ApplyMappingsOfEquipments()
+    {
+        CreateMap<Equipment, EquipmentDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
+    }
     private void ApplyMappingsOfVehicle()
     {
         CreateMap<Vehicle, VehicleDto>();
@@ -210,7 +224,6 @@ public class MappingProfile : Profile
         CreateMap<CreateMultiChoicesOption, MultiChoicesOption>()
             .ForMember(dest => dest.Choice, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Choice)));
 
-        CreateMap<EditFormCommand, Form>();
     }
     private void ApplyMappingsOfDocumentTemplate()
     {

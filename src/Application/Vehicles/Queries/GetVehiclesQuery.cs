@@ -17,7 +17,7 @@ using LinqKit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Application.Vehicles;
+namespace CleanArchitecture.Application.Vehicles.Queries;
 public class GetVehiclesQuery : TableRequestModel, IRequest<TableResponseModel<VehicleDto>>
 {
     public int VendorId { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.Definitions.Equipments;
 using CleanArchitecture.Domain.Entities.Definitions.Roles;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Entities.Forms;
@@ -14,6 +15,8 @@ using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 using CleanArchitecture.Domain.Entities.UserGroups;
 using CleanArchitecture.Domain.Entities.Vehicles;
 using CleanArchitecture.Domain.Entities.VehicleTemplates;
+using CleanArchitecture.Domain.Entities.Venders;
+using CleanArchitecture.Domain.Entities.Vendors;
 using CleanArchitecture.Infrastructure.Identity;
 using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
@@ -37,6 +40,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
         _currentUserService = currentUserService;
         _dateTime = dateTime;
     }
+    public DbSet<Equipment> Equipments { get; set; }
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<VehicleTemplate> VehicleTemplates { get; set; }
     public DbSet<DocumentTemplate> DocumentTemplates { get; set; }
@@ -86,6 +90,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<VehicleTemplateDocument> VehicleTemplateDocuments { get; set; }
     public DbSet<VehicleTemplateDriverDocument> VehicleTemplateDriverDocuments { set; get; }
     public DbSet<PersonnelRole> PersonnelRoles { get; set; }
+    public DbSet<Vendor> Vendors { get; set; }
+    public DbSet<VendorPersonnel> VenderPersonnels { get; set; }
     private void ConfigureAuditableStates()
     {
         var DateTimeNow = DateTime.Now;

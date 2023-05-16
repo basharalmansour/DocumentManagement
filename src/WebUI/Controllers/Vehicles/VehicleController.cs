@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Common.Dtos.Vehicles;
-using CleanArchitecture.Application.Vehicles;
+using CleanArchitecture.Application.Vehicles.Queries;
 using CleanArchitecture.Application.VehicleTemplates.Commands;
 using CleanArchitecture.Domain.Common;
 using Microsoft.AspNetCore.Mvc;

@@ -13,7 +13,7 @@ using CleanArchitecture.Domain.Entities.Vendors;
 namespace CleanArchitecture.Domain.Entities.Vehicles;
 public class Vehicle : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
-    [StringLength(StringLengths.VeryLongString)]
+    [StringLength(StringLengths.ShortString)]
     public string PlateNumber { get; set; }
     [ForeignKey("Vendor")]
     public int VendorId { get; set; }
