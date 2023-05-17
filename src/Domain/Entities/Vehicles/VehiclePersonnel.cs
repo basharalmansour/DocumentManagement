@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Venders;
+using CleanArchitecture.Domain.Entities.Vendors;
 
-namespace CleanArchitecture.Domain.Entities.Orders;
-public class OrderVehicleDriver : LightBaseEntity<int>, IEntity<int>
+namespace CleanArchitecture.Domain.Entities.Vehicles;
+public class VehiclePersonnel : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
-    [ForeignKey(nameof(OrderVehicle))]
-    public int OrderVehicleId { get; set; }
-    public OrderVehicle OrderVehicle { get; set; }
+    [ForeignKey(nameof(Vehicle))]
+    public int VehicleId { get; set; }
+    public Vehicle Vehicle { get; set; }
 
     [ForeignKey(nameof(VendorPersonnel))]
     public int VendorPersonnelId { get; set; }
     public VendorPersonnel VendorPersonnel { get; set; }
-    public List<OrderVehicleDriverDocument> Documents { get; set; }
 }

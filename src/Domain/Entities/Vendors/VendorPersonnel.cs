@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
+using CleanArchitecture.Domain.Entities.Vehicles;
 using CleanArchitecture.Domain.Entities.Vendors;
 
 namespace CleanArchitecture.Domain.Entities.Venders;
@@ -15,5 +16,5 @@ public class VendorPersonnel : BaseEntity<int>, IEntity<int>
     [ForeignKey(nameof(Vendor))]
     public int VenderId { get; set; }
     public Vendor Vendor { get; set; }
-    
+    public List<VehiclePersonnel> Vehicles { get; set; }
 }

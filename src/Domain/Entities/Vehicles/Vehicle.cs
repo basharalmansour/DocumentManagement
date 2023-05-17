@@ -15,10 +15,11 @@ public class Vehicle : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
     [StringLength(StringLengths.ShortString)]
     public string PlateNumber { get; set; }
-    [ForeignKey("Vendor")]
+    [ForeignKey(nameof(Vendor))]
     public int VendorId { get; set; }
     public Vendor Vendor { get; set; }
-    [ForeignKey("VehicleTemplate")]
+    [ForeignKey(nameof(VehicleTemplate))]
     public int VehicleTemplateId { get; set; }
     public VehicleTemplate VehicleTemplate { get; set; }
+    public List<VehiclePersonnel> Drivers { get; set; }
 }

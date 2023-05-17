@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
-using CleanArchitecture.Domain.Entities.Definitions.Equipments;
 using CleanArchitecture.Domain.Entities.Vehicles;
 
 namespace CleanArchitecture.Domain.Entities.Orders;
@@ -19,4 +13,6 @@ public class OrderVehicle : LightBaseEntity<int>, IEntity<int>
     [ForeignKey(nameof(Vehicle))]
     public int VehicleId { get; set; }
     public Vehicle Vehicle { get; set; }
+    public List<OrderVehicleDriver> Drivers { get;set; }
+    public List<OrderVehicleDocument> Documents { get;set; }
 }

@@ -25,7 +25,12 @@ public class Order : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; }
 
-    public int? IntPresenceId { get; set; }
+    public int? IntegerPresenceId { get; set; }
     public Guid? GuidPresenceId { get; set; }
     public PresencesType PresencesType { get; set; }
+
+    public List<OrderEquipment> Equipments { get; set; }
+    public List<OrderServiceCategoryDocument> Documents { get; set; }
+    public List<OrderPersonnel> Personnels { get; set; }
+    public List<OrderVehicle> Vehicles { get; set; }
 }
