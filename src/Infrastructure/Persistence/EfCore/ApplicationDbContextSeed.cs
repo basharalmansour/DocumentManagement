@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Domain.Entities.Definitions.Equipments;
-using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Domain.Entities.DocumentTemplates;
 using CleanArchitecture.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Polly;

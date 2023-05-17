@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Entities.Documents;
+﻿using CleanArchitecture.Domain.Entities.DocumentTemplates;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 using CleanArchitecture.Domain.Enums;
 using System.ComponentModel.DataAnnotations.Schema;

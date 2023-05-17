@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
-using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Domain.Entities.DocumentTemplates;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 public  class ServiceCategoryPersonnelDocument : LightBaseEntity<int>, IEntity<int>

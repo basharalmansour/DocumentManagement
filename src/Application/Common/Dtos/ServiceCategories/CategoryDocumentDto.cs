@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Entities.Documents;
+﻿using CleanArchitecture.Domain.Entities.DocumentTemplates;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanArchitecture.Application.Common.Dtos.ServiceCategories;
