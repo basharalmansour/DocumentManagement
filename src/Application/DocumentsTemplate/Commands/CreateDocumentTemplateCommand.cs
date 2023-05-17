@@ -10,7 +10,7 @@ using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
-using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Domain.Entities.DocumentTemplates;
 using CleanArchitecture.Domain.Enums;
 using MassTransit;
 using MediatR;

@@ -3,7 +3,9 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.Definitions.Roles;
 using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Domain.Entities.DocumentTemplates;
 using CleanArchitecture.Domain.Entities.Forms;
+using CleanArchitecture.Domain.Entities.Orders;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
 using CleanArchitecture.Domain.Entities.SeviceCategories;
@@ -86,6 +88,15 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<VehicleTemplateDocument> VehicleTemplateDocuments { get; set; }
     public DbSet<VehicleTemplateDriverDocument> VehicleTemplateDriverDocuments { set; get; }
     public DbSet<PersonnelRole> PersonnelRoles { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderEquipment> OrderEquipment { get; set; }
+    public DbSet<OrderVehicle> OrderVehicles { get; set; }
+    public DbSet<OrderVehicleDriver> OrderVehicleDrivers { get; set; }
+    public DbSet<OrderPersonnel> OrderPersonnels { get; set; }
+    public DbSet<Document> Documents { get; set; }
+    public DbSet<OrderVehicleDriverDocument> OrderVehicleDriverDocuments { get; set; }
+    public DbSet<OrderPersonnelDocument> OrderPersonnelDocuments { get; set; }
+    public DbSet<OrderServiceCategoryDocument> OrderServiceCategoryDocuments { get; set; }
     private void ConfigureAuditableStates()
     {
         var DateTimeNow = DateTime.Now;

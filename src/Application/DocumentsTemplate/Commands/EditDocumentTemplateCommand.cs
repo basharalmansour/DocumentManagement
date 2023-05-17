@@ -2,7 +2,7 @@
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Forms.Commands;
-using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Domain.Entities.DocumentTemplates;
 using CleanArchitecture.Domain.Entities.Forms;
 using MassTransit;
 using MediatR;

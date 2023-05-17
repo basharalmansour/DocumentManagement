@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
-using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Domain.Entities.DocumentTemplates;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 
 namespace CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;

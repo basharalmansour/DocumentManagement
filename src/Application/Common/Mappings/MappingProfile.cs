@@ -20,7 +20,7 @@ using CleanArchitecture.Application.Forms.Commands;
 using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Application.Common.Dtos.DocumentTemplate;
 using CleanArchitecture.Application.DocumentsTemplate.Commands;
-using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Domain.Entities.DocumentTemplates;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Application.Common.Dtos.ServiceCategories.Approvements;
 using CleanArchitecture.Application.Presences.PresenceGroups.Commands;

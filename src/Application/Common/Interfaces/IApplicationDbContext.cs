@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Entities.Documents;
+﻿using CleanArchitecture.Domain.Entities.DocumentTemplates;
 using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 using CleanArchitecture.Domain.Entities.Presences.PresencesDocumentTemplates;
@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using CleanArchitecture.Domain.Entities.Definitions.Roles;
 using CleanArchitecture.Domain.Entities.VehicleTemplates;
 using CleanArchitecture.Domain.Entities.Vehicles;
+using CleanArchitecture.Domain.Entities.Orders;
+using CleanArchitecture.Domain.Entities.Documents;
 
 namespace CleanArchitecture.Application.Common.Interfaces;
 
@@ -67,6 +69,15 @@ public interface IApplicationDbContext
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<UserGroupPersonnel> UserGroupPersonnels { get; set; }
     public DbSet<PersonnelRole> PersonnelRoles { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderEquipment> OrderEquipment  { get; set; }
+    public DbSet<OrderVehicle> OrderVehicles { get; set; }
+    public DbSet<OrderVehicleDriver> OrderVehicleDrivers { get; set; }
+    public DbSet<OrderPersonnel> OrderPersonnels { get; set; }
+    public DbSet<Document> Documents { get; set; }
+    public DbSet<OrderVehicleDriverDocument> OrderVehicleDriverDocuments { get; set; }
+    public DbSet<OrderPersonnelDocument> OrderPersonnelDocuments { get; set; }
+    public DbSet<OrderServiceCategoryDocument> OrderServiceCategoryDocuments { get; set; }
     public DatabaseFacade Database { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     int SaveChanges();

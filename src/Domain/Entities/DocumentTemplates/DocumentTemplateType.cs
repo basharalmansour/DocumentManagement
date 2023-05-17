@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
-namespace CleanArchitecture.Domain.Entities.Documents;
+namespace CleanArchitecture.Domain.Entities.DocumentTemplates;
 public class DocumentTemplateType : LightBaseEntity<int>, IEntity<int>//
 {
     [StringLength(StringLengths.VeryLongString)]

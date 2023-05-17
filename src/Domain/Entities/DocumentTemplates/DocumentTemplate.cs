@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
-namespace CleanArchitecture.Domain.Entities.Documents;
+namespace CleanArchitecture.Domain.Entities.DocumentTemplates;
 public class DocumentTemplate : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>//
 {
     [StringLength(StringLengths.VeryLongString)]
