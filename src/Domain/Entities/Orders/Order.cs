@@ -33,4 +33,5 @@ public class Order : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
     public List<OrderServiceCategoryDocument> Documents { get; set; }
     public List<OrderPersonnel> Personnels { get; set; }
     public List<OrderVehicle> Vehicles { get; set; }
+    DeleteByEdit
 }
