@@ -17,6 +17,7 @@ using CleanArchitecture.Domain.Entities.Definitions.Equipments;
 using CleanArchitecture.Domain.Entities.Vendors;
 using CleanArchitecture.Domain.Entities.Orders;
 using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Domain.Entities.Venders;
 
 namespace CleanArchitecture.Application.Common.Interfaces;
 

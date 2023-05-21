@@ -11,11 +11,12 @@ using CleanArchitecture.Domain.Entities.Vendors;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Entities.Orders;
-public class Order : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
+public class Order : BaseEntity<Guid>, ISoftDeletable, IAuditable, IEntity<Guid>
 {
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public string Description { get; set; }
+    public OrderStatus OrderStatus { get; set; }
 
     [ForeignKey(nameof(Vendor))]
     public int VendorId { get; set; }
@@ -28,10 +29,17 @@ public class Order : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
     public int? IntegerPresenceId { get; set; }
     public Guid? GuidPresenceId { get; set; }
     public PresencesType PresencesType { get; set; }
-
     public List<OrderEquipment> Equipments { get; set; }
     public List<OrderServiceCategoryDocument> Documents { get; set; }
     public List<OrderPersonnel> Personnels { get; set; }
     public List<OrderVehicle> Vehicles { get; set; }
-    DeleteByEdit
+    public override void DeleteByEdit()
+    {
+        if (Personnels != null)
+            Personnels.ForEach(x => x.DeleteByEdit());
+
+        if (Vehicles != null)
+            Vehicles.ForEach(x => x.DeleteByEdit());
+        base.DeleteByEdit();
+    }
 }

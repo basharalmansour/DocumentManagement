@@ -23,5 +23,10 @@ public class Vehicle : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
     public VehicleTemplate VehicleTemplate { get; set; }
     public List<VehiclePersonnel> Drivers { get; set; }
 
-    DeleteByEdit
+    public override void DeleteByEdit()
+    {
+        if(Drivers != null)
+            Drivers.ForEach(x=>x.DeleteByEdit());
+        base.DeleteByEdit();
+    }
 }

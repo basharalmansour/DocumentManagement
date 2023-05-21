@@ -9,7 +9,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Venders;
 
 namespace CleanArchitecture.Domain.Entities.Orders;
-public class OrderVehicleDriver : LightBaseEntity<int>, IEntity<int>
+public class OrderVehicleDriver : BaseEntity<int>, IEntity<int>
 {
     [ForeignKey(nameof(OrderVehicle))]
     public int OrderVehicleId { get; set; }

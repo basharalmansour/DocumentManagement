@@ -9,10 +9,10 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Venders;
 
 namespace CleanArchitecture.Domain.Entities.Orders;
-public class OrderPersonnel : LightBaseEntity<int>, IEntity<int>
+public class OrderPersonnel : BaseEntity<int>, IEntity<int>
 {
     [ForeignKey(nameof(Order))]
-    public int OrderId { get; set; }
+    public Guid OrderId { get; set; }
     public Order Order { get; set; }
 
     [ForeignKey(nameof(VendorPersonnel))]
