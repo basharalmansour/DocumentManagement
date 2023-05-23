@@ -13,6 +13,7 @@ using CleanArchitecture.Domain.Enums;
 namespace CleanArchitecture.Domain.Entities.Orders;
 public class Order : BaseEntity<Guid>, ISoftDeletable, IAuditable, IEntity<Guid>
 {
+    public string UserId { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public string Description { get; set; }
@@ -33,6 +34,7 @@ public class Order : BaseEntity<Guid>, ISoftDeletable, IAuditable, IEntity<Guid>
     public List<OrderServiceCategoryDocument> Documents { get; set; }
     public List<OrderPersonnel> Personnels { get; set; }
     public List<OrderVehicle> Vehicles { get; set; }
+    public OrderAdditionalParameters AdditionalParameters { get; set; }
     public override void DeleteByEdit()
     {
         if (Personnels != null)

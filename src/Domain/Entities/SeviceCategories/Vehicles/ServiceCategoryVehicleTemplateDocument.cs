@@ -11,7 +11,7 @@ using CleanArchitecture.Domain.Entities.DocumentTemplates;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
-public class ServiceCategoryVehicleTemplateDocument : LightBaseEntity<int>, IEntity<int>
+public class ServiceCategoryVehicleTemplateDocument : LightBaseEntity<int>, IDocumentContent, IEntity<int>
 {
     [ForeignKey(nameof(ServiceCategoryVehicleTemplate))]
     public int ServiceCategoryVehicleTemplateId { get; set; }
