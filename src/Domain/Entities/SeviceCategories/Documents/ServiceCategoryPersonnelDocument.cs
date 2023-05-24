@@ -10,7 +10,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.DocumentTemplates;
 
 namespace CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
-public  class ServiceCategoryPersonnelDocument : LightBaseEntity<int>, IEntity<int>
+public  class ServiceCategoryPersonnelDocument : LightBaseEntity<int>, IDocumentContent, IEntity<int>
 {
     [ForeignKey(nameof(ServiceCategory))]
     public int ServiceCategoryId { get; set; }

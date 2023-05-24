@@ -26,5 +26,4 @@ public class CreateServiceCategoryDetails
     public List<int> ServiceCategoryUnits { get; set; }
     public List<Guid> ServiceCategoryZones { get; set; }
     public List<int> ServiceCategoryPresenceGroups { get; set; }
-
 }
