@@ -2,7 +2,7 @@
 using CleanArchitecture.Domain.Entities.Venders;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CleanArchitecture.Application.Common.Dtos.Orders;
+namespace CleanArchitecture.Application.Common.Dtos.Orders.CreateDtos;
 
 public class CreateOrderPersonnelDto
 {
