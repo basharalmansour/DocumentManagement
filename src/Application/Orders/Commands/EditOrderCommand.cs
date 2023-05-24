@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Application.Common.Dtos.Orders;
+using CleanArchitecture.Application.Common.Dtos.Orders.CreateDtos;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using MassTransit;

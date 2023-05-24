@@ -15,5 +15,6 @@ public class OrderAdditionalParameters : IEntity<Guid>
     [ForeignKey(nameof(Order))]
     public Guid Id { get; set; }
     public Order Order { get; set; }
-    public string PresenceName { get; set; }
+    public string PresenceName { get; set; } 
+    public string UserName { get; set; } //
 }

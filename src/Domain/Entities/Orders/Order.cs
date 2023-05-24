@@ -18,6 +18,9 @@ public class Order : BaseEntity<Guid>, ISoftDeletable, IAuditable, IEntity<Guid>
     public DateTime EndDate { get; set; }
     public string Description { get; set; }
     public OrderStatus OrderStatus { get; set; }
+    public int? IntegerPresenceId { get; set; }
+    public Guid? GuidPresenceId { get; set; }
+    public PresencesType PresencesType { get; set; }
 
     [ForeignKey(nameof(Vendor))]
     public int VendorId { get; set; }
@@ -26,10 +29,6 @@ public class Order : BaseEntity<Guid>, ISoftDeletable, IAuditable, IEntity<Guid>
     [ForeignKey(nameof(ServiceCategory))]
     public int ServiceCategoryId { get; set; }
     public ServiceCategory ServiceCategory { get; set; }
-
-    public int? IntegerPresenceId { get; set; }
-    public Guid? GuidPresenceId { get; set; }
-    public PresencesType PresencesType { get; set; }
     public List<OrderEquipment> Equipments { get; set; }
     public List<OrderServiceCategoryDocument> Documents { get; set; }
     public List<OrderPersonnel> Personnels { get; set; }

@@ -12,7 +12,6 @@ using CleanArchitecture.Domain.Entities.Forms;
 using MassTransit;
 using MediatR;
 using CleanArchitecture.Domain.Enums;
-using CleanArchitecture.Application.Common.Dtos.Orders;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Domain.Entities.Definitions.Equipments;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +19,7 @@ using CleanArchitecture.Domain.Entities.Orders;
 using LinqKit;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.SeviceCategories;
+using CleanArchitecture.Application.Common.Dtos.Orders.CreateDtos;
 
 namespace CleanArchitecture.Application.Orders.Commands;
 public class CreateOrderCommand : IRequest<Guid>
