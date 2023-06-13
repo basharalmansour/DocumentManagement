@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 
 namespace CleanArchitecture.Domain.Entities.Orders;
-public class OrderVehicleDocument
+public class OrderVehicleDocument : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey(nameof(OrderVehicle))]
     public int OrderVehicleId { get; set; }

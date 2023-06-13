@@ -1,5 +1,7 @@
 ﻿using System.Text;
 using CleanArchitecture.Domain.Common;
+using CleanArchitecture.WebUI.Consumers;
+using CleanArchitecture.WebUI.Services;
 //using CleanArchitecture.WebUI.Consumers;
 using Consul;
 using MassTransit;
@@ -38,32 +40,32 @@ public static class Extensions
         return services;
     }
 
-    //public static void ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
-    //{
-    //    services.AddScoped<IReceiveObserver, RecieveObserver>();
-    //    var massTransitConnectionStr = configuration.GetConnectionString("RabbitMqConnection");
-    //    //ServiceConfigurations.AddConsumers(services);
-    //    services.AddMassTransit(x =>
-    //    {
-    //        x.AddConsumer<DocumentTemplateRemovedConsumer>();
-    //        x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
-    //        {
-    //            config.Host(new Uri(massTransitConnectionStr), h =>
-    //            {
-    //                h.Username(configuration["RabbitMq:User"]);
-    //                h.Password(configuration["RabbitMq:Pass"]);
-    //            });
-    //            config.ReceiveEndpoint("documentTemplateRemoved", q =>
-    //            {
-    //                q.PrefetchCount = 20;
-    //                q.ConfigureConsumer<DocumentTemplateRemovedConsumer>(provider);
-    //            });
-    //            config.ConnectReceiveObserver(services.BuildServiceProvider().GetService<IReceiveObserver>());
-    //        }));
-    //    });
-    //    services.AddMassTransitHostedService();
-    //}
-    
+    public static void ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IReceiveObserver, RecieveObserver>();
+        var massTransitConnectionStr = configuration.GetConnectionString("RabbitMqConnection");
+        //ServiceConfigurations.AddConsumers(services);
+        services.AddMassTransit(x =>
+        {
+            x.AddConsumer<DocumentTemplateRemovedConsumer>();
+            x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
+            {
+                config.Host(new Uri(massTransitConnectionStr), h =>
+                {
+                    h.Username(configuration["RabbitMq:User"]);
+                    h.Password(configuration["RabbitMq:Pass"]);
+                });
+                config.ReceiveEndpoint("documentTemplateRemoved", q =>
+                {
+                    q.PrefetchCount = 20;
+                    q.ConfigureConsumer<DocumentTemplateRemovedConsumer>(provider);
+                });
+                config.ConnectReceiveObserver(services.BuildServiceProvider().GetService<IReceiveObserver>());
+            }));
+        });
+        services.AddMassTransitHostedService();
+    }
+
     public static void ConfigureRedis(this IServiceCollection services, IConfiguration configuration)
     {
         try
