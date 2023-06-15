@@ -41,7 +41,6 @@
       <Folder Include="CondoLife\Commands\" />
       <Folder Include="Vehicles\Commands\" />
       <Folder Include="Vehicles\Validators\" />
-      <Folder Include="Vendors\Commands\" />
     </ItemGroup>
 
     <ItemGroup>

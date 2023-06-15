@@ -36,6 +36,10 @@ using CleanArchitecture.Application.Common.Dtos.Vendors;
 using CleanArchitecture.Domain.Entities.Vendors;
 using CleanArchitecture.Application.Common.Dtos.Equipments;
 using CleanArchitecture.Domain.Entities.Definitions.Equipments;
+using CleanArchitecture.Application.Vendors.Commands;
+using CleanArchitecture.Domain.Entities.Venders;
+using CleanArchitecture.Application.Common.Dtos;
+using CleanArchitecture.Domain.Entities.Definitions;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -51,13 +55,35 @@ public class MappingProfile : Profile
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
         ApplyMappingsOfPresences();
-        ApplyMappingsOfRoles(); 
+        ApplyMappingsOfRoles();
         ApplyMappingsOfEquipments();
-        ApplyMappingsOfVender();
+        ApplyMappingsOfVendor();
     }
-    private void ApplyMappingsOfVender()
+    private void ApplyMappingsOfVendor()
     {
-        CreateMap<Vendor, BasicVendorDto>();
+        CreateMap<Vendor, BasicVendorDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)))
+            .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.VendorsCategories.Select(y => y.VendorCategory.Name).ToList()));
+
+        CreateMap<Vendor, GetVendorDto>()
+            .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.VendorsCategories.Select(y => y.VendorCategory.Name).ToList()))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)))
+            .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.OwnerName)))
+            .ForMember(dest => dest.OwnerSurname, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.OwnerSurname)))
+            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.CompanyName)));
+
+        CreateMap<CreateVendorCommand, Vendor>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)))
+            .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.OwnerName)))
+            .ForMember(dest => dest.OwnerSurname, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.OwnerSurname)))
+            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.CompanyName)))
+            .ForMember(dest=>dest.VendorsCategories, opt => opt.MapFrom(src =>
+                src.VendorsCategories.Select(x => new VendorsCategories { VendorCategoryId = x })));
+        CreateMap<CreateVendorPersonnelDto, VendorPersonnel>();
+        CreateMap<CreateAddressInfoDto, AddressInfo>();
+
     }
     private void ApplyMappingsOfEquipments()
     {
@@ -129,7 +155,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)));
 
         CreateMap<CreateServiceCategoryDetails, ServiceCategoryDetails>()
-            .ForMember(des => des.ServiceCategoryAreas, opt => opt.MapFrom(src => 
+            .ForMember(des => des.ServiceCategoryAreas, opt => opt.MapFrom(src =>
                 src.ServiceCategoryAreas.Select(x => new ServiceCategoryArea { AreaId = x })))
             .ForMember(des => des.ServiceCategoryBlocks, opt => opt.MapFrom(src => src.ServiceCategoryBlocks.Select(x => new ServiceCategoryBlock { BlockId = x })))
             .ForMember(des => des.ServiceCategoryBrands, opt => opt.MapFrom(src => src.ServiceCategoryBrands.Select(x => new ServiceCategoryBrand { BrandId = x })))
@@ -139,7 +165,7 @@ public class MappingProfile : Profile
             .ForMember(des => des.ServiceCategoryZones, opt => opt.MapFrom(src => src.ServiceCategoryZones.Select(x => new ServiceCategoryZone { ZoneId = x })))
             .ForMember(des => des.ServiceCategoryPresenceGroups, opt => opt.MapFrom(src => src.ServiceCategoryPresenceGroups.Select(x => new ServiceCategoryPresenceGroup { PresenceGroupId = x })));
 
-        
+
         CreateMap<CreateCategoryRoleDto, ServiceCategoryRole>()
             .ForMember(des => des.ResponsibleDepartments, opt => opt.MapFrom(src => src.ResponsibleDepartments.Select(x => new ResponsibleDepartment { DepartmentId = x })))
             .ForMember(des => des.ResponsiblePersonnels, opt => opt.MapFrom(src => src.ResponsiblePersonnels.Select(x => new ResponsiblePersonnel { PersonnelId = x })))

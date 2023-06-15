@@ -9,6 +9,7 @@ using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Common.Dtos.Vendors;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ namespace CleanArchitecture.Application.Vendors.Queries;
 public class GetVendorsQuery : TableRequestModel, IRequest<TableResponseModel<BasicVendorDto>>
 {
     public string SearchText { get; set; }
+    public RecordStatus Status { get; set; }
 }
 public class GetVendorsHandler : BaseQueryHandler, IRequestHandler<GetVendorsQuery, TableResponseModel<BasicVendorDto>>
 {
@@ -25,7 +27,8 @@ public class GetVendorsHandler : BaseQueryHandler, IRequestHandler<GetVendorsQue
     public async Task<TableResponseModel<BasicVendorDto>> Handle(GetVendorsQuery request, CancellationToken cancellationToken)
     {
         var vendors = _applicationDbContext.Vendors
-            .Where(x => x.Name.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase));
+            .Include(x=>x.VendorsCategories).ThenInclude(x=>x.VendorCategory)
+            .Where(x => x.Name.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase) && x.Status == request.Status);
         var selectedVendors = await vendors
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
