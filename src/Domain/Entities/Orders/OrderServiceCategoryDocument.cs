@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Documents;
-using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 
 namespace CleanArchitecture.Domain.Entities.Orders;

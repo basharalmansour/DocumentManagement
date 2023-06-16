@@ -36,6 +36,11 @@ using CleanArchitecture.Application.Common.Dtos.Vendors;
 using CleanArchitecture.Domain.Entities.Vendors;
 using CleanArchitecture.Application.Common.Dtos.Equipments;
 using CleanArchitecture.Domain.Entities.Definitions.Equipments;
+using CleanArchitecture.Application.Orders.Commands;
+using CleanArchitecture.Domain.Entities.Orders;
+using CleanArchitecture.Domain.Entities.Documents;
+using CleanArchitecture.Application.Common.Dtos.Orders.CreateDtos;
+using CleanArchitecture.Application.Common.Dtos.Orders;
 using CleanArchitecture.Application.Vendors.Commands;
 using CleanArchitecture.Domain.Entities.Venders;
 using CleanArchitecture.Application.Common.Dtos;
@@ -58,7 +63,50 @@ public class MappingProfile : Profile
         ApplyMappingsOfRoles();
         ApplyMappingsOfEquipments();
         ApplyMappingsOfVendor();
+        ApplyMappingsOfVendor();
+        ApplyMappingsOfOrder();
     }
+
+    private void ApplyMappingsOfOrder()
+    {
+        CreateMap<CreateOrderCommand, Order>()
+             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)))
+             .ForMember(des => des.Equipments, opt => opt.MapFrom(src => src.Equipments.Select(x => new OrderEquipment { EquipmentId = x })))
+             .ForMember(des => des.Personnels, opt => opt.MapFrom(src => src.Personnels.Select(x => new OrderPersonnel { VendorPersonnelId = x.VendorPersonnelId })));
+
+        CreateMap<CreateOrderDocumentDto, OrderServiceCategoryDocument>()
+            .ForMember(dest => dest.Document, opt => opt.MapFrom(src => new Document { DocumentTemplateId = src.DocumentId, FileName = src.File.FileName, FilePath = src.FilePath, FileSize = src.File.Length }));
+
+        CreateMap<CreateOrderVehicleDto, OrderVehicle>();
+        CreateMap<CreateOrderVehicleDriverDto, OrderVehicleDriver>();
+        CreateMap<CreateOrderDocumentDto, OrderVehicleDriverDocument>()
+            .ForMember(dest => dest.Document, opt => opt.MapFrom(src => new Document { DocumentTemplateId = src.DocumentId, FileName = src.File.FileName, FilePath = src.FilePath, FileSize = src.File.Length })); 
+        CreateMap<CreateOrderDocumentDto, OrderVehicleDocument>()
+            .ForMember(dest => dest.Document, opt => opt.MapFrom(src => new Document { DocumentTemplateId = src.DocumentId, FileName = src.File.FileName, FilePath = src.FilePath, FileSize = src.File.Length }));
+
+        CreateMap<Order, OrderDto>()
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)))
+            .ForMember(x=>x.Equipments , opt=>opt.MapFrom(src=>src.Equipments.Select(x=>x.EquipmentId).ToList()))
+            .ForMember(des=>des.PresenceName , opt=>opt.MapFrom(x=>x.AdditionalParameters.PresenceName))
+            .ForMember(des => des.UserName, opt => opt.MapFrom(src => src.AdditionalParameters.UserName));
+        CreateMap<OrderServiceCategoryDocument, OrderServiceCategoryDocumentDto>();
+        CreateMap<OrderPersonnel, OrderPersonnelDto>()
+            .ForMember(des=>des.PersonnelName , opt=>opt.MapFrom(src=>src.VendorPersonnel.Name));
+        CreateMap<OrderVehicle, OrderVehicleDto>();
+        CreateMap<Document, DocumentDto>()
+            .ForMember(x=>x.DocumentTemplateName , opt=>opt.MapFrom(src=>src.DocumentTemplate.Name));
+        CreateMap<OrderPersonnelDocument, OrderPersonnelDocumentDto>();
+        CreateMap<OrderVehicleDriver, OrderVehicleDriverDto>()
+            .ForMember(des => des.PersonnelName, opt => opt.MapFrom(src => src.VendorPersonnel.Name));
+        CreateMap<OrderVehicleDocument, OrderVehicleDocumentDto>();
+        CreateMap<OrderVehicleDriverDocument, OrderVehicleDriverDocumentDto>();
+
+
+        CreateMap<Order ,BasicOrderDto>()
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)));
+    }
+    private void ApplyMappingsOfVendor()
+
     private void ApplyMappingsOfVendor()
     {
         CreateMap<Vendor, BasicVendorDto>()
@@ -82,6 +130,8 @@ public class MappingProfile : Profile
     {
         CreateMap<Equipment, EquipmentDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)));
+        CreateMap<CreateOrderEquipmentDto, Equipment>()
+             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)));
     }
     private void ApplyMappingsOfVehicle()
     {

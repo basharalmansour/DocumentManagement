@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Application.Common.Dtos.Orders;
+namespace CleanArchitecture.Application.Common.Dtos.Orders.CreateDtos;
 public class CreateOrderVehicleDto
 {
     public int VehicleId { get; set; }
