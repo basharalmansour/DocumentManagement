@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CleanArchitecture.Application.Common.Helpers;
-using CleanArchitecture.Domain.Entities.Definitions;
-using CleanArchitecture.Domain.Entities.Vehicles;
-using CleanArchitecture.Domain.Entities.Venders;
-using CleanArchitecture.Domain.Entities.Vendors;
+﻿using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Application.Common.Dtos.Vendors;
@@ -30,6 +20,6 @@ public class GetVendorDto : BasicVendorDto
     public int AddressInfoId { get; set; }
     public int TaxCountyId { get; set; }
     public int TaxRoomId { get; set; }
-    public int TaxIdentityNumberId { get; set; }
-    public List<VendorsCategoriesDto> VendorsCategories { get; set; }
+    public string TaxIdentityNumberId { get; set; }
+    public List<VendorsCategoriesDto> Categories { get; set; }
 }

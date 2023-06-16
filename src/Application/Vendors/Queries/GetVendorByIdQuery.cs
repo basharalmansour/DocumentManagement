@@ -28,7 +28,7 @@ public class GetVendorByIdQueryHandler : BaseQueryHandler, IRequestHandler<GetVe
     {
         var vendor =await _applicationDbContext
             .Vendors
-            .Include(x=>x.VendorsCategories)
+            .Include(x=>x.Categories)
             .ThenInclude(x=>x.VendorCategory)
             .FirstOrDefaultAsync(x => x.Id == request.Id);
         if (vendor == null)

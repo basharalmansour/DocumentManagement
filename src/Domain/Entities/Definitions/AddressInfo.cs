@@ -12,7 +12,7 @@ public class AddressInfo : LightBaseEntity<int>
     public EmailAddressAttribute Email { get; set; }
     public string PhoneNo { get; set; }
     public string Address { get; set; }
-    public int CountyId { get; set; }
-    public int CityId { get; set; } 
+    public int? CountyId { get; set; }
+    public int? CityId { get; set; } 
     public string PostalCode { get; set; } 
 }

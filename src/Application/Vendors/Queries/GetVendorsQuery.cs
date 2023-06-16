@@ -27,7 +27,7 @@ public class GetVendorsHandler : BaseQueryHandler, IRequestHandler<GetVendorsQue
     public async Task<TableResponseModel<BasicVendorDto>> Handle(GetVendorsQuery request, CancellationToken cancellationToken)
     {
         var vendors = _applicationDbContext.Vendors
-            .Include(x=>x.VendorsCategories).ThenInclude(x=>x.VendorCategory)
+            .Include(x=>x.Categories).ThenInclude(x=>x.VendorCategory)
             .Where(x => x.Name.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase) && x.Status == request.Status);
         var selectedVendors = await vendors
             .Skip((request.PageNumber - 1) * request.PageSize)

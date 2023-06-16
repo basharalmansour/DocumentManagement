@@ -27,7 +27,7 @@ public class EditVendorCommandHandler : BaseCommandHandler, IRequestHandler<Edit
     public async Task<int> Handle(EditVendorCommand request, CancellationToken cancellationToken)
     {
         var vendor = _applicationDbContext.Vendors
-            .Include(x => x.VendorsCategories)
+            .Include(x => x.Categories)
             .FirstOrDefault(x => x.Id == request.Id);
         if (vendor == null)
             throw new Exception("Vendor was NOT found");

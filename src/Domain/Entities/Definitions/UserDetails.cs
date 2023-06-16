@@ -13,7 +13,7 @@ namespace CleanArchitecture.Domain.Entities.Definitions;
 public class UserDetails : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
 {
     public string Name { get; set; }
-    public string SurName { get; set; }
+    public string Surname { get; set; }
     public bool IsPrimary { get; set; }
 
     [ForeignKey(nameof(AddressInfo))]

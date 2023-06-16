@@ -10,6 +10,7 @@ using CleanArchitecture.Application.Common.Dtos.Vendors;
 using CleanArchitecture.Application.Common.Dtos;
 using CleanArchitecture.Application.Common;
 using Microsoft.AspNetCore.Http;
+using CleanArchitecture.Domain.Entities.Definitions;
 
 namespace CleanArchitecture.Application.Vendors.Commands;
 public class CreateVendorCommand : IRequest<int>
@@ -30,12 +31,10 @@ public class CreateVendorCommand : IRequest<int>
     public string TradeRegistrationNo { get; set; }
     public int TaxCountyId { get; set; }
     public int TaxRoomId { get; set; }
-    public int TaxIdentityNumberId { get; set; }
-    public List<CreateUserDetailsDto> UserDetails { get; set; }
-    public CreateAddressInfoDto AddressInfoId { get; set; }
-    public List<CreateVendorPersonnelDto> VendorPersonnels { get; set; }
-    public List<int> Vehicles { get; set; }
-    public List<int> VendorsCategories { get; set; }
+    public string TaxIdentityNumberId { get; set; }
+    public CreateUserDetailsDto UserDetails { get; set; }
+    public CreateAddressInfoDto AddressInfo { get; set; }
+    public List<int> Categories { get; set; }
 }
 
 public class CreateVendorCommandHandler : BaseCommandHandler, IRequestHandler<CreateVendorCommand, int>
@@ -46,13 +45,26 @@ public class CreateVendorCommandHandler : BaseCommandHandler, IRequestHandler<Cr
 
     public async Task<int> Handle(CreateVendorCommand request, CancellationToken cancellationToken)
     {
+        ValidateVendorType(request);
         if (request.Logo != null)
             FileManager.Create(request.Logo);
+        var vendor = _mapper.Map<Vendor>(request);
+        var primaryUser= _mapper.Map<UserDetails>(request.UserDetails);
+        primaryUser.IsPrimary = true;
+        vendor.UserDetails.Add(primaryUser);
+        vendor.UniqueCode = UniqueCode.CreateUniqueCode(8, false, "V");
+        _applicationDbContext.Vendors.Add(vendor);
+        await _applicationDbContext.SaveChangesAsync(cancellationToken);
+        return vendor.Id;
+    }
+
+    private void ValidateVendorType(CreateVendorCommand request)
+    {
         if (request.VendorOwnership == VendorOwnership.Private)
         {
             request.VendorType = null;
             if (request.OwnerName == null || request.OwnerSurname == null)
-                throw new Exception("Owner Name & SurName are requested");
+                throw new Exception("Owner Name & Surname are requested");
         }
         else if (request.VendorOwnership == VendorOwnership.Corporate)
         {
@@ -61,11 +73,5 @@ public class CreateVendorCommandHandler : BaseCommandHandler, IRequestHandler<Cr
             if (request.VendorType == null)
                 throw new Exception("Vendor Type must be selected");
         }
-        request.UserDetails[0].IsPrimary = true;
-        var vendor = _mapper.Map<Vendor>(request);
-        vendor.UniqueCode = UniqueCode.CreateUniqueCode(8, false, "V");
-        _applicationDbContext.Vendors.Add(vendor);
-        await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        return vendor.Id;
     }
 }

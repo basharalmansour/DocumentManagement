@@ -14,5 +14,5 @@ public class VendorCategory : BaseEntity<int>, ISoftDeletable, IAuditable, IEnti
     public string Name { get; set; }
     public int? ParentId { get; set; }
     public List<VendorCategory> SubVendorCategories { get; set; }
-    public List<VendorsCategories> VendorsCategories { get; set; }
+    public List<VendorsCategories> Vendors { get; set; }
 }

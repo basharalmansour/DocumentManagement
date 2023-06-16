@@ -38,16 +38,15 @@ public class Vendor : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
     public string TradeRegistrationNo { get; set; }
     public int TaxCountyId { get; set; }
     public int TaxRoomId { get; set; }
-    public int TaxIdentityNumberId { get; set; }
+    public string TaxIdentityNumberId { get; set; }
     public List<UserDetails> UserDetails { get; set; }
 
     [ForeignKey(nameof(AddressInfo))]
     public int AddressInfoId { get; set; }
     public AddressInfo AddressInfo { get; set; }
-
     public List<VendorPersonnel> VendorPersonnels { get; set; }
     public List<Vehicle> Vehicles { get; set; }
-    public List<VendorsCategories> VendorsCategories { get; set; }
+    public List<VendorsCategories> Categories { get; set; }
     public override void DeleteByEdit()
     {
         if (VendorPersonnels != null)

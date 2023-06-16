@@ -20,5 +20,5 @@ public class AddUserGroupCommandValidator : AbstractValidator<CreateUserGroupCom
     private bool ValidateMultiLanguage(LanguageString multiLanguageObject, int length)
     {
         return !multiLanguageObject.Any(x => x.Value.Length > length);
-    }
+    } 
 }

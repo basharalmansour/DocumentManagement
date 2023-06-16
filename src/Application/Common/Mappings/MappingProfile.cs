@@ -63,10 +63,10 @@ public class MappingProfile : Profile
     {
         CreateMap<Vendor, BasicVendorDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)))
-            .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.VendorsCategories.Select(y => y.VendorCategory.Name).ToList()));
+            .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.Categories.Select(y => y.VendorCategory.Name).ToList()));
 
         CreateMap<Vendor, GetVendorDto>()
-            .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.VendorsCategories.Select(y => y.VendorCategory.Name).ToList()))
+            .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.Categories.Select(y => y.VendorCategory.Name).ToList()))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)))
             .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.OwnerName)))
@@ -79,8 +79,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.OwnerName)))
             .ForMember(dest => dest.OwnerSurname, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.OwnerSurname)))
             .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.CompanyName)))
-            .ForMember(dest=>dest.VendorsCategories, opt => opt.MapFrom(src =>
-                src.VendorsCategories.Select(x => new VendorsCategories { VendorCategoryId = x })));
+            .ForMember(des=>des.UserDetails , opt=>opt.Ignore())
+            .ForMember(dest=>dest.Categories, opt => opt.MapFrom(src =>
+                src.Categories.Select(x => new VendorsCategories { VendorCategoryId = x })));
         CreateMap<CreateVendorPersonnelDto, VendorPersonnel>();
         CreateMap<CreateAddressInfoDto, AddressInfo>();
 
