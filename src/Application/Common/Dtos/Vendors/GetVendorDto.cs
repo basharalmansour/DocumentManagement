@@ -8,11 +8,11 @@ public class GetVendorDto : BasicVendorDto
     public string Logo { get; set; }
     public LanguageString Description { get; set; }
     public VendorOwnership VendorOwnership { get; set; }
-    public VendorType VendorType { get; set; }
-    public LanguageString OwnerName { get; set; }
-    public LanguageString OwnerSurname { get; set; }
+    public VendorType? VendorType { get; set; }
+    public string OwnerName { get; set; }
+    public string OwnerSurname { get; set; }
     public string Title { get; set; }
-    public LanguageString CompanyName { get; set; }
+    public string CompanyName { get; set; }
     public string BrandName { get; set; }
     public string MersisNo { get; set; }
     public int ChamberOfCommerceId { get; set; }
@@ -21,5 +21,5 @@ public class GetVendorDto : BasicVendorDto
     public int TaxCountyId { get; set; }
     public int TaxRoomId { get; set; }
     public string TaxIdentityNumberId { get; set; }
-    public List<VendorsCategoriesDto> Categories { get; set; }
+    public List<int> Categories { get; set; }
 }

@@ -9,6 +9,6 @@ namespace CleanArchitecture.Application.Common.Dtos.Vendors;
 public class BasicVendorDto
 {
     public int Id { get; set; }
-    public LanguageString Name { get; set; }
+    public string Name { get; set; }
     public List<string> VendorCategoryName { get; set; }
 }

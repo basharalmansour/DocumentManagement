@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.Vendors;
-public class VendorsCategories
+public class VendorsCategories : LightBaseEntity<int>, IEntity<int>
 {
-    public int Id { get; set; }
     [ForeignKey(nameof(Vendor))]
     public int VendorId { get; set; }
     public Vendor Vendor { get; set; }

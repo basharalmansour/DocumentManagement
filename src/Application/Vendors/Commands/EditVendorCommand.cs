@@ -37,7 +37,6 @@ public class EditVendorCommandHandler : BaseCommandHandler, IRequestHandler<Edit
         newVendor.UniqueCode = newVendor.UniqueCode;
         _applicationDbContext.Vendors.Add(newVendor);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
-        await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return newVendor.Id;
     }
 }

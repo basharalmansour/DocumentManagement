@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
 
 namespace CleanArchitecture.Domain.Entities.Definitions;
-public class AddressInfo : LightBaseEntity<int>
+public class AddressInfo : LightBaseEntity<int> , IEntity<int>
 {
     public EmailAddressAttribute Email { get; set; }
     public string PhoneNo { get; set; }

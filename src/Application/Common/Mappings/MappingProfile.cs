@@ -62,29 +62,21 @@ public class MappingProfile : Profile
     private void ApplyMappingsOfVendor()
     {
         CreateMap<Vendor, BasicVendorDto>()
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)))
             .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.Categories.Select(y => y.VendorCategory.Name).ToList()));
 
         CreateMap<Vendor, GetVendorDto>()
             .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.Categories.Select(y => y.VendorCategory.Name).ToList()))
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Name)))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)))
-            .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.OwnerName)))
-            .ForMember(dest => dest.OwnerSurname, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.OwnerSurname)))
-            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.CompanyName)));
+            .ForMember(dest => dest.Categories , opt=>opt.MapFrom(src=>src.Categories.Select(x=>x.VendorCategoryId).ToList()));
 
         CreateMap<CreateVendorCommand, Vendor>()
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Name)))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)))
-            .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.OwnerName)))
-            .ForMember(dest => dest.OwnerSurname, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.OwnerSurname)))
-            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.CompanyName)))
             .ForMember(des=>des.UserDetails , opt=>opt.Ignore())
             .ForMember(dest=>dest.Categories, opt => opt.MapFrom(src =>
                 src.Categories.Select(x => new VendorsCategories { VendorCategoryId = x })));
+
         CreateMap<CreateVendorPersonnelDto, VendorPersonnel>();
         CreateMap<CreateAddressInfoDto, AddressInfo>();
-
     }
     private void ApplyMappingsOfEquipments()
     {

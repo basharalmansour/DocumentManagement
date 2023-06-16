@@ -15,16 +15,16 @@ using CleanArchitecture.Domain.Entities.Definitions;
 namespace CleanArchitecture.Application.Vendors.Commands;
 public class CreateVendorCommand : IRequest<int>
 {
-    public LanguageString Name { get; set; }
+    public string Name { get; set; }
     public RecordStatus Status { get; set; }
     public IFormFile Logo { get; set; }
     public LanguageString Description { get; set; }
     public VendorOwnership VendorOwnership { get; set; }
     public VendorType? VendorType { get; set; }
-    public LanguageString OwnerName { get; set; }
-    public LanguageString OwnerSurname { get; set; }
+    public string OwnerName { get; set; }
+    public string OwnerSurname { get; set; }
     public string Title { get; set; }
-    public LanguageString CompanyName { get; set; }
+    public string CompanyName { get; set; }
     public string BrandName { get; set; }
     public string MersisNo { get; set; }
     public int ChamberOfCommerceId { get; set; }

@@ -21,9 +21,10 @@ public class CreateUserCommandHandler : BaseCommandHandler, IRequestHandler<Crea
     public async Task<bool> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var vendor = _applicationDbContext.Vendors.FirstOrDefault(x => x.Id == request.VendorId);
-        var users = _mapper.Map<List<UserDetails>>((CreateUserDetailsDto)request);
-        foreach (var user in users)
-            vendor.UserDetails.Add(user);
+        if (vendor == null)
+            throw new Exception("Vendor was not found");
+        var user = _mapper.Map<UserDetails>((CreateUserDetailsDto)request);
+        vendor.UserDetails.Add(user);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
