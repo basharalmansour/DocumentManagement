@@ -14,18 +14,14 @@ public enum DocumentFileType
 public static class DocumentFileExtension
 {
     public static string[] AcceptedExtensions = new[] { ".pdf", ".docx",".txt"  };
-    public static List<string> ConvertToString(List<DocumentFileType> fileTypes)
+    public static string ConvertToString(this DocumentFileType type)
     {
-        List<string> result = new List<string>();
-        foreach (var type in fileTypes)
+        switch (type)
         {
-            if (type == DocumentFileType.PDF)
-                result.Add(AcceptedExtensions[0]);
-            else if (type == DocumentFileType.Word)
-                result.Add(AcceptedExtensions[1]);
-            else if (type == DocumentFileType.TxtFile)
-                result.Add(AcceptedExtensions[2]);
+            case DocumentFileType.PDF: return AcceptedExtensions[0];
+            case DocumentFileType.Word: return AcceptedExtensions[1];
+            case DocumentFileType.TxtFile: return AcceptedExtensions[2];
+            default:return string.Empty;
         }
-        return result;
     }
 }

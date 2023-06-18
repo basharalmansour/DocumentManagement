@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Approvers;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Presences;
@@ -38,5 +33,4 @@ public class ServiceCategoryDetails
     public List<ServiceCategoryDocument> Documents { get; set; }
     public List<ServiceCategoryPersonnelDocument> PersonnelDocuments { get; set; }
     public List<ServiceCategoryRole> ServiceCategoryRoles { get; set; }
-
 }

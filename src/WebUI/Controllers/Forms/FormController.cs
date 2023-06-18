@@ -4,10 +4,12 @@ using CleanArchitecture.Application.Forms.Commands;
 using CleanArchitecture.Application.Forms.Queries;
 using CleanArchitecture.Domain.Common;
 using Elasticsearch.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers.Forms;
 
+[Authorize]
 public class FormController : ApiControllerBase
 {
     [HttpPost("CreateForm")]

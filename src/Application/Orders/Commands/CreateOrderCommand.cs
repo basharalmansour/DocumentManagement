@@ -57,6 +57,10 @@ public class CreateOrderCommandHandler : BaseCommandHandler, IRequestHandler<Cre
         return newOrder.Id;
     }
 
+    /// <summary>
+    /// adding new records to the system before saving the order
+    /// </summary>
+    /// <param name="request"></param>
     private void AddNewRecords(CreateOrderCommand request)
     {
         if (request.NewEquipment != null)
@@ -74,53 +78,88 @@ public class CreateOrderCommandHandler : BaseCommandHandler, IRequestHandler<Cre
             document.FilePath = filePath;
             document.FileStatus = FileStatus.New;
         }
-
     }
 
+    /// <summary>
+    /// validate the order parameters before adding to the database
+    /// </summary>
+    /// <param name="request">the request sent by user</param>
+    /// <exception cref="Exception"></exception>
     private void ValidateOrder(CreateOrderCommand request)
     {
         var serviceCategory = _applicationDbContext.ServiceCategories
             .Include(x => x.ServiceCategoryDetails.Documents)
             .ThenInclude(x=>x.DocumentTemplate.DocumentTemplateFileTypes)
-            .FirstOrDefault(x => x.Id == request.ServiceCategoryId)
+            .Include(x => x.ServiceCategoryDetails.VehicleTemplates)
+            .ThenInclude(x=>x.VehicleTemplateDocuments).ThenInclude(x=>x.DocumentTemplate.DocumentTemplateFileTypes)
+            .FirstOrDefault(x => x.Id == request.ServiceCategoryId)?
             .ServiceCategoryDetails;
+        if (serviceCategory == null)
+            throw new Exception("Service Category Can't be found");
 
+        #region validate service category times
         var serviceCategoryDuration = TimeUnitsConverter.ConvertToMinutes(serviceCategory.MaxServiceDuration, serviceCategory.ServiceDurationUnit);
         var selectedDuration = request.EndDate - request.StartDate;
         if (selectedDuration.Minutes > serviceCategoryDuration)
             throw new Exception("This service has maximum duration " + serviceCategory.MaxServiceDuration + serviceCategory.ServiceDurationUnit + "to be completed");
+        #endregion
 
         if (serviceCategory.MaxPersonnelCount < request.Personnels.Count)
             throw new Exception("The maximum number of personnel for this service is: " + serviceCategory.MaxPersonnelCount);
 
-        var vehiclesDocuments = _applicationDbContext.ServiceCategoryVehicleTemplateDocuments
-            .Include(x => x.ServiceCategoryVehicleTemplate)
-            .Where(x => x.ServiceCategoryVehicleTemplate.ServiceCategoryId == request.ServiceCategoryId)
+        #region validate documents
+        var categoryDocuments = serviceCategory.Documents;
+        var personnelDocuments = serviceCategory.PersonnelDocuments;
+        var vehicleDocuments = serviceCategory.VehicleTemplates
+            .SelectMany(x => x.VehicleTemplateDocuments)
+            .Where(x => x.VehicleDocumentType == VehicleDocumentType.Vehicle)
             .ToList();
+        var driverDocuments = serviceCategory.VehicleTemplates
+            .SelectMany(x => x.VehicleTemplateDocuments)
+            .Where(x => x.VehicleDocumentType == VehicleDocumentType.Driver)
+            .ToList();
+        //Validate Category Documents
         ValidateDocuments(serviceCategory.Documents , request.Documents);
-        ValidateDocuments(vehiclesDocuments.Where(x => x.VehicleDocumentType == VehicleDocumentType.Vehicle).ToList() , request.Vehicles.SelectMany(x=>x.Documents).ToList());
-        ValidateDocuments(serviceCategory.PersonnelDocuments, request.Personnels.SelectMany(x=>x.Documents).ToList());
-        ValidateDocuments(vehiclesDocuments.Where(x=>x.VehicleDocumentType==VehicleDocumentType.Driver).ToList(), request.Vehicles.SelectMany(x=>x.Drivers).SelectMany(x=>x.Documents).ToList());
+        //Validate Personnel Documents
+        ValidateDocuments(personnelDocuments, request.Personnels.SelectMany(x=>x.Documents).ToList());
+        //Validate Vehicle Documents
+        ValidateDocuments(vehicleDocuments, request.Vehicles.SelectMany(x => x.Documents).ToList());
+        //Validate Driver Documents
+        ValidateDocuments(driverDocuments, request.Vehicles.SelectMany(x=>x.Drivers).SelectMany(x=>x.Documents).ToList());
+        #endregion
     }
 
-    private void ValidateDocuments<T> (List<T> documents , List<CreateOrderDocumentDto> requestDocuments ) where T:IDocumentContent 
+    /// <summary>
+    /// check if required documents are added by user
+    /// </summary>
+    /// <typeparam name="T">it can be any database class which presents documents added by user</typeparam>
+    /// <param name="documents">the list of documents which user should add</param>
+    /// <param name="requestDocuments">the list of documents which user added</param>
+    /// <exception cref="Exception"></exception>
+    private void ValidateDocuments<T> (List<T> documents, List<CreateOrderDocumentDto> requestDocuments) 
+        where T:IDocumentContent 
     {
         foreach (var document in documents)
         {
-            if (document.IsRequired)
-                if (!requestDocuments.Select(x => x.DocumentId).Contains(document.DocumentTemplateId))
-                    throw new Exception("Document" + document.DocumentTemplate.Name + "is missing");
-            var acceptedTypes = document.DocumentTemplate.DocumentTemplateFileTypes.Select(x => x.FileType).ToList();
-            var acceptedTypesAsString = DocumentFileExtension.ConvertToString(acceptedTypes);
-            var selectedDocumentName = requestDocuments.FirstOrDefault(x => x.DocumentId == document.DocumentTemplateId).File.FileName;
-            if (!acceptedTypesAsString.Contains(Path.GetExtension(selectedDocumentName)))
+            if (document.IsRequired && !requestDocuments.Select(x => x.DocumentId).Contains(document.DocumentTemplateId))
+                throw new Exception("Document" + document.DocumentTemplate.Name + "is missing");
+            
+            var acceptedTypes = document.DocumentTemplate
+                .DocumentTemplateFileTypes
+                .Select(x => x.FileType.ConvertToString())
+                .ToList();
+            var selectedDocumentName = requestDocuments
+                .FirstOrDefault(x => x.DocumentId == document.DocumentTemplateId)?
+                .File.FileName;
+            if (selectedDocumentName != null && !acceptedTypes.Contains(Path.GetExtension(selectedDocumentName)))
                 throw new Exception("Invalid document type");
         }
     }
 
     private void AddAdditionalParameters()
     {
-
+        //set user name
+        //set presence name
     }
 
 }
