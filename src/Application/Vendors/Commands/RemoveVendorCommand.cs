@@ -22,7 +22,7 @@ public class RemoveVendorCommand : IRequest<bool>
 
 public class DeleteVendorCommandHandler : BaseCommandHandler, IRequestHandler<RemoveVendorCommand, bool>
 {
-    public DeleteVendorCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public DeleteVendorCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
 
@@ -33,6 +33,7 @@ public class DeleteVendorCommandHandler : BaseCommandHandler, IRequestHandler<Re
             throw new Exception("Vendor was not found");
         deletedVendor.IsDeleted = true;
         deletedVendor.Status = RecordStatus.Deleted;
+        _applicationDbContext.SaveChanges();
         return true;
     }
 }

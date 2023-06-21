@@ -75,7 +75,7 @@ public class Startup
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
         
-        //services.ConfigureMassTransit(Configuration);
+        services.ConfigureMassTransit(Configuration);
         services.AddScoped<IMessageBrokerService, MessageBrokerService>();
         services.ConfigureConsul(Configuration);
         //services.ConfigureRedis(Configuration);

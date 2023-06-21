@@ -30,8 +30,8 @@ public class VendorController : ApiControllerBase
         }
 
     }
-    [HttpPost("GetVendors")]
-    public async Task<ApplicationResponse<TableResponseModel<BasicVendorDto>>> GetVendors([FromBody] GetVendorsQuery request, CancellationToken cancellationToken)
+    [HttpGet("GetVendors")]
+    public async Task<ApplicationResponse<TableResponseModel<BasicVendorDto>>> GetVendors([FromQuery] GetVendorsQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -58,8 +58,8 @@ public class VendorController : ApiControllerBase
         }
 
     }
-    [HttpGet("GetVenderPersonnels")]
-    public async Task<ApplicationResponse<TableResponseModel<GetVendorPersonnelDto>>> GetVenderPersonnels([FromBody] GetVendorPersonnelsQuery request, CancellationToken cancellationToken)
+    [HttpGet("GetVendorPersonnels")]
+    public async Task<ApplicationResponse<TableResponseModel<GetVendorPersonnelDto>>> GetVendorPersonnels([FromQuery] GetVendorPersonnelsQuery request, CancellationToken cancellationToken)
     {
         try
         {

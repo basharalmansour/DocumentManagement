@@ -10,18 +10,18 @@ using MediatR;
 namespace CleanArchitecture.Application.UsersGroup.Commands;
 public class EditUserGroupCommand :CreateUserGroupCommand , IRequest<int>
 {
-    public int Id { get; set; }
+    public int UserGroupId { get; set; }
 }
 
 public class EditUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<EditUserGroupCommand, int>
 {
 
-    public EditUserGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public EditUserGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<int> Handle(EditUserGroupCommand request, CancellationToken cancellationToken)
     {
-        var userGroup = _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.Id);
+        var userGroup = _applicationDbContext.UserGroups.FirstOrDefault(x => x.Id == request.UserGroupId);
         if (userGroup == null)
             throw new Exception("UserGroup was NOT found");
         userGroup.DeleteByEdit();

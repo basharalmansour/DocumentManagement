@@ -42,7 +42,7 @@ using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Application.Common.Dtos.Orders.CreateDtos;
 using CleanArchitecture.Application.Common.Dtos.Orders;
 using CleanArchitecture.Application.Vendors.Commands;
-using CleanArchitecture.Domain.Entities.Venders;
+using CleanArchitecture.Domain.Entities.Vendors;
 using CleanArchitecture.Application.Common.Dtos;
 using CleanArchitecture.Domain.Entities.Definitions;
 
@@ -62,7 +62,6 @@ public class MappingProfile : Profile
         ApplyMappingsOfPresences();
         ApplyMappingsOfRoles();
         ApplyMappingsOfEquipments();
-        ApplyMappingsOfVendor();
         ApplyMappingsOfVendor();
         ApplyMappingsOfOrder();
     }
@@ -105,7 +104,6 @@ public class MappingProfile : Profile
         CreateMap<Order ,BasicOrderDto>()
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)));
     }
-    private void ApplyMappingsOfVendor()
 
     private void ApplyMappingsOfVendor()
     {
@@ -119,12 +117,16 @@ public class MappingProfile : Profile
 
         CreateMap<CreateVendorCommand, Vendor>()
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)))
-            .ForMember(des=>des.UserDetails , opt=>opt.Ignore())
             .ForMember(dest=>dest.Categories, opt => opt.MapFrom(src =>
                 src.Categories.Select(x => new VendorsCategories { VendorCategoryId = x })));
-
+        CreateMap<CreateUserDetailsDto, UserDetails>();
+        CreateMap<CreateUserDetailsDto, List<UserDetails>>();
         CreateMap<CreateVendorPersonnelDto, VendorPersonnel>();
         CreateMap<CreateAddressInfoDto, AddressInfo>();
+        CreateMap<EditVendorCommand, Vendor>()
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)))
+            .ForMember(dest => dest.Categories, opt => opt.MapFrom(src =>
+                src.Categories.Select(x => new VendorsCategories { VendorCategoryId = x })));
     }
     private void ApplyMappingsOfEquipments()
     {

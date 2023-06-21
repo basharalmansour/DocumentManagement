@@ -21,7 +21,7 @@ public class RemoveUserGroupCommand : IRequest<bool>
 
 public class RemoveUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<RemoveUserGroupCommand, bool>
 {
-    public RemoveUserGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public RemoveUserGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
 

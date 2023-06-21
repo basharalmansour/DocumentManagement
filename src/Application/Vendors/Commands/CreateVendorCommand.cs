@@ -39,7 +39,7 @@ public class CreateVendorCommand : IRequest<int>
 
 public class CreateVendorCommandHandler : BaseCommandHandler, IRequestHandler<CreateVendorCommand, int>
 {
-    public CreateVendorCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public CreateVendorCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
 

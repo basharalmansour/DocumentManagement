@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Entities.BaseEntities;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Domain.Entities.SeviceCategories.Documents;
 
 namespace CleanArchitecture.Domain.Entities.Orders;
-public class OrderPersonnelDocument
+public class OrderPersonnelDocument : LightBaseEntity<int>
 {
     [ForeignKey(nameof(OrderPersonnel))]
     public int OrderPersonnelId { get; set; }

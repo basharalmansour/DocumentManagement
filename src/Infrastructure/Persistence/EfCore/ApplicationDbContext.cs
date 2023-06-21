@@ -17,7 +17,7 @@ using CleanArchitecture.Domain.Entities.SeviceCategories.Vehicles;
 using CleanArchitecture.Domain.Entities.UserGroups;
 using CleanArchitecture.Domain.Entities.Vehicles;
 using CleanArchitecture.Domain.Entities.VehicleTemplates;
-using CleanArchitecture.Domain.Entities.Venders;
+using CleanArchitecture.Domain.Entities.Vendors;
 using CleanArchitecture.Domain.Entities.Vendors;
 using CleanArchitecture.Infrastructure.Identity;
 using Duende.IdentityServer.EntityFramework.Options;
@@ -102,7 +102,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<OrderPersonnelDocument> OrderPersonnelDocuments { get; set; }
     public DbSet<OrderServiceCategoryDocument> OrderServiceCategoryDocuments { get; set; }
     public DbSet<Vendor> Vendors { get; set; }
-    public DbSet<VendorPersonnel> VenderPersonnels { get; set; }
+    public DbSet<VendorPersonnel> VendorPersonnels { get; set; }
     private void ConfigureAuditableStates()
     {
         var DateTimeNow = DateTime.Now;

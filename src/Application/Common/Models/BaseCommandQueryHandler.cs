@@ -22,7 +22,7 @@ public class BaseCommandQueryHandler
 public class BaseCommandHandler : BaseCommandQueryHandler
 {
     internal readonly IPublishEndpoint _publishEndpoint;
-    public BaseCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint):base(applicationDbContext, mapper)
+    public BaseCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint=null):base(applicationDbContext, mapper)
     {
         _publishEndpoint = publishEndpoint;
     }

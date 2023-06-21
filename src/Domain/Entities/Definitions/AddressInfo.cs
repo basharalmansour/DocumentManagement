@@ -10,7 +10,7 @@ using CleanArchitecture.Domain.Entities.BaseEntities;
 namespace CleanArchitecture.Domain.Entities.Definitions;
 public class AddressInfo : LightBaseEntity<int> , IEntity<int>
 {
-    public EmailAddressAttribute Email { get; set; }
+    public string Email { get; set; }
     public string PhoneNo { get; set; }
     public string Address { get; set; }
     public int? CountyId { get; set; }

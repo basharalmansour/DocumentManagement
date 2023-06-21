@@ -23,7 +23,7 @@ public class CreateUserGroupCommand : IRequest<int>
 
 public class CreateUserGroupCommandHandler : BaseCommandHandler, IRequestHandler<CreateUserGroupCommand, int>
 {
-    public CreateUserGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public CreateUserGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<int> Handle(CreateUserGroupCommand request, CancellationToken cancellationToken)

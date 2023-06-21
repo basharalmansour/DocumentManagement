@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Domain.Entities.Orders;
-using CleanArchitecture.Domain.Entities.Venders;
+using CleanArchitecture.Domain.Entities.Vendors;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanArchitecture.Application.Common.Dtos.Orders.CreateDtos;

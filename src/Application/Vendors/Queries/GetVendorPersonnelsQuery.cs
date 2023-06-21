@@ -11,23 +11,30 @@ using CleanArchitecture.Application.Common.Dtos.VendorPersonnels;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Presences.PresencesDocumentTemplates.Queries;
+using CleanArchitecture.Domain.Entities.Vendors;
+using LinqKit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Vendors.Queries;
 public class GetVendorPersonnelsQuery : TableRequestModel, IRequest<TableResponseModel<GetVendorPersonnelDto>>
 {
-    public int VenderId { get; set; }
+    public int VendorId { get; set; }
+    public string SearchText { get; set; }
 }
-public class GetVenderPersonnelsHandler : BaseQueryHandler, IRequestHandler<GetVendorPersonnelsQuery, TableResponseModel<GetVendorPersonnelDto>>
+public class GetVendorPersonnelsHandler : BaseQueryHandler, IRequestHandler<GetVendorPersonnelsQuery, TableResponseModel<GetVendorPersonnelDto>>
 {
-    public GetVenderPersonnelsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
+    public GetVendorPersonnelsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<TableResponseModel<GetVendorPersonnelDto>> Handle(GetVendorPersonnelsQuery request, CancellationToken cancellationToken)
     {
-        var personnels = _applicationDbContext.VenderPersonnels
-            .Where(x => x.VenderId == request.VenderId);
+        var predicate = PredicateBuilder.New<VendorPersonnel>();
+        predicate = predicate.And(x => x.VendorId == request.VendorId);
+        if (!string.IsNullOrEmpty(request.SearchText))
+            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText));
+        var personnels = _applicationDbContext.VendorPersonnels
+            .Where(predicate);
         var selectedPersonnels = await personnels
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)

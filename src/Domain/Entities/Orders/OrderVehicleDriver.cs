@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities.BaseEntities;
-using CleanArchitecture.Domain.Entities.Venders;
+using CleanArchitecture.Domain.Entities.Vendors;
 
 namespace CleanArchitecture.Domain.Entities.Orders;
 public class OrderVehicleDriver : BaseEntity<int>, IEntity<int>
