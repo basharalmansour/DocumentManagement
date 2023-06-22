@@ -16,7 +16,7 @@ public class EditDocumentTemplateCommand : CreateDocumentTemplateCommand, IReque
 
 public class EditDocumentTemplateCommandHandler : BaseCommandHandler, IRequestHandler<EditDocumentTemplateCommand, int>
 {
-    public EditDocumentTemplateCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public EditDocumentTemplateCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<int> Handle(EditDocumentTemplateCommand request, CancellationToken cancellationToken)

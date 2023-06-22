@@ -7,6 +7,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Forms;
 using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
+using CleanArchitecture.Domain.Enums;
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -19,15 +20,38 @@ public class CreateFormCommand : IRequest<int>
 }
 public class CreateFormCommandHandler : BaseCommandHandler, IRequestHandler<CreateFormCommand, int>
 {
-    public CreateFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public CreateFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<int> Handle(CreateFormCommand request, CancellationToken cancellationToken)
     {
+        ValidateForm(request);
         var form = _mapper.Map<Form>(request);
         form.UniqueCode = UniqueCode.CreateUniqueCode(8, false, "F");
         _applicationDbContext.Forms.Add(form);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return form.Id;
+    }
+
+    private void ValidateForm(CreateFormCommand request)
+    {
+        foreach (var question in request.Questions)
+        {
+            if (question.QuestionType == QuestionType.MultiAnswers || question.QuestionType == QuestionType.OneOfMany || question.QuestionType == QuestionType.TextAnswer)
+            {
+                question.DateQuestionOptions = null;
+                question.FileQuestionOptions = null;
+            }
+            if (question.QuestionType == QuestionType.FileAnswer)
+            {
+                question.DateQuestionOptions = null;
+                question.MultiChoicesQuestions = null;
+            }
+            if (question.QuestionType == QuestionType.DateAnswer)
+            {
+                question.FileQuestionOptions = null;
+                question.MultiChoicesQuestions = null;
+            }
+        }
     }
 }

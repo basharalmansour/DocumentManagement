@@ -19,7 +19,7 @@ public class ChangeOrderStatusCommand : IRequest<Guid>
 }
 public class ChangeOrderStatusCommandHandler : BaseCommandHandler, IRequestHandler<ChangeOrderStatusCommand, Guid>
 {
-    public ChangeOrderStatusCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public ChangeOrderStatusCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<Guid> Handle(ChangeOrderStatusCommand request, CancellationToken cancellationToken)

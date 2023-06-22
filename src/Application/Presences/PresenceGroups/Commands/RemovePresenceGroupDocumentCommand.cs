@@ -19,7 +19,7 @@ public class RemovePresenceGroupDocumentCommand : IRequest<bool>
 public class RemovePresenceGroupDocumentsHandler : BaseCommandHandler, IRequestHandler<RemovePresenceGroupDocumentCommand, bool>
 {
 
-    public RemovePresenceGroupDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public RemovePresenceGroupDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }

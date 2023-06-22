@@ -35,7 +35,9 @@ public class GetVehiclesQueryHandler : BaseQueryHandler, IRequestHandler<GetVehi
     public async Task<TableResponseModel<VehicleDto>> Handle(GetVehiclesQuery request, CancellationToken cancellationToken)
     {
         var predicate = PredicateBuilder.New<Vehicle>();
-        predicate = predicate.And(x => !x.IsDeleted).And(x => x.PlateNumber.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase));
+        predicate = predicate.And(x => !x.IsDeleted);
+        if (!string.IsNullOrEmpty(request.SearchText))
+            predicate = predicate.And(x => x.PlateNumber.ToLower().Contains(request.SearchText));
         if (request.VehicleTemplateId != null)
         {
             predicate = predicate.And(x => x.VehicleTemplateId == request.VehicleTemplateId);

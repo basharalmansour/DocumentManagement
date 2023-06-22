@@ -10,6 +10,7 @@ using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Forms;
+using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
 using CleanArchitecture.Domain.Entities.SeviceCategories;
 using CleanArchitecture.Domain.Enums;
 using LinqKit;
@@ -35,14 +36,15 @@ public class GetServiceCategoryHandler : BaseQueryHandler, IRequestHandler<GetSe
     {
         var predicate = PredicateBuilder.New<ServiceCategory>();
         predicate = predicate.And(x=> !x.IsDeleted);
-        predicate = predicate.And(x=> x.Name.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase));
+        if (!string.IsNullOrEmpty(request.SearchText))
+            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText));
         if (request.GetOnlyProducts)
         {
             predicate = predicate.And(x => !x.IsMainCategory);
         }
 
         var categoriesInstall = _applicationDbContext.ServiceCategories
-            .Include(x => x.SubServiceCategories.Where(x => !x.IsDeleted))
+            .Include(x => x.SubServiceCategories.Where(x => x.IsDeleted==false))
             .Where(x=> true);
         
         if (request.PresencesType != null && (request.PresenceIntegerId != null || request.PrsenceGuidId != null))
@@ -93,7 +95,9 @@ public class GetServiceCategoryHandler : BaseQueryHandler, IRequestHandler<GetSe
             }
         }
 
-        var categories = categoriesInstall.Where(predicate);
+        var categories = categoriesInstall
+            .Where(predicate)
+            .Include(z=>z.SubServiceCategories);
 
         var selectedCategories=await categories
             .Skip((request.PageNumber - 1) * request.PageSize)

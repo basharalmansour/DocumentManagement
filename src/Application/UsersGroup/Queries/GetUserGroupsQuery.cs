@@ -8,6 +8,9 @@ using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Common.Dtos.UserGroup;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Domain.Entities.SeviceCategories;
+using CleanArchitecture.Domain.Entities.UserGroups;
+using LinqKit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using static MassTransit.ValidationResultExtensions;
@@ -28,8 +31,11 @@ public class GetUserGroupQueryHandler : BaseQueryHandler, IRequestHandler<GetUse
 
     public async Task<TableResponseModel<GetUserGroupDto>> Handle(GetUserGroupsQuery request, CancellationToken cancellationToken)
     {
-        var userGroups = _applicationDbContext.UserGroups.Where(x => !x.IsDeleted);
-        
+        var predicate = PredicateBuilder.New<UserGroup>();
+        predicate = predicate.And(x => !x.IsDeleted);
+        if (!string.IsNullOrEmpty(request.SearchText))
+            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText));
+        var userGroups = _applicationDbContext.UserGroups.Where(predicate);
         var selectedUserGroups = await userGroups
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)

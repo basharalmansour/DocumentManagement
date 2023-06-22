@@ -23,25 +23,26 @@ public class ServiceCategoryByIdQueryHandler : BaseQueryHandler, IRequestHandler
     }
     public async Task<ServiceCategoryDto> Handle(GetServiceCategoryByIdQuery request, CancellationToken cancellationToken)
     {
-        var categoryDetails = await _applicationDbContext.ServiceCategoryDetails
-            .Include(x=>x.ServiceCategory.SubServiceCategories.Where(x => !x.IsDeleted))
-            .Include(x => x.VehicleTemplates)
-            .Include(x => x.Documents)
-            .Include(x => x.PersonnelDocuments)
-            .Include(x => x.ServiceCategoryAreas)
-            .Include(x => x.ServiceCategoryBlocks)
-            .Include(x => x.ServiceCategoryBrands)
-            .Include(x => x.ServiceCategoryCompanies)
-            .Include(x => x.ServiceCategorySites)
-            .Include(x => x.ServiceCategoryUnits)
-            .Include(x => x.ServiceCategoryZones)
-            .Include(x => x.ServiceCategoryPresenceGroups)
-            .Include(x => x.ServiceCategoryRoles)
+        var categoryDetails = await _applicationDbContext.ServiceCategories
+            .Include(x=>x.SubServiceCategories.Where(x => !x.IsDeleted))
+            .Include(x=>x.ServiceCategoryDetails).ThenInclude(x => x.VehicleTemplates)
+            .Include(x => x.ServiceCategoryDetails).ThenInclude(x => x.Documents)
+            .Include(x => x.ServiceCategoryDetails).ThenInclude(x => x.PersonnelDocuments)
+            .Include(x => x.ServiceCategoryDetails).ThenInclude(x => x.ServiceCategoryAreas)
+            .Include(x => x.ServiceCategoryDetails).ThenInclude(x => x.ServiceCategoryBlocks)
+            .Include(x => x.ServiceCategoryDetails).ThenInclude(x => x.ServiceCategoryBrands)
+            .Include(x => x.ServiceCategoryDetails).ThenInclude(x => x.ServiceCategoryCompanies)
+            .Include(x => x.ServiceCategoryDetails).ThenInclude(x => x.ServiceCategorySites)
+            .Include(x => x.ServiceCategoryDetails).ThenInclude(x => x.ServiceCategoryUnits)
+            .Include(x => x.ServiceCategoryDetails).ThenInclude(x => x.ServiceCategoryZones)
+            .Include(x => x.ServiceCategoryDetails).ThenInclude(x => x.ServiceCategoryPresenceGroups)
+            .Include(x => x.ServiceCategoryDetails).ThenInclude(x => x.ServiceCategoryRoles)
+
             .FirstOrDefaultAsync(x => x.Id == request.Id);
 
         if (categoryDetails == null)
             throw new Exception("Service Category was NOT found");
-        var categoryDto = _mapper.Map<ServiceCategoryDto>(categoryDetails.ServiceCategory);
+        var categoryDto = _mapper.Map<ServiceCategoryDto>(categoryDetails);
         return categoryDto; 
     }
 }

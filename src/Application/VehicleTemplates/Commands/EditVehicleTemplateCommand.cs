@@ -22,7 +22,7 @@ public class EditVehicleTemplateCommand :CreateVehicleTemplateCommand , IRequest
 public class EditVehicleTemplateCommandHandler : BaseCommandHandler, IRequestHandler<EditVehicleTemplateCommand, int>
 {
 
-    public EditVehicleTemplateCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public EditVehicleTemplateCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
 

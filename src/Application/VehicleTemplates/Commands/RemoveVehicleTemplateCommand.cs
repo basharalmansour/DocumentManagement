@@ -19,7 +19,7 @@ public class RemoveVehicleTemplateCommand : IRequest<bool>
 public class RemoveVehicleTemplateCommandHandler : BaseCommandHandler, IRequestHandler<RemoveVehicleTemplateCommand, bool>
 {
 
-    public RemoveVehicleTemplateCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public RemoveVehicleTemplateCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
 
