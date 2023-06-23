@@ -10,5 +10,5 @@ public class BasicVendorDto
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public List<string> VendorCategoryName { get; set; }
+    public List<string> VendorCategoryNames { get; set; }
 }

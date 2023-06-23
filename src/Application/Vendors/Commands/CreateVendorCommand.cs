@@ -32,7 +32,7 @@ public class CreateVendorCommand : IRequest<int>
     public int TaxCountyId { get; set; }
     public int TaxRoomId { get; set; }
     public string TaxIdentityNumberId { get; set; }
-    public CreateUserDetailsDto UserDetails { get; set; }
+    public CreateUserDetailsDto Users { get; set; }
     public CreateAddressInfoDto AddressInfo { get; set; }
     public List<int> Categories { get; set; }
 }
@@ -49,9 +49,9 @@ public class CreateVendorCommandHandler : BaseCommandHandler, IRequestHandler<Cr
         if (request.Logo != null)
             FileManager.Create(request.Logo);
         var vendor = _mapper.Map<Vendor>(request);
-        var primaryUser= _mapper.Map<UserDetails>(request.UserDetails);
+        var primaryUser= _mapper.Map<UserDetails>(request.Users);
         primaryUser.IsPrimary = true;
-        vendor.UserDetails.Add(primaryUser);
+        vendor.Users.Add(primaryUser);
         vendor.UniqueCode = UniqueCode.CreateUniqueCode(8, false, "V");
         _applicationDbContext.Vendors.Add(vendor);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);

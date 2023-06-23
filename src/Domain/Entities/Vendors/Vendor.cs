@@ -39,7 +39,7 @@ public class Vendor : BaseEntity<int>, ISoftDeletable, IAuditable, IEntity<int>
     public int TaxCountyId { get; set; }
     public int TaxRoomId { get; set; }
     public string TaxIdentityNumberId { get; set; }
-    public List<UserDetails> UserDetails { get; set; }
+    public List<UserDetails> Users { get; set; }
 
     [ForeignKey(nameof(AddressInfo))]
     public int AddressInfoId { get; set; }

@@ -45,6 +45,7 @@ using CleanArchitecture.Application.Vendors.Commands;
 using CleanArchitecture.Domain.Entities.Vendors;
 using CleanArchitecture.Application.Common.Dtos;
 using CleanArchitecture.Domain.Entities.Definitions;
+using System.Collections.Generic;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -108,10 +109,10 @@ public class MappingProfile : Profile
     private void ApplyMappingsOfVendor()
     {
         CreateMap<Vendor, BasicVendorDto>()
-            .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.Categories.Select(y => y.VendorCategory.Name).ToList()));
+            .ForMember(dest => dest.VendorCategoryNames, opt => opt.MapFrom(src => src.Categories.Select(y => y.VendorCategory.Name).ToList()));
 
         CreateMap<Vendor, GetVendorDto>()
-            .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.Categories.Select(y => y.VendorCategory.Name).ToList()))
+            .ForMember(dest => dest.VendorCategoryNames, opt => opt.MapFrom(src => src.Categories.Select(y => y.VendorCategory.Name).ToList()))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)))
             .ForMember(dest => dest.Categories , opt=>opt.MapFrom(src=>src.Categories.Select(x=>x.VendorCategoryId).ToList()));
 
@@ -121,6 +122,7 @@ public class MappingProfile : Profile
                 src.Categories.Select(x => new VendorsCategories { VendorCategoryId = x })));
         CreateMap<CreateUserDetailsDto, UserDetails>();
         CreateMap<CreateUserDetailsDto, List<UserDetails>>();
+        CreateMap<CreateVendorCommand, Vendor>();
         CreateMap<CreateVendorPersonnelDto, VendorPersonnel>();
         CreateMap<CreateAddressInfoDto, AddressInfo>();
         CreateMap<EditVendorCommand, Vendor>()

@@ -23,13 +23,13 @@ public class CreateUserCommandHandler : BaseCommandHandler, IRequestHandler<Crea
     {
         var vendor = _applicationDbContext
             .Vendors
-            .Include(x=>x.UserDetails)
+            .Include(x=>x.Users)
             .FirstOrDefault(x => x.Id == request.VendorId);
         if (vendor == null)
             throw new Exception("Vendor was not found");
         var user = _mapper.Map<UserDetails>((CreateUserDetailsDto)request);
         user.Vendor = vendor;
-        vendor.UserDetails.Add(user);
+        vendor.Users.Add(user);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
     }

@@ -12,5 +12,4 @@ public class CreateVendorPersonnelDto
     public string IdentityNo { get; set; }
     public string Email { get; set; }
     public bool IsDriver { get; set; }
-    public List<int> Vehicles { get; set; }
 }

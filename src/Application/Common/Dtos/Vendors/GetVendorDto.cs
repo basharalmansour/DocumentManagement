@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Helpers;
+using CleanArchitecture.Domain.Entities.Definitions;
 using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Application.Common.Dtos.Vendors;
