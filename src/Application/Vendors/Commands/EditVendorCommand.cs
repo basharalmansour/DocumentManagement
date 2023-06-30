@@ -43,9 +43,9 @@ public class EditVendorCommandHandler : BaseCommandHandler, IRequestHandler<Edit
         //await _applicationDbContext.SaveChangesAsync(cancellationToken);
         //return newVendor.Id;
         ValidateVendorType(request);
-        if (request.Logo != null)
-            FileManager.Create(request.Logo);
         var newVendor = _mapper.Map<Vendor>(request);
+        if (request.Logo != null)
+           newVendor.Logo = FileManager.Create(request.Logo);
         var primaryUser = _mapper.Map<UserDetails>(request.Users);
         primaryUser.IsPrimary = true;
         newVendor.Users.Add(primaryUser);

@@ -46,9 +46,9 @@ public class CreateVendorCommandHandler : BaseCommandHandler, IRequestHandler<Cr
     public async Task<int> Handle(CreateVendorCommand request, CancellationToken cancellationToken)
     {
         ValidateVendorType(request);
-        if (request.Logo != null)
-            FileManager.Create(request.Logo);
         var vendor = _mapper.Map<Vendor>(request);
+        if (request.Logo != null)
+            vendor.Logo= FileManager.Create(request.Logo);
         var primaryUser= _mapper.Map<UserDetails>(request.Users);
         primaryUser.IsPrimary = true;
         vendor.Users.Add(primaryUser);

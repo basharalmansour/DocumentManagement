@@ -80,21 +80,21 @@ public class MappingProfile : Profile
         CreateMap<CreateOrderVehicleDto, OrderVehicle>();
         CreateMap<CreateOrderVehicleDriverDto, OrderVehicleDriver>();
         CreateMap<CreateOrderDocumentDto, OrderVehicleDriverDocument>()
-            .ForMember(dest => dest.Document, opt => opt.MapFrom(src => new Document { DocumentTemplateId = src.DocumentId, FileName = src.File.FileName, FilePath = src.FilePath, FileSize = src.File.Length })); 
+            .ForMember(dest => dest.Document, opt => opt.MapFrom(src => new Document { DocumentTemplateId = src.DocumentId, FileName = src.File.FileName, FilePath = src.FilePath, FileSize = src.File.Length }));
         CreateMap<CreateOrderDocumentDto, OrderVehicleDocument>()
             .ForMember(dest => dest.Document, opt => opt.MapFrom(src => new Document { DocumentTemplateId = src.DocumentId, FileName = src.File.FileName, FilePath = src.FilePath, FileSize = src.File.Length }));
 
         CreateMap<Order, OrderDto>()
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)))
-            .ForMember(x=>x.Equipments , opt=>opt.MapFrom(src=>src.Equipments.Select(x=>x.EquipmentId).ToList()))
-            .ForMember(des=>des.PresenceName , opt=>opt.MapFrom(x=>x.AdditionalParameters.PresenceName))
+            .ForMember(x => x.Equipments, opt => opt.MapFrom(src => src.Equipments.Select(x => x.EquipmentId).ToList()))
+            .ForMember(des => des.PresenceName, opt => opt.MapFrom(x => x.AdditionalParameters.PresenceName))
             .ForMember(des => des.UserName, opt => opt.MapFrom(src => src.AdditionalParameters.UserName));
         CreateMap<OrderServiceCategoryDocument, OrderServiceCategoryDocumentDto>();
         CreateMap<OrderPersonnel, OrderPersonnelDto>()
-            .ForMember(des=>des.PersonnelName , opt=>opt.MapFrom(src=>src.VendorPersonnel.Name));
+            .ForMember(des => des.PersonnelName, opt => opt.MapFrom(src => src.VendorPersonnel.Name));
         CreateMap<OrderVehicle, OrderVehicleDto>();
         CreateMap<Document, DocumentDto>()
-            .ForMember(x=>x.DocumentTemplateName , opt=>opt.MapFrom(src=>src.DocumentTemplate.Name));
+            .ForMember(x => x.DocumentTemplateName, opt => opt.MapFrom(src => src.DocumentTemplate.Name));
         CreateMap<OrderPersonnelDocument, OrderPersonnelDocumentDto>();
         CreateMap<OrderVehicleDriver, OrderVehicleDriverDto>()
             .ForMember(des => des.PersonnelName, opt => opt.MapFrom(src => src.VendorPersonnel.Name));
@@ -102,7 +102,7 @@ public class MappingProfile : Profile
         CreateMap<OrderVehicleDriverDocument, OrderVehicleDriverDocumentDto>();
 
 
-        CreateMap<Order ,BasicOrderDto>()
+        CreateMap<Order, BasicOrderDto>()
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)));
     }
 
@@ -114,12 +114,13 @@ public class MappingProfile : Profile
         CreateMap<Vendor, GetVendorDto>()
             .ForMember(dest => dest.VendorCategoryNames, opt => opt.MapFrom(src => src.Categories.Select(y => y.VendorCategory.Name).ToList()))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)))
-            .ForMember(dest => dest.Categories , opt=>opt.MapFrom(src=>src.Categories.Select(x=>x.VendorCategoryId).ToList()));
+            .ForMember(dest => dest.Categories, opt => opt.MapFrom(src => src.Categories.Select(x => x.VendorCategoryId).ToList()));
 
         CreateMap<CreateVendorCommand, Vendor>()
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)))
-            .ForMember(dest=>dest.Categories, opt => opt.MapFrom(src =>
-                src.Categories.Select(x => new VendorsCategories { VendorCategoryId = x })));
+            .ForMember(dest => dest.Categories, opt => opt.MapFrom(src =>
+                src.Categories.Select(x => new VendorsCategories { VendorCategoryId = x })))
+            .ForMember(dest => dest.Logo, opt => opt.Ignore());
         CreateMap<CreateUserDetailsDto, UserDetails>();
         CreateMap<CreateUserDetailsDto, List<UserDetails>>();
         CreateMap<CreateVendorCommand, Vendor>();
@@ -128,7 +129,8 @@ public class MappingProfile : Profile
         CreateMap<EditVendorCommand, Vendor>()
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)))
             .ForMember(dest => dest.Categories, opt => opt.MapFrom(src =>
-                src.Categories.Select(x => new VendorsCategories { VendorCategoryId = x })));
+                src.Categories.Select(x => new VendorsCategories { VendorCategoryId = x })))
+            .ForMember(dest => dest.Logo, opt => opt.Ignore());
     }
     private void ApplyMappingsOfEquipments()
     {
