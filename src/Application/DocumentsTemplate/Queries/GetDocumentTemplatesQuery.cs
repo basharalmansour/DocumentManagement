@@ -27,7 +27,7 @@ public class GetDocumentsTemplateHandler : BaseQueryHandler, IRequestHandler<Get
         var predicate = PredicateBuilder.New<DocumentTemplate>();
         predicate = predicate.And(x => x.IsDeleted==false);
         if (!string.IsNullOrEmpty(request.SearchText))
-            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText));
+            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText.ToLower()));
         var documents =   _applicationDbContext.DocumentTemplates
             .Where(predicate);
         var selectedDocument = documents

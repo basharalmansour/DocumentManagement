@@ -34,7 +34,7 @@ public class GetPresencesGroupsQueryHandler : BaseQueryHandler, IRequestHandler<
         var predicate = PredicateBuilder.New<PresenceGroup>();
         predicate = predicate.And(x => x.IsDeleted == false);
         if (!string.IsNullOrEmpty(request.SearchText))
-            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText));
+            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText.ToLower()));
         var presenceGroups = _applicationDbContext.PresenceGroups
             .Where(predicate);
         var selectedPresenceGroups = await presenceGroups

@@ -34,7 +34,7 @@ public class GetUserGroupQueryHandler : BaseQueryHandler, IRequestHandler<GetUse
         var predicate = PredicateBuilder.New<UserGroup>();
         predicate = predicate.And(x => !x.IsDeleted);
         if (!string.IsNullOrEmpty(request.SearchText))
-            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText));
+            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText.ToLower()));
         var userGroups = _applicationDbContext.UserGroups.Where(predicate);
         var selectedUserGroups = await userGroups
             .Skip((request.PageNumber - 1) * request.PageSize)

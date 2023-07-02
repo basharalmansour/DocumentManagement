@@ -37,7 +37,7 @@ public class GetVehiclesQueryHandler : BaseQueryHandler, IRequestHandler<GetVehi
         var predicate = PredicateBuilder.New<Vehicle>();
         predicate = predicate.And(x => !x.IsDeleted);
         if (!string.IsNullOrEmpty(request.SearchText))
-            predicate = predicate.And(x => x.PlateNumber.ToLower().Contains(request.SearchText));
+            predicate = predicate.And(x => x.PlateNumber.ToLower().Contains(request.SearchText.ToLower()));
         if (request.VehicleTemplateId != null)
         {
             predicate = predicate.And(x => x.VehicleTemplateId == request.VehicleTemplateId);

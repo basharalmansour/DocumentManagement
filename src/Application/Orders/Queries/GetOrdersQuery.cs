@@ -40,7 +40,7 @@ public class GetOrdersQueryHandler : BaseQueryHandler, IRequestHandler<GetOrders
         var predicate = PredicateBuilder.New<Order>();
         predicate = predicate.And(x => !x.IsDeleted);
         if (!string.IsNullOrEmpty(request.SearchText))
-            predicate = predicate.And(x => x.Description.ToLower().Contains(request.SearchText));
+            predicate = predicate.And(x => x.Description.ToLower().Contains(request.SearchText.ToLower()));
         if (request.VendorId != null)
             predicate = predicate.And(x => x.VendorId == request.VendorId);
         if (request.UserId != null)

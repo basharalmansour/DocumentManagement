@@ -37,7 +37,7 @@ public class GetServiceCategoryHandler : BaseQueryHandler, IRequestHandler<GetSe
         var predicate = PredicateBuilder.New<ServiceCategory>();
         predicate = predicate.And(x=> !x.IsDeleted);
         if (!string.IsNullOrEmpty(request.SearchText))
-            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText));
+            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText.ToLower()));
         if (request.GetOnlyProducts)
         {
             predicate = predicate.And(x => !x.IsMainCategory);

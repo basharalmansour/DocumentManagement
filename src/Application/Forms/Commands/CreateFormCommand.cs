@@ -37,20 +37,26 @@ public class CreateFormCommandHandler : BaseCommandHandler, IRequestHandler<Crea
     {
         foreach (var question in request.Questions)
         {
-            if (question.QuestionType == QuestionType.MultiAnswers || question.QuestionType == QuestionType.OneOfMany || question.QuestionType == QuestionType.TextAnswer)
+            if (question.QuestionType == QuestionType.MultiAnswers || question.QuestionType == QuestionType.OneOfMany)
             {
                 question.DateQuestionOptions = null;
                 question.FileQuestionOptions = null;
             }
-            if (question.QuestionType == QuestionType.FileAnswer)
+            else if (question.QuestionType == QuestionType.FileAnswer)
             {
                 question.DateQuestionOptions = null;
                 question.MultiChoicesQuestions = null;
             }
-            if (question.QuestionType == QuestionType.DateAnswer)
+            else if (question.QuestionType == QuestionType.DateAnswer)
             {
                 question.FileQuestionOptions = null;
                 question.MultiChoicesQuestions = null;
+            }
+            else if(question.QuestionType == QuestionType.TextAnswer)
+            {
+                question.DateQuestionOptions = null;
+                question.MultiChoicesQuestions = null;
+                question.FileQuestionOptions = null;
             }
         }
     }
