@@ -28,7 +28,6 @@ public class CreateUserCommandHandler : BaseCommandHandler, IRequestHandler<Crea
         if (vendor == null)
             throw new Exception("Vendor was not found");
         var user = _mapper.Map<UserDetails>((CreateUserDetailsDto)request);
-        user.Vendor = vendor;
         vendor.Users.Add(user);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return true;
