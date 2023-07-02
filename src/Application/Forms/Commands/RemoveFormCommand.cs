@@ -21,7 +21,7 @@ public class RemoveFormCommand : IRequest<bool>
 public class RemoveFormCommandHandler : BaseCommandHandler,  IRequestHandler<RemoveFormCommand, bool>
 {
 
-    public RemoveFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public RemoveFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<bool> Handle(RemoveFormCommand request, CancellationToken cancellationToken)

@@ -132,7 +132,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 case true:
                     entry.Entity.DeletedDate = DateTimeNow;
                     entry.State = EntityState.Modified;
-                    entry.Entity.DeletedBy = _currentUserService.UserId ?? throw new ArgumentNullException(nameof(_currentUserService.UserId));
+                    entry.Entity.DeletedBy = _currentUserService.UserId /*?? throw new ArgumentNullException(nameof(_currentUserService.UserId))*/;
                     break;
             }
         }

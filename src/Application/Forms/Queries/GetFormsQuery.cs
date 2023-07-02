@@ -24,7 +24,6 @@ public class GetFormsQueryHandler : BaseQueryHandler, IRequestHandler<GetFormsQu
     public async Task<TableResponseModel<BasicFormDto>> Handle(GetFormsQuery request, CancellationToken cancellationToken)
     {
         var forms = _applicationDbContext.Forms
-            .Include(x => x.Questions)
             .Where(x => !x.IsDeleted);
 
         var selectedForms = await forms

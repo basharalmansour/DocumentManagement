@@ -40,7 +40,7 @@ public class CreateOrderCommand : IRequest<Guid>
 }
 public class CreateOrderCommandHandler : BaseCommandHandler, IRequestHandler<CreateOrderCommand, Guid>
 {
-    public CreateOrderCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public CreateOrderCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)

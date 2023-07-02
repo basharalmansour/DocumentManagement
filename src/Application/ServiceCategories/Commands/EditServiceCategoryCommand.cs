@@ -25,7 +25,7 @@ public  class EditServiceCategoryCommand : CreateServiceCategoryCommand, IReques
 public class EditServiceCategoryCommandHandler : BaseCommandHandler, IRequestHandler<EditServiceCategoryCommand, int>
 {
 
-    public EditServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public EditServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<int> Handle(EditServiceCategoryCommand request, CancellationToken cancellationToken)

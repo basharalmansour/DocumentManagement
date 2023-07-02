@@ -19,7 +19,7 @@ public class RemoveServiceCategoryCommand : IRequest<bool>
 }
 public class RemoveServiceCategoryCommandHandler : BaseCommandHandler, IRequestHandler<RemoveServiceCategoryCommand, bool>
 {
-    public RemoveServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public RemoveServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<bool> Handle(RemoveServiceCategoryCommand request, CancellationToken cancellationToken)

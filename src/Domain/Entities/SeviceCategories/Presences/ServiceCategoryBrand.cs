@@ -13,6 +13,6 @@ public class ServiceCategoryBrand : LightBaseEntity<int>, IEntity<int>
 {
     [ForeignKey(nameof(ServiceCategory))]
     public int ServiceCategoryId { get; set; }
-    public ServiceCategory ServiceCategory { get; set; }
+    public ServiceCategoryDetails ServiceCategory { get; set; }
     public int BrandId { get; set; }
 }

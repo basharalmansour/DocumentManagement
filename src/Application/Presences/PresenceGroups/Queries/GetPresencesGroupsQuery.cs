@@ -10,6 +10,9 @@ using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities.Forms;
+using CleanArchitecture.Domain.Entities.Presences.PresenceGroups;
+using CleanArchitecture.Domain.Entities.Vendors;
+using LinqKit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,8 +31,12 @@ public class GetPresencesGroupsQueryHandler : BaseQueryHandler, IRequestHandler<
     }
     public async Task<TableResponseModel<BasicPresenceGroupDto>> Handle(GetPresencesGroupsQuery request, CancellationToken cancellationToken)
     {
-        var presenceGroups =  _applicationDbContext.PresenceGroups
-             .Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase));
+        var predicate = PredicateBuilder.New<PresenceGroup>();
+        predicate = predicate.And(x => x.IsDeleted == false);
+        if (!string.IsNullOrEmpty(request.SearchText))
+            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText.ToLower()));
+        var presenceGroups = _applicationDbContext.PresenceGroups
+            .Where(predicate);
         var selectedPresenceGroups = await presenceGroups
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)

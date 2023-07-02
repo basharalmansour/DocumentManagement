@@ -22,7 +22,10 @@ public class GetEquipmentsHandler : BaseQueryHandler, IRequestHandler<GetEquipme
     }
     public async Task<List<EquipmentDto>> Handle(GetEquipmentsQuery request, CancellationToken cancellationToken)
     {
-        var equipment=await _applicationDbContext.Equipments.Where(x => !x.IsDeleted).ToListAsync();
+        var equipment=await _applicationDbContext
+            .Equipments
+            .Where(x => !x.IsDeleted)
+            .ToListAsync();
         
         var result=_mapper.Map<List<EquipmentDto>>(equipment);
         return result;

@@ -17,7 +17,7 @@ public class EditOrderCommand : IRequest<Guid>
 }
 public class EditOrderCommandHandler : BaseCommandHandler, IRequestHandler<EditOrderCommand, Guid>
 {
-    public EditOrderCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public EditOrderCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<Guid> Handle(EditOrderCommand request, CancellationToken cancellationToken)

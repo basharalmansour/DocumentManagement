@@ -31,7 +31,7 @@ public class GetVendorsHandler : BaseQueryHandler, IRequestHandler<GetVendorsQue
         var predicate = PredicateBuilder.New<Vendor>();
         predicate = predicate.And(x => x.Status == request.Status);
         if(!string.IsNullOrEmpty(request.SearchText))
-            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText));
+            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText.ToLower()));
         var vendors = _applicationDbContext.Vendors
             .Include(x=>x.Categories).ThenInclude(x=>x.VendorCategory)
             .Where(predicate);

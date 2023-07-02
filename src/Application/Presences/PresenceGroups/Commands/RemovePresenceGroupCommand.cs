@@ -18,7 +18,7 @@ public class RemovePresenceGroupCommand : IRequest<bool>
 public class RemovePresenceGroupCommandHandler : BaseCommandHandler, IRequestHandler<RemovePresenceGroupCommand, bool>
 {
 
-    public RemovePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public RemovePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<bool> Handle(RemovePresenceGroupCommand request, CancellationToken cancellationToken)

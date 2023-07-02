@@ -30,7 +30,7 @@ public class CreatePresenceGroupCommand : IRequest<int>
 public class CreatePresenceGroupCommandHandler : BaseCommandHandler, IRequestHandler<CreatePresenceGroupCommand, int>
 {
 
-    public CreatePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public CreatePresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }
