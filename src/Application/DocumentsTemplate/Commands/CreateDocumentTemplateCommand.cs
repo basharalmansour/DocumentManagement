@@ -28,7 +28,7 @@ public class CreateDocumentTemplateCommand : IRequest<int>
 
 public class CreateDocumentTemplateCommandHandler : BaseCommandHandler, IRequestHandler<CreateDocumentTemplateCommand, int>
 {
-    public CreateDocumentTemplateCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext,mapper, publishEndpoint)
+    public CreateDocumentTemplateCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext,mapper)
     {
     }
 

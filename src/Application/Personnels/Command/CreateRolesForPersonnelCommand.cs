@@ -21,7 +21,7 @@ public class CreateRolesForPersonnelCommand : IRequest<bool>
 public class CreateRolesForPersonnelCommandHandler : BaseCommandHandler, IRequestHandler<CreateRolesForPersonnelCommand, bool>
 {
 
-    public CreateRolesForPersonnelCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public CreateRolesForPersonnelCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }

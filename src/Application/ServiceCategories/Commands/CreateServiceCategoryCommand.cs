@@ -21,7 +21,7 @@ public class CreateServiceCategoryCommand : IRequest<int>
 public class CreateServiceCategoryCommandHandler : BaseCommandHandler, IRequestHandler<CreateServiceCategoryCommand, int>
 {
 
-    public CreateServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public CreateServiceCategoryCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<int> Handle(CreateServiceCategoryCommand request, CancellationToken cancellationToken)

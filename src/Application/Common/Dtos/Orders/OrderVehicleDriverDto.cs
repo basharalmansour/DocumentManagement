@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Domain.Entities.Orders;
-using CleanArchitecture.Domain.Entities.Venders;
+using CleanArchitecture.Domain.Entities.Vendors;
 
 namespace CleanArchitecture.Application.Common.Dtos.Orders;
 

@@ -20,7 +20,7 @@ public class RemovePersonnelRoleCommand : IRequest<bool>
 public class RemovePersonnelRoleCommandHandler : BaseCommandHandler, IRequestHandler<RemovePersonnelRoleCommand, bool>
 {
 
-    public RemovePersonnelRoleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public RemovePersonnelRoleCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }

@@ -13,6 +13,7 @@ using CleanArchitecture.Infrastructure.Services;
 using Hangfire;
 using CleanArchitecture.Infrastructure.BackgroundJobs;
 using AutoWrapper;
+using System.Diagnostics;
 
 namespace CleanArchitecture.WebUI;
 
@@ -75,9 +76,9 @@ public class Startup
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
         
-        //services.ConfigureMassTransit(Configuration);
+        services.ConfigureMassTransit(Configuration);
         services.AddScoped<IMessageBrokerService, MessageBrokerService>();
-        services.ConfigureConsul(Configuration);
+        //services.ConfigureConsul(Configuration);
         //services.ConfigureRedis(Configuration);
     }
 

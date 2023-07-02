@@ -20,7 +20,7 @@ public class RemoveDocumentTemplateCommand : IRequest<bool>
 }
 public class RemoveDocumentTemplateHandler : BaseCommandHandler, IRequestHandler<RemoveDocumentTemplateCommand,bool>
 {
-    public RemoveDocumentTemplateHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public RemoveDocumentTemplateHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
     public async Task<bool> Handle(RemoveDocumentTemplateCommand request, CancellationToken cancellationToken)

@@ -20,7 +20,7 @@ public class CreatePresenceGroupDocumentCommand : IRequest<bool>
 public class AddPresenceGroupDocumentsHandler : BaseCommandHandler, IRequestHandler<CreatePresenceGroupDocumentCommand, bool>
 {
 
-    public AddPresenceGroupDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public AddPresenceGroupDocumentsHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }

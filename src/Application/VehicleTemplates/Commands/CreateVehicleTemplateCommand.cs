@@ -24,7 +24,7 @@ public class CreateVehicleTemplateCommand : IRequest<int>
 
 public class CreateVehicleCommandTemplateHandler : BaseCommandHandler, IRequestHandler<CreateVehicleTemplateCommand, int>
 {
-    public CreateVehicleCommandTemplateHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public CreateVehicleCommandTemplateHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
     }
 

@@ -23,7 +23,7 @@ public class EditPresenceGroupCommand : CreatePresenceGroupCommand, IRequest<int
 public class EditPresenceGroupCommandHandler : BaseCommandHandler, IRequestHandler<EditPresenceGroupCommand, int>
 {
 
-    public EditPresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public EditPresenceGroupCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }

@@ -41,6 +41,10 @@ using CleanArchitecture.Domain.Entities.Orders;
 using CleanArchitecture.Domain.Entities.Documents;
 using CleanArchitecture.Application.Common.Dtos.Orders.CreateDtos;
 using CleanArchitecture.Application.Common.Dtos.Orders;
+using CleanArchitecture.Application.Vendors.Commands;
+using CleanArchitecture.Domain.Entities.Vendors;
+using CleanArchitecture.Application.Common.Dtos;
+using CleanArchitecture.Domain.Entities.Definitions;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 public class MappingProfile : Profile
@@ -56,7 +60,7 @@ public class MappingProfile : Profile
         ApplyMappingsOfForm();
         ApplyMappingsOfDocumentTemplate();
         ApplyMappingsOfPresences();
-        ApplyMappingsOfRoles(); 
+        ApplyMappingsOfRoles();
         ApplyMappingsOfEquipments();
         ApplyMappingsOfVendor();
         ApplyMappingsOfOrder();
@@ -103,7 +107,26 @@ public class MappingProfile : Profile
 
     private void ApplyMappingsOfVendor()
     {
-        CreateMap<Vendor, BasicVendorDto>();
+        CreateMap<Vendor, BasicVendorDto>()
+            .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.Categories.Select(y => y.VendorCategory.Name).ToList()));
+
+        CreateMap<Vendor, GetVendorDto>()
+            .ForMember(dest => dest.VendorCategoryName, opt => opt.MapFrom(src => src.Categories.Select(y => y.VendorCategory.Name).ToList()))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.DeserializObject(src.Description)))
+            .ForMember(dest => dest.Categories , opt=>opt.MapFrom(src=>src.Categories.Select(x=>x.VendorCategoryId).ToList()));
+
+        CreateMap<CreateVendorCommand, Vendor>()
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)))
+            .ForMember(dest=>dest.Categories, opt => opt.MapFrom(src =>
+                src.Categories.Select(x => new VendorsCategories { VendorCategoryId = x })));
+        CreateMap<CreateUserDetailsDto, UserDetails>();
+        CreateMap<CreateUserDetailsDto, List<UserDetails>>();
+        CreateMap<CreateVendorPersonnelDto, VendorPersonnel>();
+        CreateMap<CreateAddressInfoDto, AddressInfo>();
+        CreateMap<EditVendorCommand, Vendor>()
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)))
+            .ForMember(dest => dest.Categories, opt => opt.MapFrom(src =>
+                src.Categories.Select(x => new VendorsCategories { VendorCategoryId = x })));
     }
     private void ApplyMappingsOfEquipments()
     {
@@ -177,7 +200,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => LanguageJsonFormatter.SerializObject(src.Description)));
 
         CreateMap<CreateServiceCategoryDetails, ServiceCategoryDetails>()
-            .ForMember(des => des.ServiceCategoryAreas, opt => opt.MapFrom(src => 
+            .ForMember(des => des.ServiceCategoryAreas, opt => opt.MapFrom(src =>
                 src.ServiceCategoryAreas.Select(x => new ServiceCategoryArea { AreaId = x })))
             .ForMember(des => des.ServiceCategoryBlocks, opt => opt.MapFrom(src => src.ServiceCategoryBlocks.Select(x => new ServiceCategoryBlock { BlockId = x })))
             .ForMember(des => des.ServiceCategoryBrands, opt => opt.MapFrom(src => src.ServiceCategoryBrands.Select(x => new ServiceCategoryBrand { BrandId = x })))
@@ -187,7 +210,7 @@ public class MappingProfile : Profile
             .ForMember(des => des.ServiceCategoryZones, opt => opt.MapFrom(src => src.ServiceCategoryZones.Select(x => new ServiceCategoryZone { ZoneId = x })))
             .ForMember(des => des.ServiceCategoryPresenceGroups, opt => opt.MapFrom(src => src.ServiceCategoryPresenceGroups.Select(x => new ServiceCategoryPresenceGroup { PresenceGroupId = x })));
 
-        
+
         CreateMap<CreateCategoryRoleDto, ServiceCategoryRole>()
             .ForMember(des => des.ResponsibleDepartments, opt => opt.MapFrom(src => src.ResponsibleDepartments.Select(x => new ResponsibleDepartment { DepartmentId = x })))
             .ForMember(des => des.ResponsiblePersonnels, opt => opt.MapFrom(src => src.ResponsiblePersonnels.Select(x => new ResponsiblePersonnel { PersonnelId = x })))

@@ -5,7 +5,10 @@ using CleanArchitecture.Application.Common.Dtos.Tables;
 using CleanArchitecture.Application.Common.Helpers;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Domain.Entities.DocumentTemplates;
 using CleanArchitecture.Domain.Entities.Forms;
+using CleanArchitecture.Domain.Entities.Vendors;
+using LinqKit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,8 +24,12 @@ public class GetDocumentsTemplateHandler : BaseQueryHandler, IRequestHandler<Get
     }
     public async Task<TableResponseModel<BasicDocumentTemplateDto>> Handle(GetDocumentTemplatesQuery request, CancellationToken cancellationToken)
     {
+        var predicate = PredicateBuilder.New<DocumentTemplate>();
+        predicate = predicate.And(x => x.IsDeleted==false);
+        if (!string.IsNullOrEmpty(request.SearchText))
+            predicate = predicate.And(x => x.Name.ToLower().Contains(request.SearchText.ToLower()));
         var documents =   _applicationDbContext.DocumentTemplates
-            .Where(x => x.IsDeleted == false && x.Name.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase));
+            .Where(predicate);
         var selectedDocument = documents
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)

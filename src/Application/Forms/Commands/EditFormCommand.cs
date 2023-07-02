@@ -15,7 +15,7 @@ public class EditFormCommand : CreateFormCommand, IRequest<int>
 public class EditFormCommandHandler : BaseCommandHandler, IRequestHandler<EditFormCommand, int>
 {
 
-    public EditFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper, IPublishEndpoint publishEndpoint) : base(applicationDbContext, mapper, publishEndpoint)
+    public EditFormCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
     {
 
     }
